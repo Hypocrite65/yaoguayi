@@ -3,4 +3,4 @@ const nextConfig = {
   transpilePackages: ['@yaoguayi/ui', '@yaoguayi/iching-core', '@yaoguayi/iching-data'],
 }
 
-export default nextConfig
+module.exports = nextConfig

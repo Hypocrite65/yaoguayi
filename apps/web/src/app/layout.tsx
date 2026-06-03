@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   keywords: ['I Ching', 'Yao Gua Yi', 'Hexagrams', 'Divination', 'Zen', 'Inner Peace', 'AI Wisdom', 'Book of Changes'],
   authors: [{ name: 'Hypocrite65', url: 'https://github.com/Hypocrite65' }],
   icons: {
-    icon: '/logo-icon.svg', // 显式配置 Favicon，浏览器标签页将立即呈现极简矢量 Logo 图标
+    icon: '/favicon.svg',
   },
   openGraph: {
     siteName: 'Yao Gua Yi',
@@ -48,7 +48,7 @@ export default function RootLayout({
         <meta name="description" content="Non-profit open-source I Ching platform featuring clean data structures and AI-friendly design." />
         <meta name="ai-readable" content="true" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="icon" href="/logo-icon.svg" type="image/svg+xml" /> {/* 极致双重防御：硬编码注入矢量 Logo Favicon，防 Next.js 静态检测延迟生效 */}
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       </head>
       <body 
         className="min-h-screen bg-black font-serif antialiased flex flex-col justify-between"

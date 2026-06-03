@@ -1,21 +1,18 @@
 export type { Hexagram, Yao, Trigram, LineValue } from './types.js'
 export { TRIGRAMS } from './trigrams/index.js'
+export { ALL_HEXAGRAMS } from './hexagrams/all.js'
 
-// 动态导入卦象数据（按需加载，减少初始包体积）
-export async function getHexagram(id: number): Promise<import('./types.js').Hexagram> {
-  const paddedId = String(id).padStart(3, '0')
-  // 根据 id 映射文件名（001-064）
-  const module = await import(`./hexagrams/${paddedId}-*.json`, {
-    assert: { type: 'json' },
-  })
-  return module.default
+import type { Hexagram } from './types.js'
+import { ALL_HEXAGRAMS } from './hexagrams/all.js'
+
+/** 按序号（1-64）同步获取单卦数据 */
+export function getHexagram(id: number): Hexagram {
+  const h = ALL_HEXAGRAMS[id - 1]
+  if (!h) throw new Error(`Hexagram id ${id} out of range (1-64)`)
+  return h
 }
 
-export async function getAllHexagrams(): Promise<import('./types.js').Hexagram[]> {
-  // 在构建时由打包工具静态分析展开
-  const modules = import.meta.glob('./hexagrams/*.json', {
-    eager: true,
-    import: 'default',
-  })
-  return Object.values(modules) as import('./types.js').Hexagram[]
+/** 获取全部 64 卦数组（按序号升序） */
+export function getAllHexagrams(): Hexagram[] {
+  return ALL_HEXAGRAMS
 }

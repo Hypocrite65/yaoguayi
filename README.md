@@ -1,37 +1,23 @@
-# 爻卦易 · Yaoguayi
+# 爻卦易 · yaoguayi.com
 
-> 在 AI 时代的喧嚣中，借《易经》之智，寻一处静思之所。  
-> *In the noise of the AI era, seek stillness through the wisdom of I Ching.*
+> 在 AI 时代的喧嚣中，借《易经》之智，寻一处静思之所。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Open Source](https://img.shields.io/badge/Open%20Source-%E2%9D%A4-red)](https://github.com/Hypocrite65/yaoguayi)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
 
-**[Website](https://yaoguayi.com)** · **[贡献指南](./CONTRIBUTING.md)** · **[项目规划](./PROJECT_PLAN.md)**
+**[Website](https://yaoguayi.com)** · **[部署手册](./deploy/DEPLOY.md)**
 
 ---
 
 ## 项目简介
 
-爻卦易是一个非盈利的《易经》学习与占卦平台，包含：
+爻卦易是一个开源、非盈利的《易经》学习与卦象平台。
 
 - **六十四卦全览** — 卦象、卦辞、彖传、象传完整呈现
-- **起卦系统** — 金钱卦、蓍草法、数字起卦，支持变卦推导
-- **AI 友好设计** — 清晰的语义结构，配合浏览器 AI（Chrome、Arc 等）可直接解读卦象
-- **学习模式** — 易经基础教程、记忆卡片、每日一卦
+- **起卦系统** — 金钱卦（三币法），支持变卦推导
+- **读易** — 原典经文阅读与学习
 
 **没有算命，没有商业推广，只有原典与思考。**
-
----
-
-## 技术栈
-
-| 层 | 技术 |
-|----|------|
-| Web | Next.js 14+ · TypeScript · Tailwind CSS · shadcn/ui |
-| 移动端（规划中） | React Native · Expo |
-| Monorepo | pnpm workspaces · Turborepo |
-| 部署 | Vercel |
 
 ---
 
@@ -39,61 +25,90 @@
 
 ```
 yaoguayi/
+├── site/                      # 部署产物（Nginx root 指向此目录）
+│   ├── index.html             # 首页（含密码门 · 64卦网格 · 动画）
+│   └── favicon.svg            # 品牌 Logo
+├── deploy/                    # 部署配置
+│   ├── DEPLOY.md              # 服务器部署手册
+│   └── nginx/
+│       └── yaoguayi.com.conf  # Nginx 配置（HTTPS + 缓存 + 安全头）
 ├── apps/
-│   ├── web/              # Next.js Web 应用
-│   └── mobile/           # React Native 移动端（Phase 2）
+│   ├── web/                   # Next.js 应用（开发中）
+│   └── mobile/                # 移动端（规划中）
 ├── packages/
-│   ├── iching-data/      # 易经数据（64卦 · 384爻 JSON）
-│   ├── iching-core/      # 起卦算法 · 变卦逻辑
-│   ├── ui/               # 共享组件（卦象 SVG 等）
-│   └── typescript-config/# 共享 TS 配置
-├── content/              # MDX 文章 · 注疏内容
-└── docs/                 # 项目文档
+│   ├── iching-data/           # 六十四卦数据（JSON）
+│   ├── iching-core/           # 起卦算法 · 卦象查询
+│   ├── ui/                    # 共享 UI 组件
+│   └── typescript-config/     # 共享 TS 配置
+└── docs/                      # 设计稿与参考文件
 ```
+
+## 品牌 Logo
+
+**Y + i = Yi（易）**
+
+- **Y**：左斜线 = 阴爻，右竖线 = 阳爻 — 取「爻」之形
+- **i**：上下断开 — 取「易」之意（变化、变易）
+- 圆框以温棕色连接水墨与朱砂，呼应古籍装帧
+
+## 技术栈
+
+| 层 | 技术 |
+|----|------|
+| Monorepo | pnpm workspaces + Turborepo |
+| Web | Next.js 14 · TypeScript · Tailwind CSS |
+| 数据 | 64 卦 JSON（含卦辞、爻辞、彖传、象传） |
+| 部署 | Nginx + Let's Encrypt · Oracle Cloud Ubuntu 24.04 |
 
 ---
 
-## 快速开始
+## 部署
+
+当前为静态页部署阶段。服务器拉取 `main` 分支后，Nginx 指向 `site/` 目录即可。
 
 ```bash
-# 克隆仓库
+# 服务器首次部署
+cd /var/www
+git clone https://github.com/Hypocrite65/yaoguayi.git
+# Nginx root → /var/www/yaoguayi/site
+
+# 后续更新
+cd /var/www/yaoguayi && git pull origin main
+```
+
+详细步骤见 [deploy/DEPLOY.md](./deploy/DEPLOY.md)。
+
+---
+
+## 开发
+
+```bash
 git clone git@github.com:Hypocrite65/yaoguayi.git
 cd yaoguayi
-
-# 安装依赖（需要 pnpm >= 9）
 pnpm install
-
-# 启动开发服务器
 pnpm dev
-
 # 访问 http://localhost:3000
 ```
 
 ---
 
-## 参与贡献
+## 路线图
 
-欢迎任何形式的非商业贡献，包括：
-
-- 易经原典数据校对
-- 现代白话文翻译
-- UI/UX 改进建议
-- 多语言支持（繁中 · 英文 · 日文）
-- Bug 报告
-
-详见 [CONTRIBUTING.md](./CONTRIBUTING.md)
+- [x] 品牌 Logo 设计（Y+i=Yi）
+- [x] 六十四卦数据整理
+- [x] 静态首页 + 开发阶段密码门
+- [x] 服务器部署（Nginx + HTTPS）
+- [ ] 迁移至 Next.js 页面
+- [ ] 卦象详情页
+- [ ] 起卦功能（三币法）
+- [ ] 读易 · 经文阅读
+- [ ] 移动端适配优化
 
 ---
 
-## 打赏支持
+## 参与贡献
 
-本项目完全非盈利，服务器和域名费用由维护者自行承担。  
-如果你觉得有帮助，可以通过以下方式支持：
-
-- **微信 / 支付宝**：见网站页脚二维码
-- **GitHub Sponsors**：[Hypocrite65](https://github.com/sponsors/Hypocrite65)
-
-收支情况每季度公开透明披露。
+欢迎任何形式的非商业贡献：易经数据校对、白话文翻译、UI/UX 建议、Bug 报告。
 
 ---
 
