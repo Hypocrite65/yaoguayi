@@ -17,7 +17,6 @@
 - **起卦系统** — 金钱卦（三币法），支持变卦推导
 - **读易** — 原典经文阅读与学习
 
-**没有算命，没有商业推广，只有原典与思考。**
 
 ---
 
@@ -43,13 +42,6 @@ yaoguayi/
 └── docs/                      # 设计稿与参考文件
 ```
 
-## 品牌 Logo
-
-**Y + i = Yi（易）**
-
-- **Y**：左斜线 = 阴爻，右竖线 = 阳爻 — 取「爻」之形
-- **i**：上下断开 — 取「易」之意（变化、变易）
-- 圆框以温棕色连接水墨与朱砂，呼应古籍装帧
 
 ## 技术栈
 
@@ -66,17 +58,6 @@ yaoguayi/
 
 当前为静态页部署阶段。服务器拉取 `main` 分支后，Nginx 指向 `site/` 目录即可。
 
-```bash
-# 服务器首次部署
-cd /var/www
-git clone https://github.com/Hypocrite65/yaoguayi.git
-# Nginx root → /var/www/yaoguayi/site
-
-# 后续更新
-cd /var/www/yaoguayi && git pull origin main
-```
-
-详细步骤见 [deploy/DEPLOY.md](./deploy/DEPLOY.md)。
 
 ---
 
@@ -92,17 +73,6 @@ pnpm dev
 
 ---
 
-## 路线图
-
-- [x] 品牌 Logo 设计（Y+i=Yi）
-- [x] 六十四卦数据整理
-- [x] 静态首页 + 开发阶段密码门
-- [x] 服务器部署（Nginx + HTTPS）
-- [ ] 迁移至 Next.js 页面
-- [ ] 卦象详情页
-- [ ] 起卦功能（三币法）
-- [ ] 读易 · 经文阅读
-- [ ] 移动端适配优化
 
 ---
 
