@@ -1,0 +1,38 @@
+{
+  "id": 46,
+  "guaci_trans": "大通顺利，用来拜见大人，不必忧虑。向南方出征则吉祥。",
+  "tuan_trans": "柔以时升，巽而顺，刚中而应，是以大亨。用见大人勿恤，有庆也。南征吉，志行也。",
+  "xiang_trans": "地中生木，象征上升。君子以此顺从德行，积累细小以成高大。",
+  "yaoci_trans": [
+    {
+      "position": 1,
+      "text_trans": "允许上升，大吉。",
+      "xiang_trans": "允升大吉，上面合志。"
+    },
+    {
+      "position": 2,
+      "text_trans": "有诚信则利于举行春祭，没有灾祸。",
+      "xiang_trans": "九二有诚信，有喜事。"
+    },
+    {
+      "position": 3,
+      "text_trans": "上升到空虚的邑。",
+      "xiang_trans": "升虚邑，无所疑也。"
+    },
+    {
+      "position": 4,
+      "text_trans": "天子在岐山祭祀，吉祥，没有灾祸。",
+      "xiang_trans": "天子岐山祭祀，顺事也。"
+    },
+    {
+      "position": 5,
+      "text_trans": "坚守正道则吉祥，升阶而上。",
+      "xiang_trans": "贞吉升阶，大得志。"
+    },
+    {
+      "position": 6,
+      "text_trans": "在昏暗中上升，利于不停地坚守正道。",
+      "xiang_trans": "冥升在上，消耗而不富裕。"
+    }
+  ]
+}

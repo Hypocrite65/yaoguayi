@@ -1,0 +1,38 @@
+{
+  "id": 60,
+  "guaci_trans": "亨通。苦涩的节制不可坚守。",
+  "tuan_trans": "节亨，刚柔分而刚得中。苦节不可贞，其道穷也。说以行险，当位以节，中正以通。天地节而四时成，节以制度，不伤财不害民。",
+  "xiang_trans": "泽上有水，象征节制。君子以此制定数度，议论德行。",
+  "yaoci_trans": [
+    {
+      "position": 1,
+      "text_trans": "不出门庭，没有灾祸。",
+      "xiang_trans": "不出门庭，知道通达与穷困。"
+    },
+    {
+      "position": 2,
+      "text_trans": "不出门庭，凶险。",
+      "xiang_trans": "不出门庭之凶，失去了时机。"
+    },
+    {
+      "position": 3,
+      "text_trans": "不知节制，就会嗟叹。没有灾祸。",
+      "xiang_trans": "不节之嗟，又能怪谁呢？"
+    },
+    {
+      "position": 4,
+      "text_trans": "安然地节制，亨通。",
+      "xiang_trans": "安然节制之亨，承接上面之道。"
+    },
+    {
+      "position": 5,
+      "text_trans": "甘美的节制，吉祥。前往会得到赞誉。",
+      "xiang_trans": "甘节之吉，居正位。"
+    },
+    {
+      "position": 6,
+      "text_trans": "苦涩的节制，坚守正道有凶。悔恨消亡。",
+      "xiang_trans": "苦节贞凶，其道穷尽。"
+    }
+  ]
+}

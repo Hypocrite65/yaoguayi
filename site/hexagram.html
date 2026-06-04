@@ -71,57 +71,66 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   padding:14px 24px;
   display:flex;align-items:center;justify-content:space-between;
   font-family:'Noto Sans SC',system-ui,sans-serif;}
-.nav-back{font-size:12px;letter-spacing:0.1em;color:#7a6e64;
+.nav-back{font-size:13px;letter-spacing:0.1em;color:#7a6e64;
   text-decoration:none;display:flex;align-items:center;gap:6px;
   transition:color 0.2s;}
 .nav-back:hover{color:#c0392b;}
-.nav-back::before{content:'←';font-size:14px;}
-.nav-brand{font-size:10px;letter-spacing:0.3em;color:#a09080;font-weight:500;}
+.nav-back::before{content:'←';font-size:15px;}
+.nav-brand{font-size:11px;letter-spacing:0.3em;color:#a09080;font-weight:500;}
 
 /* ===== Main Content ===== */
-.hex-detail{max-width:680px;margin:0 auto;padding:48px 24px 32px;flex:1;}
+.hex-detail{max-width:720px;margin:0 auto;padding:48px 28px 32px;flex:1;}
 
 /* Header Section */
 .hex-header{text-align:center;margin-bottom:48px;}
-.hex-symbol{font-size:72px;line-height:1;margin-bottom:16px;color:#2c2420;}
+.hex-symbol{font-size:80px;line-height:1;margin-bottom:16px;color:#2c2420;}
 .hex-title{display:flex;align-items:baseline;justify-content:center;gap:12px;margin-bottom:12px;}
-.hex-name{font-size:36px;letter-spacing:0.12em;color:#2c2420;}
-.hex-pinyin{font-size:14px;letter-spacing:0.1em;color:#a09080;
+.hex-name{font-size:40px;letter-spacing:0.12em;color:#2c2420;}
+.hex-pinyin{font-size:16px;letter-spacing:0.1em;color:#a09080;
   font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:400;}
-.hex-id{font-size:11px;color:#c8b8a4;letter-spacing:0.1em;
+.hex-id{font-size:13px;color:#c8b8a4;letter-spacing:0.1em;
   font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:20px;}
 
 /* SVG Hexagram Lines */
-.hex-lines-svg{margin:20px auto;display:block;}
+.hex-lines-svg{margin:24px auto;display:block;}
 
 /* Trigram Info */
-.hex-trigrams{display:flex;justify-content:center;gap:24px;
-  font-size:12px;letter-spacing:0.12em;color:#7a6e64;
+.hex-trigrams{display:flex;justify-content:center;gap:28px;
+  font-size:14px;letter-spacing:0.12em;color:#7a6e64;
   font-family:'Noto Sans SC',system-ui,sans-serif;}
-.hex-trigrams span{display:flex;align-items:center;gap:4px;}
-.trigram-label{color:#a09080;font-size:10px;}
+.hex-trigrams span{display:flex;align-items:center;gap:6px;}
+.trigram-label{color:#a09080;font-size:12px;}
 
 /* ===== Content Sections ===== */
-.section{margin-bottom:36px;padding-bottom:36px;
+.section{margin-bottom:40px;padding-bottom:40px;
   border-bottom:0.5px solid rgba(26,26,26,0.08);}
 .section:last-of-type{border-bottom:none;}
-.section-label{font-size:10px;letter-spacing:0.3em;color:#c0392b;
-  margin-bottom:14px;
+.section-label{font-size:12px;letter-spacing:0.3em;color:#c0392b;
+  margin-bottom:16px;
   font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:600;}
-.section-text{font-size:16px;line-height:2;letter-spacing:0.06em;color:#2c2420;}
+.section-text{font-size:18px;line-height:2;letter-spacing:0.06em;color:#2c2420;}
+/* 白话文译文样式 */
+.section-trans{font-size:15px;line-height:1.9;letter-spacing:0.04em;color:#7a6e64;
+  margin-top:12px;padding-left:16px;
+  border-left:2px solid rgba(192,57,43,0.15);}
 
 /* ===== Yaoci (Yao Lines) Section ===== */
 .yaoci-list{list-style:none;}
-.yaoci-item{margin-bottom:24px;padding-bottom:24px;
+.yaoci-item{margin-bottom:28px;padding-bottom:28px;
   border-bottom:0.5px solid rgba(26,26,26,0.05);}
 .yaoci-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
-.yaoci-name{font-size:13px;letter-spacing:0.18em;color:#c0392b;
-  margin-bottom:6px;font-weight:600;
+.yaoci-name{font-size:14px;letter-spacing:0.18em;color:#c0392b;
+  margin-bottom:8px;font-weight:600;
   font-family:'Noto Sans SC',system-ui,sans-serif;}
-.yaoci-text{font-size:15px;line-height:1.9;letter-spacing:0.06em;color:#2c2420;
-  margin-bottom:6px;}
-.yaoci-xiang{font-size:13px;line-height:1.8;letter-spacing:0.06em;color:#7a6e64;
-  padding-left:16px;border-left:1.5px solid rgba(192,57,43,0.25);}
+.yaoci-text{font-size:17px;line-height:1.9;letter-spacing:0.06em;color:#2c2420;
+  margin-bottom:8px;}
+.yaoci-trans{font-size:14px;line-height:1.8;letter-spacing:0.04em;color:#7a6e64;
+  margin-bottom:8px;padding-left:16px;
+  border-left:2px solid rgba(192,57,43,0.15);}
+.yaoci-xiang{font-size:14px;line-height:1.8;letter-spacing:0.06em;color:#8c7e72;
+  padding-left:16px;border-left:1.5px solid rgba(26,26,26,0.1);}
+.yaoci-xiang-label{font-size:11px;color:#a09080;letter-spacing:0.12em;
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:2px;}
 
 /* ===== Prev/Next Navigation ===== */
 .hex-nav{display:flex;justify-content:space-between;align-items:center;
@@ -271,14 +280,16 @@ function renderHexagram(hex, all) {
   const prevHex = all.find(h => h.id === prevId);
   const nextHex = all.find(h => h.id === nextId);
 
-  // 构建爻辞列表 HTML
+  // 构建爻辞列表 HTML（含译文）
   let yaociHtml = '';
   if (hex.yaoci && hex.yaoci.length > 0) {
     yaociHtml = hex.yaoci.map(y => `
       <li class="yaoci-item">
         <div class="yaoci-name">${y.name}</div>
         <div class="yaoci-text">${y.text}</div>
-        ${y.xiang ? `<div class="yaoci-xiang">${y.xiang}</div>` : ''}
+        ${y.text_trans ? `<div class="yaoci-trans">${y.text_trans}</div>` : ''}
+        ${y.xiang ? `<div class="yaoci-xiang-label">小象传</div><div class="yaoci-xiang">${y.xiang}</div>` : ''}
+        ${y.xiang_trans ? `<div class="yaoci-trans">${y.xiang_trans}</div>` : ''}
       </li>
     `).join('');
   }
@@ -303,6 +314,7 @@ function renderHexagram(hex, all) {
     <div class="section fade-in d2">
       <div class="section-label">卦 辞</div>
       <div class="section-text">${hex.guaci}</div>
+      ${hex.guaci_trans ? `<div class="section-trans">${hex.guaci_trans}</div>` : ''}
     </div>
 
     <!-- 彖传 -->
@@ -310,6 +322,7 @@ function renderHexagram(hex, all) {
     <div class="section fade-in d3">
       <div class="section-label">彖 传</div>
       <div class="section-text">${hex.tuan}</div>
+      ${hex.tuan_trans ? `<div class="section-trans">${hex.tuan_trans}</div>` : ''}
     </div>` : ''}
 
     <!-- 大象传 -->
@@ -317,6 +330,7 @@ function renderHexagram(hex, all) {
     <div class="section fade-in d4">
       <div class="section-label">大 象 传</div>
       <div class="section-text">${hex.xiang}</div>
+      ${hex.xiang_trans ? `<div class="section-trans">${hex.xiang_trans}</div>` : ''}
     </div>` : ''}
 
     <!-- 爻辞 -->
