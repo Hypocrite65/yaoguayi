@@ -175,9 +175,9 @@ body.panel-open .hex-detail{margin-right:320px;}
 .hex-content{flex:1;min-width:0;}
 
 /* ===== Content Sections ===== */
-.section{margin-bottom:40px;padding-bottom:40px;
+.section{margin-bottom:32px;padding-bottom:32px;
   border-bottom:0.5px solid var(--border);}
-.section:last-of-type{border-bottom:none;}
+.section:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0;}
 .section-label{font-size:12px;letter-spacing:0.3em;color:var(--vermilion);margin-bottom:16px;
   font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:600;}
 .section-text{font-size:18px;line-height:2;letter-spacing:0.06em;color:var(--ink);}
@@ -190,7 +190,6 @@ body.panel-open .hex-detail{margin-right:320px;}
   border-bottom:0.5px solid var(--border);}
 .yaoci-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
 .yaoci-item[id]{scroll-margin-top:68px;}
-.yaoci-item:last-child{padding-bottom:40px;}
 .yaoci-name{font-size:14px;letter-spacing:0.18em;color:var(--vermilion);margin-bottom:8px;
   font-weight:600;font-family:'Noto Sans SC',system-ui,sans-serif;}
 .yaoci-text{font-size:17px;line-height:1.9;letter-spacing:0.06em;color:var(--ink);margin-bottom:8px;}
@@ -263,7 +262,7 @@ ruby rt{font-size:10px;color:var(--faint);font-family:'Noto Sans SC',system-ui,s
 
 /* ===== Prev/Next Navigation ===== */
 .hex-nav{display:flex;justify-content:space-between;align-items:center;
-  padding:32px 0;margin-top:16px;border-top:0.5px solid var(--border-strong);}
+  padding:24px 0 16px;margin-top:8px;border-top:0.5px solid var(--border-strong);}
 .hex-nav a{font-size:12px;letter-spacing:0.1em;color:var(--muted);text-decoration:none;
   display:flex;align-items:center;gap:8px;font-family:'Noto Sans SC',system-ui,sans-serif;
   transition:color 0.2s;padding:8px 0;}
