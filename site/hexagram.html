@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>卦象详情 · 爻卦易</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
+  color:#2c2420;background:#f5f0e8;overflow-x:hidden;
+  min-height:100vh;display:flex;flex-direction:column;}
+
+/* ===== Auth Gate (same as index) ===== */
+.auth-gate{position:fixed;inset:0;z-index:9999;
+  background:#f5f0e8;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  transition:opacity 0.7s cubic-bezier(0.4,0,0.2,1);}
+.auth-gate.hidden{opacity:0;pointer-events:none;}
+.auth-gate.removed{display:none;}
+.auth-logo svg{width:56px;height:56px;margin-bottom:20px;}
+.auth-label{font-size:9px;letter-spacing:0.3em;color:#c0392b;
+  margin-bottom:28px;
+  font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:600;}
+.auth-form{display:flex;flex-direction:column;align-items:center;gap:14px;}
+.auth-input{
+  width:240px;padding:10px 16px;
+  border:0.5px solid rgba(26,26,26,0.15);border-radius:3px;
+  background:rgba(237,232,220,0.5);
+  font-family:'Noto Serif SC',serif;font-size:13px;letter-spacing:0.08em;
+  color:#2c2420;outline:none;text-align:center;
+  transition:border-color 0.3s,box-shadow 0.3s;}
+.auth-input:focus{border-color:rgba(192,57,43,0.3);
+  box-shadow:0 0 0 3px rgba(192,57,43,0.06);}
+.auth-input::placeholder{color:#c8b8a4;letter-spacing:0.12em;}
+.auth-btn{
+  width:240px;padding:10px 0;
+  border:none;border-radius:3px;cursor:pointer;
+  background:#2c2420;color:#f5f0e8;
+  font-family:'Noto Sans SC',system-ui,sans-serif;
+  font-size:11px;letter-spacing:0.18em;font-weight:500;
+  transition:background 0.3s,transform 0.2s;}
+.auth-btn:hover{background:#3d3630;transform:translateY(-1px);}
+.auth-btn:active{transform:translateY(0);}
+.auth-error{font-size:10px;color:#c0392b;letter-spacing:0.1em;
+  opacity:0;transition:opacity 0.3s;height:16px;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.auth-error.show{opacity:1;}
+
+/* ===== Fade-in animation ===== */
+.fade-in{opacity:0;transform:translateY(20px);
+  transition:opacity 0.7s cubic-bezier(0.25,0.46,0.45,0.94),
+             transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+.fade-in.d1{transition-delay:0.1s;}
+.fade-in.d2{transition-delay:0.2s;}
+.fade-in.d3{transition-delay:0.3s;}
+.fade-in.d4{transition-delay:0.4s;}
+.fade-in.d5{transition-delay:0.5s;}
+.fade-in.d6{transition-delay:0.6s;}
+
+/* ===== Top Navigation ===== */
+.top-nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(245,240,232,0.92);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border-bottom:0.5px solid rgba(26,26,26,0.08);
+  padding:14px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.nav-back{font-size:12px;letter-spacing:0.1em;color:#7a6e64;
+  text-decoration:none;display:flex;align-items:center;gap:6px;
+  transition:color 0.2s;}
+.nav-back:hover{color:#c0392b;}
+.nav-back::before{content:'←';font-size:14px;}
+.nav-brand{font-size:10px;letter-spacing:0.3em;color:#a09080;font-weight:500;}
+
+/* ===== Main Content ===== */
+.hex-detail{max-width:680px;margin:0 auto;padding:48px 24px 32px;flex:1;}
+
+/* Header Section */
+.hex-header{text-align:center;margin-bottom:48px;}
+.hex-symbol{font-size:72px;line-height:1;margin-bottom:16px;color:#2c2420;}
+.hex-title{display:flex;align-items:baseline;justify-content:center;gap:12px;margin-bottom:12px;}
+.hex-name{font-size:36px;letter-spacing:0.12em;color:#2c2420;}
+.hex-pinyin{font-size:14px;letter-spacing:0.1em;color:#a09080;
+  font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:400;}
+.hex-id{font-size:11px;color:#c8b8a4;letter-spacing:0.1em;
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:20px;}
+
+/* SVG Hexagram Lines */
+.hex-lines-svg{margin:20px auto;display:block;}
+
+/* Trigram Info */
+.hex-trigrams{display:flex;justify-content:center;gap:24px;
+  font-size:12px;letter-spacing:0.12em;color:#7a6e64;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.hex-trigrams span{display:flex;align-items:center;gap:4px;}
+.trigram-label{color:#a09080;font-size:10px;}
+
+/* ===== Content Sections ===== */
+.section{margin-bottom:36px;padding-bottom:36px;
+  border-bottom:0.5px solid rgba(26,26,26,0.08);}
+.section:last-of-type{border-bottom:none;}
+.section-label{font-size:10px;letter-spacing:0.3em;color:#c0392b;
+  margin-bottom:14px;
+  font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:600;}
+.section-text{font-size:16px;line-height:2;letter-spacing:0.06em;color:#2c2420;}
+
+/* ===== Yaoci (Yao Lines) Section ===== */
+.yaoci-list{list-style:none;}
+.yaoci-item{margin-bottom:24px;padding-bottom:24px;
+  border-bottom:0.5px solid rgba(26,26,26,0.05);}
+.yaoci-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.yaoci-name{font-size:13px;letter-spacing:0.18em;color:#c0392b;
+  margin-bottom:6px;font-weight:600;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.yaoci-text{font-size:15px;line-height:1.9;letter-spacing:0.06em;color:#2c2420;
+  margin-bottom:6px;}
+.yaoci-xiang{font-size:13px;line-height:1.8;letter-spacing:0.06em;color:#7a6e64;
+  padding-left:16px;border-left:1.5px solid rgba(192,57,43,0.25);}
+
+/* ===== Prev/Next Navigation ===== */
+.hex-nav{display:flex;justify-content:space-between;align-items:center;
+  padding:32px 0;margin-top:16px;
+  border-top:0.5px solid rgba(26,26,26,0.1);}
+.hex-nav a{font-size:12px;letter-spacing:0.1em;color:#7a6e64;
+  text-decoration:none;display:flex;align-items:center;gap:8px;
+  font-family:'Noto Sans SC',system-ui,sans-serif;
+  transition:color 0.2s;padding:8px 0;}
+.hex-nav a:hover{color:#c0392b;}
+.hex-nav .prev::before{content:'←';}
+.hex-nav .next::after{content:'→';}
+.hex-nav .nav-hex-name{font-family:'Noto Serif SC',serif;font-size:14px;}
+
+/* ===== Footer ===== */
+.site-footer{
+  text-align:center;padding:24px;
+  font-size:10px;letter-spacing:0.14em;color:#c8b8a4;
+  border-top:0.5px solid rgba(26,26,26,0.06);
+  font-family:'Noto Sans SC',system-ui,sans-serif;
+  margin-top:auto;}
+.site-footer a{color:#a09080;text-decoration:none;transition:color 0.2s;}
+.site-footer a:hover{color:#c0392b;}
+
+/* ===== Loading & Error ===== */
+.loading{text-align:center;padding:120px 24px;
+  font-size:13px;letter-spacing:0.12em;color:#a09080;}
+.error-msg{text-align:center;padding:120px 24px;}
+.error-msg h2{font-size:24px;color:#2c2420;margin-bottom:16px;}
+.error-msg p{font-size:14px;color:#7a6e64;margin-bottom:24px;}
+.error-msg a{color:#c0392b;text-decoration:none;font-size:13px;letter-spacing:0.1em;}
+
+/* ===== Responsive ===== */
+@media(max-width:768px){
+  .hex-detail{padding:32px 16px 24px;}
+  .hex-symbol{font-size:56px;}
+  .hex-name{font-size:28px;}
+  .section-text{font-size:15px;}
+  .hex-nav{flex-direction:column;gap:16px;align-items:stretch;}
+  .hex-nav a{justify-content:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Auth Gate ===== -->
+<div class="auth-gate" id="auth-gate">
+  <div class="auth-logo">
+    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="84" stroke="#5c3a30" stroke-width="5" fill="none"/>
+      <line x1="100" y1="48" x2="100" y2="152" stroke="#2c2420" stroke-width="18" stroke-linecap="round"/>
+      <line x1="48" y1="48" x2="100" y2="100" stroke="#2c2420" stroke-width="18" stroke-linecap="round"/>
+      <line x1="152" y1="48" x2="152" y2="82" stroke="#c0392b" stroke-width="18" stroke-linecap="round"/>
+      <line x1="152" y1="118" x2="152" y2="152" stroke="#c0392b" stroke-width="18" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <div class="auth-label">开发预览</div>
+  <div class="auth-form">
+    <input class="auth-input" id="auth-input" type="password" placeholder="请输入访问密码" autocomplete="off"/>
+    <button class="auth-btn" id="auth-btn">进入</button>
+    <div class="auth-error" id="auth-error">密码不正确</div>
+  </div>
+</div>
+
+<!-- ===== Top Navigation ===== -->
+<nav class="top-nav">
+  <a class="nav-back" href="/">六十四卦</a>
+  <span class="nav-brand">爻 卦 易</span>
+</nav>
+
+<!-- ===== Main Content (JS rendered) ===== -->
+<main class="hex-detail" id="hex-detail">
+  <div class="loading" id="loading">载入中...</div>
+</main>
+
+<!-- ===== Footer ===== -->
+<footer class="site-footer">
+  爻卦易 · yaoguayi.com ·
+  <a href="/">六十四卦</a> ·
+  开源 · 非盈利 ·
+  <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank">GitHub</a> ·
+  <a href="#" id="logout-link">退出预览</a>
+</footer>
+
+<script src="/js/auth.js"></script>
+<script>
+/**
+ * hexagram.html — 卦象详情页主逻辑
+ *
+ * 设计说明：
+ * 从 URL 参数获取卦象 id，fetch 加载 hexagrams.json 数据，
+ * 渲染卦象详情（卦辞、彖传、象传、爻辞），并提供前后卦导航。
+ * SVG 爻图由 JS 动态生成，逻辑与 packages/ui/HexagramSymbol.tsx 一致。
+ */
+
+// 初始化密码门
+YaoguayiAuth.init(() => {
+  document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+});
+
+// 从 URL 获取卦象 ID
+const params = new URLSearchParams(window.location.search);
+const hexId = parseInt(params.get('id'), 10);
+
+if (!hexId || hexId < 1 || hexId > 64) {
+  showError('未找到该卦象', '请从六十四卦列表中选择');
+} else {
+  loadHexagram(hexId);
+}
+
+/**
+ * 加载并渲染卦象数据
+ * @param {number} id - 卦象序号 (1-64)
+ */
+async function loadHexagram(id) {
+  try {
+    const resp = await fetch('/data/hexagrams.json');
+    if (!resp.ok) throw new Error('Failed to load data');
+    const hexagrams = await resp.json();
+    const hex = hexagrams.find(h => h.id === id);
+    if (!hex) {
+      showError('未找到第' + id + '卦', '数据可能尚未录入');
+      return;
+    }
+    renderHexagram(hex, hexagrams);
+  } catch (err) {
+    console.error(err);
+    showError('数据加载失败', '请检查网络连接后重试');
+  }
+}
+
+/**
+ * 渲染卦象详情到页面
+ * @param {Object} hex - 卦象数据对象
+ * @param {Array} all - 全部 64 卦数组（用于前后导航）
+ */
+function renderHexagram(hex, all) {
+  // 更新页面标题
+  document.title = hex.name + '卦 · 爻卦易';
+
+  const container = document.getElementById('hex-detail');
+  const sym = String.fromCodePoint(0x4DBF + hex.id);
+
+  // 前一卦和后一卦（循环）
+  const prevId = hex.id === 1 ? 64 : hex.id - 1;
+  const nextId = hex.id === 64 ? 1 : hex.id + 1;
+  const prevHex = all.find(h => h.id === prevId);
+  const nextHex = all.find(h => h.id === nextId);
+
+  // 构建爻辞列表 HTML
+  let yaociHtml = '';
+  if (hex.yaoci && hex.yaoci.length > 0) {
+    yaociHtml = hex.yaoci.map(y => `
+      <li class="yaoci-item">
+        <div class="yaoci-name">${y.name}</div>
+        <div class="yaoci-text">${y.text}</div>
+        ${y.xiang ? `<div class="yaoci-xiang">${y.xiang}</div>` : ''}
+      </li>
+    `).join('');
+  }
+
+  container.innerHTML = `
+    <!-- Header -->
+    <div class="hex-header fade-in d1">
+      <div class="hex-symbol">${sym}</div>
+      <div class="hex-title">
+        <span class="hex-name">${hex.name}</span>
+        <span class="hex-pinyin">${hex.pinyin}</span>
+      </div>
+      <div class="hex-id">第${hex.id}卦</div>
+      ${buildLinesSVG(hex.lines)}
+      <div class="hex-trigrams">
+        <span><span class="trigram-label">上卦</span>${hex.upperTrigram}</span>
+        <span><span class="trigram-label">下卦</span>${hex.lowerTrigram}</span>
+      </div>
+    </div>
+
+    <!-- 卦辞 -->
+    <div class="section fade-in d2">
+      <div class="section-label">卦 辞</div>
+      <div class="section-text">${hex.guaci}</div>
+    </div>
+
+    <!-- 彖传 -->
+    ${hex.tuan ? `
+    <div class="section fade-in d3">
+      <div class="section-label">彖 传</div>
+      <div class="section-text">${hex.tuan}</div>
+    </div>` : ''}
+
+    <!-- 大象传 -->
+    ${hex.xiang ? `
+    <div class="section fade-in d4">
+      <div class="section-label">大 象 传</div>
+      <div class="section-text">${hex.xiang}</div>
+    </div>` : ''}
+
+    <!-- 爻辞 -->
+    ${yaociHtml ? `
+    <div class="section fade-in d5">
+      <div class="section-label">爻 辞</div>
+      <ul class="yaoci-list">${yaociHtml}</ul>
+    </div>` : ''}
+
+    <!-- Prev/Next Navigation -->
+    <div class="hex-nav fade-in d6">
+      <a class="prev" href="/hexagram.html?id=${prevId}">
+        <span class="nav-hex-name">${prevHex ? prevHex.name : ''}卦</span>
+      </a>
+      <a href="/" style="font-size:11px;letter-spacing:0.2em;color:#a09080;">六十四卦</a>
+      <a class="next" href="/hexagram.html?id=${nextId}">
+        <span class="nav-hex-name">${nextHex ? nextHex.name : ''}卦</span>
+      </a>
+    </div>
+  `;
+
+  // 触发入场动画
+  if (YaoguayiAuth.isAuthenticated()) {
+    requestAnimationFrame(() => {
+      container.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+    });
+  }
+}
+
+/**
+ * 生成 SVG 六爻图
+ * 逻辑与 packages/ui/HexagramSymbol.tsx 一致：
+ *   阳爻(1) = 一条实线
+ *   阴爻(0) = 两段断线，中间留空
+ *   由下至上排列（lines[0] 在最底部）
+ *
+ * @param {number[]} lines - 六爻数组 [0|1, 0|1, ...]
+ * @returns {string} SVG HTML 字符串
+ */
+function buildLinesSVG(lines) {
+  const w = 120;           // SVG 总宽
+  const lineW = 80;        // 爻线宽度
+  const lineH = 6;         // 爻线高度
+  const gap = 10;          // 爻间距
+  const breakGap = 10;     // 阴爻断口宽度
+  const totalH = 6 * lineH + 5 * gap;
+  const x0 = (w - lineW) / 2;  // 爻线起始 x
+
+  let svgContent = '';
+  for (let i = 0; i < 6; i++) {
+    // 从下到上：lines[0] 在底部，lines[5] 在顶部
+    const lineIdx = 5 - i;
+    const y = i * (lineH + gap);
+    const val = lines[lineIdx];
+
+    if (val === 1) {
+      // 阳爻：一条完整的实线
+      svgContent += `<rect x="${x0}" y="${y}" width="${lineW}" height="${lineH}" rx="1" fill="#2c2420"/>`;
+    } else {
+      // 阴爻：两段断线
+      const segW = (lineW - breakGap) / 2;
+      svgContent += `<rect x="${x0}" y="${y}" width="${segW}" height="${lineH}" rx="1" fill="#2c2420"/>`;
+      svgContent += `<rect x="${x0 + segW + breakGap}" y="${y}" width="${segW}" height="${lineH}" rx="1" fill="#2c2420"/>`;
+    }
+  }
+
+  return `<svg class="hex-lines-svg" viewBox="0 0 ${w} ${totalH}" width="${w}" height="${totalH}" xmlns="http://www.w3.org/2000/svg">${svgContent}</svg>`;
+}
+
+/**
+ * 显示错误页面
+ * @param {string} title - 错误标题
+ * @param {string} desc - 错误描述
+ */
+function showError(title, desc) {
+  const container = document.getElementById('hex-detail');
+  container.innerHTML = `
+    <div class="error-msg">
+      <h2>${title}</h2>
+      <p>${desc}</p>
+      <a href="/">← 返回六十四卦</a>
+    </div>`;
+}
+</script>
+</body>
+</html>
