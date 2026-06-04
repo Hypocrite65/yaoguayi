@@ -180,7 +180,7 @@ body.panel-open .hex-detail{margin-right:320px;}
 .section:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0;}
 .section-label{font-size:12px;letter-spacing:0.3em;color:var(--vermilion);margin-bottom:16px;
   font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:600;}
-.section-text{font-size:18px;line-height:2;letter-spacing:0.06em;color:var(--ink);}
+.section-text{font-size:18px;line-height:2.4;letter-spacing:0.18em;color:var(--ink);}
 .section-trans{font-size:15px;line-height:1.9;letter-spacing:0.04em;color:var(--muted);
   margin-top:12px;padding-left:16px;border-left:2px solid var(--vermilion-faint);}
 
@@ -192,10 +192,10 @@ body.panel-open .hex-detail{margin-right:320px;}
 .yaoci-item[id]{scroll-margin-top:68px;}
 .yaoci-name{font-size:14px;letter-spacing:0.18em;color:var(--vermilion);margin-bottom:8px;
   font-weight:600;font-family:'Noto Sans SC',system-ui,sans-serif;}
-.yaoci-text{font-size:17px;line-height:1.9;letter-spacing:0.06em;color:var(--ink);margin-bottom:8px;}
+.yaoci-text{font-size:17px;line-height:2.4;letter-spacing:0.18em;color:var(--ink);margin-bottom:8px;}
 .yaoci-trans{font-size:14px;line-height:1.8;letter-spacing:0.04em;color:var(--muted);
   margin-bottom:8px;padding-left:16px;border-left:2px solid var(--vermilion-faint);}
-.yaoci-xiang{font-size:14px;line-height:1.8;letter-spacing:0.06em;color:var(--muted);
+.yaoci-xiang{font-size:14px;line-height:2.2;letter-spacing:0.14em;color:var(--muted);
   padding-left:16px;border-left:1.5px solid var(--border-strong);}
 .yaoci-xiang-label{font-size:11px;color:var(--faint);letter-spacing:0.12em;
   font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:2px;}
@@ -525,6 +525,7 @@ function annotateText(text, addTermLinks) {
   const marks = []; // {start, end, html}
 
   // 第一步：匹配术语（多字词优先）
+  // 术语内部的每个字也添加 ruby 注音，避免术语覆盖拼音
   if (addTermLinks && annotations.glossary) {
     const terms = Object.keys(annotations.glossary).sort((a, b) => b.length - a.length);
     for (const term of terms) {
@@ -536,9 +537,19 @@ function annotateText(text, addTermLinks) {
         if (!overlap) {
           const g = annotations.glossary[term];
           const dataAttr = encodeURIComponent(JSON.stringify(g));
+          // 为术语内每个字添加 ruby 注音
+          let rubyContent = '';
+          for (const ch of term) {
+            const py = annotations.pinyin && annotations.pinyin[ch];
+            if (py) {
+              rubyContent += `<ruby>${ch}<rp>(</rp><rt>${py}</rt><rp>)</rp></ruby>`;
+            } else {
+              rubyContent += ch;
+            }
+          }
           marks.push({
             start: idx, end: end,
-            html: `<span class="term-link" data-gloss="${dataAttr}" onclick="showGloss(this)">${term}</span>`
+            html: `<span class="term-link" data-gloss="${dataAttr}" onclick="showGloss(this)">${rubyContent}</span>`
           });
         }
         idx = end;
