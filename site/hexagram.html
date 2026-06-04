@@ -61,8 +61,9 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 .hex-detail{max-width:1000px;margin:0 auto;padding:32px 28px;flex:1;
   display:flex;gap:40px;align-items:flex-start;}
 
-/* 左侧 sticky 卦象面板 */
-.hex-sidebar{width:200px;flex-shrink:0;position:sticky;top:68px;
+/* 左侧 sticky 卦象面板 — 视口垂直居中 */
+.hex-sidebar{width:200px;flex-shrink:0;position:sticky;
+  top:50vh;transform:translateY(-50%);
   text-align:center;padding:20px 0;}
 .sidebar-symbol{font-size:64px;line-height:1;margin-bottom:8px;color:#2c2420;}
 .sidebar-title{display:flex;align-items:baseline;justify-content:center;gap:8px;margin-bottom:4px;}
@@ -352,46 +353,86 @@ const SidePanel = {
 
 /**
  * 为文本添加注音和术语标注
- * 设计说明：扫描文本匹配注音词典，插入 ruby 标签和可点击术语链接
+ * 设计说明：
+ *   1. 先将文本拆分为字符数组
+ *   2. 优先匹配多字术语（glossary），添加可点击下划线
+ *   3. 再对剩余字符匹配单字注音（pinyin），添加 ruby 标签
+ *   避免在已标注的 HTML 标签内重复标注
+ *
  * @param {string} text - 原始经文文本
  * @param {boolean} addTermLinks - 是否添加术语下划线链接
  * @returns {string} 带注音和标注的 HTML
  */
 function annotateText(text, addTermLinks) {
   if (!annotations || !text) return text || '';
-  let result = text;
 
-  // 先处理术语（多字词优先）
+  // 收集所有需要标注的区间，避免重叠
+  const marks = []; // {start, end, html}
+
+  // 第一步：匹配术语（多字词优先）
   if (addTermLinks && annotations.glossary) {
     const terms = Object.keys(annotations.glossary).sort((a, b) => b.length - a.length);
     for (const term of terms) {
-      const g = annotations.glossary[term];
-      const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      result = result.replace(new RegExp(escaped, 'g'), (match) => {
-        return `<span class="term-link" onclick="SidePanel.open('${term}',${JSON.stringify(g).replace(/"/g, '&quot;')})">${match}</span>`;
-      });
+      let idx = 0;
+      while ((idx = text.indexOf(term, idx)) !== -1) {
+        // 检查是否与已有标记重叠
+        const end = idx + term.length;
+        const overlap = marks.some(m => !(end <= m.start || idx >= m.end));
+        if (!overlap) {
+          const g = annotations.glossary[term];
+          const dataAttr = encodeURIComponent(JSON.stringify(g));
+          marks.push({
+            start: idx, end: end,
+            html: `<span class="term-link" data-gloss="${dataAttr}" onclick="showGloss(this)">${term}</span>`
+          });
+        }
+        idx = end;
+      }
     }
   }
 
-  // 再处理单字注音（仅标注正文中未被术语包裹的生僻字）
+  // 第二步：匹配单字注音
   if (annotations.pinyin) {
-    const chars = Object.keys(annotations.pinyin)
-      .filter(c => c.length === 1)
-      .sort((a, b) => b.length - a.length);
-    for (const ch of chars) {
-      // 避免在已有标签内重复标注
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
       const py = annotations.pinyin[ch];
-      // 使用负向前瞻避免已在 ruby/span 内的字符
-      result = result.replace(new RegExp(`(?<![">])${ch}(?![^<]*>)`, 'g'), (match, offset) => {
-        // 简单检查：如果前面是 > 或字母，可能在标签内，跳过
-        const before = result.substring(Math.max(0, offset - 5), offset);
-        if (before.includes('>') || before.includes('rt>') || before.includes('rp>')) return match;
-        return `<ruby>${ch}<rp>(</rp><rt>${py}</rt><rp>)</rp></ruby>`;
-      });
+      if (!py) continue;
+      // 检查是否与已有标记重叠
+      const overlap = marks.some(m => !(i + 1 <= m.start || i >= m.end));
+      if (!overlap) {
+        marks.push({
+          start: i, end: i + 1,
+          html: `<ruby>${ch}<rp>(</rp><rt>${py}</rt><rp>)</rp></ruby>`
+        });
+      }
     }
   }
+
+  // 按位置排序，拼接结果
+  marks.sort((a, b) => a.start - b.start);
+  let result = '';
+  let cursor = 0;
+  for (const m of marks) {
+    if (m.start > cursor) result += text.substring(cursor, m.start);
+    result += m.html;
+    cursor = m.end;
+  }
+  if (cursor < text.length) result += text.substring(cursor);
 
   return result;
+}
+
+/**
+ * 显示术语释义（由 term-link 点击触发）
+ * @param {HTMLElement} el - 被点击的术语元素
+ */
+function showGloss(el) {
+  try {
+    const data = JSON.parse(decodeURIComponent(el.dataset.gloss));
+    SidePanel.open(data.term || el.textContent, data);
+  } catch (e) {
+    console.error('Failed to parse glossary data', e);
+  }
 }
 
 /**
