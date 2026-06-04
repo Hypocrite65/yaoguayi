@@ -144,6 +144,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 .random-card{
   display:flex;align-items:center;gap:20px;
   padding:14px 24px;margin-bottom:48px;
+  width:min(400px, 85vw);
   border:0.5px solid var(--border);border-radius:4px;
   cursor:pointer;text-decoration:none;color:inherit;
   background:var(--card-bg);
@@ -475,6 +476,39 @@ fetch('/data/hexagrams.json')
     renderFallbackGrid();
     initScrollAnimations();
   });
+
+/**
+ * 生成小型 SVG 卦象图标（替代 Unicode 字符，跨平台一致）
+ * 设计说明：
+ *   阳爻(1)=实线，阴爻(0)=断线，由下至上排列。
+ *   用 currentColor 跟随主题颜色。
+ * @param {number[]} lines - 六爻数组
+ * @param {number} size - 图标尺寸(px)
+ * @returns {string} SVG HTML
+ */
+function miniHexSVG(lines, size) {
+  if (!lines || lines.length < 6) return '';
+  const s = size || 28;
+  const lw = s * 0.8;       // 爻线宽度
+  const lh = s * 0.07;      // 爻线高度
+  const gap = s * 0.1;      // 爻间距
+  const bg = s * 0.16;      // 阴爻断口
+  const th = 6 * lh + 5 * gap;
+  const x0 = (s - lw) / 2;
+  let svg = '';
+  for (let i = 0; i < 6; i++) {
+    const li = 5 - i;
+    const y = i * (lh + gap);
+    if (lines[li] === 1) {
+      svg += `<rect x="${x0}" y="${y}" width="${lw}" height="${lh}" rx="0.5" fill="currentColor"/>`;
+    } else {
+      const sw = (lw - bg) / 2;
+      svg += `<rect x="${x0}" y="${y}" width="${sw}" height="${lh}" rx="0.5" fill="currentColor"/>`;
+      svg += `<rect x="${x0 + sw + bg}" y="${y}" width="${sw}" height="${lh}" rx="0.5" fill="currentColor"/>`;
+    }
+  }
+  return `<svg viewBox="0 0 ${s} ${th}" width="${s}" height="${th}" style="display:block" xmlns="http://www.w3.org/2000/svg">${svg}</svg>`;
+}
 
 /**
  * 渲染随机卦卡片
