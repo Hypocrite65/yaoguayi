@@ -48,14 +48,46 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 /* ===== Top Navigation ===== */
 .top-nav{position:sticky;top:0;z-index:100;
   background:rgba(245,240,232,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  border-bottom:0.5px solid rgba(26,26,26,0.08);padding:14px 24px;
+  border-bottom:0.5px solid rgba(26,26,26,0.08);padding:10px 24px;
   display:flex;align-items:center;justify-content:space-between;
   font-family:'Noto Sans SC',system-ui,sans-serif;}
+.nav-left{display:flex;align-items:center;gap:16px;}
 .nav-back{font-size:13px;letter-spacing:0.1em;color:#7a6e64;text-decoration:none;
   display:flex;align-items:center;gap:6px;transition:color 0.2s;}
 .nav-back:hover{color:#c0392b;}
 .nav-back::before{content:'←';font-size:15px;}
-.nav-brand{font-size:11px;letter-spacing:0.3em;color:#a09080;font-weight:500;}
+.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;}
+.nav-logo svg{width:28px;height:28px;}
+.nav-logo-text{font-size:10px;letter-spacing:0.25em;color:#a09080;font-weight:500;}
+/* 右侧工具栏 */
+.nav-tools{display:flex;align-items:center;gap:4px;}
+.nav-btn{width:32px;height:32px;border:none;background:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;border-radius:6px;
+  color:#7a6e64;transition:background 0.2s,color 0.2s;}
+.nav-btn:hover{background:rgba(26,26,26,0.06);color:#2c2420;}
+.nav-btn svg{width:18px;height:18px;}
+/* 主题切换动画 */
+.nav-btn .icon-sun,.nav-btn .icon-moon{transition:opacity 0.3s,transform 0.3s;}
+/* 账户下拉菜单 */
+.nav-account{position:relative;}
+.account-dropdown{position:absolute;top:calc(100% + 8px);right:0;width:200px;
+  background:#f5f0e8;border:0.5px solid rgba(26,26,26,0.1);
+  border-radius:6px;box-shadow:0 4px 20px rgba(26,26,26,0.08);
+  opacity:0;transform:translateY(-4px);pointer-events:none;
+  transition:opacity 0.25s,transform 0.25s;z-index:110;}
+.account-dropdown.show{opacity:1;transform:translateY(0);pointer-events:auto;}
+.dropdown-header{padding:12px 16px;border-bottom:0.5px solid rgba(26,26,26,0.06);
+  font-size:11px;letter-spacing:0.1em;color:#a09080;}
+.dropdown-item{display:flex;align-items:center;gap:10px;
+  padding:10px 16px;font-size:12px;letter-spacing:0.06em;color:#5a4e44;
+  cursor:pointer;transition:background 0.15s,color 0.15s;text-decoration:none;}
+.dropdown-item:hover{background:rgba(26,26,26,0.04);color:#c0392b;}
+.dropdown-item svg{width:16px;height:16px;color:#a09080;flex-shrink:0;}
+.dropdown-item:hover svg{color:#c0392b;}
+.dropdown-item.disabled{color:#c8b8a4;cursor:default;}
+.dropdown-item.disabled:hover{background:none;color:#c8b8a4;}
+.dropdown-item.disabled svg{color:#d4c8b8;}
+.dropdown-divider{height:0.5px;background:rgba(26,26,26,0.06);margin:4px 0;}
 
 /* ===== Two-Column Layout ===== */
 .hex-detail{max-width:1000px;margin:0 auto;padding:32px 28px;flex:1;
@@ -241,8 +273,66 @@ ruby rt{font-size:10px;color:#a09080;font-family:'Noto Sans SC',system-ui,sans-s
 
 <!-- ===== Top Navigation ===== -->
 <nav class="top-nav">
-  <a class="nav-back" href="/">六十四卦</a>
-  <span class="nav-brand">爻 卦 易</span>
+  <div class="nav-left">
+    <a class="nav-back" href="/">六十四卦</a>
+  </div>
+  <a class="nav-logo" href="/">
+    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="84" stroke="#5c3a30" stroke-width="5" fill="none"/>
+      <line x1="100" y1="48" x2="100" y2="152" stroke="#2c2420" stroke-width="18" stroke-linecap="round"/>
+      <line x1="48" y1="48" x2="100" y2="100" stroke="#2c2420" stroke-width="18" stroke-linecap="round"/>
+      <line x1="152" y1="48" x2="152" y2="82" stroke="#c0392b" stroke-width="18" stroke-linecap="round"/>
+      <line x1="152" y1="118" x2="152" y2="152" stroke="#c0392b" stroke-width="18" stroke-linecap="round"/>
+    </svg>
+  </a>
+  <div class="nav-tools">
+    <!-- 主题切换 -->
+    <button class="nav-btn" id="theme-toggle" title="Toggle theme" onclick="toggleTheme()">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+    <!-- 账户 -->
+    <div class="nav-account">
+      <button class="nav-btn" id="account-btn" title="Account" onclick="toggleAccountMenu()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </button>
+      <div class="account-dropdown" id="account-dropdown">
+        <div class="dropdown-header">Account</div>
+        <a class="dropdown-item" onclick="closeAccountMenu()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+          Browsing History
+        </a>
+        <a class="dropdown-item" onclick="closeAccountMenu()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          AI API Key
+        </a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item disabled">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+          </svg>
+          Notes (coming soon)
+        </a>
+        <a class="dropdown-item disabled">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6m-7.07-3.93 4.24-4.24m5.66-5.66 4.24-4.24M1 12h6m6 0h6m-3.93 7.07-4.24-4.24M8.17 8.17 3.93 3.93"/>
+          </svg>
+          Settings (coming soon)
+        </a>
+      </div>
+    </div>
+  </div>
 </nav>
 
 <!-- ===== Main Content ===== -->
@@ -288,6 +378,45 @@ ruby rt{font-size:10px;color:#a09080;font-family:'Noto Sans SC',system-ui,sans-s
 /* ===== 全局状态 ===== */
 let annotations = null;  // 注音和术语数据
 let footnoteCounter = 0; // 全局角标计数器
+
+/**
+ * 主题切换（日间/夜间模式）
+ * 设计说明：暂时只切换图标状态，后续实现完整的暗色主题 CSS 变量
+ */
+function toggleTheme() {
+  const btn = document.getElementById('theme-toggle');
+  const isDark = document.body.classList.toggle('dark-theme');
+  localStorage.setItem('yaoguayi_theme', isDark ? 'dark' : 'light');
+  // 切换图标：太阳 ↔ 月亮
+  btn.innerHTML = isDark
+    ? '<svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+    : '<svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+}
+// 页面加载时恢复主题状态
+if (localStorage.getItem('yaoguayi_theme') === 'dark') {
+  document.body.classList.add('dark-theme');
+  const btn = document.getElementById('theme-toggle');
+  if (btn) btn.innerHTML = '<svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+}
+
+/**
+ * 账户下拉菜单切换
+ * 设计说明：点击账户图标展开/收起下拉菜单，点击外部自动关闭
+ */
+function toggleAccountMenu() {
+  const dropdown = document.getElementById('account-dropdown');
+  dropdown.classList.toggle('show');
+}
+function closeAccountMenu() {
+  document.getElementById('account-dropdown').classList.remove('show');
+}
+// 点击外部关闭下拉菜单
+document.addEventListener('click', (e) => {
+  const accountArea = document.querySelector('.nav-account');
+  if (accountArea && !accountArea.contains(e.target)) {
+    closeAccountMenu();
+  }
+});
 
 /* ===== 初始化密码门 ===== */
 YaoguayiAuth.init(() => {
