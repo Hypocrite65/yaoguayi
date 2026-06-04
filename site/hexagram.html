@@ -105,7 +105,10 @@ body.panel-open .hex-detail{margin-right:320px;}
 .yaoci-item{margin-bottom:28px;padding-bottom:28px;
   border-bottom:0.5px solid rgba(26,26,26,0.05);}
 .yaoci-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
-.yaoci-item[id]{scroll-margin-top:72px;}
+/* 点击爻名跳转时，内容对齐到左侧卦图顶部（nav高度52px + padding16px） */
+.yaoci-item[id]{scroll-margin-top:68px;}
+/* 最后一个爻（如上六/上九）下方留白，确保能滚到顶部对齐 */
+.yaoci-item:last-child{padding-bottom:60vh;}
 .yaoci-name{font-size:14px;letter-spacing:0.18em;color:#c0392b;margin-bottom:8px;
   font-weight:600;font-family:'Noto Sans SC',system-ui,sans-serif;}
 .yaoci-text{font-size:17px;line-height:1.9;letter-spacing:0.06em;color:#2c2420;margin-bottom:8px;}
