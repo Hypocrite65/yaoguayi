@@ -67,18 +67,18 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 body.panel-open .hex-detail{margin-right:320px;}
 
 /* 左侧 sticky 卦象面板 — 固定左上角 */
-.hex-sidebar{width:200px;flex-shrink:0;position:sticky;top:68px;
+.hex-sidebar{width:220px;flex-shrink:0;position:sticky;top:68px;
   text-align:center;padding:20px 0;}
-.sidebar-symbol{font-size:64px;line-height:1;margin-bottom:8px;color:#2c2420;}
 .sidebar-title{display:flex;align-items:baseline;justify-content:center;gap:8px;margin-bottom:4px;}
 .sidebar-name{font-size:28px;letter-spacing:0.1em;color:#2c2420;}
 .sidebar-pinyin{font-size:14px;color:#a09080;font-family:'Noto Sans SC',system-ui,sans-serif;}
 .sidebar-id{font-size:12px;color:#c8b8a4;letter-spacing:0.1em;
-  font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:20px;}
-/* 爻图及爻名 */
-.sidebar-lines{margin:0 auto 16px;display:flex;justify-content:center;}
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:16px;}
+/* 大爻图（含爻名标注） */
+.sidebar-lines{margin:0 auto 12px;display:flex;justify-content:center;}
+/* 上下卦信息 */
 .sidebar-trigrams{display:flex;justify-content:center;gap:20px;
-  font-size:12px;letter-spacing:0.1em;color:#7a6e64;margin-top:16px;
+  font-size:12px;letter-spacing:0.1em;color:#7a6e64;
   font-family:'Noto Sans SC',system-ui,sans-serif;}
 .sidebar-trigrams span{display:flex;align-items:center;gap:4px;}
 .trigram-label{color:#a09080;font-size:10px;}
@@ -483,7 +483,6 @@ function renderHexagram(hex, all) {
   container.innerHTML = `
     <!-- 左侧 sticky 卦象面板 -->
     <aside class="hex-sidebar fade-in d1">
-      <div class="sidebar-symbol">${sym}</div>
       <div class="sidebar-title">
         <span class="sidebar-name">${hex.name}</span>
         <span class="sidebar-pinyin">${hex.pinyin}</span>
@@ -561,41 +560,45 @@ function renderHexagram(hex, all) {
  * @returns {string} SVG HTML
  */
 function buildLinesSVG(lines, yaoci) {
-  const lineW = 70;
-  const lineH = 6;
-  const gap = 10;
-  const breakGap = 10;
-  const textOffset = 10;  // 爻线右侧到文字的距离
+  /**
+   * 生成大号 SVG 六爻图（含爻名标注）
+   * 设计说明：
+   *   左侧绘制爻线，右侧标注爻名（初九、六二等）
+   *   尺寸放大以作为左侧面板的核心视觉元素
+   */
+  const lineW = 100;        // 爻线宽度
+  const lineH = 8;          // 爻线高度
+  const gap = 14;           // 爻间距
+  const breakGap = 14;      // 阴爻断口宽度
+  const textOffset = 12;    // 爻线右侧到文字的距离
   const totalH = 6 * lineH + 5 * gap;
   const x0 = 0;
-  const svgW = lineW + textOffset + 32; // 为文字留空间
+  const svgW = lineW + textOffset + 36;
 
   let svgContent = '';
   for (let i = 0; i < 6; i++) {
-    const lineIdx = 5 - i; // 从下到上
+    const lineIdx = 5 - i;
     const y = i * (lineH + gap);
     const val = lines[lineIdx];
     const yCenter = y + lineH / 2;
 
-    // 绘制爻线
     if (val === 1) {
-      svgContent += `<rect x="${x0}" y="${y}" width="${lineW}" height="${lineH}" rx="1" fill="#2c2420"/>`;
+      svgContent += `<rect x="${x0}" y="${y}" width="${lineW}" height="${lineH}" rx="1.5" fill="#2c2420"/>`;
     } else {
       const segW = (lineW - breakGap) / 2;
-      svgContent += `<rect x="${x0}" y="${y}" width="${segW}" height="${lineH}" rx="1" fill="#2c2420"/>`;
-      svgContent += `<rect x="${x0 + segW + breakGap}" y="${y}" width="${segW}" height="${lineH}" rx="1" fill="#2c2420"/>`;
+      svgContent += `<rect x="${x0}" y="${y}" width="${segW}" height="${lineH}" rx="1.5" fill="#2c2420"/>`;
+      svgContent += `<rect x="${x0 + segW + breakGap}" y="${y}" width="${segW}" height="${lineH}" rx="1.5" fill="#2c2420"/>`;
     }
 
-    // 标注爻名（position 1-6 对应 lines[0]-lines[5]）
-    const pos = lineIdx + 1; // position 从1开始
+    const pos = lineIdx + 1;
     const yao = yaoci ? yaoci.find(y => y.position === pos) : null;
     const label = yao ? yao.name : '';
     if (label) {
-      svgContent += `<text x="${lineW + textOffset}" y="${yCenter + 4}" font-size="10" fill="#a09080" font-family="'Noto Sans SC',sans-serif">${label}</text>`;
+      svgContent += `<text x="${lineW + textOffset}" y="${yCenter + 4}" font-size="12" fill="#a09080" font-family="'Noto Sans SC',system-ui,sans-serif">${label}</text>`;
     }
   }
 
-  return `<svg viewBox="0 0 ${svgW} ${totalH}" width="${svgW * 1.2}" height="${totalH * 1.2}" xmlns="http://www.w3.org/2000/svg">${svgContent}</svg>`;
+  return `<svg viewBox="0 0 ${svgW} ${totalH}" width="${svgW}" height="${totalH}" xmlns="http://www.w3.org/2000/svg">${svgContent}</svg>`;
 }
 
 /**
