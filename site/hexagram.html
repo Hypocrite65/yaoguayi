@@ -444,8 +444,8 @@ if (!hexId || hexId < 1 || hexId > 64) {
   showError('未找到该卦象', '请从六十四卦列表中选择');
 } else {
   Promise.all([
-    fetch('/data/hexagrams.json').then(r => r.json()),
-    fetch('/data/annotations.json').then(r => r.json()).catch(() => null)
+    fetch('/data/hexagrams.json?v=2').then(r => r.json()),
+    fetch('/data/annotations.json?v=2').then(r => r.json()).catch(() => null)
   ]).then(([hexagrams, annot]) => {
     annotations = annot;
     const hex = hexagrams.find(h => h.id === hexId);
