@@ -321,175 +321,157 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   <a href="#" id="logout-link">退出预览</a>
 </footer>
 
+<script src="/js/auth.js"></script>
 <script>
-/* ===== Hexagram data ===== */
-const hexagrams = [
-  {name:'乾',guaci:'元亨利贞'},{name:'坤',guaci:'元亨，利牝马之贞'},
-  {name:'屯',guaci:'元亨利贞，勿用有攸往'},{name:'蒙',guaci:'亨，匪我求童蒙'},
-  {name:'需',guaci:'有孚，光亨，贞吉'},{name:'讼',guaci:'有孚窒惕，中吉'},
-  {name:'师',guaci:'贞，丈人吉，无咎'},{name:'比',guaci:'吉，原筮元永贞，无咎'},
-  {name:'小畜',guaci:'亨，密云不雨'},{name:'履',guaci:'履虎尾，不咥人，亨'},
-  {name:'泰',guaci:'小往大来，吉亨'},{name:'否',guaci:'否之匪人，不利君子贞'},
-  {name:'同人',guaci:'同人于野，亨'},{name:'大有',guaci:'元亨'},
-  {name:'谦',guaci:'亨，君子有终'},{name:'豫',guaci:'利建侯行师'},
-  {name:'随',guaci:'元亨利贞，无咎'},{name:'蛊',guaci:'元亨，利涉大川'},
-  {name:'临',guaci:'元亨利贞'},{name:'观',guaci:'盥而不荐，有孚颙若'},
-  {name:'噬嗑',guaci:'亨，利用狱'},{name:'贲',guaci:'亨，小利有攸往'},
-  {name:'剥',guaci:'不利有攸往'},{name:'复',guaci:'亨，出入无疾'},
-  {name:'无妄',guaci:'元亨利贞'},{name:'大畜',guaci:'利贞，不家食吉'},
-  {name:'颐',guaci:'贞吉，观颐'},{name:'大过',guaci:'栋桡，利有攸往，亨'},
-  {name:'坎',guaci:'有孚维心亨'},{name:'离',guaci:'利贞，亨'},
-  {name:'咸',guaci:'亨利贞，取女吉'},{name:'恒',guaci:'亨无咎利贞'},
-  {name:'遁',guaci:'亨，小利贞'},{name:'大壮',guaci:'利贞'},
-  {name:'晋',guaci:'康侯用锡马蕃庶'},{name:'明夷',guaci:'利艰贞'},
-  {name:'家人',guaci:'利女贞'},{name:'睽',guaci:'小事吉'},
-  {name:'蹇',guaci:'利西南，不利东北'},{name:'解',guaci:'利西南'},
-  {name:'损',guaci:'有孚，元吉无咎'},{name:'益',guaci:'利有攸往，利涉大川'},
-  {name:'夬',guaci:'扬于王庭'},{name:'姤',guaci:'女壮，勿用取女'},
-  {name:'萃',guaci:'亨，王假有庙'},{name:'升',guaci:'元亨，用见大人'},
-  {name:'困',guaci:'亨贞，大人吉'},{name:'井',guaci:'改邑不改井'},
-  {name:'革',guaci:'巳日乃孚，元亨利贞'},{name:'鼎',guaci:'元吉，亨'},
-  {name:'震',guaci:'亨，震来虩虩'},{name:'艮',guaci:'艮其背，不获其身'},
-  {name:'渐',guaci:'女归吉，利贞'},{name:'归妹',guaci:'征凶，无攸利'},
-  {name:'丰',guaci:'亨，王假之'},{name:'旅',guaci:'小亨，旅贞吉'},
-  {name:'巽',guaci:'小亨，利有攸往'},{name:'兑',guaci:'亨，利贞'},
-  {name:'涣',guaci:'亨，王假有庙'},{name:'节',guaci:'亨，苦节不可贞'},
-  {name:'中孚',guaci:'豚鱼吉，利涉大川'},{name:'小过',guaci:'亨利贞，可小事'},
-  {name:'既济',guaci:'亨小，利贞'},{name:'未济',guaci:'亨，小狐汔济'}
-];
+/**
+ * index.html — 首页主逻辑
+ *
+ * 设计说明：
+ * 从 hexagrams.json 加载完整卦象数据，渲染随机卦卡片和 64 卦网格。
+ * 点击卦象跳转到详情页 hexagram.html?id=N。
+ * 密码门由共享模块 auth.js 处理。
+ */
 
+/* 初始化密码门 */
+YaoguayiAuth.init(() => {
+  document.querySelectorAll('.cover .fade-in').forEach(el => el.classList.add('visible'));
+});
+
+/* 计算今日卦 */
 const d = new Date();
 const todayId = ((d.getFullYear() * 366 + d.getMonth() * 31 + d.getDate()) % 64) + 1;
 
-/* ===== Random hexagram card ===== */
-const randomId = Math.floor(Math.random() * 64) + 1;
-const rHex = hexagrams[randomId - 1];
-const rSym = String.fromCodePoint(0x4DBF + randomId);
-const rCard = document.getElementById('random-card');
-rCard.innerHTML = `<span class="random-sym">${rSym}</span>
-  <div class="random-info">
-    <span class="random-label">随机一卦</span>
-    <span class="random-name">第${randomId}卦 · ${rHex.name}</span>
-    <span class="random-guaci">${rHex.guaci}</span>
-  </div>
-  <span class="random-arrow">→</span>`;
-rCard.onclick = (e) => { e.preventDefault(); alert('第' + randomId + '卦 · ' + rHex.name + '\n\n' + rHex.guaci + '\n\n（详情页开发中）'); };
+/* 加载卦象数据并渲染页面 */
+fetch('/data/hexagrams.json')
+  .then(r => r.json())
+  .then(hexagrams => {
+    renderRandomCard(hexagrams);
+    renderGrid(hexagrams);
+    initScrollAnimations();
+  })
+  .catch(err => {
+    console.error('Failed to load hexagram data:', err);
+    /* 降级：使用 Unicode 符号和卦名渲染基础网格 */
+    renderFallbackGrid();
+    initScrollAnimations();
+  });
 
-/* ===== Hexagram grid with staggered entrance ===== */
-const grid = document.getElementById('hex-grid');
-hexagrams.forEach((hex, i) => {
-  const id = i + 1;
-  const sym = String.fromCodePoint(0x4DBF + id);
-  const cell = document.createElement('div');
-  cell.className = 'hex-cell' + (id === todayId ? ' today' : '');
-  cell.innerHTML = `<span class="hex-sym">${sym}</span>
-    <span class="hex-name">${hex.name}</span>
-    <span class="hex-num">${id}</span>`;
-  cell.onclick = () => alert('第' + id + '卦 · ' + hex.name + '\n' + hex.guaci);
-  grid.appendChild(cell);
-});
+/**
+ * 渲染随机卦卡片
+ * @param {Array} hexagrams - 64 卦数据数组
+ */
+function renderRandomCard(hexagrams) {
+  const randomId = Math.floor(Math.random() * 64) + 1;
+  const rHex = hexagrams[randomId - 1];
+  const rSym = String.fromCodePoint(0x4DBF + randomId);
+  const rCard = document.getElementById('random-card');
+  if (!rCard) return;
+  rCard.innerHTML = `<span class="random-sym">${rSym}</span>
+    <div class="random-info">
+      <span class="random-label">随机一卦</span>
+      <span class="random-name">第${randomId}卦 · ${rHex.name}</span>
+      <span class="random-guaci">${rHex.guaci}</span>
+    </div>
+    <span class="random-arrow">→</span>`;
+  rCard.onclick = (e) => {
+    e.preventDefault();
+    location.href = '/hexagram.html?id=' + randomId;
+  };
+}
 
-/* ===== Scroll-triggered animations ===== */
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      /* For hex-cell: staggered delay based on index */
-      if (entry.target.classList.contains('hex-cell')) {
-        const idx = Array.from(grid.children).indexOf(entry.target);
-        const row = Math.floor(idx / 8);
-        const col = idx % 8;
-        entry.target.style.transitionDelay = (row * 0.04 + col * 0.02) + 's';
-        entry.target.classList.add('show');
-      } else {
-        entry.target.classList.add('visible');
+/**
+ * 渲染 64 卦网格
+ * @param {Array} hexagrams - 64 卦数据数组
+ */
+function renderGrid(hexagrams) {
+  const grid = document.getElementById('hex-grid');
+  if (!grid) return;
+  hexagrams.forEach((hex) => {
+    const id = hex.id;
+    const sym = String.fromCodePoint(0x4DBF + id);
+    const cell = document.createElement('div');
+    cell.className = 'hex-cell' + (id === todayId ? ' today' : '');
+    cell.innerHTML = `<span class="hex-sym">${sym}</span>
+      <span class="hex-name">${hex.name}</span>
+      <span class="hex-num">${id}</span>`;
+    cell.onclick = () => { location.href = '/hexagram.html?id=' + id; };
+    grid.appendChild(cell);
+  });
+}
+
+/**
+ * 降级网格：数据加载失败时使用卦名常量渲染
+ */
+function renderFallbackGrid() {
+  const names = ['乾','坤','屯','蒙','需','讼','师','比','小畜','履','泰','否',
+    '同人','大有','谦','豫','随','蛊','临','观','噬嗑','贲','剥','复',
+    '无妄','大畜','颐','大过','坎','离','咸','恒','遁','大壮','晋','明夷',
+    '家人','睽','蹇','解','损','益','夬','姤','萃','升','困','井',
+    '革','鼎','震','艮','渐','归妹','丰','旅','巽','兑','涣','节',
+    '中孚','小过','既济','未济'];
+  const grid = document.getElementById('hex-grid');
+  if (!grid) return;
+  names.forEach((name, i) => {
+    const id = i + 1;
+    const sym = String.fromCodePoint(0x4DBF + id);
+    const cell = document.createElement('div');
+    cell.className = 'hex-cell' + (id === todayId ? ' today' : '');
+    cell.innerHTML = `<span class="hex-sym">${sym}</span>
+      <span class="hex-name">${name}</span>
+      <span class="hex-num">${id}</span>`;
+    cell.onclick = () => { location.href = '/hexagram.html?id=' + id; };
+    grid.appendChild(cell);
+  });
+}
+
+/**
+ * 初始化滚动触发动画和封面视差效果
+ */
+function initScrollAnimations() {
+  const grid = document.getElementById('hex-grid');
+
+  /* IntersectionObserver: 滚动触发淡入 */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        if (entry.target.classList.contains('hex-cell') && grid) {
+          const idx = Array.from(grid.children).indexOf(entry.target);
+          const row = Math.floor(idx / 8);
+          const col = idx % 8;
+          entry.target.style.transitionDelay = (row * 0.04 + col * 0.02) + 's';
+          entry.target.classList.add('show');
+        } else {
+          entry.target.classList.add('visible');
+        }
+        observer.unobserve(entry.target);
       }
-      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  document.querySelectorAll('.hex-cell').forEach(el => observer.observe(el));
+
+  /* 封面视差：滚动时淡出上移 */
+  const coverInner = document.querySelector('.cover-inner');
+  const scrollHint = document.getElementById('scroll-hint');
+
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    const vh = window.innerHeight;
+    const progress = Math.min(scrollY / (vh * 0.5), 1);
+    if (coverInner) {
+      coverInner.style.opacity = 1 - progress;
+      coverInner.style.transform = 'translateY(' + (-scrollY * 0.3) + 'px)';
     }
-  });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-/* Observe all fade-in elements */
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-/* Observe hex cells */
-document.querySelectorAll('.hex-cell').forEach(el => observer.observe(el));
-
-/* ===== Cover parallax: fade out on scroll ===== */
-const cover = document.querySelector('.cover');
-const coverInner = document.querySelector('.cover-inner');
-const scrollHint = document.getElementById('scroll-hint');
-
-window.addEventListener('scroll', () => {
-  const scrollY = window.scrollY;
-  const vh = window.innerHeight;
-  const progress = Math.min(scrollY / (vh * 0.5), 1);
-  /* Cover content fades and drifts up */
-  coverInner.style.opacity = 1 - progress;
-  coverInner.style.transform = 'translateY(' + (-scrollY * 0.3) + 'px)';
-  /* Hide scroll hint once user starts scrolling */
-  if (scrollY > 20) {
-    scrollHint.classList.add('hidden');
-  } else {
-    scrollHint.classList.remove('hidden');
-  }
-}, { passive: true });
-
-/* ===== Auth Gate Logic ===== */
-const AUTH_KEY = 'yaoguayi_dev_auth';
-/* SHA-256 hash of the password, not the password itself */
-const AUTH_HASH = '533ec688bba2dda0ba454564a7372550e1cc83fa43fdb82c1b71cebeb027f11b';
-const gate = document.getElementById('auth-gate');
-const authInput = document.getElementById('auth-input');
-const authBtn = document.getElementById('auth-btn');
-const authError = document.getElementById('auth-error');
-
-/* Compute SHA-256 hash using Web Crypto API */
-async function sha256(message) {
-  const msgBuffer = new TextEncoder().encode(message);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    if (scrollHint) {
+      if (scrollY > 20) {
+        scrollHint.classList.add('hidden');
+      } else {
+        scrollHint.classList.remove('hidden');
+      }
+    }
+  }, { passive: true });
 }
-
-function unlockSite() {
-  localStorage.setItem(AUTH_KEY, 'true');
-  gate.classList.add('hidden');
-  setTimeout(() => gate.classList.add('removed'), 700);
-  document.querySelectorAll('.cover .fade-in').forEach(el => el.classList.add('visible'));
-}
-
-if (localStorage.getItem(AUTH_KEY) === 'true') {
-  gate.classList.add('removed');
-  window.addEventListener('load', () => {
-    document.querySelectorAll('.cover .fade-in').forEach(el => el.classList.add('visible'));
-  });
-} else {
-  authInput.focus();
-}
-
-authBtn.addEventListener('click', async () => {
-  const inputHash = await sha256(authInput.value);
-  if (inputHash === AUTH_HASH) {
-    unlockSite();
-  } else {
-    authError.classList.add('show');
-    authInput.style.borderColor = 'rgba(192,57,43,0.4)';
-    setTimeout(() => {
-      authError.classList.remove('show');
-      authInput.style.borderColor = '';
-    }, 2000);
-  }
-});
-
-authInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') authBtn.click();
-});
-
-/* Logout link */
-document.getElementById('logout-link').addEventListener('click', (e) => {
-  e.preventDefault();
-  localStorage.removeItem(AUTH_KEY);
-  location.reload();
-});
 </script>
 </body>
 </html>
