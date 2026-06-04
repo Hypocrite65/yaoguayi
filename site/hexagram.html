@@ -84,6 +84,22 @@ body.panel-open .hex-detail{margin-right:320px;}
 .trigram-label{color:#a09080;font-size:10px;}
 /* 左侧分隔线 */
 .sidebar-divider{width:60%;margin:16px auto;height:0.5px;background:rgba(26,26,26,0.08);}
+/* 左侧爻辞导航目录 */
+.sidebar-nav{margin-top:8px;text-align:left;padding:0 8px;}
+.sidebar-nav-title{font-size:10px;letter-spacing:0.2em;color:#c0392b;margin-bottom:10px;
+  font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:600;text-align:center;}
+.sidebar-nav-list{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.sidebar-nav-item{display:flex;align-items:baseline;gap:8px;}
+.sidebar-nav-item a{font-size:12px;letter-spacing:0.08em;color:#7a6e64;text-decoration:none;
+  font-family:'Noto Sans SC',system-ui,sans-serif;transition:color 0.2s;
+  display:flex;align-items:baseline;gap:6px;}
+.sidebar-nav-item a:hover{color:#c0392b;}
+.sidebar-nav-item a .nav-yao-name{color:#2c2420;font-weight:500;min-width:28px;}
+.sidebar-nav-item a .nav-yao-preview{color:#a09080;font-size:11px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:140px;
+  font-family:'Noto Serif SC',serif;}
+/* 当前阅读的爻高亮 */
+.sidebar-nav-item.active a .nav-yao-name{color:#c0392b;}
 
 /* 右侧主内容 */
 .hex-content{flex:1;min-width:0;}
@@ -470,7 +486,7 @@ function renderHexagram(hex, all) {
   let yaociHtml = '';
   if (hex.yaoci && hex.yaoci.length > 0) {
     yaociHtml = hex.yaoci.map(y => `
-      <li class="yaoci-item" data-position="${y.position}">
+      <li class="yaoci-item" id="yao-${y.position}" data-position="${y.position}">
         <div class="yaoci-name">${y.name}</div>
         <div class="yaoci-text">${annotateText(y.text, true)}</div>
         ${y.text_trans ? `<div class="yaoci-trans">${y.text_trans}</div>` : ''}
@@ -493,6 +509,22 @@ function renderHexagram(hex, all) {
         <span><span class="trigram-label">上卦</span>${hex.upperTrigram}</span>
         <span><span class="trigram-label">下卦</span>${hex.lowerTrigram}</span>
       </div>
+      ${hex.yaoci && hex.yaoci.length > 0 ? `
+      <div class="sidebar-divider"></div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-nav-title">爻 辞</div>
+        <ul class="sidebar-nav-list">
+          ${hex.yaoci.filter(y => y.position <= 6).map(y => {
+            const preview = (y.text || '').replace(y.name + '：', '').replace(y.name + ':', '').substring(0, 8);
+            return `<li class="sidebar-nav-item" data-pos="${y.position}">
+              <a href="#yao-${y.position}">
+                <span class="nav-yao-name">${y.name}</span>
+                <span class="nav-yao-preview">${preview}…</span>
+              </a>
+            </li>`;
+          }).join('')}
+        </ul>
+      </nav>` : ''}
     </aside>
 
     <!-- 右侧经文内容 -->
@@ -546,6 +578,9 @@ function renderHexagram(hex, all) {
       container.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
     });
   }
+
+  // 爻辞滚动高亮：左侧导航跟随当前阅读位置
+  initYaoScrollTracker();
 }
 
 /**
@@ -599,6 +634,29 @@ function buildLinesSVG(lines, yaoci) {
   }
 
   return `<svg viewBox="0 0 ${svgW} ${totalH}" width="${svgW}" height="${totalH}" xmlns="http://www.w3.org/2000/svg">${svgContent}</svg>`;
+}
+
+/**
+ * 初始化爻辞滚动跟踪
+ * 设计说明：使用 IntersectionObserver 检测当前可见的爻辞，
+ * 自动高亮左侧导航中对应的爻名
+ */
+function initYaoScrollTracker() {
+  const navItems = document.querySelectorAll('.sidebar-nav-item');
+  if (navItems.length === 0) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const pos = entry.target.dataset.position;
+        navItems.forEach(item => {
+          item.classList.toggle('active', item.dataset.pos === pos);
+        });
+      }
+    });
+  }, { threshold: 0.3, rootMargin: '-60px 0px -40% 0px' });
+
+  document.querySelectorAll('.yaoci-item').forEach(el => observer.observe(el));
 }
 
 /**
