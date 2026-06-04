@@ -12,6 +12,8 @@ const path = require('path');
 
 // 源数据目录
 const SRC_DIR = path.join(__dirname, '..', 'packages', 'iching-data', 'src', 'hexagrams');
+// 译文目录
+const TRANS_DIR = path.join(__dirname, '..', 'packages', 'iching-data', 'src', 'translations');
 // 输出文件
 const OUT_FILE = path.join(__dirname, '..', 'site', 'data', 'hexagrams.json');
 
@@ -35,8 +37,15 @@ for (const file of files) {
   const raw = fs.readFileSync(filePath, 'utf-8');
   const data = JSON.parse(raw);
 
-  // 只保留前端需要的字段
-  hexagrams.push({
+  // 尝试加载对应的译文文件
+  const transFile = path.join(TRANS_DIR, String(data.id).padStart(3, '0') + '.json');
+  let trans = null;
+  if (fs.existsSync(transFile)) {
+    trans = JSON.parse(fs.readFileSync(transFile, 'utf-8'));
+  }
+
+  // 合并原文和译文，保留前端需要的字段
+  const entry = {
     id: data.id,
     name: data.name,
     pinyin: data.pinyin,
@@ -48,7 +57,26 @@ for (const file of files) {
     tuan: data.tuan,
     xiang: data.xiang,
     yaoci: data.yaoci
-  });
+  };
+
+  // 添加译文字段（如果存在）
+  if (trans) {
+    entry.guaci_trans = trans.guaci_trans;
+    entry.tuan_trans = trans.tuan_trans;
+    entry.xiang_trans = trans.xiang_trans;
+    if (trans.yaoci_trans && entry.yaoci) {
+      // 将爻辞译文合并到原始爻辞数组中
+      for (const yt of trans.yaoci_trans) {
+        const yao = entry.yaoci.find(y => y.position === yt.position);
+        if (yao) {
+          yao.text_trans = yt.text_trans;
+          yao.xiang_trans = yt.xiang_trans;
+        }
+      }
+    }
+  }
+
+  hexagrams.push(entry);
 }
 
 // 按 id 排序
