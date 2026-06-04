@@ -526,25 +526,25 @@ function miniHexSVG(lines, size) {
 }
 
 /**
- * 渲染随机卦卡片
+ * 渲染今日卦卡片
+ * 设计说明：使用 todayId（基于日期的固定值）与网格中高亮的卦保持一致
  * @param {Array} hexagrams - 64 卦数据数组
  */
 function renderRandomCard(hexagrams) {
-  const randomId = Math.floor(Math.random() * 64) + 1;
-  const rHex = hexagrams[randomId - 1];
-  const rSym = String.fromCodePoint(0x4DBF + randomId);
+  const rHex = hexagrams[todayId - 1];
+  const rSym = String.fromCodePoint(0x4DBF + todayId);
   const rCard = document.getElementById('random-card');
   if (!rCard) return;
   rCard.innerHTML = `<span class="random-sym">${rSym}</span>
     <div class="random-info">
-      <span class="random-label">随机一卦</span>
-      <span class="random-name">第${randomId}卦 · ${rHex.name}</span>
+      <span class="random-label">今 日 一 卦</span>
+      <span class="random-name">第${todayId}卦 · ${rHex.name}</span>
       <span class="random-guaci">${rHex.guaci}</span>
     </div>
     <span class="random-arrow">→</span>`;
   rCard.onclick = (e) => {
     e.preventDefault();
-    location.href = '/hexagram.html?id=' + randomId;
+    location.href = '/hexagram.html?id=' + todayId;
   };
 }
 
