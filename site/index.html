@@ -162,6 +162,8 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:600;}
 .random-name{font-size:16px;letter-spacing:0.12em;color:var(--ink);}
 .random-guaci{font-size:10px;color:var(--muted);letter-spacing:0.06em;line-height:1.6;}
+.random-month{font-size:10px;color:var(--faint);letter-spacing:0.08em;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
 .random-arrow{margin-left:auto;font-size:14px;color:var(--ghost);
   transition:transform 0.3s,color 0.3s;}
 .random-card:hover .random-arrow{transform:translateX(6px);color:var(--vermilion);}
@@ -473,9 +475,31 @@ YaoguayiAuth.init(() => {
   document.querySelectorAll('.cover .fade-in').forEach(el => el.classList.add('visible'));
 });
 
-/* 计算今日卦 */
+/**
+ * 十二消息卦（辟卦）— 月卦映射
+ * 设计说明：
+ *   源自汉代孟喜、京房卦气说，以十二卦对应十二地支月，
+ *   反映一年中阴阳消长的自然规律。
+ *   此处用阳历月份近似对应传统地支月份。
+ */
+const MONTH_HEX = [
+  /* 阳历月: 地支月, 卦ID, 卦名, 阴阳特征 */
+  /* 0=Jan */ { month: '丑月', id: 19, desc: '二阳渐长' },
+  /* 1=Feb */ { month: '寅月', id: 11, desc: '三阳开泰' },
+  /* 2=Mar */ { month: '卯月', id: 34, desc: '四阳壮盛' },
+  /* 3=Apr */ { month: '辰月', id: 43, desc: '五阳决阴' },
+  /* 4=May */ { month: '巳月', id: 1,  desc: '纯阳极盛' },
+  /* 5=Jun */ { month: '午月', id: 44, desc: '一阴初生' },
+  /* 6=Jul */ { month: '未月', id: 33, desc: '二阴渐长' },
+  /* 7=Aug */ { month: '申月', id: 12, desc: '阴阳相隔' },
+  /* 8=Sep */ { month: '酉月', id: 20, desc: '四阴盛行' },
+  /* 9=Oct */ { month: '戌月', id: 23, desc: '五阴剥阳' },
+  /* 10=Nov */{ month: '亥月', id: 2,  desc: '纯阴极盛' },
+  /* 11=Dec */{ month: '子月', id: 24, desc: '一阳初生' }
+];
 const d = new Date();
-const todayId = ((d.getFullYear() * 366 + d.getMonth() * 31 + d.getDate()) % 64) + 1;
+const monthInfo = MONTH_HEX[d.getMonth()];
+const monthHexId = monthInfo.id;
 
 /* 加载卦象数据并渲染页面 */
 fetch('/data/hexagrams.json?v=2')
@@ -526,25 +550,25 @@ function miniHexSVG(lines, size) {
 }
 
 /**
- * 渲染今日卦卡片
- * 设计说明：使用 todayId（基于日期的固定值）与网格中高亮的卦保持一致
+ * 渲染本月消息卦卡片
+ * 设计说明：基于十二消息卦体系，展示当月对应卦象及阴阳消长特征
  * @param {Array} hexagrams - 64 卦数据数组
  */
 function renderRandomCard(hexagrams) {
-  const rHex = hexagrams[todayId - 1];
-  const rSym = String.fromCodePoint(0x4DBF + todayId);
+  const rHex = hexagrams[monthHexId - 1];
   const rCard = document.getElementById('random-card');
   if (!rCard) return;
-  rCard.innerHTML = `<span class="random-sym">${rSym}</span>
+  const solarMonth = d.getMonth() + 1;
+  rCard.innerHTML = `<span class="random-sym">${miniHexSVG(rHex.lines, 42)}</span>
     <div class="random-info">
-      <span class="random-label">今 日 一 卦</span>
-      <span class="random-name">第${todayId}卦 · ${rHex.name}</span>
-      <span class="random-guaci">${rHex.guaci}</span>
+      <span class="random-label">本 月 卦 象</span>
+      <span class="random-name">第${monthHexId}卦 · ${rHex.name}</span>
+      <span class="random-month">${monthInfo.month} · ${solarMonth}月 · ${monthInfo.desc}</span>
     </div>
     <span class="random-arrow">→</span>`;
   rCard.onclick = (e) => {
     e.preventDefault();
-    location.href = '/hexagram.html?id=' + todayId;
+    location.href = '/hexagram.html?id=' + monthHexId;
   };
 }
 
@@ -559,7 +583,7 @@ function renderGrid(hexagrams) {
     const id = hex.id;
     const sym = String.fromCodePoint(0x4DBF + id);
     const cell = document.createElement('div');
-    cell.className = 'hex-cell' + (id === todayId ? ' today' : '');
+    cell.className = 'hex-cell' + (id === monthHexId ? ' today' : '');
     cell.innerHTML = `<span class="hex-sym">${sym}</span>
       <span class="hex-name">${hex.name}</span>
       <span class="hex-num">${id}</span>`;
@@ -584,7 +608,7 @@ function renderFallbackGrid() {
     const id = i + 1;
     const sym = String.fromCodePoint(0x4DBF + id);
     const cell = document.createElement('div');
-    cell.className = 'hex-cell' + (id === todayId ? ' today' : '');
+    cell.className = 'hex-cell' + (id === monthHexId ? ' today' : '');
     cell.innerHTML = `<span class="hex-sym">${sym}</span>
       <span class="hex-name">${name}</span>
       <span class="hex-num">${id}</span>`;
