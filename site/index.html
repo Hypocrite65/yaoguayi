@@ -238,12 +238,20 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 .site-footer{
   background:var(--bg-alt);padding:20px 32px;
   border-top:0.5px solid var(--border);
-  text-align:center;
   font-size:9px;letter-spacing:0.14em;color:var(--ghost);
   font-family:'Noto Sans SC',system-ui,sans-serif;transition:background 0.4s;
 }
+.footer-row{display:flex;justify-content:space-between;align-items:center;
+  max-width:960px;margin:0 auto;gap:12px;flex-wrap:wrap;}
+.footer-left{display:flex;align-items:center;gap:6px;}
+.footer-right{display:flex;align-items:center;gap:6px;}
+.footer-sep{color:var(--whisper);}
 .site-footer a{color:var(--vermilion);text-decoration:none;transition:color 0.2s;}
 .site-footer a:hover{color:var(--muted);text-decoration:underline;}
+@media(max-width:768px){
+  .footer-row{flex-direction:column;align-items:center;text-align:center;gap:6px;}
+  .footer-left,.footer-right{justify-content:center;flex-wrap:wrap;}
+}
 
 /* ===== Scrollbar ===== */
 ::-webkit-scrollbar{width:5px;}
@@ -434,11 +442,18 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 
 <!-- ===== Footer ===== -->
 <footer class="site-footer fade-in">
-  爻卦易 · yaoguayi.com ·
-  <a href="#about">关于本站</a> ·
-  开源 · 非盈利 ·
-  <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank">GitHub</a> ·
-  <a href="#" id="logout-link">退出预览</a>
+  <div class="footer-row">
+    <div class="footer-left">
+      爻卦易 <span class="footer-sep">·</span> yaoguayi.com <span class="footer-sep">·</span>
+      <a href="#about">关于本站</a> <span class="footer-sep">·</span>
+      开源 <span class="footer-sep">·</span> 非盈利
+    </div>
+    <div class="footer-right">
+      <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank">GitHub</a>
+      <span class="footer-sep">·</span>
+      <a href="#" id="logout-link">退出预览</a>
+    </div>
+  </div>
 </footer>
 
 <script src="/js/theme.js"></script>
