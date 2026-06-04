@@ -724,14 +724,16 @@ function buildLinesSVG(lines, yaoci) {
   const gap = 18;           // 爻间距（加大避免爻名文字重叠）
   const breakGap = 14;      // 阴爻断口宽度
   const textOffset = 16;    // 爻线右侧到文字的距离
-  const totalH = 6 * lineH + 5 * gap;
+  const padY = 6;           // 垂直内边距，防止爻名文字超出 viewBox 被截断
+  const contentH = 6 * lineH + 5 * gap;
+  const totalH = contentH + padY * 2;
   const x0 = 0;
   const svgW = lineW + textOffset + 60;  // 充分加宽防止爻名截断
 
   let svgContent = '';
   for (let i = 0; i < 6; i++) {
     const lineIdx = 5 - i;
-    const y = i * (lineH + gap);
+    const y = padY + i * (lineH + gap);
     const val = lines[lineIdx];
     const yCenter = y + lineH / 2;
 
