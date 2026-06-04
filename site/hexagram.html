@@ -8,32 +8,85 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
+
+/* ===== 主题变量 — 日间模式（暖宣纸色调） ===== */
+body{
+  --bg:              #f5f0e8;
+  --bg-alt:          #ede8dc;
+  --ink:             #2c2420;
+  --ink-light:       #5a4e44;
+  --muted:           #7a6e64;
+  --faint:           #a09080;
+  --ghost:           #c8b8a4;
+  --whisper:         #d4c8b8;
+  --border:          rgba(26,26,26,0.08);
+  --border-strong:   rgba(26,26,26,0.15);
+  --vermilion:       #c0392b;
+  --vermilion-faint: rgba(192,57,43,0.15);
+  --nav-bg:          rgba(245,240,232,0.92);
+  --card-bg:         rgba(237,232,220,0.5);
+  --hover-bg:        rgba(26,26,26,0.06);
+  --shadow:          rgba(26,26,26,0.08);
+  --svg-fill:        #2c2420;
+  --svg-circle:      #5c3a30;
+}
+
+/* ===== 主题变量 — 夜间模式（温暖的深色阅读调） ===== */
+body.dark-theme{
+  --bg:              #1a1814;
+  --bg-alt:          #222018;
+  --ink:             #d8d0c4;
+  --ink-light:       #b8b0a4;
+  --muted:           #8c8474;
+  --faint:           #6a6254;
+  --ghost:           #4a4438;
+  --whisper:         #3a3428;
+  --border:          rgba(216,208,196,0.08);
+  --border-strong:   rgba(216,208,196,0.15);
+  --vermilion:       #d4614e;
+  --vermilion-faint: rgba(212,97,78,0.15);
+  --nav-bg:          rgba(26,24,20,0.92);
+  --card-bg:         rgba(34,32,24,0.6);
+  --hover-bg:        rgba(216,208,196,0.06);
+  --shadow:          rgba(0,0,0,0.2);
+  --svg-fill:        #d8d0c4;
+  --svg-circle:      #8a6a5a;
+}
+
 body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
-  color:#2c2420;background:#f5f0e8;overflow-x:hidden;
-  min-height:100vh;display:flex;flex-direction:column;}
+  color:var(--ink);background:var(--bg);overflow-x:hidden;
+  min-height:100vh;display:flex;flex-direction:column;
+  transition:background 0.4s,color 0.4s;}
 
 /* ===== Auth Gate ===== */
-.auth-gate{position:fixed;inset:0;z-index:9999;background:#f5f0e8;
+.auth-gate{position:fixed;inset:0;z-index:9999;background:var(--bg);
   display:flex;flex-direction:column;justify-content:center;align-items:center;
   transition:opacity 0.7s cubic-bezier(0.4,0,0.2,1);}
 .auth-gate.hidden{opacity:0;pointer-events:none;}
 .auth-gate.removed{display:none;}
 .auth-logo svg{width:56px;height:56px;margin-bottom:20px;}
-.auth-label{font-size:9px;letter-spacing:0.3em;color:#c0392b;margin-bottom:28px;
+/* Logo SVG 颜色跟随主题 */
+.auth-logo svg circle{stroke:var(--svg-circle);}
+.auth-logo svg line{stroke:var(--svg-fill);}
+.auth-logo svg line:nth-child(4),.auth-logo svg line:nth-child(5){stroke:var(--vermilion);}
+.nav-logo svg circle{stroke:var(--svg-circle);}
+.nav-logo svg line{stroke:var(--svg-fill);}
+.nav-logo svg line:nth-child(4),.nav-logo svg line:nth-child(5){stroke:var(--vermilion);}
+.auth-label{font-size:9px;letter-spacing:0.3em;color:var(--vermilion);margin-bottom:28px;
   font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:600;}
 .auth-form{display:flex;flex-direction:column;align-items:center;gap:14px;}
-.auth-input{width:240px;padding:10px 16px;border:0.5px solid rgba(26,26,26,0.15);
-  border-radius:3px;background:rgba(237,232,220,0.5);
+.auth-input{width:240px;padding:10px 16px;border:0.5px solid var(--border-strong);
+  border-radius:3px;background:var(--card-bg);
   font-family:'Noto Serif SC',serif;font-size:13px;letter-spacing:0.08em;
-  color:#2c2420;outline:none;text-align:center;transition:border-color 0.3s,box-shadow 0.3s;}
-.auth-input:focus{border-color:rgba(192,57,43,0.3);box-shadow:0 0 0 3px rgba(192,57,43,0.06);}
-.auth-input::placeholder{color:#c8b8a4;letter-spacing:0.12em;}
+  color:var(--ink);outline:none;text-align:center;transition:border-color 0.3s,box-shadow 0.3s;}
+.auth-input:focus{border-color:var(--vermilion-faint);box-shadow:0 0 0 3px var(--vermilion-faint);}
+.auth-input::placeholder{color:var(--ghost);letter-spacing:0.12em;}
 .auth-btn{width:240px;padding:10px 0;border:none;border-radius:3px;cursor:pointer;
-  background:#2c2420;color:#f5f0e8;font-family:'Noto Sans SC',system-ui,sans-serif;
+  background:var(--ink);color:var(--bg);font-family:'Noto Sans SC',system-ui,sans-serif;
   font-size:11px;letter-spacing:0.18em;font-weight:500;transition:background 0.3s,transform 0.2s;}
-.auth-btn:hover{background:#3d3630;transform:translateY(-1px);}
+.auth-btn:hover{background:var(--ink-light);transform:translateY(-1px);}
 .auth-btn:active{transform:translateY(0);}
-.auth-error{font-size:10px;color:#c0392b;letter-spacing:0.1em;opacity:0;
+.auth-error{font-size:10px;color:var(--vermilion);letter-spacing:0.1em;opacity:0;
   transition:opacity 0.3s;height:16px;font-family:'Noto Sans SC',system-ui,sans-serif;}
 .auth-error.show{opacity:1;}
 
@@ -47,47 +100,47 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 
 /* ===== Top Navigation ===== */
 .top-nav{position:sticky;top:0;z-index:100;
-  background:rgba(245,240,232,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  border-bottom:0.5px solid rgba(26,26,26,0.08);padding:10px 24px;
+  background:var(--nav-bg);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border-bottom:0.5px solid var(--border);padding:10px 24px;
   display:flex;align-items:center;justify-content:space-between;
-  font-family:'Noto Sans SC',system-ui,sans-serif;}
+  font-family:'Noto Sans SC',system-ui,sans-serif;transition:background 0.4s;}
 .nav-left{display:flex;align-items:center;gap:16px;}
-.nav-back{font-size:13px;letter-spacing:0.1em;color:#7a6e64;text-decoration:none;
+.nav-back{font-size:13px;letter-spacing:0.1em;color:var(--muted);text-decoration:none;
   display:flex;align-items:center;gap:6px;transition:color 0.2s;}
-.nav-back:hover{color:#c0392b;}
+.nav-back:hover{color:var(--vermilion);}
 .nav-back::before{content:'←';font-size:15px;}
 .nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;}
 .nav-logo svg{width:28px;height:28px;}
-.nav-logo-text{font-size:10px;letter-spacing:0.25em;color:#a09080;font-weight:500;}
+.nav-logo-text{font-size:10px;letter-spacing:0.25em;color:var(--faint);font-weight:500;}
 /* 右侧工具栏 */
 .nav-tools{display:flex;align-items:center;gap:4px;}
 .nav-btn{width:32px;height:32px;border:none;background:none;cursor:pointer;
   display:flex;align-items:center;justify-content:center;border-radius:6px;
-  color:#7a6e64;transition:background 0.2s,color 0.2s;}
-.nav-btn:hover{background:rgba(26,26,26,0.06);color:#2c2420;}
+  color:var(--muted);transition:background 0.2s,color 0.2s;}
+.nav-btn:hover{background:var(--hover-bg);color:var(--ink);}
 .nav-btn svg{width:18px;height:18px;}
 /* 主题切换动画 */
 .nav-btn .icon-sun,.nav-btn .icon-moon{transition:opacity 0.3s,transform 0.3s;}
 /* 账户下拉菜单 */
 .nav-account{position:relative;}
 .account-dropdown{position:absolute;top:calc(100% + 8px);right:0;width:200px;
-  background:#f5f0e8;border:0.5px solid rgba(26,26,26,0.1);
-  border-radius:6px;box-shadow:0 4px 20px rgba(26,26,26,0.08);
+  background:var(--bg);border:0.5px solid var(--border-strong);
+  border-radius:6px;box-shadow:0 4px 20px var(--shadow);
   opacity:0;transform:translateY(-4px);pointer-events:none;
   transition:opacity 0.25s,transform 0.25s;z-index:110;}
 .account-dropdown.show{opacity:1;transform:translateY(0);pointer-events:auto;}
-.dropdown-header{padding:12px 16px;border-bottom:0.5px solid rgba(26,26,26,0.06);
-  font-size:11px;letter-spacing:0.1em;color:#a09080;}
+.dropdown-header{padding:12px 16px;border-bottom:0.5px solid var(--border);
+  font-size:11px;letter-spacing:0.1em;color:var(--faint);}
 .dropdown-item{display:flex;align-items:center;gap:10px;
-  padding:10px 16px;font-size:12px;letter-spacing:0.06em;color:#5a4e44;
+  padding:10px 16px;font-size:12px;letter-spacing:0.06em;color:var(--ink-light);
   cursor:pointer;transition:background 0.15s,color 0.15s;text-decoration:none;}
-.dropdown-item:hover{background:rgba(26,26,26,0.04);color:#c0392b;}
-.dropdown-item svg{width:16px;height:16px;color:#a09080;flex-shrink:0;}
-.dropdown-item:hover svg{color:#c0392b;}
-.dropdown-item.disabled{color:#c8b8a4;cursor:default;}
-.dropdown-item.disabled:hover{background:none;color:#c8b8a4;}
-.dropdown-item.disabled svg{color:#d4c8b8;}
-.dropdown-divider{height:0.5px;background:rgba(26,26,26,0.06);margin:4px 0;}
+.dropdown-item:hover{background:var(--hover-bg);color:var(--vermilion);}
+.dropdown-item svg{width:16px;height:16px;color:var(--faint);flex-shrink:0;}
+.dropdown-item:hover svg{color:var(--vermilion);}
+.dropdown-item.disabled{color:var(--ghost);cursor:default;}
+.dropdown-item.disabled:hover{background:none;color:var(--ghost);}
+.dropdown-item.disabled svg{color:var(--whisper);}
+.dropdown-divider{height:0.5px;background:var(--border);margin:4px 0;}
 
 /* ===== Two-Column Layout ===== */
 .hex-detail{max-width:1000px;margin:0 auto;padding:32px 28px;flex:1;
@@ -101,139 +154,138 @@ body.panel-open .hex-detail{margin-right:320px;}
 .hex-sidebar{width:220px;flex-shrink:0;position:sticky;top:68px;
   text-align:center;padding:20px 0;}
 .sidebar-title{display:flex;align-items:baseline;justify-content:center;gap:8px;margin-bottom:4px;}
-.sidebar-name{font-size:28px;letter-spacing:0.1em;color:#2c2420;}
-.sidebar-pinyin{font-size:14px;color:#a09080;font-family:'Noto Sans SC',system-ui,sans-serif;}
-.sidebar-id{font-size:12px;color:#c8b8a4;letter-spacing:0.1em;
+.sidebar-name{font-size:28px;letter-spacing:0.1em;color:var(--ink);}
+.sidebar-pinyin{font-size:14px;color:var(--faint);font-family:'Noto Sans SC',system-ui,sans-serif;}
+.sidebar-id{font-size:12px;color:var(--ghost);letter-spacing:0.1em;
   font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:16px;}
 /* 大爻图（含爻名链接） */
-.sidebar-lines{margin:0 auto 12px;display:flex;justify-content:center;}
+.sidebar-lines{margin:0 auto 12px;display:flex;justify-content:center;color:var(--ink);}
 .sidebar-lines svg a text{transition:fill 0.2s;}
-.sidebar-lines svg a:hover text{fill:#c0392b;}
+.sidebar-lines svg a:hover text{fill:var(--vermilion);}
 /* 上下卦信息 */
 .sidebar-trigrams{display:flex;justify-content:center;gap:20px;
-  font-size:12px;letter-spacing:0.1em;color:#7a6e64;
+  font-size:12px;letter-spacing:0.1em;color:var(--muted);
   font-family:'Noto Sans SC',system-ui,sans-serif;}
 .sidebar-trigrams span{display:flex;align-items:center;gap:4px;}
-.trigram-label{color:#a09080;font-size:10px;}
+.trigram-label{color:var(--faint);font-size:10px;}
 /* 左侧分隔线 */
-.sidebar-divider{width:60%;margin:16px auto;height:0.5px;background:rgba(26,26,26,0.08);}
+.sidebar-divider{width:60%;margin:16px auto;height:0.5px;background:var(--border);}
 
 /* 右侧主内容 */
 .hex-content{flex:1;min-width:0;}
 
 /* ===== Content Sections ===== */
 .section{margin-bottom:40px;padding-bottom:40px;
-  border-bottom:0.5px solid rgba(26,26,26,0.08);}
+  border-bottom:0.5px solid var(--border);}
 .section:last-of-type{border-bottom:none;}
-.section-label{font-size:12px;letter-spacing:0.3em;color:#c0392b;margin-bottom:16px;
+.section-label{font-size:12px;letter-spacing:0.3em;color:var(--vermilion);margin-bottom:16px;
   font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:600;}
-.section-text{font-size:18px;line-height:2;letter-spacing:0.06em;color:#2c2420;}
-.section-trans{font-size:15px;line-height:1.9;letter-spacing:0.04em;color:#7a6e64;
-  margin-top:12px;padding-left:16px;border-left:2px solid rgba(192,57,43,0.15);}
+.section-text{font-size:18px;line-height:2;letter-spacing:0.06em;color:var(--ink);}
+.section-trans{font-size:15px;line-height:1.9;letter-spacing:0.04em;color:var(--muted);
+  margin-top:12px;padding-left:16px;border-left:2px solid var(--vermilion-faint);}
 
 /* ===== Yaoci ===== */
 .yaoci-list{list-style:none;}
 .yaoci-item{margin-bottom:28px;padding-bottom:28px;
-  border-bottom:0.5px solid rgba(26,26,26,0.05);}
+  border-bottom:0.5px solid var(--border);}
 .yaoci-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
-/* 点击爻名跳转时，内容对齐到左侧卦图顶部（nav高度52px + padding16px） */
 .yaoci-item[id]{scroll-margin-top:68px;}
-/* 最后一个爻（如上六/上九）下方留白，确保能滚到顶部对齐 */
 .yaoci-item:last-child{padding-bottom:60vh;}
-.yaoci-name{font-size:14px;letter-spacing:0.18em;color:#c0392b;margin-bottom:8px;
+.yaoci-name{font-size:14px;letter-spacing:0.18em;color:var(--vermilion);margin-bottom:8px;
   font-weight:600;font-family:'Noto Sans SC',system-ui,sans-serif;}
-.yaoci-text{font-size:17px;line-height:1.9;letter-spacing:0.06em;color:#2c2420;margin-bottom:8px;}
-.yaoci-trans{font-size:14px;line-height:1.8;letter-spacing:0.04em;color:#7a6e64;
-  margin-bottom:8px;padding-left:16px;border-left:2px solid rgba(192,57,43,0.15);}
-.yaoci-xiang{font-size:14px;line-height:1.8;letter-spacing:0.06em;color:#8c7e72;
-  padding-left:16px;border-left:1.5px solid rgba(26,26,26,0.1);}
-.yaoci-xiang-label{font-size:11px;color:#a09080;letter-spacing:0.12em;
+.yaoci-text{font-size:17px;line-height:1.9;letter-spacing:0.06em;color:var(--ink);margin-bottom:8px;}
+.yaoci-trans{font-size:14px;line-height:1.8;letter-spacing:0.04em;color:var(--muted);
+  margin-bottom:8px;padding-left:16px;border-left:2px solid var(--vermilion-faint);}
+.yaoci-xiang{font-size:14px;line-height:1.8;letter-spacing:0.06em;color:var(--muted);
+  padding-left:16px;border-left:1.5px solid var(--border-strong);}
+.yaoci-xiang-label{font-size:11px;color:var(--faint);letter-spacing:0.12em;
   font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:2px;}
 
 /* ===== Ruby 注音 ===== */
 ruby{ruby-position:over;}
-ruby rt{font-size:10px;color:#a09080;font-family:'Noto Sans SC',system-ui,sans-serif;
+ruby rt{font-size:10px;color:var(--faint);font-family:'Noto Sans SC',system-ui,sans-serif;
   font-weight:400;letter-spacing:0;}
 
 /* ===== 术语下划线 ===== */
-.term-link{text-decoration:none;border-bottom:1.5px dashed rgba(192,57,43,0.3);
+.term-link{text-decoration:none;border-bottom:1.5px dashed var(--vermilion-faint);
   cursor:pointer;transition:border-color 0.2s,color 0.2s;color:inherit;}
-.term-link:hover{border-bottom-color:#c0392b;color:#c0392b;}
+.term-link:hover{border-bottom-color:var(--vermilion);color:var(--vermilion);}
 
 /* ===== 角标 ===== */
-.fn-ref{font-size:10px;color:#c0392b;cursor:pointer;vertical-align:super;
+.fn-ref{font-size:10px;color:var(--vermilion);cursor:pointer;vertical-align:super;
   font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:600;
   margin-left:1px;transition:opacity 0.2s;}
 .fn-ref:hover{opacity:0.7;}
 
 /* ===== 右侧推挤面板 ===== */
 .side-panel{position:fixed;top:52px;right:0;bottom:0;width:320px;
-  background:#f5f0e8;border-left:0.5px solid rgba(26,26,26,0.1);
+  background:var(--bg);border-left:0.5px solid var(--border-strong);
   transform:translateX(100%);
   transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
   z-index:90;display:flex;flex-direction:column;overflow:hidden;}
 .side-panel.open{transform:translateX(0);}
 /* 面板头部 */
 .panel-header{display:flex;align-items:center;justify-content:space-between;
-  padding:16px 20px;border-bottom:0.5px solid rgba(26,26,26,0.08);flex-shrink:0;}
-.panel-title{font-size:13px;letter-spacing:0.12em;color:#2c2420;
+  padding:16px 20px;border-bottom:0.5px solid var(--border);flex-shrink:0;}
+.panel-title{font-size:13px;letter-spacing:0.12em;color:var(--ink);
   font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:600;}
 .panel-close{width:28px;height:28px;border:none;background:none;cursor:pointer;
-  font-size:18px;color:#a09080;display:flex;align-items:center;justify-content:center;
+  font-size:18px;color:var(--faint);display:flex;align-items:center;justify-content:center;
   border-radius:4px;transition:background 0.2s,color 0.2s;}
-.panel-close:hover{background:rgba(26,26,26,0.06);color:#2c2420;}
+.panel-close:hover{background:var(--hover-bg);color:var(--ink);}
 /* 选项卡 */
-.panel-tabs{display:flex;border-bottom:0.5px solid rgba(26,26,26,0.08);flex-shrink:0;}
+.panel-tabs{display:flex;border-bottom:0.5px solid var(--border);flex-shrink:0;}
 .panel-tab{flex:1;padding:10px 0;text-align:center;font-size:11px;letter-spacing:0.14em;
-  color:#a09080;cursor:pointer;border-bottom:2px solid transparent;
+  color:var(--faint);cursor:pointer;border-bottom:2px solid transparent;
   font-family:'Noto Sans SC',system-ui,sans-serif;transition:color 0.2s,border-color 0.2s;}
-.panel-tab:hover{color:#7a6e64;}
-.panel-tab.active{color:#c0392b;border-bottom-color:#c0392b;}
-.panel-tab.disabled{color:#d4c8b8;cursor:default;}
+.panel-tab:hover{color:var(--muted);}
+.panel-tab.active{color:var(--vermilion);border-bottom-color:var(--vermilion);}
+.panel-tab.disabled{color:var(--whisper);cursor:default;}
 /* 面板内容 */
 .panel-body{flex:1;overflow-y:auto;padding:20px;}
-.panel-term{font-size:20px;letter-spacing:0.1em;color:#2c2420;margin-bottom:4px;}
-.panel-pinyin{font-size:13px;color:#a09080;margin-bottom:16px;
+.panel-term{font-size:20px;letter-spacing:0.1em;color:var(--ink);margin-bottom:4px;}
+.panel-pinyin{font-size:13px;color:var(--faint);margin-bottom:16px;
   font-family:'Noto Sans SC',system-ui,sans-serif;}
-.panel-meaning{font-size:14px;line-height:1.9;color:#5a4e44;letter-spacing:0.04em;}
-.panel-placeholder{text-align:center;padding:40px 20px;color:#c8b8a4;
+.panel-meaning{font-size:14px;line-height:1.9;color:var(--ink-light);letter-spacing:0.04em;}
+.panel-placeholder{text-align:center;padding:40px 20px;color:var(--ghost);
   font-size:12px;letter-spacing:0.1em;font-family:'Noto Sans SC',system-ui,sans-serif;}
 /* 面板触发标签（收起状态时显示） */
 .panel-trigger{position:fixed;right:0;top:50%;transform:translateY(-50%);
-  width:28px;padding:12px 4px;background:rgba(237,232,220,0.9);
-  border:0.5px solid rgba(26,26,26,0.08);border-right:none;
+  width:28px;padding:12px 4px;background:var(--card-bg);
+  border:0.5px solid var(--border);border-right:none;
   border-radius:4px 0 0 4px;cursor:pointer;
-  font-size:11px;color:#7a6e64;writing-mode:vertical-rl;letter-spacing:0.2em;
+  font-size:11px;color:var(--muted);writing-mode:vertical-rl;letter-spacing:0.2em;
   font-family:'Noto Sans SC',system-ui,sans-serif;
   transition:background 0.2s,color 0.2s;z-index:89;
-  box-shadow:-2px 0 8px rgba(26,26,26,0.04);}
-.panel-trigger:hover{background:#ede8dc;color:#c0392b;}
+  box-shadow:-2px 0 8px var(--shadow);}
+.panel-trigger:hover{background:var(--bg-alt);color:var(--vermilion);}
 .panel-trigger.hidden{opacity:0;pointer-events:none;}
 
 /* ===== Prev/Next Navigation ===== */
 .hex-nav{display:flex;justify-content:space-between;align-items:center;
-  padding:32px 0;margin-top:16px;border-top:0.5px solid rgba(26,26,26,0.1);}
-.hex-nav a{font-size:12px;letter-spacing:0.1em;color:#7a6e64;text-decoration:none;
+  padding:32px 0;margin-top:16px;border-top:0.5px solid var(--border-strong);}
+.hex-nav a{font-size:12px;letter-spacing:0.1em;color:var(--muted);text-decoration:none;
   display:flex;align-items:center;gap:8px;font-family:'Noto Sans SC',system-ui,sans-serif;
   transition:color 0.2s;padding:8px 0;}
-.hex-nav a:hover{color:#c0392b;}
+.hex-nav a:hover{color:var(--vermilion);}
 .hex-nav .prev::before{content:'←';}
 .hex-nav .next::after{content:'→';}
 .hex-nav .nav-hex-name{font-family:'Noto Serif SC',serif;font-size:14px;}
 
 /* ===== Footer ===== */
 .site-footer{text-align:center;padding:24px;font-size:10px;letter-spacing:0.14em;
-  color:#c8b8a4;border-top:0.5px solid rgba(26,26,26,0.06);
-  font-family:'Noto Sans SC',system-ui,sans-serif;margin-top:auto;}
-.site-footer a{color:#a09080;text-decoration:none;transition:color 0.2s;}
-.site-footer a:hover{color:#c0392b;}
+  color:var(--ghost);border-top:0.5px solid var(--border);
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-top:auto;
+  transition:background 0.4s,color 0.4s;}
+.site-footer a{color:var(--faint);text-decoration:none;transition:color 0.2s;}
+.site-footer a:hover{color:var(--vermilion);}
 
 /* ===== Loading & Error ===== */
-.loading{text-align:center;padding:120px 24px;font-size:13px;letter-spacing:0.12em;color:#a09080;}
+.loading{text-align:center;padding:120px 24px;font-size:13px;letter-spacing:0.12em;color:var(--faint);}
 .error-msg{text-align:center;padding:120px 24px;}
-.error-msg h2{font-size:24px;color:#2c2420;margin-bottom:16px;}
-.error-msg p{font-size:14px;color:#7a6e64;margin-bottom:24px;}
-.error-msg a{color:#c0392b;text-decoration:none;font-size:13px;letter-spacing:0.1em;}
+.error-msg h2{font-size:24px;color:var(--ink);margin-bottom:16px;}
+.error-msg p{font-size:14px;color:var(--muted);margin-bottom:24px;}
+.error-msg a{color:var(--vermilion);text-decoration:none;font-size:13px;letter-spacing:0.1em;}
 
 /* ===== Responsive ===== */
 @media(max-width:768px){
@@ -712,11 +764,11 @@ function buildLinesSVG(lines, yaoci) {
     const yCenter = y + lineH / 2;
 
     if (val === 1) {
-      svgContent += `<rect x="${x0}" y="${y}" width="${lineW}" height="${lineH}" rx="1.5" fill="#2c2420"/>`;
+      svgContent += `<rect x="${x0}" y="${y}" width="${lineW}" height="${lineH}" rx="1.5" fill="currentColor"/>`;
     } else {
       const segW = (lineW - breakGap) / 2;
-      svgContent += `<rect x="${x0}" y="${y}" width="${segW}" height="${lineH}" rx="1.5" fill="#2c2420"/>`;
-      svgContent += `<rect x="${x0 + segW + breakGap}" y="${y}" width="${segW}" height="${lineH}" rx="1.5" fill="#2c2420"/>`;
+      svgContent += `<rect x="${x0}" y="${y}" width="${segW}" height="${lineH}" rx="1.5" fill="currentColor"/>`;
+      svgContent += `<rect x="${x0 + segW + breakGap}" y="${y}" width="${segW}" height="${lineH}" rx="1.5" fill="currentColor"/>`;
     }
 
     const pos = lineIdx + 1;
