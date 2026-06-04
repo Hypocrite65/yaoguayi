@@ -105,6 +105,7 @@ body.panel-open .hex-detail{margin-right:320px;}
 .yaoci-item{margin-bottom:28px;padding-bottom:28px;
   border-bottom:0.5px solid rgba(26,26,26,0.05);}
 .yaoci-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.yaoci-item[id]{scroll-margin-top:72px;}
 .yaoci-name{font-size:14px;letter-spacing:0.18em;color:#c0392b;margin-bottom:8px;
   font-weight:600;font-family:'Noto Sans SC',system-ui,sans-serif;}
 .yaoci-text{font-size:17px;line-height:1.9;letter-spacing:0.06em;color:#2c2420;margin-bottom:8px;}
@@ -571,7 +572,7 @@ function buildLinesSVG(lines, yaoci) {
    */
   const lineW = 100;        // 爻线宽度
   const lineH = 8;          // 爻线高度
-  const gap = 14;           // 爻间距
+  const gap = 18;           // 爻间距（加大避免爻名文字重叠）
   const breakGap = 14;      // 阴爻断口宽度
   const textOffset = 12;    // 爻线右侧到文字的距离
   const totalH = 6 * lineH + 5 * gap;
