@@ -50,8 +50,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   background:rgba(245,240,232,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   border-bottom:0.5px solid rgba(26,26,26,0.08);padding:14px 24px;
   display:flex;align-items:center;justify-content:space-between;
-  font-family:'Noto Sans SC',system-ui,sans-serif;
-  transition:padding-right 0.35s cubic-bezier(0.4,0,0.2,1);}
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
 .nav-back{font-size:13px;letter-spacing:0.1em;color:#7a6e64;text-decoration:none;
   display:flex;align-items:center;gap:6px;transition:color 0.2s;}
 .nav-back:hover{color:#c0392b;}
@@ -142,9 +141,6 @@ ruby rt{font-size:10px;color:#a09080;font-family:'Noto Sans SC',system-ui,sans-s
   transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
   z-index:90;display:flex;flex-direction:column;overflow:hidden;}
 .side-panel.open{transform:translateX(0);}
-/* 顶部导航也要让位 */
-body.panel-open .top-nav{transition:padding-right 0.35s cubic-bezier(0.4,0,0.2,1);padding-right:340px;}
-body.panel-open .site-footer{transition:margin-right 0.35s cubic-bezier(0.4,0,0.2,1);margin-right:320px;}
 /* 面板头部 */
 .panel-header{display:flex;align-items:center;justify-content:space-between;
   padding:16px 20px;border-bottom:0.5px solid rgba(26,26,26,0.08);flex-shrink:0;}
@@ -196,8 +192,7 @@ body.panel-open .site-footer{transition:margin-right 0.35s cubic-bezier(0.4,0,0.
 /* ===== Footer ===== */
 .site-footer{text-align:center;padding:24px;font-size:10px;letter-spacing:0.14em;
   color:#c8b8a4;border-top:0.5px solid rgba(26,26,26,0.06);
-  font-family:'Noto Sans SC',system-ui,sans-serif;margin-top:auto;
-  transition:margin-right 0.35s cubic-bezier(0.4,0,0.2,1);}
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-top:auto;}
 .site-footer a{color:#a09080;text-decoration:none;transition:color 0.2s;}
 .site-footer a:hover{color:#c0392b;}
 
@@ -220,8 +215,6 @@ body.panel-open .site-footer{transition:margin-right 0.35s cubic-bezier(0.4,0,0.
   .side-panel{width:100%;top:52px;}
   .panel-trigger{display:none;}
   body.panel-open .hex-detail{margin-right:0;}
-  body.panel-open .top-nav{padding-right:24px;}
-  body.panel-open .site-footer{margin-right:0;}
 }
 </style>
 </head>
