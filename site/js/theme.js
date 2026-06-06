@@ -12,14 +12,15 @@ const MOON_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
 
 function toggleTheme() {
   const btn = document.getElementById('theme-toggle');
-  const isDark = document.body.classList.toggle('dark-theme');
+  const isDark = document.documentElement.classList.toggle('dark-theme');
   localStorage.setItem('yaoguayi_theme', isDark ? 'dark' : 'light');
   if (btn) btn.innerHTML = isDark ? MOON_SVG : SUN_SVG;
 }
 
 function initTheme() {
   if (localStorage.getItem('yaoguayi_theme') === 'dark') {
-    document.body.classList.add('dark-theme');
+    // Class may already be set by inline head script; ensure it's present
+    document.documentElement.classList.add('dark-theme');
     const btn = document.getElementById('theme-toggle');
     if (btn) btn.innerHTML = MOON_SVG;
   }

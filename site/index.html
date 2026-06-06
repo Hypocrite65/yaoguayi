@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="zh-Hans" style="background:#f5f0e8;">
+<html lang="zh-Hans">
 <head>
-<script>if(localStorage.getItem('yaoguayi_theme')==='dark')document.documentElement.style.background='#1c1a16';</script>
+<script>if(localStorage.getItem('yaoguayi_theme')==='dark')document.documentElement.classList.add('dark-theme');</script>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>爻卦易 · 观象明理</title>
@@ -11,7 +11,7 @@
 html{scroll-behavior:smooth;}
 
 /* ===== 主题变量 ===== */
-body{
+:root{
   --bg:#f5f0e8;--bg-alt:#ede8dc;--ink:#2c2420;--ink-light:#5a4e44;
   --muted:#7a6e64;--faint:#a09080;--ghost:#c8b8a4;--whisper:#d4c8b8;
   --border:rgba(26,26,26,0.08);--border-strong:rgba(26,26,26,0.15);
@@ -20,7 +20,7 @@ body{
   --hover-bg:rgba(26,26,26,0.06);--shadow:rgba(26,26,26,0.08);
   --svg-fill:#2c2420;--svg-circle:#5c3a30;
 }
-body.dark-theme{
+:root.dark-theme{
   --bg:#1c1a16;--bg-alt:#252320;--ink:#e8e0d4;--ink-light:#ccc4b8;
   --muted:#a49c8c;--faint:#847c6c;--ghost:#5a5448;--whisper:#3e3830;
   --border:rgba(232,224,212,0.10);--border-strong:rgba(232,224,212,0.18);
@@ -582,7 +582,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   </div>
 </div>
 
-<script src="/js/theme.js?v=2"></script>
+<script src="/js/theme.js?v=3"></script>
 <script src="/js/auth.js?v=2"></script>
 <script src="/js/admin-panel.js?v=6"></script>
 <script>
