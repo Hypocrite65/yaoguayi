@@ -4,8 +4,11 @@
  * Three independent modules:
  * 1. AdminPanel: Right-side admin panel (admin-only via wrench icon)
  *    - Dynamic section IDs with hexagram-specific content index
+ *    - Global unique IDs: H{nn}-{sec} for hexagram pages, I-{sec} for index
  * 2. Notepad: Draggable floating window (all users)
  *    - Quick text editor with line numbers, auto-save to localStorage
+ *    - Pin mode: stays visible across page navigations
+ *    - Save to text file
  * 3. AIChat: AI conversation panel inside the glossary side-panel
  *    - Configurable provider/key/model, streaming API calls
  *    - Optional site content as system prompt context
@@ -22,6 +25,11 @@ const AdminPanel = (() => {
     isOpen = true;
     panel.classList.add('open');
     document.body.classList.add('admin-panel-open');
+
+    // Hide the glossary panel trigger to avoid visual overlap
+    const trigger = document.getElementById('panel-trigger');
+    if (trigger) trigger.style.display = 'none';
+
     injectBadges();
   }
 
@@ -31,6 +39,11 @@ const AdminPanel = (() => {
     isOpen = false;
     panel.classList.remove('open');
     document.body.classList.remove('admin-panel-open');
+
+    // Restore the glossary panel trigger
+    const trigger = document.getElementById('panel-trigger');
+    if (trigger) trigger.style.display = '';
+
     removeBadges();
   }
 
@@ -40,39 +53,47 @@ const AdminPanel = (() => {
     return location.pathname.includes('hexagram.html') ? 'hexagram' : 'index';
   }
 
+  /** Get zero-padded hex ID for global section IDs */
+  function getHexPrefix() {
+    if (!currentHex || !currentHex.id) return 'H00';
+    return 'H' + String(currentHex.id).padStart(2, '0');
+  }
+
   function getSections() {
     if (getPageType() === 'hexagram') {
       return buildHexagramSections();
     }
     return [
-      { id: 'I-01', name: 'Cover (封面区)', selector: '.cover' },
-      { id: 'I-02', name: 'Nav Links (导航链接)', selector: '.cover-nav' },
-      { id: 'I-03', name: 'Month Card (本月卦象)', selector: '#random-card' },
-      { id: 'I-04', name: 'Quote (封面引文)', selector: '.cover-quote' },
-      { id: 'I-05', name: 'Hex Grid (六十四卦)', selector: '#hexagrams' },
-      { id: 'I-06', name: 'Footer (页脚)', selector: '.site-footer' }
+      { id: 'I-01', name: '封面区', selector: '.cover' },
+      { id: 'I-02', name: '导航链接', selector: '.cover-nav' },
+      { id: 'I-03', name: '本月卦象', selector: '#random-card' },
+      { id: 'I-04', name: '封面引文', selector: '.cover-quote' },
+      { id: 'I-05', name: '六十四卦', selector: '#hexagrams' },
+      { id: 'I-06', name: '页脚', selector: '.site-footer' }
     ];
   }
 
   /**
    * Build dynamic section list for hexagram pages.
+   * Uses globally unique IDs: H{nn}-{sec} format.
    * Includes hexagram name prefix and yaoci sub-items.
    */
   function buildHexagramSections() {
     const prefix = currentHex ? currentHex.name : '';
+    const hp = getHexPrefix(); // e.g. H01, H02, ...H64
     const sections = [
-      { id: 'H-01', name: `${prefix} · Sidebar (卦象图)`, selector: '.hex-sidebar' },
-      { id: 'H-02', name: `${prefix} · Guaci (卦辞)`, selector: '.hex-content .section:nth-child(1)' },
-      { id: 'H-03', name: `${prefix} · Tuan (彖传)`, selector: '.hex-content .section:nth-child(2)' },
-      { id: 'H-04', name: `${prefix} · Xiang (大象传)`, selector: '.hex-content .section:nth-child(3)' },
-      { id: 'H-05', name: `${prefix} · Yaoci (爻辞)`, selector: '.hex-content .section:nth-child(4)' }
+      { id: `${hp}-01`, name: `${prefix} · 卦象图`, selector: '.hex-sidebar' },
+      { id: `${hp}-02`, name: `${prefix} · 卦辞`, selector: '.hex-content .section:nth-child(1)' },
+      { id: `${hp}-03`, name: `${prefix} · 彖传`, selector: '.hex-content .section:nth-child(2)' },
+      { id: `${hp}-04`, name: `${prefix} · 大象传`, selector: '.hex-content .section:nth-child(3)' },
+      { id: `${hp}-05`, name: `${prefix} · 爻辞`, selector: '.hex-content .section:nth-child(4)' }
     ];
 
     // Add yaoci sub-items from DOM
     if (currentHex && currentHex.yaoci) {
       currentHex.yaoci.forEach(y => {
         sections.push({
-          id: `H-05-${y.position}`,
+          id: `${hp}-05-${y.position}`,
           name: `${prefix} · ${y.name}`,
           selector: `#yao-${y.position}`,
           indent: true
@@ -80,7 +101,7 @@ const AdminPanel = (() => {
       });
     }
 
-    sections.push({ id: 'H-06', name: `${prefix} · Navigation (前后卦)`, selector: '.hex-nav' });
+    sections.push({ id: `${hp}-06`, name: `${prefix} · 前后卦导航`, selector: '.hex-nav' });
     return sections;
   }
 
@@ -107,7 +128,7 @@ const AdminPanel = (() => {
   function injectBadges() {
     removeBadges();
     getSections().forEach(sec => {
-      if (sec.indent) return; // skip sub-items for badges
+      if (sec.indent) return; // skip sub-items for main badges
       const el = document.querySelector(sec.selector);
       if (!el) return;
       if (getComputedStyle(el).position === 'static') {
@@ -123,6 +144,7 @@ const AdminPanel = (() => {
 
     // Also add badges for yaoci sub-items
     if (currentHex && currentHex.yaoci) {
+      const hp = getHexPrefix();
       currentHex.yaoci.forEach(y => {
         const el = document.querySelector(`#yao-${y.position}`);
         if (!el) return;
@@ -132,7 +154,7 @@ const AdminPanel = (() => {
         }
         const badge = document.createElement('div');
         badge.className = 'section-badge section-badge-sub';
-        badge.textContent = `H-05-${y.position}`;
+        badge.textContent = `${hp}-05-${y.position}`;
         badge.title = `${currentHex.name} · ${y.name}`;
         el.appendChild(badge);
       });
@@ -185,7 +207,9 @@ const AdminPanel = (() => {
 /* ===== Notepad: floating draggable window (all users) ===== */
 const Notepad = (() => {
   const NOTEPAD_KEY = 'yaoguayi_notepad';
+  const PIN_KEY = 'yaoguayi_notepad_pin';
   let isVisible = false;
+  let isPinned = false;
   let isDragging = false;
   let dragOffsetX = 0, dragOffsetY = 0;
   let initialized = false;
@@ -217,6 +241,20 @@ const Notepad = (() => {
 
   function toggle() { isVisible ? hide() : show(); }
 
+  function togglePin() {
+    isPinned = !isPinned;
+    localStorage.setItem(PIN_KEY, isPinned ? '1' : '');
+    updatePinButton();
+    if (isPinned && !isVisible) show();
+  }
+
+  function updatePinButton() {
+    const btn = document.getElementById('notepad-pin-btn');
+    if (!btn) return;
+    btn.title = isPinned ? '取消固定' : '固定显示';
+    btn.classList.toggle('active', isPinned);
+  }
+
   function updateLineNumbers() {
     const { area, lines } = getEls();
     if (!area || !lines) return;
@@ -230,12 +268,12 @@ const Notepad = (() => {
     const { area, count } = getEls();
     if (!area || !count) return;
     const t = area.value;
-    count.textContent = `${t.length} chars / ${t.split('\n').length} lines`;
+    count.textContent = `${t.length} 字 / ${t.split('\n').length} 行`;
   }
 
   function clear() {
     const { area } = getEls();
-    if (!area || !confirm('Clear all notepad content?')) return;
+    if (!area || !confirm('清除所有记事本内容？')) return;
     area.value = '';
     localStorage.removeItem(NOTEPAD_KEY);
     updateLineNumbers();
@@ -247,6 +285,29 @@ const Notepad = (() => {
     if (!area) return;
     area.focus();
     area.select();
+  }
+
+  /** Save notepad content as a .txt file download */
+  function saveToFile() {
+    const { area } = getEls();
+    if (!area) return;
+    const text = area.value;
+    if (!text.trim()) return;
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const now = new Date();
+    const ts = now.getFullYear() +
+      String(now.getMonth() + 1).padStart(2, '0') +
+      String(now.getDate()).padStart(2, '0') + '_' +
+      String(now.getHours()).padStart(2, '0') +
+      String(now.getMinutes()).padStart(2, '0');
+    a.download = `notepad_${ts}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   }
 
   /* Drag logic */
@@ -290,6 +351,10 @@ const Notepad = (() => {
     // Load saved content
     area.value = localStorage.getItem(NOTEPAD_KEY) || '';
 
+    // Load pin state
+    isPinned = localStorage.getItem(PIN_KEY) === '1';
+    updatePinButton();
+
     // Auto-save
     area.addEventListener('input', () => {
       localStorage.setItem(NOTEPAD_KEY, area.value);
@@ -320,9 +385,12 @@ const Notepad = (() => {
 
     updateLineNumbers();
     updateCharCount();
+
+    // If pinned, auto-show on page load
+    if (isPinned) show();
   }
 
-  return { init, show, hide, toggle, clear, selectAll };
+  return { init, show, hide, toggle, clear, selectAll, togglePin, saveToFile };
 })();
 
 
@@ -372,7 +440,7 @@ const AIChat = (() => {
     if (k) localStorage.setItem(KEYS.key, k.value);
     if (b) localStorage.setItem(KEYS.base, b.value);
     if (m) localStorage.setItem(KEYS.model, m.value);
-    if (s) { s.textContent = 'Saved'; s.className = 'ai-status saved'; setTimeout(updateStatus, 1500); }
+    if (s) { s.textContent = '已保存'; s.className = 'ai-status saved'; setTimeout(updateStatus, 1500); }
   }
 
   function clearSettings() {
@@ -392,7 +460,7 @@ const AIChat = (() => {
     const s = document.getElementById('ai-status');
     if (!s) return;
     const key = localStorage.getItem(KEYS.key);
-    s.textContent = key ? 'Configured' : 'Not configured';
+    s.textContent = key ? '已配置' : '未配置';
     s.className = key ? 'ai-status configured' : 'ai-status';
   }
 
@@ -401,7 +469,7 @@ const AIChat = (() => {
     const t = document.getElementById('ai-key-toggle');
     if (!k || !t) return;
     k.type = k.type === 'password' ? 'text' : 'password';
-    t.textContent = k.type === 'password' ? 'Show' : 'Hide';
+    t.textContent = k.type === 'password' ? '显示' : '隐藏';
   }
 
   function toggleExpand() {
@@ -428,7 +496,7 @@ const AIChat = (() => {
     if (b && (!b.value || allBases.includes(b.value))) {
       b.value = DEFAULT_BASES[pv] || '';
     }
-    if (m) m.placeholder = DEFAULT_MODELS[pv] || 'model name';
+    if (m) m.placeholder = DEFAULT_MODELS[pv] || '模型名称';
     if (b) b.placeholder = DEFAULT_BASES[pv] || 'https://...';
   }
 
@@ -483,7 +551,7 @@ const AIChat = (() => {
     const list = document.getElementById('ai-chat-messages');
     if (!list) return;
     if (messages.length === 0) {
-      list.innerHTML = '<div class="ai-chat-empty">Ask a question about this hexagram...</div>';
+      list.innerHTML = '<div class="ai-chat-empty">询问关于此卦的问题...</div>';
       return;
     }
     list.innerHTML = messages.map(renderMessage).join('');
@@ -519,7 +587,7 @@ const AIChat = (() => {
     if (!settings.key) {
       toggleExpand(); // show settings if collapsed
       const s = document.getElementById('ai-status');
-      if (s) { s.textContent = 'Please configure API key first'; s.className = 'ai-status'; }
+      if (s) { s.textContent = '请先配置 API 密钥'; s.className = 'ai-status'; }
       return;
     }
 
@@ -544,13 +612,13 @@ const AIChat = (() => {
       }
     } catch (err) {
       if (err.name === 'AbortError') {
-        appendToLastMessage('\n[Stopped]');
+        appendToLastMessage('\n[已停止]');
       } else {
         const lastMsg = messages[messages.length - 1];
         if (lastMsg && lastMsg.role === 'assistant' && !lastMsg.content) {
-          lastMsg.content = `Error: ${err.message}`;
+          lastMsg.content = `错误: ${err.message}`;
         } else {
-          appendToLastMessage(`\n\nError: ${err.message}`);
+          appendToLastMessage(`\n\n错误: ${err.message}`);
         }
         renderMessages();
       }
@@ -714,7 +782,7 @@ const AIChat = (() => {
     if (p) { p.value = settings.provider; p.addEventListener('change', onProviderChange); }
     if (k) k.value = settings.key;
     if (b) { b.value = settings.base; b.placeholder = DEFAULT_BASES[settings.provider] || 'https://...'; }
-    if (m) { m.value = settings.model; m.placeholder = DEFAULT_MODELS[settings.provider] || 'model name'; }
+    if (m) { m.value = settings.model; m.placeholder = DEFAULT_MODELS[settings.provider] || '模型名称'; }
     updateStatus();
 
     // Auto-collapse settings if already configured
