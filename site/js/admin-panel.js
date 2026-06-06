@@ -32,6 +32,7 @@ const AdminPanel = (() => {
     if (!panel) return;
     isOpen = true;
     panel.classList.add('open');
+    document.body.classList.add('admin-panel-open');
     if (trigger) trigger.classList.add('hidden');
     switchTab(activeTab);
   }
@@ -41,6 +42,7 @@ const AdminPanel = (() => {
     if (!panel) return;
     isOpen = false;
     panel.classList.remove('open');
+    document.body.classList.remove('admin-panel-open');
     if (trigger) trigger.classList.remove('hidden');
     removeBadges();
   }
