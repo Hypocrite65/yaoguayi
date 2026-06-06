@@ -89,9 +89,9 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 
 /* ===== Cover: full viewport ===== */
 .cover{
-  width:100%;height:100vh;
+  width:100%;min-height:100vh;
   display:flex;flex-direction:column;
-  justify-content:center;align-items:center;
+  align-items:center;
   position:relative;
   background:var(--bg);
 }
@@ -99,6 +99,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 /* Cover parallax: content fades out + drifts up on scroll */
 .cover-inner{
   display:flex;flex-direction:column;align-items:center;
+  flex:1;justify-content:center;
   transition:opacity 0.1s,transform 0.1s;
   will-change:opacity,transform;
 }
@@ -122,8 +123,8 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 /* Title */
 .cover-title{font-size:48px;letter-spacing:0.2em;color:var(--ink);
   font-weight:400;margin-bottom:20px;text-align:center;}
-.cover-sub{font-size:13px;letter-spacing:0.12em;color:var(--muted);
-  line-height:2.2;text-align:center;margin-bottom:44px;}
+.cover-sub{font-size:14px;letter-spacing:0.3em;color:var(--muted);
+  text-align:center;margin-bottom:44px;}
 
 /* Navigation row */
 .cover-nav{display:flex;gap:32px;margin-bottom:56px;}
@@ -135,7 +136,8 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 .cover-nav a:hover{color:var(--vermilion);border-bottom-color:var(--vermilion);transform:translateY(-1px);}
 
 /* Quote at bottom */
-.cover-quote{position:absolute;bottom:80px;
+.cover-quote{
+  padding:20px 0;
   font-size:11px;letter-spacing:0.16em;color:var(--ghost);
   text-align:center;line-height:2.2;}
 .cover-quote em{font-style:normal;font-size:10px;color:var(--whisper);}
@@ -169,7 +171,8 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 .random-card:hover .random-arrow{transform:translateX(6px);color:var(--vermilion);}
 
 /* Scroll hint */
-.scroll-hint{position:absolute;bottom:32px;
+.scroll-hint{
+  padding-bottom:32px;
   display:flex;flex-direction:column;align-items:center;gap:6px;
   color:var(--ghost);font-size:9px;letter-spacing:0.2em;
   animation:hintPulse 2.5s ease-in-out infinite;
@@ -310,8 +313,8 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 @media(max-width:768px){
   .cover-title{font-size:32px;}
   .cover-nav{gap:20px;flex-wrap:wrap;justify-content:center;}
-  .cover-quote{position:static;margin-top:40px;}
-  .scroll-hint{position:static;margin-top:24px;}
+  .cover-quote{padding:16px 0;}
+  .scroll-hint{padding-bottom:20px;}
   .hex-grid{grid-template-columns:repeat(4,1fr);}
   .hex-section{padding:28px 16px 16px;}
 }
@@ -408,10 +411,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
     </div>
 
     <h1 class="cover-title fade-in d2">观 象 明 理</h1>
-    <p class="cover-sub fade-in d3">
-      在 AI 加速的时代，用三千年的智慧定一定位。<br>
-      不是占卜，是观象。
-    </p>
+    <p class="cover-sub fade-in d3">清本溯源</p>
 
     <nav class="cover-nav fade-in d4">
       <a href="#hexagrams">六十四卦</a>
@@ -502,7 +502,7 @@ const monthInfo = MONTH_HEX[d.getMonth()];
 const monthHexId = monthInfo.id;
 
 /* 加载卦象数据并渲染页面 */
-fetch('/data/hexagrams.json?v=2')
+fetch('/data/hexagrams.json?v=3')
   .then(r => r.json())
   .then(hexagrams => {
     renderRandomCard(hexagrams);
