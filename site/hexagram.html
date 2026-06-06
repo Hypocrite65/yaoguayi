@@ -352,7 +352,57 @@ ruby rt{font-size:10px;color:var(--faint);font-family:'Noto Sans SC',system-ui,s
 .ai-config-label{flex:1;}
 .ai-config-body{padding:12px;display:flex;flex-direction:column;gap:12px;}
 .ai-config-body.collapsed{display:none;}
-.panel-ai-body{padding:16px;}
+.panel-ai-body{padding:0;display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden;}
+
+/* AI Chat */
+.ai-chat-area{display:flex;flex-direction:column;flex:1;min-height:0;padding:0 12px 12px;}
+.ai-chat-context{display:flex;align-items:center;gap:6px;padding:10px 12px;
+  border-bottom:0.5px solid var(--border);flex-shrink:0;cursor:default;}
+.ai-chat-context label{display:flex;align-items:center;gap:6px;cursor:pointer;
+  font-size:11px;color:var(--ink-light);
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.ai-chat-context input[type=checkbox]{accent-color:var(--vermilion);cursor:pointer;}
+.ai-chat-messages{flex:1;overflow-y:auto;display:flex;flex-direction:column;
+  gap:10px;padding:12px 0;min-height:0;}
+.ai-chat-empty{color:var(--ghost);font-size:11px;text-align:center;
+  padding:32px 12px;line-height:1.6;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.ai-msg{padding:8px 12px;border-radius:8px;font-size:12px;line-height:1.6;
+  word-break:break-word;max-width:90%;
+  font-family:'Noto Serif SC','Source Han Serif SC',serif;}
+.ai-msg code{background:var(--bg-alt);padding:1px 4px;border-radius:3px;
+  font-size:11px;font-family:'Cascadia Code','Fira Code','Consolas',monospace;}
+.ai-msg-user{align-self:flex-end;background:var(--vermilion-faint);
+  color:var(--ink);border-bottom-right-radius:2px;}
+.ai-msg-assistant{align-self:flex-start;background:var(--bg-alt);
+  color:var(--ink);border-bottom-left-radius:2px;}
+.ai-chat-input-row{display:flex;gap:6px;flex-shrink:0;padding-top:8px;
+  border-top:0.5px solid var(--border);}
+.ai-chat-input{flex:1;resize:none;border:0.5px solid var(--border);
+  border-radius:6px;padding:8px 10px;background:var(--bg-alt);color:var(--ink);
+  font-size:12px;line-height:1.4;outline:none;
+  font-family:'Noto Serif SC','Source Han Serif SC',serif;
+  min-height:36px;max-height:80px;transition:border-color 0.2s;}
+.ai-chat-input:focus{border-color:var(--vermilion);}
+.ai-chat-input:disabled{opacity:0.6;}
+.ai-chat-send,.ai-chat-stop{width:36px;height:36px;border-radius:6px;
+  border:0.5px solid var(--border);background:none;color:var(--muted);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background 0.15s,color 0.15s,border-color 0.15s;flex-shrink:0;}
+.ai-chat-send:hover{background:var(--vermilion-faint);color:var(--vermilion);border-color:var(--vermilion);}
+.ai-chat-stop{display:none;color:var(--vermilion);border-color:var(--vermilion);}
+.ai-chat-stop:hover{background:var(--vermilion-faint);}
+.ai-chat-clear{border:none;background:none;color:var(--ghost);cursor:pointer;
+  font-size:9px;letter-spacing:0.06em;padding:2px 4px;transition:color 0.15s;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.ai-chat-clear:hover{color:var(--vermilion);}
+.ai-config-section{margin:12px;flex-shrink:0;}
+
+/* Admin sub-items */
+.section-item-sub{padding-left:28px;}
+.section-item-sub .section-item-id{font-size:9px;background:transparent;
+  color:var(--muted);padding:2px 4px;}
+.section-badge-sub{font-size:8px;opacity:0.7;background:var(--ink-light);}
 
 /* Floating Notepad */
 .notepad-window{position:fixed;right:24px;bottom:24px;width:380px;height:320px;
@@ -501,15 +551,16 @@ body.admin-panel-open.panel-open .hex-detail{margin-right:620px;}
   </div>
   <div class="panel-tabs">
     <div class="panel-tab active" data-tab="meaning" onclick="SidePanel.switchTab('meaning')">词义</div>
-    <div class="panel-tab" data-tab="ai" onclick="SidePanel.switchTab('ai')">AI 设置</div>
+    <div class="panel-tab" data-tab="ai" onclick="SidePanel.switchTab('ai')">AI</div>
   </div>
   <div class="panel-body" id="panel-body">
     <div class="panel-placeholder">点击经文中带下划线的词语<br>查看详细释义</div>
   </div>
-  <!-- AI Config tab content (hidden by default, shown via switchTab) -->
+  <!-- AI tab content (hidden by default, shown via switchTab) -->
   <div class="panel-body panel-ai-body" id="panel-ai-body" style="display:none;">
+    <!-- Collapsible settings -->
     <div class="ai-config-section">
-      <div class="ai-config-header" onclick="AISettings.toggleExpand()">
+      <div class="ai-config-header" onclick="AIChat.toggleExpand()">
         <span id="ai-config-toggle">▾</span>
         <span class="ai-config-label">AI API Configuration</span>
         <span class="ai-status" id="ai-status">Not configured</span>
@@ -517,13 +568,35 @@ body.admin-panel-open.panel-open .hex-detail{margin-right:620px;}
       <div class="ai-config-body" id="ai-config-body">
         <div class="ai-form">
           <div class="ai-field"><label class="ai-label">PROVIDER</label>
-            <select class="ai-select" id="ai-provider"><option value="openai">OpenAI</option><option value="anthropic">Anthropic</option><option value="custom">Custom</option></select></div>
+            <select class="ai-select" id="ai-provider" onchange="AIChat.onProviderChange()"><option value="openai">OpenAI</option><option value="anthropic">Anthropic</option><option value="custom">Custom</option></select></div>
+          <div class="ai-field"><label class="ai-label">MODEL</label>
+            <input class="ai-input" id="ai-model" type="text" placeholder="gpt-4o-mini"></div>
           <div class="ai-field"><label class="ai-label">API KEY</label>
-            <div class="ai-key-row"><input class="ai-input" id="ai-key" type="password" placeholder="sk-..." autocomplete="off"><button class="ai-key-toggle" id="ai-key-toggle" onclick="AISettings.toggleKey()">Show</button></div></div>
+            <div class="ai-key-row"><input class="ai-input" id="ai-key" type="password" placeholder="sk-..." autocomplete="off"><button class="ai-key-toggle" id="ai-key-toggle" onclick="AIChat.toggleKey()">Show</button></div></div>
           <div class="ai-field"><label class="ai-label">BASE URL (optional)</label>
             <input class="ai-input" id="ai-base" type="text" placeholder="https://api.openai.com/v1"></div>
-          <div class="ai-actions"><button class="ai-btn primary" onclick="AISettings.save()">Save</button><button class="ai-btn" onclick="AISettings.clear()">Clear</button></div>
+          <div class="ai-actions"><button class="ai-btn primary" onclick="AIChat.saveSettings()">Save</button><button class="ai-btn" onclick="AIChat.clearSettings()">Clear</button></div>
         </div>
+      </div>
+    </div>
+    <!-- Context checkbox -->
+    <div class="ai-chat-context">
+      <label><input type="checkbox" id="ai-include-context" checked> Include hexagram content as context</label>
+      <button class="ai-chat-clear" onclick="AIChat.clearChat()">Clear chat</button>
+    </div>
+    <!-- Chat area -->
+    <div class="ai-chat-area">
+      <div class="ai-chat-messages" id="ai-chat-messages">
+        <div class="ai-chat-empty">Ask a question about this hexagram...</div>
+      </div>
+      <div class="ai-chat-input-row">
+        <textarea class="ai-chat-input" id="ai-chat-input" placeholder="Type a message..." rows="1"></textarea>
+        <button class="ai-chat-send" id="ai-chat-send" onclick="AIChat.send()" title="Send">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+        <button class="ai-chat-stop" id="ai-chat-stop" onclick="AIChat.stopStreaming()" title="Stop">
+          <svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+        </button>
       </div>
     </div>
   </div>
@@ -545,15 +618,8 @@ body.admin-panel-open.panel-open .hex-detail{margin-right:620px;}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
   </div>
-  <div class="admin-body">
-    <ul class="section-list">
-      <li class="section-item" onclick="AdminPanel.scrollToSection('H-01')"><span class="section-item-id">H-01</span><span class="section-item-name">Sidebar (卦象图)</span></li>
-      <li class="section-item" onclick="AdminPanel.scrollToSection('H-02')"><span class="section-item-id">H-02</span><span class="section-item-name">Guaci (卦辞)</span></li>
-      <li class="section-item" onclick="AdminPanel.scrollToSection('H-03')"><span class="section-item-id">H-03</span><span class="section-item-name">Tuan (彖传)</span></li>
-      <li class="section-item" onclick="AdminPanel.scrollToSection('H-04')"><span class="section-item-id">H-04</span><span class="section-item-name">Xiang (大象传)</span></li>
-      <li class="section-item" onclick="AdminPanel.scrollToSection('H-05')"><span class="section-item-id">H-05</span><span class="section-item-name">Yaoci (爻辞)</span></li>
-      <li class="section-item" onclick="AdminPanel.scrollToSection('H-06')"><span class="section-item-id">H-06</span><span class="section-item-name">Navigation (前后卦)</span></li>
-    </ul>
+  <div class="admin-body" id="admin-sections">
+    <!-- Dynamically populated by AdminPanel.updateSectionList() -->
   </div>
 </div>
 
@@ -591,8 +657,7 @@ let footnoteCounter = 0; // 全局角标计数器
 YaoguayiAuth.init(() => {
   document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
   AdminPanel.init();
-  Notepad.init();
-  AISettings.init();
+  AIChat.init();
 });
 
 /* ===== 加载数据 ===== */
@@ -669,8 +734,13 @@ const SidePanel = {
     const meaningBody = document.getElementById('panel-body');
     const aiBody = document.getElementById('panel-ai-body');
     if (meaningBody) meaningBody.style.display = tab === 'meaning' ? '' : 'none';
-    if (aiBody) aiBody.style.display = tab === 'ai' ? '' : 'none';
-    if (tab === 'ai' && !this.isOpen) this.open(null, null);
+    if (aiBody) aiBody.style.display = tab === 'ai' ? 'flex' : 'none';
+    if (tab === 'ai' && !this.isOpen) {
+      this.el.classList.add('open');
+      this.trigger.classList.add('hidden');
+      document.body.classList.add('panel-open');
+      this.isOpen = true;
+    }
   }
 };
 
@@ -867,6 +937,9 @@ function renderHexagram(hex, all) {
     });
   }
 
+  // Update admin section list and AI context with hex data
+  AdminPanel.updateSectionList(hex);
+  AIChat.setHexData(hex);
 }
 
 /**

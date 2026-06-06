@@ -548,15 +548,8 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
   </div>
-  <div class="admin-body">
-    <ul class="section-list">
-      <li class="section-item" onclick="AdminPanel.scrollToSection('I-01')"><span class="section-item-id">I-01</span><span class="section-item-name">Cover (封面区)</span></li>
-      <li class="section-item" onclick="AdminPanel.scrollToSection('I-02')"><span class="section-item-id">I-02</span><span class="section-item-name">Nav Links (导航链接)</span></li>
-      <li class="section-item" onclick="AdminPanel.scrollToSection('I-03')"><span class="section-item-id">I-03</span><span class="section-item-name">Month Card (本月卦象)</span></li>
-      <li class="section-item" onclick="AdminPanel.scrollToSection('I-04')"><span class="section-item-id">I-04</span><span class="section-item-name">Quote (封面引文)</span></li>
-      <li class="section-item" onclick="AdminPanel.scrollToSection('I-05')"><span class="section-item-id">I-05</span><span class="section-item-name">Hex Grid (六十四卦)</span></li>
-      <li class="section-item" onclick="AdminPanel.scrollToSection('I-06')"><span class="section-item-id">I-06</span><span class="section-item-name">Footer (页脚)</span></li>
-    </ul>
+  <div class="admin-body" id="admin-sections">
+    <!-- Dynamically populated by AdminPanel.init() -->
   </div>
 </div>
 
@@ -597,7 +590,6 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 YaoguayiAuth.init(() => {
   document.querySelectorAll('.cover .fade-in').forEach(el => el.classList.add('visible'));
   AdminPanel.init();
-  Notepad.init();
 });
 
 /**
