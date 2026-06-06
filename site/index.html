@@ -325,17 +325,8 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   color:var(--muted);transition:background 0.2s,color 0.2s;}
 .admin-close:hover{background:var(--hover-bg);color:var(--vermilion);}
 .admin-close svg{width:16px;height:16px;}
-.admin-tabs{display:flex;border-bottom:0.5px solid var(--border);flex-shrink:0;}
-.admin-tab{flex:1;padding:10px 0;text-align:center;font-size:10px;letter-spacing:0.1em;
-  color:var(--ghost);cursor:pointer;border-bottom:2px solid transparent;
-  transition:color 0.2s,border-color 0.2s;
-  font-family:'Noto Sans SC',system-ui,sans-serif;}
-.admin-tab:hover{color:var(--muted);}
-.admin-tab.active{color:var(--vermilion);border-bottom-color:var(--vermilion);}
-.admin-tab-content{display:none;flex:1;overflow-y:auto;padding:16px;}
-.admin-tab-content.active{display:flex;flex-direction:column;}
-
 /* Admin Panel: Section list */
+.admin-body{flex:1;overflow-y:auto;padding:16px;}
 .section-list{list-style:none;display:flex;flex-direction:column;gap:2px;}
 .section-item{display:flex;align-items:center;gap:10px;padding:8px 10px;
   border-radius:4px;cursor:pointer;transition:background 0.15s;}
@@ -354,49 +345,35 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   letter-spacing:0.05em;pointer-events:none;opacity:0.85;
   box-shadow:0 1px 4px rgba(0,0,0,0.2);}
 
-/* Admin Panel: AI settings */
-.ai-form{display:flex;flex-direction:column;gap:14px;}
-.ai-field{display:flex;flex-direction:column;gap:4px;}
-.ai-label{font-size:10px;letter-spacing:0.1em;color:var(--faint);
-  font-family:'Noto Sans SC',system-ui,sans-serif;}
-.ai-select,.ai-input{background:var(--bg-alt);border:0.5px solid var(--border);
-  border-radius:4px;padding:8px 10px;color:var(--ink);
-  font-size:12px;font-family:'Noto Serif SC',serif;
-  transition:border-color 0.2s;outline:none;}
-.ai-select:focus,.ai-input:focus{border-color:var(--vermilion);}
-.ai-key-row{display:flex;gap:6px;align-items:center;}
-.ai-key-row .ai-input{flex:1;}
-.ai-key-toggle{font-size:9px;color:var(--muted);cursor:pointer;
-  padding:4px 6px;border:0.5px solid var(--border);border-radius:3px;
-  background:none;transition:color 0.2s;white-space:nowrap;}
-.ai-key-toggle:hover{color:var(--vermilion);}
-.ai-actions{display:flex;gap:8px;}
-.ai-btn{flex:1;padding:8px 0;border:0.5px solid var(--border);border-radius:4px;
-  background:none;color:var(--ink-light);font-size:10px;letter-spacing:0.1em;
-  cursor:pointer;transition:background 0.2s,color 0.2s,border-color 0.2s;
-  font-family:'Noto Sans SC',system-ui,sans-serif;}
-.ai-btn:hover{background:var(--hover-bg);border-color:var(--vermilion);color:var(--vermilion);}
-.ai-btn.primary{background:var(--vermilion-faint);color:var(--vermilion);
-  border-color:var(--vermilion);}
-.ai-btn.primary:hover{background:var(--vermilion);color:#fff;}
-.ai-status{font-size:9px;letter-spacing:0.1em;color:var(--ghost);
-  text-align:center;padding:4px 0;}
-.ai-status.configured{color:var(--vermilion);}
-.ai-status.saved{color:var(--vermilion);font-weight:600;}
-
-/* Admin Panel: Notepad */
-.notepad-toolbar{display:flex;align-items:center;gap:6px;padding-bottom:8px;
-  border-bottom:0.5px solid var(--border);margin-bottom:8px;flex-shrink:0;}
-.notepad-btn{padding:4px 8px;border:0.5px solid var(--border);border-radius:3px;
+/* ===== Floating Notepad Window ===== */
+.notepad-window{position:fixed;right:24px;bottom:24px;width:380px;height:320px;
+  z-index:150;display:none;flex-direction:column;
+  background:var(--bg);border:0.5px solid var(--border-strong);
+  border-radius:6px;box-shadow:0 8px 32px var(--shadow);
+  transition:opacity 0.2s;overflow:hidden;}
+.notepad-window.visible{display:flex;}
+.notepad-titlebar{display:flex;align-items:center;justify-content:space-between;
+  padding:8px 12px;background:var(--bg-alt);cursor:grab;user-select:none;
+  border-bottom:0.5px solid var(--border);flex-shrink:0;}
+.notepad-titlebar:active{cursor:grabbing;}
+.notepad-title{font-size:10px;letter-spacing:0.14em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:500;}
+.notepad-close{width:24px;height:24px;border:none;background:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;border-radius:4px;
+  color:var(--muted);transition:background 0.2s,color 0.2s;}
+.notepad-close:hover{background:var(--hover-bg);color:var(--vermilion);}
+.notepad-close svg{width:14px;height:14px;}
+.notepad-toolbar{display:flex;align-items:center;gap:6px;padding:6px 12px;
+  border-bottom:0.5px solid var(--border);flex-shrink:0;}
+.notepad-btn{padding:3px 7px;border:0.5px solid var(--border);border-radius:3px;
   background:none;color:var(--muted);font-size:9px;letter-spacing:0.06em;
   cursor:pointer;transition:background 0.15s,color 0.15s;
   font-family:'Noto Sans SC',system-ui,sans-serif;}
 .notepad-btn:hover{background:var(--hover-bg);color:var(--vermilion);}
 .notepad-count{margin-left:auto;font-size:9px;color:var(--ghost);
   font-family:'Cascadia Code','Fira Code','Consolas',monospace;}
-.notepad-wrap{display:flex;flex:1;border:0.5px solid var(--border);
-  border-radius:4px;overflow:hidden;min-height:0;}
-.notepad-lines{width:36px;flex-shrink:0;padding:8px 4px;
+.notepad-body{display:flex;flex:1;min-height:0;}
+.notepad-lines{width:32px;flex-shrink:0;padding:8px 4px;
   background:var(--bg-alt);color:var(--ghost);
   font-size:11px;line-height:1.5;text-align:right;
   font-family:'Cascadia Code','Fira Code','Consolas',monospace;
@@ -406,17 +383,6 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   font-size:11px;line-height:1.5;
   font-family:'Cascadia Code','Fira Code','Consolas',monospace;
   overflow-y:auto;}
-
-/* Admin trigger (right edge tab) */
-.admin-trigger{position:fixed;right:0;top:50%;transform:translateY(-50%);
-  z-index:89;writing-mode:vertical-rl;
-  padding:10px 5px;font-size:10px;letter-spacing:0.12em;
-  background:var(--bg-alt);color:var(--muted);
-  border:0.5px solid var(--border);border-right:none;
-  border-radius:4px 0 0 4px;cursor:pointer;
-  transition:background 0.2s,color 0.2s;display:none;}
-.admin-trigger:hover{background:var(--bg);color:var(--vermilion);}
-.admin-trigger.hidden{opacity:0;pointer-events:none;}
 
 /* ===== Responsive: short viewport (1080p and below) ===== */
 @media(max-height:800px){
@@ -501,12 +467,8 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           Browsing History
         </a>
-        <a class="dropdown-item" onclick="closeAccountMenu();AdminPanel.open();AdminPanel.switchTab('ai');">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          AI API Key
-        </a>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item" onclick="closeAccountMenu();AdminPanel.open();AdminPanel.switchTab('notepad');">
+        <a class="dropdown-item" onclick="closeAccountMenu();Notepad.toggle();">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
           Notepad
         </a>
@@ -578,8 +540,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   </div>
 </footer>
 
-<!-- ===== Admin Panel (right sidebar) ===== -->
-<div class="admin-trigger" id="admin-trigger" onclick="AdminPanel.toggle()">Admin</div>
+<!-- ===== Admin Panel (right sidebar, admin-only) ===== -->
 <div class="admin-panel" id="admin-panel">
   <div class="admin-header">
     <span class="admin-header-title">ADMIN TOOLS</span>
@@ -587,15 +548,8 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
   </div>
-  <div class="admin-tabs">
-    <div class="admin-tab active" data-tab="sections" onclick="AdminPanel.switchTab('sections')">Sections</div>
-    <div class="admin-tab" data-tab="ai" onclick="AdminPanel.switchTab('ai')">AI</div>
-    <div class="admin-tab" data-tab="notepad" onclick="AdminPanel.switchTab('notepad')">Notepad</div>
-  </div>
-
-  <!-- Tab 1: Section IDs -->
-  <div class="admin-tab-content active" data-tab="sections">
-    <ul class="section-list" id="admin-section-list">
+  <div class="admin-body">
+    <ul class="section-list">
       <li class="section-item" onclick="AdminPanel.scrollToSection('I-01')"><span class="section-item-id">I-01</span><span class="section-item-name">Cover (封面区)</span></li>
       <li class="section-item" onclick="AdminPanel.scrollToSection('I-02')"><span class="section-item-id">I-02</span><span class="section-item-name">Nav Links (导航链接)</span></li>
       <li class="section-item" onclick="AdminPanel.scrollToSection('I-03')"><span class="section-item-id">I-03</span><span class="section-item-name">Month Card (本月卦象)</span></li>
@@ -604,49 +558,25 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
       <li class="section-item" onclick="AdminPanel.scrollToSection('I-06')"><span class="section-item-id">I-06</span><span class="section-item-name">Footer (页脚)</span></li>
     </ul>
   </div>
-
-  <!-- Tab 2: AI Settings -->
-  <div class="admin-tab-content" data-tab="ai">
-    <div class="ai-form">
-      <div class="ai-field">
-        <label class="ai-label">PROVIDER</label>
-        <select class="ai-select" id="ai-provider">
-          <option value="openai">OpenAI</option>
-          <option value="anthropic">Anthropic</option>
-          <option value="custom">Custom</option>
-        </select>
-      </div>
-      <div class="ai-field">
-        <label class="ai-label">API KEY</label>
-        <div class="ai-key-row">
-          <input class="ai-input" id="ai-key" type="password" placeholder="sk-..." autocomplete="off">
-          <button class="ai-key-toggle" id="ai-key-toggle" onclick="AdminPanel.toggleKeyVisibility()">Show</button>
-        </div>
-      </div>
-      <div class="ai-field">
-        <label class="ai-label">BASE URL (optional)</label>
-        <input class="ai-input" id="ai-base" type="text" placeholder="https://api.openai.com/v1">
-      </div>
-      <div class="ai-actions">
-        <button class="ai-btn primary" onclick="AdminPanel.saveAISettings()">Save</button>
-        <button class="ai-btn" onclick="AdminPanel.clearAISettings()">Clear</button>
-      </div>
-      <div class="ai-status" id="ai-status">Not configured</div>
-    </div>
-  </div>
-
-  <!-- Tab 3: Notepad -->
-  <div class="admin-tab-content" data-tab="notepad">
-    <div class="notepad-toolbar">
-      <button class="notepad-btn" onclick="AdminPanel.selectAllNotepad()">Select All</button>
-      <button class="notepad-btn" onclick="AdminPanel.clearNotepad()">Clear</button>
-      <span class="notepad-count" id="admin-char-count">0 chars / 1 lines</span>
-    </div>
-    <div class="notepad-wrap">
-      <div class="notepad-lines" id="admin-line-numbers">1
 </div>
-      <textarea class="notepad-area" id="admin-notepad" placeholder="Quick notes..." spellcheck="false"></textarea>
-    </div>
+
+<!-- ===== Floating Notepad (all users) ===== -->
+<div class="notepad-window" id="notepad-window">
+  <div class="notepad-titlebar">
+    <span class="notepad-title">NOTEPAD</span>
+    <button class="notepad-close" onclick="Notepad.hide()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="notepad-toolbar">
+    <button class="notepad-btn" onclick="Notepad.selectAll()">Select All</button>
+    <button class="notepad-btn" onclick="Notepad.clear()">Clear</button>
+    <span class="notepad-count" id="notepad-count">0 chars / 1 lines</span>
+  </div>
+  <div class="notepad-body">
+    <div class="notepad-lines" id="notepad-lines">1
+</div>
+    <textarea class="notepad-area" id="notepad-area" placeholder="Quick notes..." spellcheck="false"></textarea>
   </div>
 </div>
 
@@ -667,6 +597,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 YaoguayiAuth.init(() => {
   document.querySelectorAll('.cover .fade-in').forEach(el => el.classList.add('visible'));
   AdminPanel.init();
+  Notepad.init();
 });
 
 /**

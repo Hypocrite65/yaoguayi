@@ -1,99 +1,43 @@
 /**
- * admin-panel.js — Admin tool panel module
+ * admin-panel.js — Admin panel + floating notepad + AI settings modules
  *
- * Provides a right-side admin panel with three tabs:
- * 1. Section IDs: Display section badges on page elements for quick reference
- * 2. AI Settings: Configure AI API provider, key, and base URL
- * 3. Notepad: Quick scratchpad with line numbers and auto-save
- *
- * Only visible when authenticated (yaoguayi_dev_auth === 'true').
- * Panel state and notepad content persisted in localStorage.
+ * Three independent modules:
+ * 1. AdminPanel: Right-side admin panel (admin-only via wrench icon)
+ *    - Section IDs badge overlay for quick reference
+ * 2. Notepad: Draggable floating window (all users)
+ *    - Quick text editor with line numbers, auto-save to localStorage
+ * 3. AISettings: Collapsible config section inside the glossary side-panel
+ *    - Provider, API Key (hidden), Base URL, persisted in localStorage
  */
 
+/* ===== AdminPanel: admin-only section IDs ===== */
 const AdminPanel = (() => {
-  /* ===== State ===== */
   let isOpen = false;
-  let activeTab = 'sections';
-  let badgesVisible = false;
 
-  /* ===== DOM references (lazy) ===== */
-  let panel, trigger, notepadEl, lineNumEl;
-
-  function getEl() {
-    panel = document.getElementById('admin-panel');
-    trigger = document.getElementById('admin-trigger');
-    notepadEl = document.getElementById('admin-notepad');
-    lineNumEl = document.getElementById('admin-line-numbers');
-  }
-
-  /* ===== Open / Close ===== */
   function open() {
-    getEl();
+    const panel = document.getElementById('admin-panel');
     if (!panel) return;
     isOpen = true;
     panel.classList.add('open');
     document.body.classList.add('admin-panel-open');
-    if (trigger) trigger.classList.add('hidden');
-    switchTab(activeTab);
+    injectBadges();
   }
 
   function close() {
-    getEl();
+    const panel = document.getElementById('admin-panel');
     if (!panel) return;
     isOpen = false;
     panel.classList.remove('open');
     document.body.classList.remove('admin-panel-open');
-    if (trigger) trigger.classList.remove('hidden');
     removeBadges();
   }
 
-  function toggle() {
-    isOpen ? close() : open();
-  }
+  function toggle() { isOpen ? close() : open(); }
 
-  /* ===== Tab switching ===== */
-  function switchTab(tab) {
-    activeTab = tab;
-    getEl();
-    if (!panel) return;
-
-    // Update tab active state
-    panel.querySelectorAll('.admin-tab').forEach(t => {
-      t.classList.toggle('active', t.dataset.tab === tab);
-    });
-
-    // Show corresponding content
-    panel.querySelectorAll('.admin-tab-content').forEach(c => {
-      c.classList.toggle('active', c.dataset.tab === tab);
-    });
-
-    // Toggle section badges
-    if (tab === 'sections') {
-      injectBadges();
-    } else {
-      removeBadges();
-    }
-
-    // Initialize notepad line numbers on first show
-    if (tab === 'notepad' && notepadEl) {
-      updateLineNumbers();
-    }
-  }
-
-  /* ===== Tab 1: Section Badges ===== */
-
-  /**
-   * Detect current page type based on URL path
-   */
   function getPageType() {
-    const path = location.pathname;
-    if (path.includes('hexagram.html')) return 'hexagram';
-    return 'index';
+    return location.pathname.includes('hexagram.html') ? 'hexagram' : 'index';
   }
 
-  /**
-   * Get section definitions for the current page
-   */
   function getSections() {
     if (getPageType() === 'hexagram') {
       return [
@@ -115,259 +59,282 @@ const AdminPanel = (() => {
     ];
   }
 
-  /**
-   * Inject badge overlays on each section element
-   */
   function injectBadges() {
     removeBadges();
-    const sections = getSections();
-    sections.forEach(sec => {
+    getSections().forEach(sec => {
       const el = document.querySelector(sec.selector);
       if (!el) return;
-
-      // Ensure the element has position for absolute badge
-      const pos = getComputedStyle(el).position;
-      if (pos === 'static') {
+      if (getComputedStyle(el).position === 'static') {
         el.style.position = 'relative';
         el.dataset.adminResetPos = 'true';
       }
-
       const badge = document.createElement('div');
       badge.className = 'section-badge';
       badge.textContent = sec.id;
       badge.title = sec.name;
       el.appendChild(badge);
     });
-    badgesVisible = true;
   }
 
-  /**
-   * Remove all badge overlays
-   */
   function removeBadges() {
     document.querySelectorAll('.section-badge').forEach(b => b.remove());
     document.querySelectorAll('[data-admin-reset-pos]').forEach(el => {
       el.style.position = '';
       delete el.dataset.adminResetPos;
     });
-    badgesVisible = false;
   }
 
-  /**
-   * Scroll to a section by its ID code
-   */
   function scrollToSection(sectionId) {
-    const sections = getSections();
-    const sec = sections.find(s => s.id === sectionId);
+    const sec = getSections().find(s => s.id === sectionId);
     if (!sec) return;
     const el = document.querySelector(sec.selector);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      // Brief highlight effect
       el.style.outline = '2px solid var(--vermilion)';
       el.style.outlineOffset = '4px';
-      setTimeout(() => {
-        el.style.outline = '';
-        el.style.outlineOffset = '';
-      }, 2000);
+      setTimeout(() => { el.style.outline = ''; el.style.outlineOffset = ''; }, 2000);
     }
   }
 
-  /* ===== Tab 2: AI Settings ===== */
+  function init() {
+    if (!YaoguayiAuth.isAuthenticated()) return;
+    const navWrench = document.getElementById('admin-nav-btn');
+    if (navWrench) navWrench.style.display = '';
 
-  const AI_KEYS = {
-    provider: 'yaoguayi_ai_provider',
-    key: 'yaoguayi_ai_key',
-    base: 'yaoguayi_ai_base'
-  };
+    // Ctrl+Shift+A shortcut
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+        e.preventDefault();
+        toggle();
+      }
+    });
+  }
 
-  function loadAISettings() {
+  return { init, open, close, toggle, scrollToSection };
+})();
+
+
+/* ===== Notepad: floating draggable window (all users) ===== */
+const Notepad = (() => {
+  const NOTEPAD_KEY = 'yaoguayi_notepad';
+  let isVisible = false;
+  let isDragging = false;
+  let dragOffsetX = 0, dragOffsetY = 0;
+
+  function getEls() {
     return {
-      provider: localStorage.getItem(AI_KEYS.provider) || 'openai',
-      key: localStorage.getItem(AI_KEYS.key) || '',
-      base: localStorage.getItem(AI_KEYS.base) || ''
+      win: document.getElementById('notepad-window'),
+      area: document.getElementById('notepad-area'),
+      lines: document.getElementById('notepad-lines'),
+      count: document.getElementById('notepad-count')
     };
   }
 
-  function saveAISettings() {
-    const providerEl = document.getElementById('ai-provider');
-    const keyEl = document.getElementById('ai-key');
-    const baseEl = document.getElementById('ai-base');
-    const statusEl = document.getElementById('ai-status');
-
-    if (providerEl) localStorage.setItem(AI_KEYS.provider, providerEl.value);
-    if (keyEl) localStorage.setItem(AI_KEYS.key, keyEl.value);
-    if (baseEl) localStorage.setItem(AI_KEYS.base, baseEl.value);
-
-    if (statusEl) {
-      statusEl.textContent = 'Saved';
-      statusEl.className = 'ai-status saved';
-      setTimeout(() => updateAIStatus(), 1500);
-    }
-  }
-
-  function clearAISettings() {
-    Object.values(AI_KEYS).forEach(k => localStorage.removeItem(k));
-    const providerEl = document.getElementById('ai-provider');
-    const keyEl = document.getElementById('ai-key');
-    const baseEl = document.getElementById('ai-base');
-    if (providerEl) providerEl.value = 'openai';
-    if (keyEl) keyEl.value = '';
-    if (baseEl) baseEl.value = '';
-    updateAIStatus();
-  }
-
-  function updateAIStatus() {
-    const statusEl = document.getElementById('ai-status');
-    if (!statusEl) return;
-    const key = localStorage.getItem(AI_KEYS.key);
-    if (key) {
-      statusEl.textContent = 'Configured';
-      statusEl.className = 'ai-status configured';
-    } else {
-      statusEl.textContent = 'Not configured';
-      statusEl.className = 'ai-status';
-    }
-  }
-
-  function toggleKeyVisibility() {
-    const keyEl = document.getElementById('ai-key');
-    const toggleEl = document.getElementById('ai-key-toggle');
-    if (!keyEl || !toggleEl) return;
-    if (keyEl.type === 'password') {
-      keyEl.type = 'text';
-      toggleEl.textContent = 'Hide';
-    } else {
-      keyEl.type = 'password';
-      toggleEl.textContent = 'Show';
-    }
-  }
-
-  /**
-   * Populate AI settings form from localStorage
-   */
-  function initAIForm() {
-    const settings = loadAISettings();
-    const providerEl = document.getElementById('ai-provider');
-    const keyEl = document.getElementById('ai-key');
-    const baseEl = document.getElementById('ai-base');
-    if (providerEl) providerEl.value = settings.provider;
-    if (keyEl) keyEl.value = settings.key;
-    if (baseEl) baseEl.value = settings.base;
-    updateAIStatus();
-  }
-
-  /* ===== Tab 3: Notepad ===== */
-
-  const NOTEPAD_KEY = 'yaoguayi_notepad';
-
-  function initNotepad() {
-    getEl();
-    if (!notepadEl) return;
-
-    // Load saved content
-    notepadEl.value = localStorage.getItem(NOTEPAD_KEY) || '';
-
-    // Auto-save on input
-    notepadEl.addEventListener('input', () => {
-      localStorage.setItem(NOTEPAD_KEY, notepadEl.value);
-      updateLineNumbers();
-      updateCharCount();
-    });
-
-    // Sync scroll between textarea and line numbers
-    notepadEl.addEventListener('scroll', () => {
-      if (lineNumEl) lineNumEl.scrollTop = notepadEl.scrollTop;
-    });
-
-    // Tab key support — insert tab instead of moving focus
-    notepadEl.addEventListener('keydown', (e) => {
-      if (e.key === 'Tab') {
-        e.preventDefault();
-        const start = notepadEl.selectionStart;
-        const end = notepadEl.selectionEnd;
-        notepadEl.value = notepadEl.value.substring(0, start) + '  ' + notepadEl.value.substring(end);
-        notepadEl.selectionStart = notepadEl.selectionEnd = start + 2;
-        localStorage.setItem(NOTEPAD_KEY, notepadEl.value);
-        updateLineNumbers();
-      }
-    });
-
+  function show() {
+    const { win } = getEls();
+    if (!win) return;
+    isVisible = true;
+    win.classList.add('visible');
     updateLineNumbers();
     updateCharCount();
   }
 
+  function hide() {
+    const { win } = getEls();
+    if (!win) return;
+    isVisible = false;
+    win.classList.remove('visible');
+  }
+
+  function toggle() { isVisible ? hide() : show(); }
+
   function updateLineNumbers() {
-    if (!notepadEl || !lineNumEl) return;
-    const lines = notepadEl.value.split('\n').length;
-    let html = '';
-    for (let i = 1; i <= lines; i++) {
-      html += i + '\n';
-    }
-    lineNumEl.textContent = html;
+    const { area, lines } = getEls();
+    if (!area || !lines) return;
+    const n = area.value.split('\n').length;
+    let txt = '';
+    for (let i = 1; i <= n; i++) txt += i + '\n';
+    lines.textContent = txt;
   }
 
   function updateCharCount() {
-    const countEl = document.getElementById('admin-char-count');
-    if (!countEl || !notepadEl) return;
-    const text = notepadEl.value;
-    const chars = text.length;
-    const lines = text.split('\n').length;
-    countEl.textContent = `${chars} chars / ${lines} lines`;
+    const { area, count } = getEls();
+    if (!area || !count) return;
+    const t = area.value;
+    count.textContent = `${t.length} chars / ${t.split('\n').length} lines`;
   }
 
-  function clearNotepad() {
-    getEl();
-    if (!notepadEl) return;
-    if (!confirm('Clear all notepad content?')) return;
-    notepadEl.value = '';
+  function clear() {
+    const { area } = getEls();
+    if (!area || !confirm('Clear all notepad content?')) return;
+    area.value = '';
     localStorage.removeItem(NOTEPAD_KEY);
     updateLineNumbers();
     updateCharCount();
   }
 
-  function selectAllNotepad() {
-    getEl();
-    if (!notepadEl) return;
-    notepadEl.focus();
-    notepadEl.select();
+  function selectAll() {
+    const { area } = getEls();
+    if (!area) return;
+    area.focus();
+    area.select();
   }
 
-  /* ===== Keyboard shortcut ===== */
-  function initShortcut() {
-    document.addEventListener('keydown', (e) => {
-      if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+  /* Drag logic */
+  function onMouseDown(e) {
+    const { win } = getEls();
+    if (!win) return;
+    isDragging = true;
+    const rect = win.getBoundingClientRect();
+    dragOffsetX = e.clientX - rect.left;
+    dragOffsetY = e.clientY - rect.top;
+    win.style.transition = 'none';
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+    e.preventDefault();
+  }
+
+  function onMouseMove(e) {
+    if (!isDragging) return;
+    const { win } = getEls();
+    if (!win) return;
+    const x = Math.max(0, Math.min(e.clientX - dragOffsetX, window.innerWidth - win.offsetWidth));
+    const y = Math.max(0, Math.min(e.clientY - dragOffsetY, window.innerHeight - win.offsetHeight));
+    win.style.left = x + 'px';
+    win.style.top = y + 'px';
+    win.style.right = 'auto';
+    win.style.bottom = 'auto';
+  }
+
+  function onMouseUp() {
+    isDragging = false;
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  }
+
+  function init() {
+    const { win, area, lines } = getEls();
+    if (!area) return;
+
+    // Load saved content
+    area.value = localStorage.getItem(NOTEPAD_KEY) || '';
+
+    // Auto-save
+    area.addEventListener('input', () => {
+      localStorage.setItem(NOTEPAD_KEY, area.value);
+      updateLineNumbers();
+      updateCharCount();
+    });
+
+    // Sync scroll
+    area.addEventListener('scroll', () => {
+      if (lines) lines.scrollTop = area.scrollTop;
+    });
+
+    // Tab key
+    area.addEventListener('keydown', (e) => {
+      if (e.key === 'Tab') {
         e.preventDefault();
-        if (YaoguayiAuth.isAuthenticated()) toggle();
+        const s = area.selectionStart, end = area.selectionEnd;
+        area.value = area.value.substring(0, s) + '  ' + area.value.substring(end);
+        area.selectionStart = area.selectionEnd = s + 2;
+        localStorage.setItem(NOTEPAD_KEY, area.value);
+        updateLineNumbers();
       }
     });
+
+    // Drag title bar
+    const titleBar = win && win.querySelector('.notepad-titlebar');
+    if (titleBar) titleBar.addEventListener('mousedown', onMouseDown);
+
+    updateLineNumbers();
+    updateCharCount();
   }
 
-  /* ===== Initialization ===== */
-  function init() {
-    if (!YaoguayiAuth.isAuthenticated()) return;
+  return { init, show, hide, toggle, clear, selectAll };
+})();
 
-    // Show admin trigger button
-    const triggerBtn = document.getElementById('admin-trigger');
-    if (triggerBtn) triggerBtn.style.display = '';
 
-    // Show wrench in nav
-    const navWrench = document.getElementById('admin-nav-btn');
-    if (navWrench) navWrench.style.display = '';
-
-    // Initialize sub-modules
-    initAIForm();
-    initNotepad();
-    initShortcut();
-  }
-
-  /* ===== Public API ===== */
-  return {
-    init,
-    open, close, toggle,
-    switchTab,
-    scrollToSection,
-    saveAISettings, clearAISettings, toggleKeyVisibility,
-    clearNotepad, selectAllNotepad
+/* ===== AISettings: collapsible config in side-panel ===== */
+const AISettings = (() => {
+  const KEYS = {
+    provider: 'yaoguayi_ai_provider',
+    key: 'yaoguayi_ai_key',
+    base: 'yaoguayi_ai_base'
   };
+
+  function load() {
+    return {
+      provider: localStorage.getItem(KEYS.provider) || 'openai',
+      key: localStorage.getItem(KEYS.key) || '',
+      base: localStorage.getItem(KEYS.base) || ''
+    };
+  }
+
+  function save() {
+    const p = document.getElementById('ai-provider');
+    const k = document.getElementById('ai-key');
+    const b = document.getElementById('ai-base');
+    const s = document.getElementById('ai-status');
+    if (p) localStorage.setItem(KEYS.provider, p.value);
+    if (k) localStorage.setItem(KEYS.key, k.value);
+    if (b) localStorage.setItem(KEYS.base, b.value);
+    if (s) { s.textContent = 'Saved'; s.className = 'ai-status saved'; setTimeout(updateStatus, 1500); }
+  }
+
+  function clear() {
+    Object.values(KEYS).forEach(k => localStorage.removeItem(k));
+    const p = document.getElementById('ai-provider');
+    const k = document.getElementById('ai-key');
+    const b = document.getElementById('ai-base');
+    if (p) p.value = 'openai';
+    if (k) k.value = '';
+    if (b) b.value = '';
+    updateStatus();
+  }
+
+  function updateStatus() {
+    const s = document.getElementById('ai-status');
+    if (!s) return;
+    const key = localStorage.getItem(KEYS.key);
+    s.textContent = key ? 'Configured' : 'Not configured';
+    s.className = key ? 'ai-status configured' : 'ai-status';
+  }
+
+  function toggleKey() {
+    const k = document.getElementById('ai-key');
+    const t = document.getElementById('ai-key-toggle');
+    if (!k || !t) return;
+    k.type = k.type === 'password' ? 'text' : 'password';
+    t.textContent = k.type === 'password' ? 'Show' : 'Hide';
+  }
+
+  function toggleExpand() {
+    const body = document.getElementById('ai-config-body');
+    const icon = document.getElementById('ai-config-toggle');
+    if (!body) return;
+    const collapsed = body.classList.toggle('collapsed');
+    if (icon) icon.textContent = collapsed ? '▸' : '▾';
+  }
+
+  function init() {
+    const settings = load();
+    const p = document.getElementById('ai-provider');
+    const k = document.getElementById('ai-key');
+    const b = document.getElementById('ai-base');
+    if (p) p.value = settings.provider;
+    if (k) k.value = settings.key;
+    if (b) b.value = settings.base;
+    updateStatus();
+
+    // Auto-collapse if already configured
+    if (settings.key) {
+      const body = document.getElementById('ai-config-body');
+      const icon = document.getElementById('ai-config-toggle');
+      if (body) body.classList.add('collapsed');
+      if (icon) icon.textContent = '▸';
+    }
+  }
+
+  return { init, save, clear, toggleKey, toggleExpand };
 })();
