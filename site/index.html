@@ -573,9 +573,9 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   </div>
 </div>
 
-<script src="/js/theme.js"></script>
-<script src="/js/auth.js"></script>
-<script src="/js/admin-panel.js"></script>
+<script src="/js/theme.js?v=2"></script>
+<script src="/js/auth.js?v=2"></script>
+<script src="/js/admin-panel.js?v=3"></script>
 <script>
 /**
  * index.html — 首页主逻辑
@@ -589,7 +589,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 /* 初始化密码门 */
 YaoguayiAuth.init(() => {
   document.querySelectorAll('.cover .fade-in').forEach(el => el.classList.add('visible'));
-  AdminPanel.init();
+  if (typeof AdminPanel !== 'undefined') AdminPanel.init();
 });
 
 /**
