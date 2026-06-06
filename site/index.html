@@ -317,9 +317,9 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   box-shadow:-4px 0 20px var(--shadow);}
 .admin-panel.open{transform:translateX(0);}
 .admin-header{display:flex;align-items:center;justify-content:space-between;
-  padding:12px 16px;border-bottom:0.5px solid var(--border);flex-shrink:0;}
-.admin-header-title{font-size:11px;letter-spacing:0.16em;color:var(--faint);
-  font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:500;}
+  padding:16px 20px;border-bottom:0.5px solid var(--border);flex-shrink:0;}
+.admin-header-title{font-size:13px;letter-spacing:0.12em;color:var(--ink);
+  font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:600;}
 .admin-close{width:28px;height:28px;border:none;background:none;cursor:pointer;
   display:flex;align-items:center;justify-content:center;border-radius:4px;
   color:var(--muted);transition:background 0.2s,color 0.2s;}
@@ -338,7 +338,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 .section-item-name{font-size:11px;color:var(--ink-light);letter-spacing:0.04em;}
 
 /* Admin Panel: Section badges (overlaid on page) */
-.section-badge{position:absolute;top:4px;left:4px;z-index:100;
+.section-badge{position:absolute;top:4px;right:4px;z-index:100;
   font-size:9px;font-weight:700;color:#fff;
   background:var(--vermilion);padding:2px 6px;border-radius:3px;
   font-family:'Cascadia Code','Fira Code','Consolas',monospace;
@@ -446,7 +446,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
     </svg>
   </a>
   <div class="nav-tools">
-    <button class="nav-btn" id="admin-nav-btn" title="管理工具 (Ctrl+Shift+A)" onclick="AdminPanel.toggle()" style="display:none;">
+    <button class="nav-btn" id="admin-nav-btn" title="开发模式 (Ctrl+Shift+A)" onclick="AdminPanel.toggle()" style="display:none;">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
     </button>
     <button class="nav-btn" id="theme-toggle" title="切换主题" onclick="toggleTheme()">
@@ -545,7 +545,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 <!-- ===== Admin Panel (right sidebar, admin-only) ===== -->
 <div class="admin-panel" id="admin-panel">
   <div class="admin-header">
-    <span class="admin-header-title">管理工具</span>
+    <span class="admin-header-title">开发模式</span>
     <button class="admin-close" onclick="AdminPanel.close()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
@@ -583,7 +583,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 
 <script src="/js/theme.js?v=2"></script>
 <script src="/js/auth.js?v=2"></script>
-<script src="/js/admin-panel.js?v=4"></script>
+<script src="/js/admin-panel.js?v=5"></script>
 <script>
 /**
  * index.html — 首页主逻辑

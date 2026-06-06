@@ -22,11 +22,17 @@ const AdminPanel = (() => {
   function open() {
     const panel = document.getElementById('admin-panel');
     if (!panel) return;
+
+    // Close the glossary side panel first to avoid visual overlap
+    if (typeof SidePanel !== 'undefined' && SidePanel.isOpen) {
+      SidePanel.close();
+    }
+
     isOpen = true;
     panel.classList.add('open');
     document.body.classList.add('admin-panel-open');
 
-    // Hide the glossary panel trigger to avoid visual overlap
+    // Hide the glossary panel trigger
     const trigger = document.getElementById('panel-trigger');
     if (trigger) trigger.style.display = 'none';
 
