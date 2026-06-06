@@ -23,16 +23,16 @@ const AdminPanel = (() => {
     const panel = document.getElementById('admin-panel');
     if (!panel) return;
 
-    // Close the glossary side panel first to avoid visual overlap
-    if (typeof SidePanel !== 'undefined' && SidePanel.isOpen) {
-      SidePanel.close();
-    }
-
     isOpen = true;
     panel.classList.add('open');
     document.body.classList.add('admin-panel-open');
 
-    // Hide the glossary panel trigger
+    // Open glossary panel alongside (side by side) on hexagram pages
+    if (typeof SidePanel !== 'undefined' && !SidePanel.isOpen && getPageType() === 'hexagram') {
+      SidePanel.toggle();
+    }
+
+    // Hide the glossary panel trigger (both panels are open)
     const trigger = document.getElementById('panel-trigger');
     if (trigger) trigger.style.display = 'none';
 
@@ -45,6 +45,11 @@ const AdminPanel = (() => {
     isOpen = false;
     panel.classList.remove('open');
     document.body.classList.remove('admin-panel-open');
+
+    // Close the glossary panel too (they open/close as a pair)
+    if (typeof SidePanel !== 'undefined' && SidePanel.isOpen) {
+      SidePanel.close();
+    }
 
     // Restore the glossary panel trigger
     const trigger = document.getElementById('panel-trigger');
@@ -214,6 +219,7 @@ const AdminPanel = (() => {
 const Notepad = (() => {
   const NOTEPAD_KEY = 'yaoguayi_notepad';
   const PIN_KEY = 'yaoguayi_notepad_pin';
+  const POS_KEY = 'yaoguayi_notepad_pos';
   let isVisible = false;
   let isPinned = false;
   let isDragging = false;
@@ -346,6 +352,16 @@ const Notepad = (() => {
     isDragging = false;
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
+
+    // Save position to localStorage for persistence across page navigations
+    const { win } = getEls();
+    if (win) {
+      const rect = win.getBoundingClientRect();
+      localStorage.setItem(POS_KEY, JSON.stringify({
+        left: rect.left,
+        top: rect.top
+      }));
+    }
   }
 
   function init() {
@@ -388,6 +404,23 @@ const Notepad = (() => {
     // Drag title bar
     const titleBar = win && win.querySelector('.notepad-titlebar');
     if (titleBar) titleBar.addEventListener('mousedown', onMouseDown);
+
+    // Restore saved position if previously dragged
+    const savedPos = localStorage.getItem(POS_KEY);
+    if (savedPos && win) {
+      try {
+        const pos = JSON.parse(savedPos);
+        // Clamp to viewport bounds
+        const maxX = window.innerWidth - win.offsetWidth;
+        const maxY = window.innerHeight - win.offsetHeight;
+        const x = Math.max(0, Math.min(pos.left, maxX));
+        const y = Math.max(0, Math.min(pos.top, maxY));
+        win.style.left = x + 'px';
+        win.style.top = y + 'px';
+        win.style.right = 'auto';
+        win.style.bottom = 'auto';
+      } catch { /* ignore invalid JSON */ }
+    }
 
     updateLineNumbers();
     updateCharCount();

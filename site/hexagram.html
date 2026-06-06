@@ -441,7 +441,8 @@ ruby rt{font-size:10px;color:var(--faint);font-family:'Noto Sans SC',system-ui,s
   font-family:'Cascadia Code','Fira Code','Consolas',monospace;
   overflow-y:auto;}
 
-/* Panel tiling: admin panel sits above glossary panel (higher z-index) */
+/* Panel tiling: admin + glossary side by side */
+body.admin-panel-open .side-panel{right:300px;}
 /* panel-trigger is hidden via JS when admin panel opens */
 
 /* ===== Responsive ===== */
@@ -639,7 +640,7 @@ ruby rt{font-size:10px;color:var(--faint);font-family:'Noto Sans SC',system-ui,s
 
 <script src="/js/theme.js?v=2"></script>
 <script src="/js/auth.js?v=2"></script>
-<script src="/js/admin-panel.js?v=5"></script>
+<script src="/js/admin-panel.js?v=6"></script>
 <script>
 /**
  * hexagram.html — 卦象详情页主逻辑
