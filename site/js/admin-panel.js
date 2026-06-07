@@ -458,6 +458,7 @@ const AIChat = (() => {
   let isStreaming = false;
   let abortController = null;
   let currentHexData = null; // set externally
+  let pendingImage = null;   // {base64, mediaType} waiting to be sent
 
   function loadSettings() {
     const provider = localStorage.getItem(KEYS.provider) || 'openai';
@@ -479,7 +480,12 @@ const AIChat = (() => {
     if (k) localStorage.setItem(KEYS.key, k.value);
     if (b) localStorage.setItem(KEYS.base, b.value);
     if (m) localStorage.setItem(KEYS.model, m.value);
-    if (s) { s.textContent = '已保存'; s.className = 'ai-status saved'; setTimeout(updateStatus, 1500); }
+    if (s) { s.textContent = '已保存至浏览器'; s.className = 'ai-status saved'; setTimeout(updateStatus, 1500); }
+    // Auto-collapse config after save
+    const body = document.getElementById('ai-config-body');
+    const icon = document.getElementById('ai-config-toggle');
+    if (body) body.classList.add('collapsed');
+    if (icon) icon.textContent = '▸';
   }
 
   function clearSettings() {
@@ -572,11 +578,16 @@ const AIChat = (() => {
   /** Render a single message into HTML */
   function renderMessage(msg) {
     const cls = msg.role === 'user' ? 'ai-msg ai-msg-user' : 'ai-msg ai-msg-assistant';
-    const content = escapeHtml(msg.content)
+    let html = '';
+    // Show image thumbnail for user messages with images
+    if (msg.image) {
+      html += `<img class="ai-msg-img" src="data:${msg.image.mediaType};base64,${msg.image.base64}" alt="image">`;
+    }
+    html += escapeHtml(msg.content)
       .replace(/\n/g, '<br>')
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       .replace(/`([^`]+)`/g, '<code>$1</code>');
-    return `<div class="${cls}">${content}</div>`;
+    return `<div class="${cls}">${html}</div>`;
   }
 
   function escapeHtml(text) {
@@ -630,15 +641,25 @@ const AIChat = (() => {
       return;
     }
 
-    // Add user message
-    messages.push({ role: 'user', content: text });
+    // Add user message (with optional image)
+    const userMsg = { role: 'user', content: text };
+    if (pendingImage) {
+      userMsg.image = pendingImage;
+      pendingImage = null;
+      removeImagePreview();
+    }
+    messages.push(userMsg);
     input.value = '';
     renderMessages();
     setStreaming(true);
 
-    // Add empty assistant message placeholder
+    // Add empty assistant message placeholder with typing indicator
     messages.push({ role: 'assistant', content: '' });
     renderMessages();
+    // Show typing dots until first content arrives
+    const chatList = document.getElementById('ai-chat-messages');
+    const typingEl = chatList && chatList.querySelector('.ai-msg-assistant:last-child');
+    if (typingEl) typingEl.innerHTML = '<span class="ai-typing"><span>·</span><span>·</span><span>·</span></span>';
 
     try {
       abortController = new AbortController();
@@ -675,7 +696,16 @@ const AIChat = (() => {
     // Build API messages: system prompt + all messages with content (excludes empty assistant placeholder)
     const apiMessages = [
       { role: 'system', content: systemPrompt },
-      ...messages.filter(m => m.content)
+      ...messages.filter(m => m.content).map(m => {
+        if (m.image) {
+          // OpenAI vision format: content array with text + image_url
+          return { role: m.role, content: [
+            { type: 'image_url', image_url: { url: `data:${m.image.mediaType};base64,${m.image.base64}` } },
+            { type: 'text', text: m.content }
+          ]};
+        }
+        return { role: m.role, content: m.content };
+      })
     ];
 
     const resp = await fetch(`${baseUrl}/chat/completions`, {
@@ -731,7 +761,16 @@ const AIChat = (() => {
     // Anthropic: system is separate, messages are user/assistant only (excludes empty placeholder)
     const apiMessages = messages
       .filter(m => m.content)
-      .map(m => ({ role: m.role, content: m.content }));
+      .map(m => {
+        if (m.image) {
+          // Anthropic vision format: content array with image + text
+          return { role: m.role, content: [
+            { type: 'image', source: { type: 'base64', media_type: m.image.mediaType, data: m.image.base64 } },
+            { type: 'text', text: m.content }
+          ]};
+        }
+        return { role: m.role, content: m.content };
+      });
 
     const resp = await fetch(`${baseUrl}/v1/messages`, {
       method: 'POST',
@@ -805,6 +844,49 @@ const AIChat = (() => {
     currentHexData = hex;
   }
 
+  /** Handle image paste from clipboard */
+  function handlePaste(e) {
+    const items = e.clipboardData && e.clipboardData.items;
+    if (!items) return;
+    for (const item of items) {
+      if (item.type.startsWith('image/')) {
+        e.preventDefault();
+        const file = item.getAsFile();
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          const dataUrl = reader.result;
+          const mediaType = file.type || 'image/png';
+          const base64 = dataUrl.split(',')[1];
+          pendingImage = { base64, mediaType };
+          showImagePreview(dataUrl);
+        };
+        reader.readAsDataURL(file);
+        return;
+      }
+    }
+  }
+
+  function showImagePreview(dataUrl) {
+    removeImagePreview();
+    const preview = document.createElement('div');
+    preview.className = 'ai-image-preview';
+    preview.id = 'ai-image-preview';
+    preview.innerHTML = `<img src="${dataUrl}" alt="preview"><button class="ai-image-remove" onclick="AIChat.removeImage()" title="移除图片">×</button>`;
+    const inputRow = document.querySelector('.ai-chat-input-row');
+    if (inputRow) inputRow.parentNode.insertBefore(preview, inputRow);
+  }
+
+  function removeImagePreview() {
+    const el = document.getElementById('ai-image-preview');
+    if (el) el.remove();
+  }
+
+  function removeImage() {
+    pendingImage = null;
+    removeImagePreview();
+  }
+
   function handleInputKey(e) {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -834,14 +916,18 @@ const AIChat = (() => {
 
     // Chat input
     const input = document.getElementById('ai-chat-input');
-    if (input) input.addEventListener('keydown', handleInputKey);
+    if (input) {
+      input.addEventListener('keydown', handleInputKey);
+      input.addEventListener('paste', handlePaste);
+    }
 
     renderMessages();
   }
 
   return {
     init, saveSettings, clearSettings, toggleKey, toggleExpand,
-    send, stopStreaming, clearChat, setHexData, onProviderChange
+    send, stopStreaming, clearChat, setHexData, onProviderChange,
+    removeImage
   };
 })();
 
