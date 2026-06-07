@@ -547,14 +547,28 @@ const AIChat = (() => {
     if (b) b.placeholder = DEFAULT_BASES[pv] || 'https://...';
   }
 
+  /** Site overview blurb (lightweight, avoids bloating context) */
+  const SITE_OVERVIEW = [
+    '【关于本网站】',
+    '爻卦易 (yaoguayi.com) 是一个在线《周易》六十四卦查阅工具，主要功能：',
+    '- 六十四卦完整原文（卦辞、彖传、大象传、爻辞、小象传）',
+    '- 每段原文附白话译文',
+    '- 文字拼音标注，辅助古文阅读',
+    '- 日间/夜间主题切换',
+    '- AI 对话助手，可基于卦象内容答疑解惑',
+    ''
+  ].join('\n');
+
   /** Build system prompt with hexagram content */
   function buildSystemPrompt() {
     const cb = document.getElementById('ai-include-context');
     if (!cb || !cb.checked || !currentHexData) {
-      return 'You are a scholar who specializes in the Book of Changes (I Ching / Zhou Yi). Answer the user\'s questions.';
+      return '你是「爻卦易」的 AI 助手，精通《周易》。\n' + SITE_OVERVIEW +
+        '回答用户关于周易、卦象的问题。如用户使用中文提问，请用中文回答；如使用英文，请用英文回答。';
     }
     const h = currentHexData;
-    let prompt = `你是一位精通《周易》的学者。当前用户正在查看第${h.id}卦「${h.name}」(${h.pinyin})。\n`;
+    let prompt = '你是「爻卦易」的 AI 助手，精通《周易》。\n' + SITE_OVERVIEW;
+    prompt += `当前用户正在查看第${h.id}卦「${h.name}」(${h.pinyin})。\n`;
     prompt += `卦符: ${String.fromCodePoint(0x4DBF + h.id)}\n`;
     prompt += `上卦: ${h.upperTrigram}，下卦: ${h.lowerTrigram}\n\n`;
     prompt += `以下是该卦的完整内容：\n\n`;
@@ -573,7 +587,7 @@ const AIChat = (() => {
         if (y.xiang_trans) prompt += `  小象译文：${y.xiang_trans}\n`;
       });
     }
-    prompt += `\n请基于以上内容回答用户的问题。如用户使用中文提问，请用中文回答；如使用英文，请用英文回答。`;
+    prompt += `\n请基于以上内容回答用户的问题。回答时优先引用原文。如用户使用中文提问，请用中文回答；如使用英文，请用英文回答。`;
     return prompt;
   }
 
@@ -628,12 +642,127 @@ const AIChat = (() => {
     }
   }
 
+  /* ---- Slash commands ---- */
+  const SLASH_COMMANDS = [
+    { cmd: '/clear',   desc: '清除全部对话',         fn: cmdClear },
+    { cmd: '/compact', desc: '仅保留最近几条消息',   fn: cmdCompact },
+    { cmd: '/help',    desc: '显示可用命令列表',      fn: cmdHelp }
+  ];
+
+  /** Insert a local system notice into the chat (not sent to API) */
+  function addSystemMsg(text) {
+    const list = document.getElementById('ai-chat-messages');
+    if (!list) return;
+    // Remove empty-state placeholder if present
+    const empty = list.querySelector('.ai-chat-empty');
+    if (empty) empty.remove();
+    const div = document.createElement('div');
+    div.className = 'ai-system-msg';
+    div.textContent = text;
+    list.appendChild(div);
+    list.scrollTop = list.scrollHeight;
+  }
+
+  function cmdClear() {
+    messages = [];
+    renderMessages();
+    addSystemMsg('对话已清除');
+  }
+
+  function cmdCompact() {
+    if (messages.length <= 6) {
+      addSystemMsg('消息较少，无需压缩');
+      return;
+    }
+    const removed = messages.length - 6;
+    messages = messages.slice(-6);
+    renderMessages();
+    addSystemMsg(`已压缩：移除了前 ${removed} 条消息，保留最近 6 条`);
+  }
+
+  function cmdHelp() {
+    const lines = SLASH_COMMANDS.map(c => `${c.cmd}  —  ${c.desc}`).join('\n');
+    addSystemMsg('可用命令：\n' + lines);
+  }
+
+  /** Try to handle a slash command; returns true if handled */
+  function handleSlashCommand(text) {
+    if (!text.startsWith('/')) return false;
+    const cmd = text.split(/\s/)[0].toLowerCase();
+    const match = SLASH_COMMANDS.find(c => c.cmd === cmd);
+    if (match) { match.fn(); return true; }
+    addSystemMsg(`未知命令: ${cmd}，输入 /help 查看可用命令`);
+    return true;
+  }
+
+  /* ---- Slash menu popup ---- */
+  let slashMenuEl = null;
+
+  function createSlashMenu() {
+    if (slashMenuEl) return slashMenuEl;
+    const el = document.createElement('div');
+    el.className = 'ai-slash-menu';
+    el.style.display = 'none';
+    // Build items
+    SLASH_COMMANDS.forEach(c => {
+      const item = document.createElement('div');
+      item.className = 'ai-slash-item';
+      item.innerHTML = `<span class="ai-slash-cmd">${c.cmd}</span><span class="ai-slash-desc">${c.desc}</span>`;
+      item.addEventListener('mousedown', (e) => {
+        e.preventDefault(); // keep focus on input
+        const input = document.getElementById('ai-chat-input');
+        if (input) { input.value = c.cmd; }
+        hideSlashMenu();
+        c.fn();
+        if (input) input.value = '';
+      });
+      el.appendChild(item);
+    });
+    // Insert before input row
+    const inputRow = document.querySelector('.ai-chat-input-row');
+    if (inputRow) inputRow.parentNode.insertBefore(el, inputRow);
+    slashMenuEl = el;
+    return el;
+  }
+
+  function showSlashMenu(filter) {
+    const menu = createSlashMenu();
+    const items = menu.querySelectorAll('.ai-slash-item');
+    let anyVisible = false;
+    items.forEach((item, i) => {
+      const show = !filter || SLASH_COMMANDS[i].cmd.startsWith(filter);
+      item.style.display = show ? '' : 'none';
+      if (show) anyVisible = true;
+    });
+    menu.style.display = anyVisible ? '' : 'none';
+  }
+
+  function hideSlashMenu() {
+    if (slashMenuEl) slashMenuEl.style.display = 'none';
+  }
+
+  function onInputChange(e) {
+    const val = e.target.value;
+    if (val.startsWith('/') && !val.includes(' ')) {
+      showSlashMenu(val.toLowerCase());
+    } else {
+      hideSlashMenu();
+    }
+  }
+
   /** Send message to AI */
   async function send() {
     const input = document.getElementById('ai-chat-input');
     if (!input) return;
     const text = input.value.trim();
     if (!text || isStreaming) return;
+    hideSlashMenu();
+
+    // Handle slash commands locally
+    if (handleSlashCommand(text)) {
+      input.value = '';
+      return;
+    }
 
     const settings = loadSettings();
     if (!settings.key) {
@@ -890,6 +1019,10 @@ const AIChat = (() => {
   }
 
   function handleInputKey(e) {
+    if (e.key === 'Escape') {
+      hideSlashMenu();
+      return;
+    }
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       send();
@@ -921,6 +1054,8 @@ const AIChat = (() => {
     if (input) {
       input.addEventListener('keydown', handleInputKey);
       input.addEventListener('paste', handlePaste);
+      input.addEventListener('input', onInputChange);
+      input.addEventListener('blur', () => setTimeout(hideSlashMenu, 150));
     }
 
     renderMessages();
