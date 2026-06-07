@@ -443,12 +443,14 @@ const AIChat = (() => {
   };
 
   const DEFAULT_MODELS = {
+    agnes: 'agnes-2.0-flash',
     openai: 'gpt-4o-mini',
     anthropic: 'claude-3-haiku-20240307',
     custom: ''
   };
 
   const DEFAULT_BASES = {
+    agnes: 'https://apihub.agnes-ai.com/v1',
     openai: 'https://api.openai.com/v1',
     anthropic: '',
     custom: ''
@@ -461,7 +463,7 @@ const AIChat = (() => {
   let pendingImage = null;   // {base64, mediaType} waiting to be sent
 
   function loadSettings() {
-    const provider = localStorage.getItem(KEYS.provider) || 'openai';
+    const provider = localStorage.getItem(KEYS.provider) || 'agnes';
     return {
       provider,
       key: localStorage.getItem(KEYS.key) || '',
@@ -494,10 +496,10 @@ const AIChat = (() => {
     const k = document.getElementById('ai-key');
     const b = document.getElementById('ai-base');
     const m = document.getElementById('ai-model');
-    if (p) p.value = 'openai';
+    if (p) p.value = 'agnes';
     if (k) k.value = '';
-    if (b) b.value = DEFAULT_BASES.openai;
-    if (m) m.value = DEFAULT_MODELS.openai;
+    if (b) b.value = DEFAULT_BASES.agnes;
+    if (m) m.value = DEFAULT_MODELS.agnes;
     updateStatus();
   }
 
