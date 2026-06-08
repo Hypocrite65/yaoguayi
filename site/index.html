@@ -185,17 +185,32 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 @keyframes hintLine{0%,100%{transform:scaleY(0.8);opacity:0.3;}50%{transform:scaleY(1.2);opacity:0.7;}}
 
 /* ===== Divider ===== */
-.section-divider{
-  width:100%;padding:20px 20%;
-  display:flex;align-items:center;gap:20px;
+/* ===== Section Tab Switcher ===== */
+.section-tabs{
+  width:100%;padding:16px 20%;
+  display:flex;align-items:center;justify-content:center;gap:0;
   background:linear-gradient(to bottom,var(--bg),var(--bg-alt));
+  position:relative;
 }
-.section-divider::before,.section-divider::after{
-  content:'';flex:1;height:0.5px;background:var(--border);
+.section-tabs::before,.section-tabs::after{
+  content:'';position:absolute;top:50%;height:0.5px;background:var(--border);
 }
-.section-divider span{font-size:10px;letter-spacing:0.3em;color:var(--ghost);
-  white-space:nowrap;
-  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.section-tabs::before{left:5%;right:calc(50% + 80px);}
+.section-tabs::after{left:calc(50% + 80px);right:5%;}
+.section-tab{
+  font-size:10px;letter-spacing:0.3em;color:var(--ghost);
+  white-space:nowrap;padding:6px 16px;border:0.5px solid transparent;
+  border-radius:4px;background:none;cursor:pointer;
+  font-family:'Noto Sans SC',system-ui,sans-serif;
+  transition:all 0.25s;position:relative;z-index:1;
+}
+.section-tab:hover{color:var(--muted);}
+.section-tab.active{color:var(--vermilion);border-color:var(--border);
+  background:var(--bg-alt);}
+
+/* View panel switching */
+.view-panel{display:none;}
+.view-panel.active{display:block;}
 
 /* ===== Hexagram Section ===== */
 .hex-section{
@@ -463,8 +478,8 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 <!-- ===== Top Nav (appears on scroll) ===== -->
 <nav class="top-nav" id="top-nav">
   <div class="nav-left">
-    <a class="nav-home" href="#hexagrams">六十四卦</a>
-    <a class="nav-home" href="#learn">读易</a>
+    <a class="nav-home" href="#hexagrams" onclick="switchView('hexagrams');return false;">六十四卦</a>
+    <a class="nav-home" href="#learn" onclick="switchView('learn');return false;">读易</a>
   </div>
   <a class="nav-logo" href="/">
     <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -528,9 +543,9 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
     <p class="cover-sub fade-in d3">清本溯源</p>
 
     <nav class="cover-nav fade-in d4">
-      <a href="#hexagrams">六十四卦</a>
+      <a href="#hexagrams" onclick="switchView('hexagrams');return false;">六十四卦</a>
       <a href="#divination">起卦</a>
-      <a href="#learn">读易</a>
+      <a href="#learn" onclick="switchView('learn');return false;">读易</a>
     </nav>
 
     <a class="random-card fade-in d5" id="random-card" href="#hexagrams"></a>
@@ -544,11 +559,14 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   <div class="scroll-hint" id="scroll-hint">向下</div>
 </section>
 
-<!-- ===== Divider ===== -->
-<div class="section-divider fade-in"><span>六十四卦</span></div>
+<!-- ===== Section Tabs ===== -->
+<div class="section-tabs fade-in" id="section-tabs">
+  <button class="section-tab active" data-view="hexagrams" onclick="switchView('hexagrams')">六十四卦</button>
+  <button class="section-tab" data-view="learn" onclick="switchView('learn')">读易</button>
+</div>
 
-<!-- ===== Second Screen: Hexagram Grid ===== -->
-<section class="hex-section" id="hexagrams">
+<!-- ===== Hexagram Grid View ===== -->
+<section class="hex-section view-panel active" id="hexagrams">
   <div class="hex-header fade-in">
     <span class="hex-title">六十四卦</span>
     <span class="hex-hint">点击查看卦辞</span>
@@ -556,11 +574,8 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   <div class="hex-grid" id="hex-grid"></div>
 </section>
 
-<!-- ===== Divider: Learn ===== -->
-<div class="section-divider fade-in"><span>读易</span></div>
-
-<!-- ===== Learn Section ===== -->
-<section class="learn-section" id="learn">
+<!-- ===== Learn View ===== -->
+<section class="learn-section view-panel" id="learn">
   <div class="learn-header fade-in">
     <span class="learn-title">读易</span>
     <a class="learn-more" href="/learn.html">查看全部 →</a>
@@ -684,6 +699,26 @@ fetch('/data/hexagrams.json?v=3')
     renderFallbackGrid();
     initScrollAnimations();
   });
+
+/** Switch between hexagrams and learn views */
+function switchView(viewId) {
+  document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.section-tab').forEach(t => t.classList.remove('active'));
+  const panel = document.getElementById(viewId);
+  const tab = document.querySelector(`.section-tab[data-view="${viewId}"]`);
+  if (panel) panel.classList.add('active');
+  if (tab) tab.classList.add('active');
+  // Update hash without scrolling
+  history.replaceState(null, '', '#' + viewId);
+  // Scroll tabs into view
+  const tabs = document.getElementById('section-tabs');
+  if (tabs) tabs.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Handle hash on page load
+if (location.hash === '#learn') {
+  switchView('learn');
+}
 
 /* Load knowledge cards for learn section */
 fetch('/data/knowledge.json?v=1')
