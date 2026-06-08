@@ -161,6 +161,82 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   .article-title{font-size:18px;}
 }
 
+/* ===== Admin Panel ===== */
+.admin-panel{position:fixed;top:52px;right:0;bottom:0;width:300px;
+  background:var(--bg);border-left:0.5px solid var(--border-strong);
+  z-index:95;display:flex;flex-direction:column;
+  transform:translateX(100%);transition:transform 0.3s ease;
+  box-shadow:-4px 0 20px var(--shadow);}
+.admin-panel.open{transform:translateX(0);}
+.admin-header{display:flex;align-items:center;justify-content:space-between;
+  padding:16px 20px;border-bottom:0.5px solid var(--border);flex-shrink:0;}
+.admin-header-title{font-size:13px;letter-spacing:0.12em;color:var(--ink);
+  font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:600;}
+.admin-close{width:28px;height:28px;border:none;background:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;border-radius:4px;
+  color:var(--muted);transition:background 0.2s,color 0.2s;}
+.admin-close:hover{background:var(--hover-bg);color:var(--vermilion);}
+.admin-close svg{width:16px;height:16px;}
+.admin-body{flex:1;overflow-y:auto;padding:16px;}
+.section-list{list-style:none;display:flex;flex-direction:column;gap:2px;}
+.section-item{display:flex;align-items:center;gap:10px;padding:8px 10px;
+  border-radius:4px;cursor:pointer;transition:background 0.15s;}
+.section-item:hover{background:var(--hover-bg);}
+.section-item-id{font-size:10px;font-weight:600;color:var(--vermilion);
+  font-family:'Cascadia Code','Fira Code','Consolas',monospace;
+  background:var(--vermilion-faint);padding:2px 6px;border-radius:3px;white-space:nowrap;}
+.section-item-name{font-size:11px;color:var(--ink-light);letter-spacing:0.04em;}
+.section-badge{position:absolute;top:4px;right:4px;z-index:100;
+  font-size:9px;font-weight:700;color:#fff;
+  background:var(--vermilion);padding:2px 6px;border-radius:3px;
+  font-family:'Cascadia Code','Fira Code','Consolas',monospace;
+  letter-spacing:0.05em;pointer-events:none;opacity:0.85;
+  box-shadow:0 1px 4px rgba(0,0,0,0.2);}
+.section-item-sub{padding-left:28px;}
+.section-item-sub .section-item-id{font-size:9px;background:transparent;
+  color:var(--muted);padding:2px 4px;}
+.section-badge-sub{font-size:8px;opacity:0.7;background:var(--ink-light);}
+
+/* ===== Floating Notepad ===== */
+.notepad-window{position:fixed;right:24px;bottom:24px;width:380px;height:320px;
+  z-index:150;display:none;flex-direction:column;
+  background:var(--bg);border:0.5px solid var(--border-strong);
+  border-radius:6px;box-shadow:0 8px 32px var(--shadow);overflow:hidden;}
+.notepad-window.visible{display:flex;}
+.notepad-titlebar{display:flex;align-items:center;justify-content:space-between;
+  padding:8px 12px;background:var(--bg-alt);cursor:grab;user-select:none;
+  border-bottom:0.5px solid var(--border);flex-shrink:0;}
+.notepad-titlebar:active{cursor:grabbing;}
+.notepad-title{font-size:10px;letter-spacing:0.14em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:500;}
+.notepad-titlebar-btns{display:flex;align-items:center;gap:2px;}
+.notepad-pin,.notepad-close{width:24px;height:24px;border:none;background:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;border-radius:4px;
+  color:var(--muted);transition:background 0.2s,color 0.2s;}
+.notepad-pin:hover,.notepad-close:hover{background:var(--hover-bg);color:var(--vermilion);}
+.notepad-pin.active{color:var(--vermilion);}
+.notepad-pin svg,.notepad-close svg{width:14px;height:14px;}
+.notepad-toolbar{display:flex;align-items:center;gap:6px;padding:6px 12px;
+  border-bottom:0.5px solid var(--border);flex-shrink:0;}
+.notepad-btn{padding:3px 7px;border:0.5px solid var(--border);border-radius:3px;
+  background:none;color:var(--muted);font-size:9px;letter-spacing:0.06em;
+  cursor:pointer;transition:background 0.15s,color 0.15s;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.notepad-btn:hover{background:var(--hover-bg);color:var(--vermilion);}
+.notepad-count{margin-left:auto;font-size:9px;color:var(--ghost);
+  font-family:'Cascadia Code','Fira Code','Consolas',monospace;}
+.notepad-body{display:flex;flex:1;min-height:0;}
+.notepad-lines{width:32px;flex-shrink:0;padding:8px 4px;
+  background:var(--bg-alt);color:var(--ghost);
+  font-size:11px;line-height:1.5;text-align:right;
+  font-family:'Cascadia Code','Fira Code','Consolas',monospace;
+  overflow:hidden;white-space:pre;user-select:none;border-right:0.5px solid var(--border);}
+.notepad-area{flex:1;resize:none;border:none;outline:none;padding:8px;
+  background:var(--bg);color:var(--ink);
+  font-size:11px;line-height:1.5;
+  font-family:'Cascadia Code','Fira Code','Consolas',monospace;
+  overflow-y:auto;}
+
 /* ===== Fade-in ===== */
 .fade-in{opacity:0;transform:translateY(12px);
   transition:opacity 0.5s ease,transform 0.5s ease;}
@@ -189,8 +265,41 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 <!-- ===== Footer ===== -->
 <footer class="site-footer" id="site-footer"></footer>
 
+<!-- ===== Admin Panel (admin-only, sections) ===== -->
+<div class="admin-panel" id="admin-panel">
+  <div class="admin-header">
+    <span class="admin-header-title">开发模式</span>
+    <button class="admin-close" onclick="AdminPanel.close()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="admin-body" id="admin-sections">
+    <!-- Dynamically populated by AdminPanel.updateSectionList() -->
+  </div>
+</div>
+
+<!-- ===== Floating Notepad (all users) ===== -->
+<div class="notepad-window" id="notepad-window">
+  <div class="notepad-titlebar">
+    <span class="notepad-title">记事本</span>
+    <div class="notepad-titlebar-btns">
+      <button class="notepad-pin" id="notepad-pin-btn" onclick="Notepad.togglePin()" title="固定显示">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 17v5"/><path d="M9 11V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v7"/><path d="M5 17h14"/><path d="M7 11l-2 6h14l-2-6"/></svg>
+      </button>
+      <button class="notepad-close" onclick="Notepad.hide()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="notepad-toolbar"><button class="notepad-btn" onclick="Notepad.selectAll()">全选</button><button class="notepad-btn" onclick="Notepad.clear()">清除</button><button class="notepad-btn" onclick="Notepad.saveToFile()">保存文件</button><span class="notepad-count" id="notepad-count">0 字 / 1 行</span></div>
+  <div class="notepad-body"><div class="notepad-lines" id="notepad-lines">1
+</div><textarea class="notepad-area" id="notepad-area" placeholder="随手记录..." spellcheck="false"></textarea></div>
+</div>
+
 <script src="/js/layout.js?v=1"></script>
 <script src="/js/theme.js?v=3"></script>
+<script src="/js/auth.js?v=2"></script>
+<script src="/js/admin-panel.js?v=10"></script>
 <script>
 /* ===== Knowledge page renderer ===== */
 (function() {
@@ -319,6 +428,10 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
     return d.innerHTML;
   }
 })();
+
+/* Init admin panel & notepad */
+if (typeof AdminPanel !== 'undefined') AdminPanel.init();
+if (typeof Notepad !== 'undefined') Notepad.init();
 </script>
 </body>
 </html>

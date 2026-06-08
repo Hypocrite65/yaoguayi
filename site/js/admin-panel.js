@@ -143,17 +143,19 @@ const AdminPanel = (() => {
     }
 
     // Each article
-    document.querySelectorAll('.learn-article').forEach(article => {
+    document.querySelectorAll('.knowledge-article').forEach(article => {
       const heading = article.querySelector('h2');
       const aId = article.id || '';
       if (heading) {
         sections.push({ id: pad(), name: heading.textContent.trim(), selector: '#' + aId });
         // Sub-sections
-        article.querySelectorAll('h3').forEach(h3 => {
+        article.querySelectorAll('.article-section').forEach((sec, idx) => {
+          const h3 = sec.querySelector('h3');
+          if (!h3) return;
           sections.push({
             id: pad(),
             name: '  · ' + h3.textContent.trim(),
-            selector: '#' + aId + ' h3',
+            selector: `#${aId} .article-section:nth-child(${idx + 2}) h3`,
             indent: true
           });
         });
