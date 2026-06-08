@@ -240,6 +240,34 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 .hex-cell.today .hex-name{color:var(--vermilion);}
 .hex-num{font-size:8px;color:var(--ghost);margin-top:3px;}
 
+/* ===== Learn Section ===== */
+.learn-section{background:var(--bg);padding:40px 32px 48px;transition:background 0.4s;}
+.learn-header{max-width:960px;margin:0 auto 24px;
+  display:flex;align-items:baseline;justify-content:space-between;}
+.learn-title{font-size:11px;letter-spacing:0.22em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:500;}
+.learn-more{font-size:10px;color:var(--vermilion);text-decoration:none;
+  letter-spacing:0.08em;transition:color 0.2s;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.learn-more:hover{color:var(--muted);}
+.learn-grid{max-width:960px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.learn-card{background:var(--card-bg);border:0.5px solid var(--border);
+  border-radius:8px;padding:20px;cursor:pointer;text-decoration:none;
+  color:inherit;transition:all 0.25s ease;display:block;}
+.learn-card:hover{transform:translateY(-2px);
+  box-shadow:0 4px 16px var(--shadow);border-color:var(--border-strong);}
+.learn-card-icon{font-size:22px;margin-bottom:8px;display:block;}
+.learn-card-title{font-size:14px;font-weight:600;margin-bottom:4px;
+  letter-spacing:0.04em;}
+.learn-card-sub{font-size:11px;color:var(--faint);margin-bottom:8px;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.learn-card-summary{font-size:12px;color:var(--muted);line-height:1.7;}
+@media(max-width:768px){
+  .learn-grid{grid-template-columns:1fr;gap:12px;}
+  .learn-section{padding:28px 16px 32px;}
+}
+
 /* Footer */
 .site-footer{
   background:var(--bg-alt);padding:20px 32px;
@@ -436,6 +464,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 <nav class="top-nav" id="top-nav">
   <div class="nav-left">
     <a class="nav-home" href="#hexagrams">六十四卦</a>
+    <a class="nav-home" href="#learn">读易</a>
   </div>
   <a class="nav-logo" href="/">
     <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -525,6 +554,20 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
     <span class="hex-hint">点击查看卦辞</span>
   </div>
   <div class="hex-grid" id="hex-grid"></div>
+</section>
+
+<!-- ===== Divider: Learn ===== -->
+<div class="section-divider fade-in"><span>读易</span></div>
+
+<!-- ===== Learn Section ===== -->
+<section class="learn-section" id="learn">
+  <div class="learn-header fade-in">
+    <span class="learn-title">读易</span>
+    <a class="learn-more" href="/learn.html">查看全部 →</a>
+  </div>
+  <div class="learn-grid" id="learn-grid">
+    <!-- Dynamically populated from knowledge.json -->
+  </div>
 </section>
 
 <!-- ===== Footer ===== -->
@@ -637,10 +680,33 @@ fetch('/data/hexagrams.json?v=3')
   })
   .catch(err => {
     console.error('Failed to load hexagram data:', err);
-    /* 降级：使用 Unicode 符号和卦名渲染基础网格 */
+    /* Fallback: render basic grid with Unicode symbols and names */
     renderFallbackGrid();
     initScrollAnimations();
   });
+
+/* Load knowledge cards for learn section */
+fetch('/data/knowledge.json?v=1')
+  .then(r => r.json())
+  .then(articles => {
+    const grid = document.getElementById('learn-grid');
+    if (!grid || !articles || articles.length === 0) return;
+    grid.innerHTML = articles.map(a => {
+      const esc = s => { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; };
+      return `<a class="learn-card fade-in" href="/learn.html#${a.id}">
+        <span class="learn-card-icon">${a.icon || ''}</span>
+        <div class="learn-card-title">${esc(a.title)}</div>
+        <div class="learn-card-sub">${esc(a.subtitle || '')}</div>
+        <div class="learn-card-summary">${esc(a.summary)}</div>
+      </a>`;
+    }).join('');
+    // Re-run fade-in observer for new cards
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.05 });
+    grid.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+  })
+  .catch(() => { /* Silently ignore - learn section simply stays empty */ });
 
 /**
  * 生成小型 SVG 卦象图标（替代 Unicode 字符，跨平台一致）
