@@ -61,7 +61,10 @@ const AdminPanel = (() => {
   function toggle() { isOpen ? close() : open(); }
 
   function getPageType() {
-    return location.pathname.includes('hexagram.html') ? 'hexagram' : 'index';
+    const p = location.pathname;
+    if (p.includes('hexagram.html')) return 'hexagram';
+    if (p.includes('learn.html')) return 'learn';
+    return 'index';
   }
 
   /** Get zero-padded hex ID for global section IDs */
@@ -71,17 +74,98 @@ const AdminPanel = (() => {
   }
 
   function getSections() {
-    if (getPageType() === 'hexagram') {
-      return buildHexagramSections();
+    const page = getPageType();
+    if (page === 'hexagram') return buildHexagramSections();
+    if (page === 'learn') return buildLearnSections();
+    return buildIndexSections();
+  }
+
+  /** Dynamically scan index.html for sections based on actual DOM */
+  function buildIndexSections() {
+    const sections = [];
+    let n = 1;
+    const pad = () => 'I-' + String(n++).padStart(2, '0');
+
+    // Cover area
+    if (document.querySelector('.cover')) {
+      sections.push({ id: pad(), name: '封面区', selector: '.cover' });
     }
-    return [
-      { id: 'I-01', name: '封面区', selector: '.cover' },
-      { id: 'I-02', name: '导航链接', selector: '.cover-nav' },
-      { id: 'I-03', name: '本月卦象', selector: '#random-card' },
-      { id: 'I-04', name: '封面引文', selector: '.cover-quote' },
-      { id: 'I-05', name: '六十四卦', selector: '#hexagrams' },
-      { id: 'I-06', name: '页脚', selector: '.site-footer' }
-    ];
+    if (document.querySelector('.cover-nav')) {
+      sections.push({ id: pad(), name: '导航链接', selector: '.cover-nav' });
+    }
+    if (document.getElementById('random-card')) {
+      sections.push({ id: pad(), name: '本月卦象', selector: '#random-card' });
+    }
+    if (document.querySelector('.cover-quote')) {
+      sections.push({ id: pad(), name: '封面引文', selector: '.cover-quote' });
+    }
+
+    // Hexagram grid
+    if (document.getElementById('hexagrams')) {
+      sections.push({ id: pad(), name: '六十四卦', selector: '#hexagrams' });
+    }
+
+    // Knowledge / learn cards
+    if (document.getElementById('learn')) {
+      sections.push({ id: pad(), name: '读易', selector: '#learn' });
+      // Detect individual knowledge cards
+      document.querySelectorAll('.learn-card').forEach(card => {
+        const title = card.querySelector('.learn-card-title');
+        if (title) {
+          const cardId = card.getAttribute('href') || '';
+          sections.push({
+            id: pad(),
+            name: '读易 · ' + title.textContent.trim(),
+            selector: `.learn-card[href="${cardId}"]`,
+            indent: true
+          });
+        }
+      });
+    }
+
+    // Footer
+    if (document.getElementById('site-footer')) {
+      sections.push({ id: pad(), name: '页脚', selector: '#site-footer' });
+    }
+
+    return sections;
+  }
+
+  /** Dynamically scan learn.html for sections */
+  function buildLearnSections() {
+    const sections = [];
+    let n = 1;
+    const pad = () => 'L-' + String(n++).padStart(2, '0');
+
+    // Sidebar TOC
+    if (document.getElementById('learn-sidebar')) {
+      sections.push({ id: pad(), name: '侧边目录', selector: '#learn-sidebar' });
+    }
+
+    // Each article
+    document.querySelectorAll('.learn-article').forEach(article => {
+      const heading = article.querySelector('h2');
+      const aId = article.id || '';
+      if (heading) {
+        sections.push({ id: pad(), name: heading.textContent.trim(), selector: '#' + aId });
+        // Sub-sections
+        article.querySelectorAll('h3').forEach(h3 => {
+          sections.push({
+            id: pad(),
+            name: '  · ' + h3.textContent.trim(),
+            selector: '#' + aId + ' h3',
+            indent: true
+          });
+        });
+      }
+    });
+
+    // Footer
+    if (document.getElementById('site-footer')) {
+      sections.push({ id: pad(), name: '页脚', selector: '#site-footer' });
+    }
+
+    return sections;
   }
 
   /**
@@ -197,9 +281,11 @@ const AdminPanel = (() => {
     const navWrench = document.getElementById('admin-nav-btn');
     if (navWrench) navWrench.style.display = '';
 
-    // For index page, populate static sections immediately
-    if (getPageType() === 'index') {
-      updateSectionList(null);
+    // For non-hexagram pages, populate sections after dynamic content loads
+    const page = getPageType();
+    if (page === 'index' || page === 'learn') {
+      // Delay slightly so fetch-based dynamic content (knowledge cards, articles) is rendered
+      setTimeout(() => updateSectionList(null), 500);
     }
 
     // Ctrl+Shift+A shortcut
