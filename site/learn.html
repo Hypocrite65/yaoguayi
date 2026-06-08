@@ -57,6 +57,22 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   justify-content:center;transition:background 0.2s,color 0.2s;}
 .nav-btn:hover{background:var(--hover-bg);color:var(--ink);}
 .nav-btn svg{width:16px;height:16px;}
+.nav-account{position:relative;}
+.account-dropdown{position:absolute;top:calc(100% + 8px);right:0;width:200px;
+  background:var(--bg);border:0.5px solid var(--border-strong);
+  border-radius:6px;box-shadow:0 4px 20px var(--shadow);
+  opacity:0;transform:translateY(-4px);pointer-events:none;
+  transition:opacity 0.25s,transform 0.25s;z-index:210;}
+.account-dropdown.show{opacity:1;transform:translateY(0);pointer-events:auto;}
+.dropdown-header{padding:12px 16px;border-bottom:0.5px solid var(--border);
+  font-size:11px;letter-spacing:0.1em;color:var(--faint);}
+.dropdown-item{display:flex;align-items:center;gap:10px;
+  padding:10px 16px;font-size:12px;letter-spacing:0.06em;color:var(--ink-light);
+  cursor:pointer;transition:background 0.15s,color 0.15s;text-decoration:none;}
+.dropdown-item:hover{background:var(--hover-bg);color:var(--vermilion);}
+.dropdown-item svg{width:16px;height:16px;color:var(--faint);flex-shrink:0;}
+.dropdown-item:hover svg{color:var(--vermilion);}
+.dropdown-divider{height:0.5px;background:var(--border);margin:4px 0;}
 
 /* ===== Layout ===== */
 .page-wrapper{display:flex;max-width:1100px;margin:0 auto;
@@ -151,34 +167,10 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 .fade-in.visible{opacity:1;transform:translateY(0);}
 </style>
 </head>
-<body>
+<body data-page="learn">
 
 <!-- ===== Top Nav ===== -->
-<nav class="top-nav">
-  <div class="nav-left">
-    <a class="nav-home" href="/">首页</a>
-    <a class="nav-home" href="/#hexagrams">六十四卦</a>
-  </div>
-  <a class="nav-logo" href="/">
-    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="100" cy="100" r="84" stroke="#5c3a30" stroke-width="5" fill="none"/>
-      <line x1="100" y1="48" x2="100" y2="152" stroke="#2c2420" stroke-width="18" stroke-linecap="round"/>
-      <line x1="48" y1="48" x2="100" y2="100" stroke="#2c2420" stroke-width="18" stroke-linecap="round"/>
-      <line x1="152" y1="48" x2="152" y2="82" stroke="#c0392b" stroke-width="18" stroke-linecap="round"/>
-      <line x1="152" y1="118" x2="152" y2="152" stroke="#c0392b" stroke-width="18" stroke-linecap="round"/>
-    </svg>
-  </a>
-  <div class="nav-tools">
-    <button class="nav-btn" id="theme-toggle" title="切换主题" onclick="toggleTheme()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-      </svg>
-    </button>
-  </div>
-</nav>
+<nav class="top-nav" id="top-nav"></nav>
 
 <!-- ===== Main layout ===== -->
 <div class="page-wrapper">
@@ -195,19 +187,9 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 </div>
 
 <!-- ===== Footer ===== -->
-<footer class="site-footer">
-  <div class="footer-row">
-    <div class="footer-left">
-      爻卦易 <span class="footer-sep">·</span> yaoguayi.com <span class="footer-sep">·</span>
-      <a href="/#about">关于本站</a> <span class="footer-sep">·</span>
-      开源 <span class="footer-sep">·</span> 非盈利
-    </div>
-    <div class="footer-right">
-      <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank">GitHub</a>
-    </div>
-  </div>
-</footer>
+<footer class="site-footer" id="site-footer"></footer>
 
+<script src="/js/layout.js?v=1"></script>
 <script src="/js/theme.js?v=3"></script>
 <script>
 /* ===== Knowledge page renderer ===== */

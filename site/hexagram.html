@@ -277,6 +277,11 @@ ruby rt{font-size:10px;color:var(--faint);font-family:'Noto Sans SC',system-ui,s
   color:var(--ghost);border-top:0.5px solid var(--border);
   font-family:'Noto Sans SC',system-ui,sans-serif;margin-top:auto;
   transition:background 0.4s,color 0.4s;}
+.footer-row{display:flex;justify-content:space-between;align-items:center;
+  max-width:960px;margin:0 auto;}
+.footer-left{display:flex;align-items:center;gap:6px;}
+.footer-right{display:flex;align-items:center;gap:6px;}
+.footer-sep{color:var(--whisper);}
 .site-footer a{color:var(--faint);text-decoration:none;transition:color 0.2s;}
 .site-footer a:hover{color:var(--vermilion);}
 
@@ -495,10 +500,12 @@ body.admin-panel-open .side-panel{right:300px;}
   .panel-trigger{display:none;}
   .admin-panel{width:100%;}
   .admin-trigger{display:none !important;}
+  .footer-row{flex-direction:column;align-items:center;text-align:center;gap:6px;}
+  .footer-left,.footer-right{justify-content:center;flex-wrap:wrap;}
 }
 </style>
 </head>
-<body>
+<body data-page="hexagram">
 
 <!-- ===== Auth Gate ===== -->
 <div class="auth-gate" id="auth-gate">
@@ -520,56 +527,7 @@ body.admin-panel-open .side-panel{right:300px;}
 </div>
 
 <!-- ===== Top Navigation ===== -->
-<nav class="top-nav">
-  <div class="nav-left">
-    <a class="nav-back" href="/">六十四卦</a>
-  </div>
-  <a class="nav-logo" href="/">
-    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="100" cy="100" r="84" stroke="#5c3a30" stroke-width="5" fill="none"/>
-      <line x1="100" y1="48" x2="100" y2="152" stroke="#2c2420" stroke-width="18" stroke-linecap="round"/>
-      <line x1="48" y1="48" x2="100" y2="100" stroke="#2c2420" stroke-width="18" stroke-linecap="round"/>
-      <line x1="152" y1="48" x2="152" y2="82" stroke="#c0392b" stroke-width="18" stroke-linecap="round"/>
-      <line x1="152" y1="118" x2="152" y2="152" stroke="#c0392b" stroke-width="18" stroke-linecap="round"/>
-    </svg>
-  </a>
-  <div class="nav-tools">
-    <!-- 管理面板 -->
-    <button class="nav-btn" id="admin-nav-btn" title="开发模式 (Ctrl+Shift+A)" onclick="AdminPanel.toggle()" style="display:none;">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-    </button>
-    <!-- 主题切换 -->
-    <button class="nav-btn" id="theme-toggle" title="切换主题" onclick="toggleTheme()">
-      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-      </svg>
-    </button>
-    <!-- 账户 -->
-    <div class="nav-account">
-      <button class="nav-btn" id="account-btn" title="账户" onclick="toggleAccountMenu()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-          <circle cx="12" cy="7" r="4"/>
-        </svg>
-      </button>
-      <div class="account-dropdown" id="account-dropdown">
-        <div class="dropdown-header">账户</div>
-        <a class="dropdown-item" onclick="closeAccountMenu()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          浏览历史
-        </a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" onclick="closeAccountMenu();Notepad.toggle();">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-          记事本
-        </a>
-      </div>
-    </div>
-  </div>
-</nav>
+<nav class="top-nav" id="top-nav"></nav>
 
 <!-- ===== Main Content ===== -->
 <main class="hex-detail" id="hex-detail">
@@ -641,12 +599,7 @@ body.admin-panel-open .side-panel{right:300px;}
 </div>
 
 <!-- ===== Footer ===== -->
-<footer class="site-footer">
-  爻卦易 · yaoguayi.com ·
-  <a href="/">六十四卦</a> · 开源 · 非盈利 ·
-  <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank">GitHub</a> ·
-  <a href="#" id="logout-link">退出预览</a>
-</footer>
+<footer class="site-footer" id="site-footer"></footer>
 
 <!-- ===== Admin Panel (admin-only, sections) ===== -->
 <div class="admin-panel" id="admin-panel">
@@ -679,6 +632,7 @@ body.admin-panel-open .side-panel{right:300px;}
 </div><textarea class="notepad-area" id="notepad-area" placeholder="随手记录..." spellcheck="false"></textarea></div>
 </div>
 
+<script src="/js/layout.js?v=1"></script>
 <script src="/js/theme.js?v=3"></script>
 <script src="/js/auth.js?v=2"></script>
 <script src="/js/admin-panel.js?v=9"></script>
