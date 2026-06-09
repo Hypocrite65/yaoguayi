@@ -8,7 +8,7 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth;scroll-padding-top:64px;}
 
 /* ===== 主题变量 ===== */
 :root{
@@ -189,7 +189,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   background:var(--bg-alt);
   padding:80px 32px 80px;
   min-height:100vh;transition:background 0.4s;
-  scroll-margin-top:56px;
+  scroll-margin-top:64px;
 }
 .hex-header{
   max-width:960px;margin:0 auto 40px;
@@ -231,7 +231,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 /* ===== Learn Section ===== */
 .learn-section{background:var(--bg);padding:80px 32px 80px;
   min-height:100vh;transition:background 0.4s;
-  scroll-margin-top:56px;}
+  scroll-margin-top:64px;}
 .learn-header{max-width:960px;margin:0 auto 40px;
   display:flex;align-items:baseline;justify-content:space-between;}
 .learn-title{font-size:11px;letter-spacing:0.22em;color:var(--faint);
@@ -613,7 +613,7 @@ fetch('/data/hexagrams.json?v=3')
   });
 
 /* Load knowledge cards for learn section */
-fetch('/data/knowledge.json?v=1')
+fetch('/data/knowledge.json?v=2')
   .then(r => r.json())
   .then(articles => {
     const grid = document.getElementById('learn-grid');

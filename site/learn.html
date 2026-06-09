@@ -306,7 +306,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   const content = document.getElementById('learn-content');
   const tocList = document.getElementById('toc-list');
 
-  fetch('/data/knowledge.json?v=1')
+  fetch('/data/knowledge.json?v=2')
     .then(r => r.json())
     .then(articles => {
       if (!articles || articles.length === 0) {
