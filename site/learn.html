@@ -257,6 +257,7 @@ html{scroll-padding-top:64px;}
     const tocItems = tocList.querySelectorAll('.toc-item');
 
     let clickedId = null;
+    let scrollTimer = null;
 
     function setActive(id) {
       tocItems.forEach(item => {
@@ -265,7 +266,11 @@ html{scroll-padding-top:64px;}
     }
 
     function update() {
-      if (clickedId) return;
+      if (clickedId) {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => { clickedId = null; }, 150);
+        return;
+      }
       let activeId = ids[0];
       for (const id of ids) {
         const el = document.getElementById(id);
@@ -289,7 +294,6 @@ html{scroll-padding-top:64px;}
         requestAnimationFrame(() => {
           el.scrollIntoView({ behavior: 'smooth', block: 'start' });
           el.style.transition = '';
-          setTimeout(() => { clickedId = null; }, 800);
         });
       });
     });
