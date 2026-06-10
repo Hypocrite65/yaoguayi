@@ -44,7 +44,7 @@ html{scroll-padding-top:64px;}
 
 /* Article card */
 .knowledge-article{margin-bottom:48px;padding-bottom:48px;
-  border-bottom:0.5px solid var(--border);}
+  border-bottom:0.5px solid var(--border);scroll-margin-top:80px;}
 .knowledge-article:last-child{border-bottom:none;margin-bottom:0;}
 .article-header{margin-bottom:28px;}
 .article-icon{font-size:28px;margin-bottom:8px;display:block;}
@@ -269,6 +269,20 @@ html{scroll-padding-top:64px;}
 
     window.addEventListener('scroll', update, { passive: true });
     update();
+
+    tocItems.forEach(item => {
+      item.addEventListener('click', e => {
+        e.preventDefault();
+        const el = document.getElementById(item.dataset.id);
+        if (!el) return;
+        el.classList.add('visible');
+        el.style.transition = 'none';
+        requestAnimationFrame(() => {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          el.style.transition = '';
+        });
+      });
+    });
   }
 
   /** Fade-in on scroll */
