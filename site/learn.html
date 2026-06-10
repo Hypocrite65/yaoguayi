@@ -256,15 +256,22 @@ html{scroll-padding-top:64px;}
     const ids = articles.map(a => a.id);
     const tocItems = tocList.querySelectorAll('.toc-item');
 
+    let clickedId = null;
+
+    function setActive(id) {
+      tocItems.forEach(item => {
+        item.classList.toggle('active', item.dataset.id === id);
+      });
+    }
+
     function update() {
+      if (clickedId) return;
       let activeId = ids[0];
       for (const id of ids) {
         const el = document.getElementById(id);
-        if (el && el.getBoundingClientRect().top <= 120) activeId = id;
+        if (el && el.getBoundingClientRect().top <= 100) activeId = id;
       }
-      tocItems.forEach(item => {
-        item.classList.toggle('active', item.dataset.id === activeId);
-      });
+      setActive(activeId);
     }
 
     window.addEventListener('scroll', update, { passive: true });
@@ -275,11 +282,14 @@ html{scroll-padding-top:64px;}
         e.preventDefault();
         const el = document.getElementById(item.dataset.id);
         if (!el) return;
+        clickedId = item.dataset.id;
+        setActive(clickedId);
         el.classList.add('visible');
         el.style.transition = 'none';
         requestAnimationFrame(() => {
           el.scrollIntoView({ behavior: 'smooth', block: 'start' });
           el.style.transition = '';
+          setTimeout(() => { clickedId = null; }, 800);
         });
       });
     });
