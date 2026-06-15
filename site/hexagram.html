@@ -815,9 +815,9 @@ function buildLinesSVG(lines, yaoci) {
     const yao = yaoci ? yaoci.find(y => y.position === pos) : null;
     const label = yao ? yao.name : '';
     if (label && pos <= 6) {
-      svgContent += `<a href="#yao-${pos}"><text x="${lineW + textOffset}" y="${yCenter + 4}" font-size="12" fill="#a09080" font-family="'Noto Sans SC',system-ui,sans-serif" style="cursor:pointer"><title>${label}</title>${label}</text></a>`;
+      svgContent += `<a href="#yao-${pos}"><text x="${lineW + textOffset}" y="${yCenter + 4}" font-size="12" fill="var(--vermilion)" font-family="'Noto Sans SC',system-ui,sans-serif" style="cursor:pointer"><title>${label}</title>${label}</text></a>`;
     } else if (label) {
-      svgContent += `<text x="${lineW + textOffset}" y="${yCenter + 4}" font-size="12" fill="#a09080" font-family="'Noto Sans SC',system-ui,sans-serif">${label}</text>`;
+      svgContent += `<text x="${lineW + textOffset}" y="${yCenter + 4}" font-size="12" fill="var(--vermilion)" font-family="'Noto Sans SC',system-ui,sans-serif">${label}</text>`;
     }
   }
 
