@@ -57,7 +57,6 @@ const YaoguayiAuth = (() => {
    * 初始化密码门
    * 页面需要包含以下 DOM 元素：
    *   #auth-gate, #auth-input, #auth-btn, #auth-error
-   * 可选：#logout-link
    * @param {Function} [onUnlock] - 解锁后的回调（如触发入场动画）
    */
   function init(onUnlock) {
@@ -65,9 +64,9 @@ const YaoguayiAuth = (() => {
     const authInput = document.getElementById('auth-input');
     const authBtn = document.getElementById('auth-btn');
     const authError = document.getElementById('auth-error');
-    const logoutLink = document.getElementById('logout-link');
-
     if (!gate) return;
+
+    initAuthAction();
 
     // 已验证则直接隐藏密码门
     if (isAuthenticated()) {
@@ -109,14 +108,43 @@ const YaoguayiAuth = (() => {
       });
     }
 
-    // 退出链接
-    if (logoutLink) {
-      logoutLink.addEventListener('click', (e) => {
+  }
+
+  const ICON_LOGIN_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>';
+  const ICON_LOGOUT_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>';
+
+  function initAuthAction() {
+    const link = document.getElementById('auth-action-link');
+    const text = document.getElementById('auth-action-text');
+    const icon = document.getElementById('auth-action-icon');
+    if (!link || !text) return;
+
+    if (isAuthenticated()) {
+      text.textContent = '退出登录';
+      if (icon) icon.innerHTML = ICON_LOGOUT_SVG;
+      link.onclick = (e) => {
         e.preventDefault();
+        if (typeof closeAccountMenu === 'function') closeAccountMenu();
         logout();
-      });
+      };
+    } else {
+      text.textContent = '登录';
+      if (icon) icon.innerHTML = ICON_LOGIN_SVG;
+      link.onclick = (e) => {
+        e.preventDefault();
+        if (typeof closeAccountMenu === 'function') closeAccountMenu();
+        showGate();
+      };
     }
   }
 
-  return { init, isAuthenticated, unlock, logout };
+  function showGate() {
+    const gate = document.getElementById('auth-gate');
+    if (!gate) return;
+    gate.classList.remove('removed', 'hidden');
+    const authInput = document.getElementById('auth-input');
+    if (authInput) { authInput.value = ''; authInput.focus(); }
+  }
+
+  return { init, isAuthenticated, unlock, logout, showGate };
 })();

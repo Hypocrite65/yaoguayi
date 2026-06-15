@@ -31,6 +31,10 @@
 
   const ICON_NOTEPAD = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
 
+  const ICON_LOGIN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>';
+
+  const ICON_LOGOUT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>';
+
   /* ===== Build nav-left links based on page type ===== */
   function buildNavLeft(page) {
     switch (page) {
@@ -78,6 +82,11 @@
               ${ICON_NOTEPAD}
               记事本
             </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" id="auth-action-link">
+              <span id="auth-action-icon">${ICON_LOGOUT}</span>
+              <span id="auth-action-text">退出登录</span>
+            </a>
           </div>
         </div>
       </div>`;
@@ -97,8 +106,6 @@
         </div>
         <div class="footer-right">
           <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank">GitHub</a>
-          <span class="footer-sep">·</span>
-          <a href="#" id="logout-link">退出预览</a>
         </div>
       </div>`;
   }
