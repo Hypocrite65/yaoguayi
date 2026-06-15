@@ -334,8 +334,9 @@ body {
 .footer-left { display: flex; align-items: center; gap: 6px; }
 .footer-right { display: flex; align-items: center; gap: 6px; }
 .footer-sep { color: var(--whisper); }
-.site-footer a { color: var(--vermilion); text-decoration: none; transition: color 0.2s; }
-.site-footer a:hover { color: var(--muted); text-decoration: underline; }
+.site-footer a { color: var(--ghost); text-decoration: none; transition: color 0.2s; display: inline-flex; }
+.site-footer a:hover { color: var(--muted); }
+.site-footer a svg { width: 14px; height: 14px; }
 
 /* ===== Scrollbar ===== */
 ::-webkit-scrollbar { width: 5px; }

@@ -27,13 +27,13 @@
 
   const ICON_USER = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
 
-  const ICON_HISTORY = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
-
   const ICON_NOTEPAD = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
 
   const ICON_LOGIN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>';
 
   const ICON_LOGOUT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>';
+
+  const ICON_GITHUB = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>';
 
   /* ===== Build nav-left links based on page type ===== */
   function buildNavLeft(page) {
@@ -73,11 +73,6 @@
           </button>
           <div class="account-dropdown" id="account-dropdown">
             <div class="dropdown-header">账户</div>
-            <a class="dropdown-item" onclick="closeAccountMenu()">
-              ${ICON_HISTORY}
-              浏览历史
-            </a>
-            <div class="dropdown-divider"></div>
             <a class="dropdown-item" onclick="closeAccountMenu();typeof Notepad!=='undefined'&&Notepad.toggle();">
               ${ICON_NOTEPAD}
               记事本
@@ -100,12 +95,10 @@
     footer.innerHTML = `
       <div class="footer-row">
         <div class="footer-left">
-          爻卦易 <span class="footer-sep">·</span> yaoguayi.com <span class="footer-sep">·</span>
-          <a href="/#about">关于本站</a> <span class="footer-sep">·</span>
-          开源 <span class="footer-sep">·</span> 非盈利
+          © 2026 爻卦易 <span class="footer-sep">·</span> 观象明理
         </div>
         <div class="footer-right">
-          <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank">GitHub</a>
+          <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank" title="GitHub">${ICON_GITHUB}</a>
         </div>
       </div>`;
   }
