@@ -279,7 +279,7 @@ const AdminPanel = (() => {
   }
 
   function init() {
-    if (!YaoguayiAuth.isAuthenticated()) return;
+    if (!YaoguayiAuth.isAdmin()) return;
     const navWrench = document.getElementById('admin-nav-btn');
     if (navWrench) navWrench.style.display = '';
 
