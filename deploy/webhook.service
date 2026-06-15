@@ -1,0 +1,15 @@
+[Unit]
+Description=GitHub Webhook for yaoguayi.com auto-deploy
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+Environment=WEBHOOK_SECRET=your-secret-here
+ExecStart=/usr/bin/python3 /var/www/yaoguayi/deploy/webhook.py
+WorkingDirectory=/var/www/yaoguayi
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

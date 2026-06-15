@@ -168,10 +168,94 @@ sudo certbot renew --dry-run
 
 ## 后续更新部署
 
-每次更新站点文件，只需在服务器上执行：
+### 方式一：手动更新
 
 ```bash
 cd /var/www/yaoguayi && git pull origin main
+```
+
+### 方式二：Webhook 自动部署（推荐）
+
+本地 `git push` 后，GitHub 自动通知服务器拉取最新代码。
+
+#### 第一步：服务器端 — 安装 webhook 服务
+
+```bash
+# 1. 先 git pull 把 webhook 脚本拉到服务器
+cd /var/www/yaoguayi && git pull origin main
+
+# 2. 生成一个随机密钥（记住它，后面 GitHub 配置要用）
+openssl rand -hex 20
+# 输出类似: a1b2c3d4e5f6...（复制保存）
+
+# 3. 编辑 webhook.service，把 your-secret-here 替换成上面的密钥
+sudo nano /var/www/yaoguayi/deploy/webhook.service
+# 找到 Environment=WEBHOOK_SECRET=your-secret-here
+# 改成 Environment=WEBHOOK_SECRET=a1b2c3d4e5f6...（你的实际密钥）
+
+# 4. 安装并启动服务
+sudo cp /var/www/yaoguayi/deploy/webhook.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable webhook
+sudo systemctl start webhook
+
+# 5. 验证服务在运行
+sudo systemctl status webhook
+# 应显示 active (running)
+```
+
+#### 第二步：开放防火墙端口 9000
+
+```bash
+sudo iptables -I INPUT -p tcp --dport 9000 -j ACCEPT
+sudo netfilter-persistent save
+```
+
+验证端口可访问：
+```bash
+curl http://localhost:9000
+# 应返回: yaoguayi webhook is running
+```
+
+#### 第三步：GitHub 配置 Webhook
+
+1. 打开 https://github.com/Hypocrite65/yaoguayi/settings/hooks
+2. 点击 **Add webhook**
+3. 填写：
+   - **Payload URL**: `http://170.9.28.104:9000`
+   - **Content type**: `application/json`
+   - **Secret**: 填入第一步生成的密钥
+   - **Which events**: 选择 `Just the push event`
+4. 点击 **Add webhook**
+
+GitHub 会立刻发一个 ping 测试。如果显示绿色勾 ✓，说明配置成功。
+
+#### 验证自动部署
+
+在本地修改任意文件，push 到 main：
+```bash
+git push origin main
+```
+
+然后查看服务器日志确认自动拉取：
+```bash
+tail -f /var/www/yaoguayi/deploy/webhook.log
+```
+
+#### Webhook 运维命令
+
+```bash
+# 查看状态
+sudo systemctl status webhook
+
+# 查看日志
+tail -20 /var/www/yaoguayi/deploy/webhook.log
+
+# 重启
+sudo systemctl restart webhook
+
+# 停用（回到手动 git pull）
+sudo systemctl stop webhook
 ```
 
 如果只更新了 HTML/CSS/JS 静态文件，无需重启 Nginx。
