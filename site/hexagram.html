@@ -151,6 +151,12 @@ ruby rt{font-size:10px;color:var(--faint);font-family:'Noto Sans SC',system-ui,s
 .hex-nav .next::after{content:'→';}
 .hex-nav .nav-hex-name{font-family:'Noto Serif SC',serif;font-size:14px;}
 
+/* Source disclaimer */
+.hex-source-note{text-align:center;font-size:10px;letter-spacing:0.1em;
+  color:var(--ghost);margin:24px 0 0;padding:16px 0;
+  border-top:0.5px solid var(--border);
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+
 /* hexagram.html — footer override for sticky bottom */
 .site-footer{margin-top:auto;}
 
@@ -742,6 +748,9 @@ function renderHexagram(hex, all) {
         <div class="section-label">爻 辞</div>
         <ul class="yaoci-list">${yaociHtml}</ul>
       </div>` : ''}
+
+      <!-- Source disclaimer -->
+      <div class="hex-source-note">经文取自《周易》通行本，白话翻译仅供参考</div>
 
       <!-- Prev/Next Navigation -->
       <div class="hex-nav fade-in d6">
