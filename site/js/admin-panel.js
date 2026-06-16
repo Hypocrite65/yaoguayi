@@ -220,6 +220,8 @@ const AdminPanel = (() => {
           `<span class="section-item-name">${sec.name}</span></li>`;
       }).join('') +
       '</ul>';
+
+    if (isOpen) injectBadges();
   }
 
   function injectBadges() {
