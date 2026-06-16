@@ -227,7 +227,6 @@ const AdminPanel = (() => {
   function injectBadges() {
     removeBadges();
     getSections().forEach(sec => {
-      if (sec.indent) return; // skip sub-items for main badges
       const el = document.querySelector(sec.selector);
       if (!el) return;
       if (getComputedStyle(el).position === 'static') {
@@ -235,29 +234,11 @@ const AdminPanel = (() => {
         el.dataset.adminResetPos = 'true';
       }
       const badge = document.createElement('div');
-      badge.className = 'section-badge';
+      badge.className = sec.indent ? 'section-badge section-badge-sub' : 'section-badge';
       badge.textContent = sec.id;
       badge.title = sec.name;
       el.appendChild(badge);
     });
-
-    // Also add badges for yaoci sub-items
-    if (currentHex && currentHex.yaoci) {
-      const hp = getHexPrefix();
-      currentHex.yaoci.forEach(y => {
-        const el = document.querySelector(`#yao-${y.position}`);
-        if (!el) return;
-        if (getComputedStyle(el).position === 'static') {
-          el.style.position = 'relative';
-          el.dataset.adminResetPos = 'true';
-        }
-        const badge = document.createElement('div');
-        badge.className = 'section-badge section-badge-sub';
-        badge.textContent = `${hp}-05-${y.position}`;
-        badge.title = `${currentHex.name} · ${y.name}`;
-        el.appendChild(badge);
-      });
-    }
   }
 
   function removeBadges() {
