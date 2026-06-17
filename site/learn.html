@@ -218,6 +218,9 @@ html{scroll-padding-top:64px;}
       items.forEach(a => {
         html += `<a class="toc-item" href="#${a.id}" data-id="${a.id}">${esc(a.title)}</a>`;
       });
+      if (cat === '起卦') {
+        html += `<a class="toc-item" href="/qigua.html" style="color:var(--vermilion);">立即起卦 →</a>`;
+      }
       html += `</div>`;
     }
     tocList.innerHTML = html;
