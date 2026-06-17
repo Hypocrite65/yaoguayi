@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<script>if(localStorage.getItem('yaoguayi_theme')==='dark')document.documentElement.classList.add('dark-theme');</script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>未找到页面 · 爻卦易</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<link rel="stylesheet" href="/css/common.css?v=4"/>
+<style>
+.error-page {
+  min-height: 100vh; display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 40px 20px; text-align: center;
+}
+.error-logo { margin-bottom: 32px; opacity: 0.6; }
+.error-logo svg { width: 64px; height: 64px; }
+.error-code {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 72px; font-weight: 700; color: var(--ink);
+  line-height: 1; margin-bottom: 8px; opacity: 0.15;
+}
+.error-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 20px; color: var(--ink); letter-spacing: 0.15em;
+  margin-bottom: 12px;
+}
+.error-desc {
+  font-family: 'Noto Sans SC', system-ui, sans-serif;
+  font-size: 13px; color: var(--muted); line-height: 1.8;
+  margin-bottom: 32px; max-width: 320px;
+}
+.error-quote {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 12px; color: var(--muted); opacity: 0.7;
+  margin-bottom: 40px; letter-spacing: 0.08em;
+  line-height: 1.8;
+}
+.error-quote em { font-style: normal; opacity: 0.6; }
+.error-links { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+.error-link {
+  display: inline-block; padding: 10px 24px;
+  border: 0.5px solid var(--border-strong); border-radius: 3px;
+  font-family: 'Noto Sans SC', system-ui, sans-serif;
+  font-size: 12px; letter-spacing: 0.12em; color: var(--ink);
+  text-decoration: none; transition: all 0.3s;
+}
+.error-link:hover {
+  background: var(--ink); color: var(--bg);
+  transform: translateY(-1px);
+}
+.error-link.primary {
+  background: var(--ink); color: var(--bg); border-color: var(--ink);
+}
+.error-link.primary:hover { opacity: 0.85; }
+</style>
+</head>
+<body>
+<div class="error-page">
+  <div class="error-logo">
+    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="84" stroke="currentColor" stroke-width="5" fill="none" opacity="0.4"/>
+      <line x1="100" y1="48" x2="100" y2="152" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity="0.6"/>
+      <line x1="48" y1="48" x2="100" y2="100" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity="0.6"/>
+      <line x1="152" y1="48" x2="152" y2="82" stroke="var(--vermilion)" stroke-width="18" stroke-linecap="round" opacity="0.5"/>
+      <line x1="152" y1="118" x2="152" y2="152" stroke="var(--vermilion)" stroke-width="18" stroke-linecap="round" opacity="0.5"/>
+    </svg>
+  </div>
+  <div class="error-code">404</div>
+  <div class="error-title">此路不通</div>
+  <div class="error-desc">你所访问的页面未能找到。<br>或许是路径有误，或许页面已被移除。</div>
+  <div class="error-quote">
+    穷则变，变则通，通则久<br>
+    <em>——《周易 · 系辞传》</em>
+  </div>
+  <div class="error-links">
+    <a class="error-link primary" href="/">返回首页</a>
+    <a class="error-link" href="/learn.html">读易</a>
+    <a class="error-link" href="/qigua.html">起卦</a>
+  </div>
+</div>
+</body>
+</html>
