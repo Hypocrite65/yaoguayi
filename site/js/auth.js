@@ -1,25 +1,14 @@
 /**
- * auth.js — 认证模块（双层）
+ * auth.js — 账户认证模块
  *
- * 第一层：开发遮罩（临时）
- *   全屏密码门，阻止未授权访问。正式发布后移除。
- *   状态存储：localStorage yaoguayi_dev_auth
- *
- * 第二层：账户系统（永久）
- *   区分管理员和普通用户，控制管理面板等功能可见性。
- *   状态存储：localStorage yaoguayi_user (JSON: {role})
- *   通过导航栏账户下拉菜单登录/退出。
+ * 区分管理员和普通用户，控制管理面板等功能可见性。
+ * 状态存储：localStorage yaoguayi_user (JSON: {role})
+ * 通过导航栏账户下拉菜单登录/退出。
  */
 
 const YaoguayiAuth = (() => {
-  /* ===== Constants ===== */
-  const DEV_KEY = 'yaoguayi_dev_auth';
   const USER_KEY = 'yaoguayi_user';
 
-  // SHA-256 hash of the dev gate password
-  const DEV_HASH = '533ec688bba2dda0ba454564a7372550e1cc83fa43fdb82c1b71cebeb027f11b';
-
-  // Account table: { username: { hash, role } }
   const ACCOUNTS = {
     'admin': {
       hash: '533ec688bba2dda0ba454564a7372550e1cc83fa43fdb82c1b71cebeb027f11b',
@@ -30,60 +19,6 @@ const YaoguayiAuth = (() => {
   async function sha256(message) {
     const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(message));
     return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
-  }
-
-  /* ===== Layer 1: Dev Gate ===== */
-  function isDevUnlocked() {
-    return localStorage.getItem(DEV_KEY) === 'true';
-  }
-
-  function unlockDev() {
-    localStorage.setItem(DEV_KEY, 'true');
-    const gate = document.getElementById('auth-gate');
-    if (gate) {
-      gate.classList.add('hidden');
-      setTimeout(() => gate.classList.add('removed'), 700);
-    }
-  }
-
-  function initDevGate(onUnlock) {
-    const gate = document.getElementById('auth-gate');
-    const input = document.getElementById('auth-input');
-    const btn = document.getElementById('auth-btn');
-    const error = document.getElementById('auth-error');
-    if (!gate) return;
-
-    if (isDevUnlocked()) {
-      gate.classList.add('removed');
-      if (onUnlock) window.addEventListener('load', () => onUnlock());
-      return;
-    }
-
-    if (input) input.focus();
-
-    if (btn) {
-      btn.addEventListener('click', async () => {
-        if (!input) return;
-        const h = await sha256(input.value);
-        if (h === DEV_HASH) {
-          unlockDev();
-          if (onUnlock) onUnlock();
-        } else if (error) {
-          error.classList.add('show');
-          input.style.borderColor = 'rgba(192,57,43,0.4)';
-          setTimeout(() => {
-            error.classList.remove('show');
-            input.style.borderColor = '';
-          }, 2000);
-        }
-      });
-    }
-
-    if (input) {
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && btn) btn.click();
-      });
-    }
   }
 
   /* ===== Layer 2: User Account ===== */
@@ -195,14 +130,9 @@ const YaoguayiAuth = (() => {
     });
   }
 
-  /* ===== Public init ===== */
-  function init(onUnlock) {
-    initDevGate(onUnlock);
+  function init() {
     initAccountUI();
   }
 
-  // Legacy compatibility
-  function isAuthenticated() { return isDevUnlocked(); }
-
-  return { init, isAuthenticated, isLoggedIn, isAdmin, getUser, accountLogout };
+  return { init, isLoggedIn, isAdmin, getUser, accountLogout };
 })();

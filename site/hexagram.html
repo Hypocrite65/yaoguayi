@@ -11,7 +11,7 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="zh_CN">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
-<link rel="stylesheet" href="/css/common.css?v=3"/>
+<link rel="stylesheet" href="/css/common.css?v=4"/>
 <link rel="stylesheet" href="/css/ai-chat.css?v=1"/>
 <style>
 /* hexagram.html — body flex column for sticky footer */
@@ -198,26 +198,6 @@ body.admin-panel-open .side-panel{right:300px;}
 </style>
 </head>
 <body data-page="hexagram">
-
-<!-- ===== Auth Gate ===== -->
-<div class="auth-gate" id="auth-gate">
-  <div class="auth-logo">
-    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="100" cy="100" r="84" stroke="#5c3a30" stroke-width="5" fill="none"/>
-      <line x1="100" y1="48" x2="100" y2="152" stroke="#2c2420" stroke-width="18" stroke-linecap="round"/>
-      <line x1="48" y1="48" x2="100" y2="100" stroke="#2c2420" stroke-width="18" stroke-linecap="round"/>
-      <line x1="152" y1="48" x2="152" y2="82" stroke="#c0392b" stroke-width="18" stroke-linecap="round"/>
-      <line x1="152" y1="118" x2="152" y2="152" stroke="#c0392b" stroke-width="18" stroke-linecap="round"/>
-    </svg>
-  </div>
-  <div class="auth-label">开发预览</div>
-  <div class="auth-form">
-    <input class="auth-input" id="auth-input" type="password" placeholder="请输入访问密码" autocomplete="off"/>
-    <button class="auth-btn" id="auth-btn">进入</button>
-    <div class="auth-error" id="auth-error">密码不正确</div>
-  </div>
-</div>
-
 <!-- ===== Top Navigation ===== -->
 <nav class="top-nav" id="top-nav"></nav>
 
@@ -290,7 +270,7 @@ body.admin-panel-open .side-panel{right:300px;}
 
 <script src="/js/layout.js?v=30"></script>
 <script src="/js/theme.js?v=3"></script>
-<script src="/js/auth.js?v=4"></script>
+<script src="/js/auth.js?v=5"></script>
 <script src="/js/admin-panel.js?v=30"></script>
 <script>
 /**
@@ -306,12 +286,11 @@ body.admin-panel-open .side-panel{right:300px;}
 let annotations = null;  // 注音和术语数据
 let footnoteCounter = 0; // 全局角标计数器
 
-/* ===== 初始化密码门 ===== */
-YaoguayiAuth.init(() => {
-  document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
-  if (typeof AdminPanel !== 'undefined') AdminPanel.init();
-  if (typeof AIChat !== 'undefined') AIChat.init();
-});
+/* ===== 初始化 ===== */
+YaoguayiAuth.init();
+document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+if (typeof AdminPanel !== 'undefined') AdminPanel.init();
+if (typeof AIChat !== 'undefined') AIChat.init();
 
 /* ===== 加载数据 ===== */
 const params = new URLSearchParams(window.location.search);
@@ -618,12 +597,9 @@ function renderHexagram(hex, all) {
     </div>
   `;
 
-  // 触发入场动画
-  if (YaoguayiAuth.isAuthenticated()) {
-    requestAnimationFrame(() => {
-      container.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
-    });
-  }
+  requestAnimationFrame(() => {
+    container.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+  });
 
   // Update admin section list and AI context with hex data
   if (typeof AdminPanel !== 'undefined') AdminPanel.updateSectionList(hex);
