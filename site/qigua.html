@@ -68,9 +68,10 @@ html{scroll-padding-top:64px;}
   font-family:'Noto Sans SC',system-ui,sans-serif;}
 .qg-line-bar{height:5px;border-radius:1px;}
 .qg-line-yang .qg-line-bar{width:80px;background:var(--ink);}
-.qg-line-yin .qg-line-bar-l,.qg-line-yin .qg-line-bar-r{width:33px;height:5px;
-  background:var(--ink);border-radius:1px;display:inline-block;}
-.qg-line-yin .qg-line-gap{width:14px;display:inline-block;}
+.qg-line-yin-bars{display:flex;align-items:center;width:80px;}
+.qg-line-yin-bars .qg-line-bar-l,.qg-line-yin-bars .qg-line-bar-r{flex:1;height:5px;
+  background:var(--ink);border-radius:1px;}
+.qg-line-yin-bars .qg-line-gap{width:14px;flex-shrink:0;}
 .qg-line-change{font-size:9px;color:var(--vermilion);width:16px;font-weight:700;}
 
 /* Throw button */
@@ -384,16 +385,19 @@ html{scroll-padding-top:64px;}
       line.appendChild(bar);
       line.appendChild(changeMarker);
     } else {
+      const barsWrap = document.createElement('span');
+      barsWrap.className = 'qg-line-yin-bars';
       const barL = document.createElement('span');
       barL.className = 'qg-line-bar-l';
       const gap = document.createElement('span');
       gap.className = 'qg-line-gap';
       const barR = document.createElement('span');
       barR.className = 'qg-line-bar-r';
+      barsWrap.appendChild(barL);
+      barsWrap.appendChild(gap);
+      barsWrap.appendChild(barR);
       line.appendChild(label);
-      line.appendChild(barL);
-      line.appendChild(gap);
-      line.appendChild(barR);
+      line.appendChild(barsWrap);
       line.appendChild(changeMarker);
     }
 
