@@ -261,7 +261,7 @@ html{scroll-padding-top:64px;}
 
     <nav class="cover-nav fade-in d4">
       <a href="#hexagrams">六十四卦</a>
-      <a href="#divination">起卦</a>
+      <a href="/qigua.html">起卦</a>
       <a href="#learn">读易</a>
     </nav>
 
@@ -339,7 +339,7 @@ html{scroll-padding-top:64px;}
   </div>
 </div>
 
-<script src="/js/layout.js?v=20"></script>
+<script src="/js/layout.js?v=21"></script>
 <script src="/js/theme.js?v=3"></script>
 <script src="/js/auth.js?v=4"></script>
 <script src="/js/admin-panel.js?v=12"></script>
@@ -401,7 +401,7 @@ fetch('/data/hexagrams.json?v=3')
   });
 
 /* Load knowledge cards for learn section */
-fetch('/data/knowledge.json?v=8')
+fetch('/data/knowledge.json?v=9')
   .then(r => r.json())
   .then(articles => {
     const grid = document.getElementById('learn-grid');

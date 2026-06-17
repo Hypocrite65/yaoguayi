@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<script>if(localStorage.getItem('yaoguayi_theme')==='dark')document.documentElement.classList.add('dark-theme');</script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>起卦 · 爻卦易</title>
+<meta name="description" content="在线铜钱起卦，模拟三枚铜钱摇卦法，自动排出本卦与变卦，链接卦辞爻辞详解。">
+<meta property="og:title" content="起卦 · 爻卦易">
+<meta property="og:description" content="在线铜钱起卦工具，模拟传统三枚铜钱摇卦法。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yaoguayi.com/qigua.html">
+<meta property="og:locale" content="zh_CN">
+<link rel="canonical" href="https://yaoguayi.com/qigua.html">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<link rel="stylesheet" href="/css/common.css?v=3"/>
+<style>
+html{scroll-padding-top:64px;}
+
+.qigua-page{max-width:600px;margin:0 auto;padding:80px 24px 48px;min-height:100vh;}
+
+/* Intro */
+.qg-intro{text-align:center;margin-bottom:40px;}
+.qg-intro-icon{font-size:48px;margin-bottom:12px;display:block;}
+.qg-intro h1{font-size:24px;font-weight:700;letter-spacing:0.08em;margin-bottom:8px;}
+.qg-intro p{font-size:13px;color:var(--muted);line-height:1.8;max-width:420px;margin:0 auto 24px;}
+.qg-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.qg-btn{padding:10px 28px;border-radius:6px;font-size:14px;font-weight:600;
+  cursor:pointer;transition:all 0.2s;border:1px solid var(--border);
+  font-family:'Noto Sans SC',system-ui,sans-serif;letter-spacing:0.04em;}
+.qg-btn-primary{background:var(--vermilion);color:#fff;border-color:var(--vermilion);}
+.qg-btn-primary:hover{opacity:0.85;}
+.qg-btn-secondary{background:transparent;color:var(--muted);}
+.qg-btn-secondary:hover{color:var(--ink);border-color:var(--ink);}
+
+/* Divination area */
+.qg-area{display:none;}
+.qg-area.active{display:block;}
+
+/* Coins */
+.qg-coins{display:flex;justify-content:center;gap:24px;margin:32px 0 24px;}
+.qg-coin{width:72px;height:72px;border-radius:50%;
+  border:2px solid var(--ghost);background:var(--card-bg);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;font-weight:700;color:var(--ink);
+  font-family:'Noto Serif SC','STSong',serif;
+  transition:all 0.3s;position:relative;}
+.qg-coin.shaking{animation:coinShake 0.12s infinite alternate;}
+.qg-coin.yang{border-color:var(--vermilion);color:var(--vermilion);}
+.qg-coin.yin{border-color:var(--ghost);color:var(--ghost);}
+@keyframes coinShake{
+  0%{transform:translateY(-3px) rotate(-5deg);}
+  100%{transform:translateY(3px) rotate(5deg);}
+}
+
+/* Progress */
+.qg-progress{margin:24px 0;text-align:center;}
+.qg-step-label{font-size:12px;color:var(--muted);margin-bottom:12px;letter-spacing:0.06em;}
+
+/* Hexagram build area */
+.qg-hex-build{display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:20px;background:var(--card-bg);border:0.5px solid var(--border);
+  border-radius:8px;min-height:140px;justify-content:flex-end;}
+.qg-line{display:flex;align-items:center;gap:8px;opacity:0;
+  transform:translateY(8px);transition:all 0.4s ease;}
+.qg-line.visible{opacity:1;transform:translateY(0);}
+.qg-line-label{font-size:10px;color:var(--ghost);width:28px;text-align:right;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.qg-line-bar{height:5px;border-radius:1px;}
+.qg-line-yang .qg-line-bar{width:80px;background:var(--ink);}
+.qg-line-yin .qg-line-bar-l,.qg-line-yin .qg-line-bar-r{width:32px;height:5px;
+  background:var(--ink);border-radius:1px;display:inline-block;}
+.qg-line-yin .qg-line-gap{width:14px;display:inline-block;}
+.qg-line-change{font-size:9px;color:var(--vermilion);width:16px;font-weight:700;}
+
+/* Throw button */
+.qg-throw{display:block;margin:20px auto 0;padding:12px 40px;border-radius:8px;
+  font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;
+  background:var(--vermilion);color:#fff;border:none;
+  font-family:'Noto Sans SC',system-ui,sans-serif;letter-spacing:0.06em;}
+.qg-throw:hover{opacity:0.85;}
+.qg-throw:disabled{opacity:0.4;cursor:not-allowed;}
+
+/* Result */
+.qg-result{display:none;text-align:center;margin-top:32px;
+  padding:28px 20px;background:var(--card-bg);
+  border:0.5px solid var(--border);border-radius:8px;}
+.qg-result.active{display:block;}
+.qg-result-title{font-size:13px;color:var(--muted);margin-bottom:16px;letter-spacing:0.06em;}
+.qg-hex-pair{display:flex;justify-content:center;align-items:center;gap:32px;
+  margin-bottom:20px;flex-wrap:wrap;}
+.qg-hex-card{text-align:center;}
+.qg-hex-card .hex-name{font-size:18px;font-weight:700;margin-top:8px;letter-spacing:0.06em;}
+.qg-hex-card .hex-id{font-size:11px;color:var(--muted);margin-top:2px;}
+.qg-hex-card .hex-label{font-size:10px;color:var(--ghost);margin-bottom:6px;letter-spacing:0.08em;}
+.qg-arrow{font-size:20px;color:var(--ghost);}
+.qg-tip{font-size:12px;color:var(--ink-light);line-height:1.8;
+  margin:16px 0;padding:12px 16px;background:var(--bg-alt);
+  border-radius:6px;text-align:left;}
+.qg-tip strong{color:var(--ink);}
+.qg-result-actions{display:flex;gap:12px;justify-content:center;margin-top:20px;flex-wrap:wrap;}
+
+/* Source note */
+.qg-source{text-align:center;font-size:10px;color:var(--ghost);margin-top:40px;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+
+/* Mobile */
+@media(max-width:480px){
+  .qg-page{padding:72px 16px 32px;}
+  .qg-coin{width:60px;height:60px;font-size:16px;}
+  .qg-coins{gap:16px;}
+  .qg-hex-pair{gap:20px;}
+}
+</style>
+</head>
+<body data-page="qigua">
+
+<nav class="top-nav" id="top-nav"></nav>
+
+<main class="qigua-page">
+  <!-- Intro -->
+  <div class="qg-intro" id="qg-intro">
+    <span class="qg-intro-icon">◎</span>
+    <h1>起 卦</h1>
+    <p>心诚则灵，一事一问。<br>
+    模拟传统铜钱起卦法：三枚铜钱摇六次，<br>从初爻到上爻逐一排出，得到完整的六爻卦象。</p>
+    <div class="qg-btns">
+      <button class="qg-btn qg-btn-primary" onclick="startCoin()">铜钱起卦</button>
+      <button class="qg-btn qg-btn-secondary" onclick="startQuick()">速成起卦</button>
+    </div>
+    <p style="margin-top:16px;font-size:11px;">
+      <a href="/learn.html#tongqian" style="color:var(--ghost);text-decoration:underline;">了解铜钱起卦法 →</a>
+    </p>
+  </div>
+
+  <!-- Coin divination area -->
+  <div class="qg-area" id="qg-coin-area">
+    <div class="qg-coins" id="qg-coins">
+      <div class="qg-coin" id="coin-0">？</div>
+      <div class="qg-coin" id="coin-1">？</div>
+      <div class="qg-coin" id="coin-2">？</div>
+    </div>
+    <div class="qg-progress">
+      <div class="qg-step-label" id="qg-step-label">第一爻（初爻）</div>
+      <div class="qg-hex-build" id="qg-hex-build">
+        <!-- Lines appear here bottom to top -->
+      </div>
+    </div>
+    <button class="qg-throw" id="qg-throw-btn" onclick="throwCoins()">摇 卦</button>
+  </div>
+
+  <!-- Result -->
+  <div class="qg-result" id="qg-result">
+    <div class="qg-result-title">卦象已成</div>
+    <div class="qg-hex-pair" id="qg-hex-pair"></div>
+    <div class="qg-tip" id="qg-tip"></div>
+    <div class="qg-result-actions">
+      <a class="qg-btn qg-btn-primary" id="qg-view-link" href="#">查看卦辞 →</a>
+      <button class="qg-btn qg-btn-secondary" onclick="resetAll()">重新起卦</button>
+    </div>
+  </div>
+
+  <div class="qg-source">
+    起卦方法参考《周易·系辞上传》及维基百科「I Ching divination」条目
+  </div>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<div class="notepad-window" id="notepad-window">
+  <div class="notepad-titlebar">
+    <span class="notepad-title">记事本</span>
+    <div class="notepad-titlebar-btns">
+      <button class="notepad-pin" id="notepad-pin-btn" onclick="Notepad.togglePin()" title="固定显示">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 17v5"/><path d="M9 11V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v7"/><path d="M5 17h14"/><path d="M7 11l-2 6h14l-2-6"/></svg>
+      </button>
+      <button class="notepad-close" onclick="Notepad.hide()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="notepad-toolbar"><button class="notepad-btn" onclick="Notepad.selectAll()">全选</button><button class="notepad-btn" onclick="Notepad.clear()">清除</button><button class="notepad-btn" onclick="Notepad.saveToFile()">保存文件</button><span class="notepad-count" id="notepad-count">0 字 / 1 行</span></div>
+  <div class="notepad-body"><div class="notepad-lines" id="notepad-lines">1
+</div><textarea class="notepad-area" id="notepad-area" placeholder="随手记录..." spellcheck="false"></textarea></div>
+</div>
+
+<script src="/js/layout.js?v=20"></script>
+<script src="/js/theme.js?v=3"></script>
+<script src="/js/auth.js?v=4"></script>
+<script>
+(function() {
+  'use strict';
+
+  /* ===== State ===== */
+  let hexData = [];          // All 64 hexagrams
+  let lineResults = [];      // Array of {value: 6|7|8|9, coins: [3|2, 3|2, 3|2]}
+  let mode = '';             // 'coin' | 'quick'
+  let throwing = false;
+
+  const LINE_NAMES = ['初', '二', '三', '四', '五', '上'];
+  const YAO_NAMES_YANG = ['初九', '九二', '九三', '九四', '九五', '上九'];
+  const YAO_NAMES_YIN  = ['初六', '六二', '六三', '六四', '六五', '上六'];
+
+  /* ===== Load hexagram data ===== */
+  fetch('/data/hexagrams.json?v=3')
+    .then(r => r.json())
+    .then(data => { hexData = data; })
+    .catch(() => { console.error('Failed to load hexagrams.json'); });
+
+  /* ===== Mini hexagram SVG ===== */
+  function miniHexSVG(lines, size) {
+    if (!lines || lines.length < 6) return '';
+    const s = size || 28;
+    const lw = s * 0.8;
+    const lh = s * 0.07;
+    const gap = s * 0.1;
+    const bg = s * 0.16;
+    const th = 6 * lh + 5 * gap;
+    const x0 = (s - lw) / 2;
+    let svg = '';
+    for (let i = 0; i < 6; i++) {
+      const li = 5 - i;
+      const y = i * (lh + gap);
+      if (lines[li] === 1) {
+        svg += `<rect x="${x0}" y="${y}" width="${lw}" height="${lh}" rx="0.5" fill="currentColor"/>`;
+      } else {
+        const sw = (lw - bg) / 2;
+        svg += `<rect x="${x0}" y="${y}" width="${sw}" height="${lh}" rx="0.5" fill="currentColor"/>`;
+        svg += `<rect x="${x0 + sw + bg}" y="${y}" width="${sw}" height="${lh}" rx="0.5" fill="currentColor"/>`;
+      }
+    }
+    return `<svg viewBox="0 0 ${s} ${th}" width="${s}" height="${th}" style="display:inline-block" xmlns="http://www.w3.org/2000/svg">${svg}</svg>`;
+  }
+
+  /* ===== Find hexagram by lines ===== */
+  function findHexagram(lines) {
+    return hexData.find(h => h.lines.every((l, i) => l === lines[i]));
+  }
+
+  /* ===== Start modes ===== */
+  window.startCoin = function() {
+    mode = 'coin';
+    lineResults = [];
+    document.getElementById('qg-intro').style.display = 'none';
+    document.getElementById('qg-coin-area').classList.add('active');
+    document.getElementById('qg-result').classList.remove('active');
+    document.getElementById('qg-hex-build').innerHTML = '';
+    document.getElementById('qg-throw-btn').disabled = false;
+    updateStepLabel();
+    resetCoins();
+  };
+
+  window.startQuick = function() {
+    mode = 'quick';
+    lineResults = [];
+    document.getElementById('qg-intro').style.display = 'none';
+    document.getElementById('qg-coin-area').classList.add('active');
+    document.getElementById('qg-result').classList.remove('active');
+    document.getElementById('qg-hex-build').innerHTML = '';
+    document.getElementById('qg-throw-btn').style.display = 'none';
+    document.getElementById('qg-step-label').textContent = '速成起卦中…';
+
+    // Generate all 6 lines with coin probabilities
+    for (let i = 0; i < 6; i++) {
+      const coins = [Math.random() < 0.5 ? 3 : 2,
+                     Math.random() < 0.5 ? 3 : 2,
+                     Math.random() < 0.5 ? 3 : 2];
+      lineResults.push({ value: coins[0] + coins[1] + coins[2], coins });
+    }
+
+    // Animate lines appearing one by one
+    let idx = 0;
+    function showNext() {
+      if (idx >= 6) {
+        setTimeout(showResult, 400);
+        return;
+      }
+      addLineToDisplay(idx, lineResults[idx]);
+      idx++;
+      setTimeout(showNext, 300);
+    }
+    showNext();
+  };
+
+  /* ===== Throw coins ===== */
+  window.throwCoins = function() {
+    if (throwing || lineResults.length >= 6) return;
+    throwing = true;
+    const btn = document.getElementById('qg-throw-btn');
+    btn.disabled = true;
+
+    // Shake animation
+    const coinEls = [
+      document.getElementById('coin-0'),
+      document.getElementById('coin-1'),
+      document.getElementById('coin-2')
+    ];
+    coinEls.forEach(c => {
+      c.textContent = '？';
+      c.className = 'qg-coin shaking';
+    });
+
+    // Resolve after animation
+    setTimeout(() => {
+      const coins = [
+        Math.random() < 0.5 ? 3 : 2,
+        Math.random() < 0.5 ? 3 : 2,
+        Math.random() < 0.5 ? 3 : 2
+      ];
+      const sum = coins[0] + coins[1] + coins[2];
+
+      // Show coin results
+      coinEls.forEach((c, i) => {
+        c.classList.remove('shaking');
+        if (coins[i] === 3) {
+          c.textContent = '正';
+          c.className = 'qg-coin yang';
+        } else {
+          c.textContent = '反';
+          c.className = 'qg-coin yin';
+        }
+      });
+
+      lineResults.push({ value: sum, coins });
+      const idx = lineResults.length - 1;
+
+      // Add line to display
+      setTimeout(() => {
+        addLineToDisplay(idx, lineResults[idx]);
+        throwing = false;
+
+        if (lineResults.length >= 6) {
+          btn.disabled = true;
+          btn.textContent = '卦象已成';
+          setTimeout(showResult, 600);
+        } else {
+          btn.disabled = false;
+          updateStepLabel();
+        }
+      }, 300);
+    }, 1200);
+  };
+
+  /* ===== UI helpers ===== */
+  function resetCoins() {
+    for (let i = 0; i < 3; i++) {
+      const c = document.getElementById('coin-' + i);
+      c.textContent = '？';
+      c.className = 'qg-coin';
+    }
+  }
+
+  function updateStepLabel() {
+    const n = lineResults.length;
+    const ordinals = ['一', '二', '三', '四', '五', '六'];
+    const names = ['初爻', '二爻', '三爻', '四爻', '五爻', '上爻'];
+    if (n < 6) {
+      document.getElementById('qg-step-label').textContent =
+        `第${ordinals[n]}爻（${names[n]}）`;
+    }
+  }
+
+  function addLineToDisplay(idx, result) {
+    const build = document.getElementById('qg-hex-build');
+    const v = result.value;
+    const isYang = (v === 7 || v === 9);
+    const isChanging = (v === 6 || v === 9);
+
+    const line = document.createElement('div');
+    line.className = `qg-line ${isYang ? 'qg-line-yang' : 'qg-line-yin'}`;
+
+    const label = document.createElement('span');
+    label.className = 'qg-line-label';
+    label.textContent = LINE_NAMES[idx];
+
+    const changeMarker = document.createElement('span');
+    changeMarker.className = 'qg-line-change';
+    changeMarker.textContent = isChanging ? (v === 9 ? '○' : '×') : '';
+
+    if (isYang) {
+      const bar = document.createElement('span');
+      bar.className = 'qg-line-bar';
+      line.appendChild(label);
+      line.appendChild(bar);
+      line.appendChild(changeMarker);
+    } else {
+      const barL = document.createElement('span');
+      barL.className = 'qg-line-bar-l';
+      const gap = document.createElement('span');
+      gap.className = 'qg-line-gap';
+      const barR = document.createElement('span');
+      barR.className = 'qg-line-bar-r';
+      line.appendChild(label);
+      line.appendChild(barL);
+      line.appendChild(gap);
+      line.appendChild(barR);
+      line.appendChild(changeMarker);
+    }
+
+    // Insert at top (lines display top-down but build bottom-up)
+    build.insertBefore(line, build.firstChild);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => line.classList.add('visible'));
+    });
+  }
+
+  /* ===== Show result ===== */
+  function showResult() {
+    if (hexData.length === 0) {
+      setTimeout(showResult, 500);
+      return;
+    }
+
+    // Build lines array [bottom to top] = [line0 ... line5]
+    const originalLines = lineResults.map(r => (r.value === 7 || r.value === 9) ? 1 : 0);
+    const originalHex = findHexagram(originalLines);
+
+    // Check for changing lines
+    const changingIndices = [];
+    lineResults.forEach((r, i) => {
+      if (r.value === 6 || r.value === 9) changingIndices.push(i);
+    });
+
+    let transformedHex = null;
+    if (changingIndices.length > 0) {
+      const transformedLines = lineResults.map(r => {
+        if (r.value === 9) return 0;  // old yang → yin
+        if (r.value === 6) return 1;  // old yin → yang
+        return (r.value === 7) ? 1 : 0;
+      });
+      transformedHex = findHexagram(transformedLines);
+    }
+
+    // Build result HTML
+    const pair = document.getElementById('qg-hex-pair');
+    let html = '';
+
+    if (originalHex) {
+      html += `<div class="qg-hex-card">
+        <div class="hex-label">本 卦</div>
+        ${miniHexSVG(originalHex.lines, 56)}
+        <div class="hex-name">${esc(originalHex.name)}</div>
+        <div class="hex-id">第${originalHex.id}卦</div>
+      </div>`;
+    }
+
+    if (transformedHex) {
+      html += `<div class="qg-arrow">→</div>`;
+      html += `<div class="qg-hex-card">
+        <div class="hex-label">变 卦</div>
+        ${miniHexSVG(transformedHex.lines, 56)}
+        <div class="hex-name">${esc(transformedHex.name)}</div>
+        <div class="hex-id">第${transformedHex.id}卦</div>
+      </div>`;
+    }
+
+    pair.innerHTML = html;
+
+    // Interpretation tip (七条规则)
+    const tip = document.getElementById('qg-tip');
+    const n = changingIndices.length;
+    let tipText = '';
+
+    if (n === 0) {
+      tipText = '<strong>无变爻</strong> → 看本卦卦辞';
+    } else if (n === 1) {
+      const pos = changingIndices[0];
+      const yaoName = originalLines[pos] === 1 ? YAO_NAMES_YANG[pos] : YAO_NAMES_YIN[pos];
+      tipText = `<strong>一个变爻（${yaoName}）</strong> → 看本卦该爻的爻辞`;
+    } else if (n === 2) {
+      tipText = '<strong>两个变爻</strong> → 看本卦两个变爻的爻辞，以上面的为主';
+    } else if (n === 3) {
+      tipText = '<strong>三个变爻</strong> → 看本卦和变卦的卦辞，以本卦为主';
+    } else if (n === 4) {
+      tipText = '<strong>四个变爻</strong> → 看变卦中两个不变爻的爻辞，以下面的为主';
+    } else if (n === 5) {
+      tipText = '<strong>五个变爻</strong> → 看变卦中唯一不变爻的爻辞';
+    } else if (n === 6) {
+      if (originalHex && (originalHex.id === 1 || originalHex.id === 2)) {
+        tipText = '<strong>六爻全变</strong> → ' +
+          (originalHex.id === 1 ? '乾卦看「用九」' : '坤卦看「用六」');
+      } else {
+        tipText = '<strong>六爻全变</strong> → 看变卦卦辞';
+      }
+    }
+    tipText += '<br><span style="font-size:11px;color:var(--ghost);">——朱熹《易学启蒙》七条断卦规则</span>';
+    tip.innerHTML = tipText;
+
+    // Link
+    const link = document.getElementById('qg-view-link');
+    if (originalHex) {
+      link.href = '/hexagram.html?id=' + originalHex.id;
+    }
+
+    document.getElementById('qg-result').classList.add('active');
+  }
+
+  /* ===== Reset ===== */
+  window.resetAll = function() {
+    lineResults = [];
+    mode = '';
+    throwing = false;
+    document.getElementById('qg-intro').style.display = '';
+    document.getElementById('qg-coin-area').classList.remove('active');
+    document.getElementById('qg-result').classList.remove('active');
+    document.getElementById('qg-hex-build').innerHTML = '';
+    document.getElementById('qg-throw-btn').style.display = '';
+    document.getElementById('qg-throw-btn').disabled = false;
+    document.getElementById('qg-throw-btn').textContent = '摇 卦';
+    resetCoins();
+  };
+
+  function esc(s) {
+    const d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
+})();
+
+if (typeof Notepad !== 'undefined') Notepad.init();
+</script>
+</body>
+</html>
