@@ -504,7 +504,7 @@ const Notepad = (() => {
 })();
 
 
-/* ===== AIChat: conversation panel in side-panel ===== */
+/* ===== AIChat: floating chat window (all pages) ===== */
 const AIChat = (() => {
   const KEYS = {
     provider: 'yaoguayi_ai_provider',
@@ -527,12 +527,124 @@ const AIChat = (() => {
     custom: ''
   };
 
-  let messages = []; // conversation history [{role, content}]
+  let messages = [];
   let isStreaming = false;
   let abortController = null;
-  let currentHexData = null; // set externally
-  let pendingImage = null;   // {base64, mediaType} waiting to be sent
-  let useProxy = true;       // default: use server proxy (no key needed)
+  let currentHexData = null;
+  let pendingImage = null;
+  let useProxy = true;
+  let windowEl = null;
+  let windowCreated = false;
+
+  function createChatWindow() {
+    if (windowCreated) return;
+    windowCreated = true;
+
+    const isAdmin = typeof YaoguayiAuth !== 'undefined' && YaoguayiAuth.isAdmin();
+    const hasHexContext = location.pathname.includes('hexagram.html');
+
+    const el = document.createElement('div');
+    el.className = 'ai-chat-window hidden';
+    el.id = 'ai-chat-window';
+    el.innerHTML = `
+      <div class="ai-chat-header">
+        <span class="ai-chat-header-title">AI 助手</span>
+        <div class="ai-chat-header-actions">
+          <button class="ai-chat-header-btn" onclick="AIChat.saveChatToFile()" title="保存对话">保存</button>
+          <button class="ai-chat-header-btn" onclick="AIChat.clearChat()" title="清除对话">清除</button>
+          <button class="ai-chat-header-btn ai-chat-header-close" onclick="AIChat.closeWindow()" title="关闭">×</button>
+        </div>
+      </div>
+      <div id="ai-config-admin" style="display:${isAdmin ? '' : 'none'};">
+        <div class="ai-config-section">
+          <div class="ai-config-header" onclick="AIChat.toggleExpand()">
+            <span id="ai-config-toggle">▾</span>
+            <span class="ai-config-label">AI 接口配置（管理员）</span>
+            <span class="ai-status" id="ai-status">未配置</span>
+          </div>
+          <div class="ai-config-body" id="ai-config-body">
+            <div class="ai-form">
+              <div class="ai-field"><label class="ai-label">供应商</label>
+                <select class="ai-select" id="ai-provider" onchange="AIChat.onProviderChange()"><option value="agnes">Agnes AI</option><option value="openai">OpenAI</option><option value="anthropic">Anthropic</option><option value="custom">自定义</option></select></div>
+              <div class="ai-field"><label class="ai-label">模型</label>
+                <input class="ai-input" id="ai-model" placeholder="模型名称"></div>
+              <div class="ai-field"><label class="ai-label">API Key</label>
+                <div class="ai-key-row"><input class="ai-input" id="ai-key" type="password" placeholder="sk-..."><button class="ai-key-toggle" id="ai-key-toggle" onclick="AIChat.toggleKey()">显示</button></div></div>
+              <div class="ai-field"><label class="ai-label">Base URL</label>
+                <input class="ai-input" id="ai-base" placeholder="https://..."></div>
+              <div class="ai-actions">
+                <button class="ai-btn primary" onclick="AIChat.saveSettings()">保存配置</button>
+                <button class="ai-btn" onclick="AIChat.clearSettings()">重置</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ai-chat-context">
+        <label><input type="checkbox" id="ai-include-context" ${hasHexContext ? 'checked' : ''}> 获取${hasHexContext ? '此卦' : '网站'}信息</label>
+      </div>
+      <div class="ai-chat-area">
+        <div class="ai-chat-messages" id="ai-chat-messages">
+          <div class="ai-chat-empty">输入问题，AI 为你解读卦象...</div>
+        </div>
+        <div class="ai-chat-input-row">
+          <textarea class="ai-chat-input" id="ai-chat-input" placeholder="输入消息..." rows="1"></textarea>
+          <button class="ai-chat-send" id="ai-chat-send" onclick="AIChat.send()" title="发送">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+          <button class="ai-chat-stop" id="ai-chat-stop" onclick="AIChat.stopStreaming()" title="停止">
+            <svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+          </button>
+        </div>
+      </div>`;
+
+    document.body.appendChild(el);
+    windowEl = el;
+
+    if (isAdmin) {
+      const settings = loadSettings();
+      const p = document.getElementById('ai-provider');
+      const k = document.getElementById('ai-key');
+      const b = document.getElementById('ai-base');
+      const m = document.getElementById('ai-model');
+      if (p) { p.value = settings.provider; p.addEventListener('change', onProviderChange); }
+      if (k) k.value = settings.key;
+      if (b) { b.value = settings.base; b.placeholder = DEFAULT_BASES[settings.provider] || 'https://...'; }
+      if (m) { m.value = settings.model; m.placeholder = DEFAULT_MODELS[settings.provider] || '模型名称'; }
+      updateStatus();
+      if (settings.key) {
+        const body = document.getElementById('ai-config-body');
+        const icon = document.getElementById('ai-config-toggle');
+        if (body) body.classList.add('collapsed');
+        if (icon) icon.textContent = '▸';
+      }
+    }
+
+    const input = document.getElementById('ai-chat-input');
+    if (input) {
+      input.addEventListener('keydown', handleInputKey);
+      input.addEventListener('paste', handlePaste);
+      input.addEventListener('input', onInputChange);
+      input.addEventListener('blur', () => setTimeout(hideSlashMenu, 150));
+    }
+  }
+
+  function toggleWindow() {
+    if (!windowCreated) createChatWindow();
+    if (windowEl.classList.contains('hidden')) openWindow();
+    else closeWindow();
+  }
+
+  function openWindow() {
+    if (!windowCreated) createChatWindow();
+    windowEl.classList.remove('hidden');
+    const input = document.getElementById('ai-chat-input');
+    if (input) setTimeout(() => input.focus(), 100);
+  }
+
+  function closeWindow() {
+    if (windowEl) windowEl.classList.add('hidden');
+  }
 
   function loadSettings() {
     const provider = localStorage.getItem(KEYS.provider) || 'agnes';
@@ -1198,48 +1310,12 @@ const AIChat = (() => {
   }
 
   function init() {
-    const isAdmin = typeof YaoguayiAuth !== 'undefined' && YaoguayiAuth.isAdmin();
-
-    // Hide config section for non-admin users
-    const configSection = document.getElementById('ai-config-admin');
-    if (configSection) {
-      configSection.style.display = isAdmin ? '' : 'none';
-    }
-
-    if (isAdmin) {
-      const settings = loadSettings();
-      const p = document.getElementById('ai-provider');
-      const k = document.getElementById('ai-key');
-      const b = document.getElementById('ai-base');
-      const m = document.getElementById('ai-model');
-      if (p) { p.value = settings.provider; p.addEventListener('change', onProviderChange); }
-      if (k) k.value = settings.key;
-      if (b) { b.value = settings.base; b.placeholder = DEFAULT_BASES[settings.provider] || 'https://...'; }
-      if (m) { m.value = settings.model; m.placeholder = DEFAULT_MODELS[settings.provider] || '模型名称'; }
-      updateStatus();
-
-      if (settings.key) {
-        const body = document.getElementById('ai-config-body');
-        const icon = document.getElementById('ai-config-toggle');
-        if (body) body.classList.add('collapsed');
-        if (icon) icon.textContent = '▸';
-      }
-    }
-
-    // Chat input
-    const input = document.getElementById('ai-chat-input');
-    if (input) {
-      input.addEventListener('keydown', handleInputKey);
-      input.addEventListener('paste', handlePaste);
-      input.addEventListener('input', onInputChange);
-      input.addEventListener('blur', () => setTimeout(hideSlashMenu, 150));
-    }
-
-    renderMessages();
+    // Window is created lazily on first toggleWindow() call
   }
 
   return {
-    init, saveSettings, clearSettings, toggleKey, toggleExpand,
+    init, toggleWindow, openWindow, closeWindow,
+    saveSettings, clearSettings, toggleKey, toggleExpand,
     send, stopStreaming, clearChat, setHexData, onProviderChange,
     removeImage, saveChatToFile
   };

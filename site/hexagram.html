@@ -12,6 +12,7 @@
 <meta property="og:locale" content="zh_CN">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
 <link rel="stylesheet" href="/css/common.css?v=3"/>
+<link rel="stylesheet" href="/css/ai-chat.css?v=1"/>
 <style>
 /* hexagram.html — body flex column for sticky footer */
 body{min-height:100vh;display:flex;flex-direction:column;}
@@ -167,120 +168,8 @@ ruby rt{font-size:10px;color:var(--faint);font-family:'Noto Sans SC',system-ui,s
 .error-msg p{font-size:14px;color:var(--muted);margin-bottom:24px;}
 .error-msg a{color:var(--vermilion);text-decoration:none;font-size:13px;letter-spacing:0.1em;}
 
-.ai-form{display:flex;flex-direction:column;gap:14px;}
-.ai-field{display:flex;flex-direction:column;gap:4px;}
-.ai-label{font-size:10px;letter-spacing:0.1em;color:var(--faint);
-  font-family:'Noto Sans SC',system-ui,sans-serif;}
-.ai-select,.ai-input{background:var(--bg-alt);border:0.5px solid var(--border);
-  border-radius:4px;padding:8px 10px;color:var(--ink);
-  font-size:12px;font-family:'Noto Serif SC',serif;
-  transition:border-color 0.2s;outline:none;}
-.ai-select:focus,.ai-input:focus{border-color:var(--vermilion);}
-.ai-key-row{display:flex;gap:6px;align-items:center;}
-.ai-key-row .ai-input{flex:1;}
-.ai-key-toggle{font-size:9px;color:var(--muted);cursor:pointer;
-  padding:4px 6px;border:0.5px solid var(--border);border-radius:3px;
-  background:none;transition:color 0.2s;white-space:nowrap;}
-.ai-key-toggle:hover{color:var(--vermilion);}
-.ai-actions{display:flex;gap:8px;}
-.ai-btn{flex:1;padding:8px 0;border:0.5px solid var(--border);border-radius:4px;
-  background:none;color:var(--ink-light);font-size:10px;letter-spacing:0.1em;
-  cursor:pointer;transition:background 0.2s,color 0.2s,border-color 0.2s;
-  font-family:'Noto Sans SC',system-ui,sans-serif;}
-.ai-btn:hover{background:var(--hover-bg);border-color:var(--vermilion);color:var(--vermilion);}
-.ai-btn.primary{background:var(--vermilion-faint);color:var(--vermilion);border-color:var(--vermilion);}
-.ai-btn.primary:hover{background:var(--vermilion);color:#fff;}
-.ai-status{font-size:9px;letter-spacing:0.1em;color:var(--ghost);padding:0 0 0 4px;}
-.ai-status.configured{color:var(--vermilion);}
-.ai-status.saved{color:var(--vermilion);font-weight:600;}
-.ai-config-section{border:0.5px solid var(--border);border-radius:4px;overflow:hidden;}
-.ai-config-header{display:flex;align-items:center;gap:6px;padding:10px 12px;
-  cursor:pointer;background:var(--bg-alt);transition:background 0.15s;
-  font-size:10px;color:var(--faint);letter-spacing:0.08em;
-  font-family:'Noto Sans SC',system-ui,sans-serif;}
-.ai-config-header:hover{background:var(--hover-bg);}
-.ai-config-label{flex:1;}
-.ai-config-body{padding:12px;display:flex;flex-direction:column;gap:12px;}
-.ai-config-body.collapsed{display:none;}
+/* panel-ai-body kept for side-panel AI tab layout */
 .panel-ai-body{padding:0;display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden;}
-
-/* AI Chat */
-.ai-chat-area{display:flex;flex-direction:column;flex:1;min-height:0;padding:0 12px 12px;}
-.ai-chat-context{display:flex;align-items:center;gap:6px;padding:10px 12px;
-  border-bottom:0.5px solid var(--border);flex-shrink:0;cursor:default;}
-.ai-chat-context label{display:flex;align-items:center;gap:6px;cursor:pointer;
-  font-size:11px;color:var(--ink-light);
-  font-family:'Noto Sans SC',system-ui,sans-serif;}
-.ai-chat-context input[type=checkbox]{accent-color:var(--vermilion);cursor:pointer;}
-.ai-chat-messages{flex:1;overflow-y:auto;display:flex;flex-direction:column;
-  gap:10px;padding:12px 0;min-height:0;}
-.ai-chat-empty{color:var(--ghost);font-size:11px;text-align:center;
-  padding:32px 12px;line-height:1.6;
-  font-family:'Noto Sans SC',system-ui,sans-serif;}
-.ai-msg{padding:8px 12px;border-radius:8px;font-size:12px;line-height:1.6;
-  word-break:break-word;max-width:90%;
-  font-family:'Noto Serif SC','Source Han Serif SC',serif;}
-.ai-msg code{background:var(--bg-alt);padding:1px 4px;border-radius:3px;
-  font-size:11px;font-family:'Cascadia Code','Fira Code','Consolas',monospace;}
-.ai-msg-user{align-self:flex-end;background:var(--vermilion-faint);
-  color:var(--ink);border-bottom-right-radius:2px;}
-.ai-msg-assistant{align-self:flex-start;background:var(--bg-alt);
-  color:var(--ink);border-bottom-left-radius:2px;}
-.ai-chat-input-row{display:flex;gap:6px;flex-shrink:0;padding-top:8px;
-  border-top:0.5px solid var(--border);}
-.ai-chat-input{flex:1;resize:none;border:0.5px solid var(--border);
-  border-radius:6px;padding:8px 10px;background:var(--bg-alt);color:var(--ink);
-  font-size:12px;line-height:1.4;outline:none;
-  font-family:'Noto Serif SC','Source Han Serif SC',serif;
-  min-height:36px;max-height:80px;transition:border-color 0.2s;}
-.ai-chat-input:focus{border-color:var(--vermilion);}
-.ai-chat-input:disabled{opacity:0.6;}
-.ai-chat-send,.ai-chat-stop{width:36px;height:36px;border-radius:6px;
-  border:0.5px solid var(--border);background:none;color:var(--muted);
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
-  transition:background 0.15s,color 0.15s,border-color 0.15s;flex-shrink:0;}
-.ai-chat-send svg,.ai-chat-stop svg{width:16px;height:16px;}
-.ai-chat-send:hover{background:var(--vermilion-faint);color:var(--vermilion);border-color:var(--vermilion);}
-.ai-chat-stop{display:none;color:var(--vermilion);border-color:var(--vermilion);}
-.ai-chat-stop:hover{background:var(--vermilion-faint);}
-.ai-chat-clear{border:none;background:none;color:var(--ghost);cursor:pointer;
-  font-size:9px;letter-spacing:0.06em;padding:2px 4px;transition:color 0.15s;
-  font-family:'Noto Sans SC',system-ui,sans-serif;}
-.ai-chat-clear:hover{color:var(--vermilion);}
-/* Typing indicator */
-.ai-typing{display:inline-flex;gap:3px;padding:4px 0;}
-.ai-typing span{display:inline-block;width:6px;height:6px;border-radius:50%;
-  background:var(--muted);animation:ai-bounce 1.2s ease-in-out infinite;}
-.ai-typing span:nth-child(2){animation-delay:0.2s;}
-.ai-typing span:nth-child(3){animation-delay:0.4s;}
-@keyframes ai-bounce{0%,80%,100%{transform:translateY(0);opacity:0.4;}
-  40%{transform:translateY(-8px);opacity:1;}}
-/* System message (local notices, slash command output) */
-.ai-system-msg{text-align:center;font-size:11px;color:var(--muted);
-  font-style:italic;padding:6px 12px;white-space:pre-line;line-height:1.5;}
-/* Slash command popup menu */
-.ai-slash-menu{position:relative;background:var(--bg);
-  border:0.5px solid var(--border);border-radius:6px;
-  box-shadow:0 -2px 12px rgba(0,0,0,0.12);overflow:hidden;
-  margin-bottom:4px;flex-shrink:0;}
-.ai-slash-item{display:flex;align-items:center;gap:10px;padding:7px 12px;
-  cursor:pointer;transition:background 0.12s;font-size:12px;}
-.ai-slash-item:hover{background:var(--vermilion-faint);}
-.ai-slash-cmd{font-family:monospace;font-weight:600;color:var(--ink);min-width:70px;}
-.ai-slash-desc{color:var(--muted);}
-/* Image preview above input */
-.ai-image-preview{position:relative;padding:8px 12px;flex-shrink:0;}
-.ai-image-preview img{max-height:80px;max-width:100%;border-radius:6px;
-  border:0.5px solid var(--border);object-fit:contain;}
-.ai-image-remove{position:absolute;top:4px;right:8px;width:20px;height:20px;
-  border:none;border-radius:50%;background:var(--ink);color:var(--bg);
-  font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;
-  opacity:0.7;transition:opacity 0.15s;}
-.ai-image-remove:hover{opacity:1;}
-/* Inline image in messages */
-.ai-msg-img{max-height:120px;max-width:100%;border-radius:6px;margin-bottom:6px;
-  display:block;object-fit:contain;}
-.ai-config-section{margin:12px;flex-shrink:0;}
 
 /* Admin sub-items */
 .section-item-sub{padding-left:28px;}
@@ -354,54 +243,13 @@ body.admin-panel-open .side-panel{right:300px;}
   </div>
   <!-- AI tab content (hidden by default, shown via switchTab) -->
   <div class="panel-body panel-ai-body" id="panel-ai-body" style="display:none;">
-    <!-- Admin-only config section -->
-    <div id="ai-config-admin" style="display:none;">
-      <div class="ai-config-section">
-        <div class="ai-config-header" onclick="AIChat.toggleExpand()">
-          <span id="ai-config-toggle">▾</span>
-          <span class="ai-config-label">AI 接口配置（管理员）</span>
-          <span class="ai-status" id="ai-status">未配置</span>
-        </div>
-        <div class="ai-config-body" id="ai-config-body">
-          <div class="ai-form">
-            <div class="ai-field"><label class="ai-label">供应商</label>
-              <select class="ai-select" id="ai-provider" onchange="AIChat.onProviderChange()"><option value="agnes">Agnes AI</option><option value="openai">OpenAI</option><option value="anthropic">Anthropic</option><option value="custom">自定义</option></select></div>
-            <div class="ai-field"><label class="ai-label">模型</label>
-              <input class="ai-input" id="ai-model" type="text" placeholder="gpt-4o-mini"></div>
-            <div class="ai-field"><label class="ai-label">密钥</label>
-              <form id="ai-key-form" autocomplete="on" onsubmit="return false;">
-              <input type="text" name="username" autocomplete="username" value="yaoguayi-ai-api-key" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" tabindex="-1" aria-hidden="true">
-              <div class="ai-key-row"><input class="ai-input" id="ai-key" name="password" type="password" placeholder="sk-..." autocomplete="current-password"><button type="button" class="ai-key-toggle" id="ai-key-toggle" onclick="AIChat.toggleKey()">显示</button></div>
-              </form></div>
-            <div class="ai-field"><label class="ai-label">接口地址（可选）</label>
-              <input class="ai-input" id="ai-base" type="text" placeholder="https://api.openai.com/v1"></div>
-            <div class="ai-actions"><button class="ai-btn primary" onclick="AIChat.saveSettings()">保存</button><button class="ai-btn" onclick="AIChat.clearSettings()">清除</button></div>
-          </div>
-        </div>
+    <div style="padding:32px 20px;text-align:center;">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:16px;line-height:1.6;font-family:'Noto Sans SC',system-ui,sans-serif;">
+        点击下方按钮打开 AI 对话窗口，<br>基于当前卦象内容与 AI 交流。
       </div>
-    </div>
-    <!-- Context checkbox + actions -->
-    <div class="ai-chat-context">
-      <label><input type="checkbox" id="ai-include-context" checked> 获取此卦信息</label>
-      <div style="margin-left:auto;display:flex;gap:6px;align-items:center;">
-        <button class="ai-chat-clear" onclick="AIChat.saveChatToFile()" title="保存对话">保存</button>
-        <button class="ai-chat-clear" onclick="AIChat.clearChat()">清除</button>
-      </div>
-    </div>
-    <!-- Chat area -->
-    <div class="ai-chat-area">
-      <div class="ai-chat-messages" id="ai-chat-messages">
-        <div class="ai-chat-empty">输入问题，AI 为你解读卦象...</div>
-      </div>
-      <div class="ai-chat-input-row">
-        <textarea class="ai-chat-input" id="ai-chat-input" placeholder="输入消息..." rows="1"></textarea>
-        <button class="ai-chat-send" id="ai-chat-send" onclick="AIChat.send()" title="发送">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        </button>
-        <button class="ai-chat-stop" id="ai-chat-stop" onclick="AIChat.stopStreaming()" title="停止">
-          <svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
-        </button>
-      </div>
+      <button onclick="AIChat.openWindow();SidePanel.close();" style="padding:10px 24px;border:0.5px solid var(--vermilion);border-radius:6px;background:var(--vermilion-faint);color:var(--vermilion);font-size:12px;letter-spacing:0.1em;cursor:pointer;font-family:'Noto Sans SC',system-ui,sans-serif;transition:background 0.2s;">
+        打开 AI 对话
+      </button>
     </div>
   </div>
 </div>
@@ -440,10 +288,10 @@ body.admin-panel-open .side-panel{right:300px;}
 </div><textarea class="notepad-area" id="notepad-area" placeholder="随手记录..." spellcheck="false"></textarea></div>
 </div>
 
-<script src="/js/layout.js?v=21"></script>
+<script src="/js/layout.js?v=30"></script>
 <script src="/js/theme.js?v=3"></script>
 <script src="/js/auth.js?v=4"></script>
-<script src="/js/admin-panel.js?v=13"></script>
+<script src="/js/admin-panel.js?v=30"></script>
 <script>
 /**
  * hexagram.html — 卦象详情页主逻辑
