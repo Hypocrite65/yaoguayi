@@ -354,39 +354,44 @@ body.admin-panel-open .side-panel{right:300px;}
   </div>
   <!-- AI tab content (hidden by default, shown via switchTab) -->
   <div class="panel-body panel-ai-body" id="panel-ai-body" style="display:none;">
-    <!-- Collapsible settings -->
-    <div class="ai-config-section">
-      <div class="ai-config-header" onclick="AIChat.toggleExpand()">
-        <span id="ai-config-toggle">▾</span>
-        <span class="ai-config-label">AI 接口配置</span>
-        <span class="ai-status" id="ai-status">未配置</span>
-      </div>
-      <div class="ai-config-body" id="ai-config-body">
-        <div class="ai-form">
-          <div class="ai-field"><label class="ai-label">供应商</label>
-            <select class="ai-select" id="ai-provider" onchange="AIChat.onProviderChange()"><option value="agnes">Agnes AI</option><option value="openai">OpenAI</option><option value="anthropic">Anthropic</option><option value="custom">自定义</option></select></div>
-          <div class="ai-field"><label class="ai-label">模型</label>
-            <input class="ai-input" id="ai-model" type="text" placeholder="gpt-4o-mini"></div>
-          <div class="ai-field"><label class="ai-label">密钥</label>
-            <form id="ai-key-form" autocomplete="on" onsubmit="return false;">
-            <input type="text" name="username" autocomplete="username" value="yaoguayi-ai-api-key" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" tabindex="-1" aria-hidden="true">
-            <div class="ai-key-row"><input class="ai-input" id="ai-key" name="password" type="password" placeholder="sk-..." autocomplete="current-password"><button type="button" class="ai-key-toggle" id="ai-key-toggle" onclick="AIChat.toggleKey()">显示</button></div>
-            </form></div>
-          <div class="ai-field"><label class="ai-label">接口地址（可选）</label>
-            <input class="ai-input" id="ai-base" type="text" placeholder="https://api.openai.com/v1"></div>
-          <div class="ai-actions"><button class="ai-btn primary" onclick="AIChat.saveSettings()">保存</button><button class="ai-btn" onclick="AIChat.clearSettings()">清除</button></div>
+    <!-- Admin-only config section -->
+    <div id="ai-config-admin" style="display:none;">
+      <div class="ai-config-section">
+        <div class="ai-config-header" onclick="AIChat.toggleExpand()">
+          <span id="ai-config-toggle">▾</span>
+          <span class="ai-config-label">AI 接口配置（管理员）</span>
+          <span class="ai-status" id="ai-status">未配置</span>
+        </div>
+        <div class="ai-config-body" id="ai-config-body">
+          <div class="ai-form">
+            <div class="ai-field"><label class="ai-label">供应商</label>
+              <select class="ai-select" id="ai-provider" onchange="AIChat.onProviderChange()"><option value="agnes">Agnes AI</option><option value="openai">OpenAI</option><option value="anthropic">Anthropic</option><option value="custom">自定义</option></select></div>
+            <div class="ai-field"><label class="ai-label">模型</label>
+              <input class="ai-input" id="ai-model" type="text" placeholder="gpt-4o-mini"></div>
+            <div class="ai-field"><label class="ai-label">密钥</label>
+              <form id="ai-key-form" autocomplete="on" onsubmit="return false;">
+              <input type="text" name="username" autocomplete="username" value="yaoguayi-ai-api-key" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" tabindex="-1" aria-hidden="true">
+              <div class="ai-key-row"><input class="ai-input" id="ai-key" name="password" type="password" placeholder="sk-..." autocomplete="current-password"><button type="button" class="ai-key-toggle" id="ai-key-toggle" onclick="AIChat.toggleKey()">显示</button></div>
+              </form></div>
+            <div class="ai-field"><label class="ai-label">接口地址（可选）</label>
+              <input class="ai-input" id="ai-base" type="text" placeholder="https://api.openai.com/v1"></div>
+            <div class="ai-actions"><button class="ai-btn primary" onclick="AIChat.saveSettings()">保存</button><button class="ai-btn" onclick="AIChat.clearSettings()">清除</button></div>
+          </div>
         </div>
       </div>
     </div>
-    <!-- Context checkbox -->
+    <!-- Context checkbox + actions -->
     <div class="ai-chat-context">
-      <label><input type="checkbox" id="ai-include-context" checked> 获取此网站信息</label>
-      <button class="ai-chat-clear" onclick="AIChat.clearChat()">清除对话</button>
+      <label><input type="checkbox" id="ai-include-context" checked> 获取此卦信息</label>
+      <div style="margin-left:auto;display:flex;gap:6px;align-items:center;">
+        <button class="ai-chat-clear" onclick="AIChat.saveChatToFile()" title="保存对话">保存</button>
+        <button class="ai-chat-clear" onclick="AIChat.clearChat()">清除</button>
+      </div>
     </div>
     <!-- Chat area -->
     <div class="ai-chat-area">
       <div class="ai-chat-messages" id="ai-chat-messages">
-        <div class="ai-chat-empty">询问关于此卦的问题...</div>
+        <div class="ai-chat-empty">输入问题，AI 为你解读卦象...</div>
       </div>
       <div class="ai-chat-input-row">
         <textarea class="ai-chat-input" id="ai-chat-input" placeholder="输入消息..." rows="1"></textarea>
@@ -438,7 +443,7 @@ body.admin-panel-open .side-panel{right:300px;}
 <script src="/js/layout.js?v=21"></script>
 <script src="/js/theme.js?v=3"></script>
 <script src="/js/auth.js?v=4"></script>
-<script src="/js/admin-panel.js?v=12"></script>
+<script src="/js/admin-panel.js?v=13"></script>
 <script>
 /**
  * hexagram.html — 卦象详情页主逻辑

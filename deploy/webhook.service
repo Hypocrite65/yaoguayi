@@ -1,11 +1,14 @@
 [Unit]
-Description=GitHub Webhook for yaoguayi.com auto-deploy
+Description=GitHub Webhook + AI Chat Proxy for yaoguayi.com
 After=network.target
 
 [Service]
 Type=simple
 User=ubuntu
 Environment=WEBHOOK_SECRET=your-secret-here
+Environment=AI_API_KEY=sk-WaaZyX1uWu5OMTtdZY1R0GgBrBS0PPtP4qrFPadWiuiuoO9i
+Environment=AI_API_BASE=https://apihub.agnes-ai.com/v1
+Environment=AI_MODEL=agnes-2.0-flash
 ExecStart=/usr/bin/python3 /var/www/yaoguayi/deploy/webhook.py
 WorkingDirectory=/var/www/yaoguayi
 Restart=always

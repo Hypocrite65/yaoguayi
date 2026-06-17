@@ -532,6 +532,7 @@ const AIChat = (() => {
   let abortController = null;
   let currentHexData = null; // set externally
   let pendingImage = null;   // {base64, mediaType} waiting to be sent
+  let useProxy = true;       // default: use server proxy (no key needed)
 
   function loadSettings() {
     const provider = localStorage.getItem(KEYS.provider) || 'agnes';
@@ -699,7 +700,7 @@ const AIChat = (() => {
     const list = document.getElementById('ai-chat-messages');
     if (!list) return;
     if (messages.length === 0) {
-      list.innerHTML = '<div class="ai-chat-empty">询问关于此卦的问题...</div>';
+      list.innerHTML = '<div class="ai-chat-empty">输入问题，AI 为你解读卦象...</div>';
       return;
     }
     list.innerHTML = messages.map(renderMessage).join('');
@@ -847,12 +848,7 @@ const AIChat = (() => {
     }
 
     const settings = loadSettings();
-    if (!settings.key) {
-      toggleExpand(); // show settings if collapsed
-      const s = document.getElementById('ai-status');
-      if (s) { s.textContent = '请先配置 API 密钥'; s.className = 'ai-status'; }
-      return;
-    }
+    const hasLocalKey = settings.key && YaoguayiAuth.isAdmin();
 
     // Add user message (with optional image)
     const userMsg = { role: 'user', content: text };
@@ -869,7 +865,6 @@ const AIChat = (() => {
     // Add empty assistant message placeholder with typing indicator
     messages.push({ role: 'assistant', content: '' });
     renderMessages();
-    // Show typing dots until first content arrives
     const chatList = document.getElementById('ai-chat-messages');
     const typingEl = chatList && chatList.querySelector('.ai-msg-assistant:last-child');
     if (typingEl) typingEl.innerHTML = '<span class="ai-typing"><span>·</span><span>·</span><span>·</span></span>';
@@ -878,10 +873,14 @@ const AIChat = (() => {
       abortController = new AbortController();
       const systemPrompt = buildSystemPrompt();
 
-      if (settings.provider === 'anthropic') {
-        await streamAnthropic(settings, systemPrompt);
+      if (hasLocalKey) {
+        if (settings.provider === 'anthropic') {
+          await streamAnthropic(settings, systemPrompt);
+        } else {
+          await streamOpenAI(settings, systemPrompt);
+        }
       } else {
-        await streamOpenAI(settings, systemPrompt);
+        await streamViaProxy(systemPrompt);
       }
     } catch (err) {
       if (err.name === 'AbortError') {
@@ -898,6 +897,59 @@ const AIChat = (() => {
     } finally {
       setStreaming(false);
       abortController = null;
+    }
+  }
+
+  /** Stream via server proxy (/api/chat) — no API key needed on client */
+  async function streamViaProxy(systemPrompt) {
+    const apiMessages = [
+      { role: 'system', content: systemPrompt },
+      ...messages.filter(m => m.content).map(m => {
+        if (m.image) {
+          return { role: m.role, content: [
+            { type: 'image_url', image_url: { url: `data:${m.image.mediaType};base64,${m.image.base64}` } },
+            { type: 'text', text: m.content }
+          ]};
+        }
+        return { role: m.role, content: m.content };
+      })
+    ];
+
+    const resp = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: apiMessages, stream: true }),
+      signal: abortController.signal
+    });
+
+    if (!resp.ok) {
+      const errText = await resp.text().catch(() => resp.statusText);
+      throw new Error(`API ${resp.status}: ${errText}`);
+    }
+
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+
+      const lines = buffer.split('\n');
+      buffer = lines.pop() || '';
+
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed || !trimmed.startsWith('data: ')) continue;
+        const data = trimmed.slice(6);
+        if (data === '[DONE]') return;
+        try {
+          const json = JSON.parse(data);
+          const delta = json.choices?.[0]?.delta?.content;
+          if (delta) appendToLastMessage(delta);
+        } catch { /* skip malformed chunks */ }
+      }
     }
   }
 
@@ -1057,6 +1109,40 @@ const AIChat = (() => {
     currentHexData = hex;
   }
 
+  /** Save chat history as a .txt file */
+  function saveChatToFile() {
+    if (messages.length === 0) return;
+    const now = new Date();
+    const dateStr = now.getFullYear() + '-' +
+      String(now.getMonth() + 1).padStart(2, '0') + '-' +
+      String(now.getDate()).padStart(2, '0') + ' ' +
+      String(now.getHours()).padStart(2, '0') + ':' +
+      String(now.getMinutes()).padStart(2, '0');
+    const ts = dateStr.replace(/[- :]/g, '').replace(' ', '_');
+
+    let pageInfo = '爻卦易';
+    if (currentHexData) {
+      pageInfo = `第${currentHexData.id}卦 · ${currentHexData.name}`;
+    }
+
+    let text = `爻卦易 AI 对话记录\n日期：${dateStr}\n页面：${pageInfo}\n`;
+    text += '─'.repeat(40) + '\n\n';
+    messages.forEach(m => {
+      const label = m.role === 'user' ? '[我]' : '[AI]';
+      text += `${label} ${m.content}\n\n`;
+    });
+
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `ai_chat_${ts}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
   /** Handle image paste from clipboard */
   function handlePaste(e) {
     const items = e.clipboardData && e.clipboardData.items;
@@ -1112,23 +1198,32 @@ const AIChat = (() => {
   }
 
   function init() {
-    const settings = loadSettings();
-    const p = document.getElementById('ai-provider');
-    const k = document.getElementById('ai-key');
-    const b = document.getElementById('ai-base');
-    const m = document.getElementById('ai-model');
-    if (p) { p.value = settings.provider; p.addEventListener('change', onProviderChange); }
-    if (k) k.value = settings.key;
-    if (b) { b.value = settings.base; b.placeholder = DEFAULT_BASES[settings.provider] || 'https://...'; }
-    if (m) { m.value = settings.model; m.placeholder = DEFAULT_MODELS[settings.provider] || '模型名称'; }
-    updateStatus();
+    const isAdmin = typeof YaoguayiAuth !== 'undefined' && YaoguayiAuth.isAdmin();
 
-    // Auto-collapse settings if already configured
-    if (settings.key) {
-      const body = document.getElementById('ai-config-body');
-      const icon = document.getElementById('ai-config-toggle');
-      if (body) body.classList.add('collapsed');
-      if (icon) icon.textContent = '▸';
+    // Hide config section for non-admin users
+    const configSection = document.getElementById('ai-config-admin');
+    if (configSection) {
+      configSection.style.display = isAdmin ? '' : 'none';
+    }
+
+    if (isAdmin) {
+      const settings = loadSettings();
+      const p = document.getElementById('ai-provider');
+      const k = document.getElementById('ai-key');
+      const b = document.getElementById('ai-base');
+      const m = document.getElementById('ai-model');
+      if (p) { p.value = settings.provider; p.addEventListener('change', onProviderChange); }
+      if (k) k.value = settings.key;
+      if (b) { b.value = settings.base; b.placeholder = DEFAULT_BASES[settings.provider] || 'https://...'; }
+      if (m) { m.value = settings.model; m.placeholder = DEFAULT_MODELS[settings.provider] || '模型名称'; }
+      updateStatus();
+
+      if (settings.key) {
+        const body = document.getElementById('ai-config-body');
+        const icon = document.getElementById('ai-config-toggle');
+        if (body) body.classList.add('collapsed');
+        if (icon) icon.textContent = '▸';
+      }
     }
 
     // Chat input
@@ -1146,7 +1241,7 @@ const AIChat = (() => {
   return {
     init, saveSettings, clearSettings, toggleKey, toggleExpand,
     send, stopStreaming, clearChat, setHexData, onProviderChange,
-    removeImage
+    removeImage, saveChatToFile
   };
 })();
 
