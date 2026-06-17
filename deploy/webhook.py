@@ -19,6 +19,7 @@ import os
 import subprocess
 from datetime import datetime
 from http.server import HTTPServer, BaseHTTPRequestHandler
+from socketserver import ThreadingMixIn
 
 REPO_DIR = "/var/www/yaoguayi"
 PORT = 9000
@@ -117,7 +118,10 @@ if __name__ == "__main__":
     if not SECRET:
         log("WARNING: WEBHOOK_SECRET not set - signature verification disabled")
 
-    server = HTTPServer(("0.0.0.0", PORT), WebhookHandler)
+    class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
+        daemon_threads = True
+
+    server = ThreadedHTTPServer(("0.0.0.0", PORT), WebhookHandler)
     log(f"Webhook server listening on port {PORT}")
     try:
         server.serve_forever()

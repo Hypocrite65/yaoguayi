@@ -73,6 +73,9 @@ html{scroll-padding-top:64px;}
   background:var(--ink);border-radius:1px;}
 .qg-line-yin-bars .qg-line-gap{width:14px;flex-shrink:0;}
 .qg-line-change{font-size:9px;color:var(--vermilion);width:16px;font-weight:700;}
+.qg-legend{font-size:11px;color:var(--ghost);text-align:center;margin-top:6px;
+  letter-spacing:0.03em;font-family:'Noto Sans SC',system-ui,sans-serif;}
+.qg-legend span{color:var(--vermilion);font-weight:700;}
 
 /* Throw button */
 .qg-throw{display:block;margin:20px auto 0;padding:12px 40px;border-radius:8px;
@@ -145,6 +148,9 @@ html{scroll-padding-top:64px;}
       <div class="qg-step-label" id="qg-step-label">第一爻（初爻）</div>
       <div class="qg-hex-build" id="qg-hex-build">
         <!-- Lines appear here bottom to top -->
+      </div>
+      <div class="qg-legend" id="qg-legend" style="display:none;">
+        <span>○</span> 老阳（变爻） <span>×</span> 老阴（变爻）
       </div>
     </div>
     <button class="qg-throw" id="qg-throw-btn" onclick="throwCoins()">摇 卦</button>
@@ -246,6 +252,7 @@ html{scroll-padding-top:64px;}
     document.getElementById('qg-coin-area').classList.add('active');
     document.getElementById('qg-result').classList.remove('active');
     document.getElementById('qg-hex-build').innerHTML = '';
+    document.getElementById('qg-legend').style.display = 'none';
     document.getElementById('qg-throw-btn').disabled = false;
     updateStepLabel();
     resetCoins();
@@ -258,6 +265,7 @@ html{scroll-padding-top:64px;}
     document.getElementById('qg-coin-area').classList.add('active');
     document.getElementById('qg-result').classList.remove('active');
     document.getElementById('qg-hex-build').innerHTML = '';
+    document.getElementById('qg-legend').style.display = 'none';
     document.getElementById('qg-throw-btn').style.display = 'none';
     document.getElementById('qg-step-label').textContent = '速成起卦中…';
 
@@ -377,6 +385,7 @@ html{scroll-padding-top:64px;}
     const changeMarker = document.createElement('span');
     changeMarker.className = 'qg-line-change';
     changeMarker.textContent = isChanging ? (v === 9 ? '○' : '×') : '';
+    if (isChanging) document.getElementById('qg-legend').style.display = '';
 
     if (isYang) {
       const bar = document.createElement('span');
@@ -508,6 +517,7 @@ html{scroll-padding-top:64px;}
     document.getElementById('qg-coin-area').classList.remove('active');
     document.getElementById('qg-result').classList.remove('active');
     document.getElementById('qg-hex-build').innerHTML = '';
+    document.getElementById('qg-legend').style.display = 'none';
     document.getElementById('qg-throw-btn').style.display = '';
     document.getElementById('qg-throw-btn').disabled = false;
     document.getElementById('qg-throw-btn').textContent = '摇 卦';
