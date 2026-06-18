@@ -254,11 +254,12 @@ const AdminPanel = (() => {
 /* ===== ToolWindow: unified draggable floating window with tabs ===== */
 const ToolWindow = (() => {
   const POS_KEY = 'yaoguayi_toolwindow_pos';
-  const PIN_KEY = 'yaoguayi_notepad_pin';
+  const PIN_KEY = 'yaoguayi_toolwindow_pin';
 
   let windowEl = null;
   let created = false;
   let activeTab = 'ai';
+  let pinned = false;
   let isDragging = false;
   let dragOffsetX = 0, dragOffsetY = 0;
   let isMobile = false;
@@ -281,7 +282,7 @@ const ToolWindow = (() => {
           <button class="tool-tab" data-tab="notepad">记事本</button>
         </div>
         <div class="tool-titlebar-btns">
-          <button class="tool-titlebar-btn" id="tool-pin-btn" title="固定显示" style="display:none">${SVG_PIN}</button>
+          <button class="tool-titlebar-btn" id="tool-pin-btn" title="固定显示">${SVG_PIN}</button>
           <button class="tool-titlebar-btn tool-close-btn" onclick="ToolWindow.closeWindow()" title="关闭">${SVG_CLOSE}</button>
         </div>
       </div>
@@ -304,8 +305,7 @@ const ToolWindow = (() => {
     if (pinBtn) {
       pinBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        Notepad.togglePin();
-        updatePinState();
+        togglePin();
       });
     }
 
@@ -324,7 +324,7 @@ const ToolWindow = (() => {
     restorePosition();
 
     // Update pin button visibility
-    updatePinState();
+    updatePinBtn();
   }
 
   function switchTab(name) {
@@ -336,18 +336,21 @@ const ToolWindow = (() => {
     windowEl.querySelectorAll('.tool-panel').forEach(p => {
       p.classList.toggle('active', p.id === 'tool-panel-' + name);
     });
-    const pinBtn = document.getElementById('tool-pin-btn');
-    if (pinBtn) pinBtn.style.display = (name === 'notepad') ? '' : 'none';
     if (name === 'ai') {
       const input = document.getElementById('ai-chat-input');
       if (input) setTimeout(() => input.focus(), 50);
     }
   }
 
-  function updatePinState() {
+  function togglePin() {
+    pinned = !pinned;
+    localStorage.setItem(PIN_KEY, pinned ? activeTab : '');
+    updatePinBtn();
+  }
+
+  function updatePinBtn() {
     const pinBtn = document.getElementById('tool-pin-btn');
     if (!pinBtn) return;
-    const pinned = localStorage.getItem(PIN_KEY) === '1';
     pinBtn.title = pinned ? '取消固定' : '固定显示';
     pinBtn.classList.toggle('active', pinned);
   }
@@ -458,8 +461,17 @@ const ToolWindow = (() => {
   }
 
   function init() {
-    if (localStorage.getItem(PIN_KEY) === '1') {
-      openWindow('notepad');
+    // Migrate old notepad-only pin key
+    const oldPin = localStorage.getItem('yaoguayi_notepad_pin');
+    if (oldPin === '1' && !localStorage.getItem(PIN_KEY)) {
+      localStorage.setItem(PIN_KEY, 'notepad');
+      localStorage.removeItem('yaoguayi_notepad_pin');
+    }
+
+    const pinnedTab = localStorage.getItem(PIN_KEY);
+    if (pinnedTab) {
+      pinned = true;
+      openWindow(pinnedTab);
     }
   }
 
@@ -470,8 +482,7 @@ const ToolWindow = (() => {
 /* ===== Notepad: content module (no window management) ===== */
 const Notepad = (() => {
   const NOTEPAD_KEY = 'yaoguayi_notepad';
-  const PIN_KEY = 'yaoguayi_notepad_pin';
-  let isPinned = false;
+
   let initialized = false;
 
   function getEls() {
@@ -498,13 +509,6 @@ const Notepad = (() => {
     init();
   }
 
-  function togglePin() {
-    isPinned = !isPinned;
-    localStorage.setItem(PIN_KEY, isPinned ? '1' : '');
-    if (isPinned && !ToolWindow.isOpen()) {
-      ToolWindow.openWindow('notepad');
-    }
-  }
 
   function updateLineNumbers() {
     const { area, lines } = getEls();
@@ -566,7 +570,6 @@ const Notepad = (() => {
     if (!area) return;
     initialized = true;
 
-    isPinned = localStorage.getItem(PIN_KEY) === '1';
     area.value = localStorage.getItem(NOTEPAD_KEY) || '';
 
     area.addEventListener('input', () => {
@@ -594,7 +597,7 @@ const Notepad = (() => {
     updateCharCount();
   }
 
-  return { createPanel, init, clear, selectAll, togglePin, saveToFile };
+  return { createPanel, init, clear, selectAll, saveToFile };
 })();
 
 
