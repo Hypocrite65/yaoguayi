@@ -1,23 +1,17 @@
 /**
- * admin-panel.js — Admin panel + floating notepad + AI chat modules
+ * admin-panel.js — Admin panel + unified tool window (AI chat + notepad)
  *
- * Three independent modules:
+ * Four modules:
  * 1. AdminPanel: Right-side admin panel (admin-only via wrench icon)
- *    - Dynamic section IDs with hexagram-specific content index
- *    - Global unique IDs: H{nn}-{sec} for hexagram pages, I-{sec} for index
- * 2. Notepad: Draggable floating window (all users)
- *    - Quick text editor with line numbers, auto-save to localStorage
- *    - Pin mode: stays visible across page navigations
- *    - Save to text file
- * 3. AIChat: AI conversation panel inside the glossary side-panel
- *    - Configurable provider/key/model, streaming API calls
- *    - Optional site content as system prompt context
+ * 2. ToolWindow: Draggable floating window with tabs (AI / Notepad)
+ * 3. Notepad: Content module (auto-save, line numbers, save-to-file)
+ * 4. AIChat: AI conversation module (streaming, slash commands, image paste)
  */
 
 /* ===== AdminPanel: admin-only section IDs ===== */
 const AdminPanel = (() => {
   let isOpen = false;
-  let currentHex = null; // set by updateSectionList(hex)
+  let currentHex = null;
 
   function open() {
     const panel = document.getElementById('admin-panel');
@@ -27,12 +21,10 @@ const AdminPanel = (() => {
     panel.classList.add('open');
     document.body.classList.add('admin-panel-open');
 
-    // Open glossary panel alongside (side by side) on hexagram pages
     if (typeof SidePanel !== 'undefined' && !SidePanel.isOpen && getPageType() === 'hexagram') {
       SidePanel.toggle();
     }
 
-    // Hide the glossary panel trigger (both panels are open)
     const trigger = document.getElementById('panel-trigger');
     if (trigger) trigger.style.display = 'none';
 
@@ -46,12 +38,10 @@ const AdminPanel = (() => {
     panel.classList.remove('open');
     document.body.classList.remove('admin-panel-open');
 
-    // Close the glossary panel too (they open/close as a pair)
     if (typeof SidePanel !== 'undefined' && SidePanel.isOpen) {
       SidePanel.close();
     }
 
-    // Restore the glossary panel trigger
     const trigger = document.getElementById('panel-trigger');
     if (trigger) trigger.style.display = '';
 
@@ -67,7 +57,6 @@ const AdminPanel = (() => {
     return 'index';
   }
 
-  /** Get zero-padded hex ID for global section IDs */
   function getHexPrefix() {
     if (!currentHex || !currentHex.id) return 'H00';
     return 'H' + String(currentHex.id).padStart(2, '0');
@@ -80,13 +69,11 @@ const AdminPanel = (() => {
     return buildIndexSections();
   }
 
-  /** Dynamically scan index.html for sections based on actual DOM */
   function buildIndexSections() {
     const sections = [];
     let n = 1;
     const pad = () => 'I-' + String(n++).padStart(2, '0');
 
-    // Cover area
     if (document.querySelector('.cover')) {
       sections.push({ id: pad(), name: '封面区', selector: '.cover' });
     }
@@ -100,15 +87,12 @@ const AdminPanel = (() => {
       sections.push({ id: pad(), name: '封面引文', selector: '.cover-quote' });
     }
 
-    // Hexagram grid
     if (document.getElementById('hexagrams')) {
       sections.push({ id: pad(), name: '六十四卦', selector: '#hexagrams' });
     }
 
-    // Knowledge / learn cards
     if (document.getElementById('learn')) {
       sections.push({ id: pad(), name: '读易', selector: '#learn' });
-      // Detect individual knowledge cards
       document.querySelectorAll('.learn-card').forEach(card => {
         const title = card.querySelector('.learn-card-title');
         if (title) {
@@ -123,7 +107,6 @@ const AdminPanel = (() => {
       });
     }
 
-    // Footer
     if (document.getElementById('site-footer')) {
       sections.push({ id: pad(), name: '页脚', selector: '#site-footer' });
     }
@@ -131,24 +114,20 @@ const AdminPanel = (() => {
     return sections;
   }
 
-  /** Dynamically scan learn.html for sections */
   function buildLearnSections() {
     const sections = [];
     let n = 1;
     const pad = () => 'L-' + String(n++).padStart(2, '0');
 
-    // Sidebar TOC
     if (document.getElementById('learn-sidebar')) {
       sections.push({ id: pad(), name: '侧边目录', selector: '#learn-sidebar' });
     }
 
-    // Each article
     document.querySelectorAll('.knowledge-article').forEach(article => {
       const heading = article.querySelector('h2');
       const aId = article.id || '';
       if (heading) {
         sections.push({ id: pad(), name: heading.textContent.trim(), selector: '#' + aId });
-        // Sub-sections
         article.querySelectorAll('.article-section').forEach((sec, idx) => {
           const h3 = sec.querySelector('h3');
           if (!h3) return;
@@ -162,7 +141,6 @@ const AdminPanel = (() => {
       }
     });
 
-    // Footer
     if (document.getElementById('site-footer')) {
       sections.push({ id: pad(), name: '页脚', selector: '#site-footer' });
     }
@@ -170,14 +148,9 @@ const AdminPanel = (() => {
     return sections;
   }
 
-  /**
-   * Build dynamic section list for hexagram pages.
-   * Uses globally unique IDs: H{nn}-{sec} format.
-   * Includes hexagram name prefix and yaoci sub-items.
-   */
   function buildHexagramSections() {
     const prefix = currentHex ? currentHex.name : '';
-    const hp = getHexPrefix(); // e.g. H01, H02, ...H64
+    const hp = getHexPrefix();
     const sections = [
       { id: `${hp}-01`, name: `${prefix} · 卦象图`, selector: '.hex-sidebar' },
       { id: `${hp}-02`, name: `${prefix} · 卦辞`, selector: '.hex-content .section:nth-child(1)' },
@@ -186,7 +159,6 @@ const AdminPanel = (() => {
       { id: `${hp}-05`, name: `${prefix} · 爻辞`, selector: '.hex-content .section:nth-child(4)' }
     ];
 
-    // Add yaoci sub-items from DOM
     if (currentHex && currentHex.yaoci) {
       currentHex.yaoci.forEach(y => {
         sections.push({
@@ -202,10 +174,6 @@ const AdminPanel = (() => {
     return sections;
   }
 
-  /**
-   * Dynamically update the section list HTML inside the admin panel.
-   * Called after renderHexagram() with the hex data object.
-   */
   function updateSectionList(hex) {
     currentHex = hex;
     const container = document.getElementById('admin-sections');
@@ -266,14 +234,11 @@ const AdminPanel = (() => {
     const navWrench = document.getElementById('admin-nav-btn');
     if (navWrench) navWrench.style.display = '';
 
-    // For non-hexagram pages, populate sections after dynamic content loads
     const page = getPageType();
     if (page === 'index' || page === 'learn') {
-      // Delay slightly so fetch-based dynamic content (knowledge cards, articles) is rendered
       setTimeout(() => updateSectionList(null), 500);
     }
 
-    // Ctrl+Shift+A shortcut
     document.addEventListener('keydown', (e) => {
       if (e.ctrlKey && e.shiftKey && e.key === 'A') {
         e.preventDefault();
@@ -286,56 +251,260 @@ const AdminPanel = (() => {
 })();
 
 
-/* ===== Notepad: floating draggable window (all users) ===== */
+/* ===== ToolWindow: unified draggable floating window with tabs ===== */
+const ToolWindow = (() => {
+  const POS_KEY = 'yaoguayi_toolwindow_pos';
+  const PIN_KEY = 'yaoguayi_notepad_pin';
+
+  let windowEl = null;
+  let created = false;
+  let activeTab = 'ai';
+  let isDragging = false;
+  let dragOffsetX = 0, dragOffsetY = 0;
+  let isMobile = false;
+
+  const SVG_PIN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 17v5"/><path d="M9 11V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v7"/><path d="M5 17h14"/><path d="M7 11l-2 6h14l-2-6"/></svg>';
+  const SVG_CLOSE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+
+  function createWindow() {
+    if (created) return;
+    created = true;
+    isMobile = window.innerWidth <= 768;
+
+    const el = document.createElement('div');
+    el.className = 'tool-window hidden';
+    el.id = 'tool-window';
+    el.innerHTML = `
+      <div class="tool-titlebar" id="tool-titlebar">
+        <div class="tool-tabs">
+          <button class="tool-tab active" data-tab="ai">AI 助手</button>
+          <button class="tool-tab" data-tab="notepad">记事本</button>
+        </div>
+        <div class="tool-titlebar-btns">
+          <button class="tool-titlebar-btn" id="tool-pin-btn" title="固定显示" style="display:none">${SVG_PIN}</button>
+          <button class="tool-titlebar-btn tool-close-btn" onclick="ToolWindow.closeWindow()" title="关闭">${SVG_CLOSE}</button>
+        </div>
+      </div>
+      <div class="tool-panel active" id="tool-panel-ai"></div>
+      <div class="tool-panel" id="tool-panel-notepad"></div>`;
+
+    document.body.appendChild(el);
+    windowEl = el;
+
+    // Tab click
+    el.querySelectorAll('.tool-tab').forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        e.stopPropagation();
+        switchTab(tab.dataset.tab);
+      });
+    });
+
+    // Pin button
+    const pinBtn = document.getElementById('tool-pin-btn');
+    if (pinBtn) {
+      pinBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        Notepad.togglePin();
+        updatePinState();
+      });
+    }
+
+    // Drag (mouse)
+    const titlebar = document.getElementById('tool-titlebar');
+    if (titlebar && !isMobile) {
+      titlebar.addEventListener('mousedown', onDragStart);
+      titlebar.addEventListener('touchstart', onTouchStart, { passive: false });
+    }
+
+    // Build panel contents
+    AIChat.createPanel(document.getElementById('tool-panel-ai'));
+    Notepad.createPanel(document.getElementById('tool-panel-notepad'));
+
+    // Restore position
+    restorePosition();
+
+    // Update pin button visibility
+    updatePinState();
+  }
+
+  function switchTab(name) {
+    if (!windowEl) return;
+    activeTab = name;
+    windowEl.querySelectorAll('.tool-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.tab === name);
+    });
+    windowEl.querySelectorAll('.tool-panel').forEach(p => {
+      p.classList.toggle('active', p.id === 'tool-panel-' + name);
+    });
+    const pinBtn = document.getElementById('tool-pin-btn');
+    if (pinBtn) pinBtn.style.display = (name === 'notepad') ? '' : 'none';
+    if (name === 'ai') {
+      const input = document.getElementById('ai-chat-input');
+      if (input) setTimeout(() => input.focus(), 50);
+    }
+  }
+
+  function updatePinState() {
+    const pinBtn = document.getElementById('tool-pin-btn');
+    if (!pinBtn) return;
+    const pinned = localStorage.getItem(PIN_KEY) === '1';
+    pinBtn.title = pinned ? '取消固定' : '固定显示';
+    pinBtn.classList.toggle('active', pinned);
+  }
+
+  function toggleWindow() {
+    if (!created) createWindow();
+    if (windowEl.classList.contains('hidden')) openWindow();
+    else closeWindow();
+  }
+
+  function openWindow(tab) {
+    if (!created) createWindow();
+    windowEl.classList.remove('hidden');
+    if (tab) switchTab(tab);
+    if (activeTab === 'ai') {
+      const input = document.getElementById('ai-chat-input');
+      if (input) setTimeout(() => input.focus(), 100);
+    }
+  }
+
+  function closeWindow() {
+    if (windowEl) windowEl.classList.add('hidden');
+  }
+
+  function isOpen() {
+    return windowEl && !windowEl.classList.contains('hidden');
+  }
+
+  /* Drag: mouse */
+  function onDragStart(e) {
+    if (e.target.closest('.tool-tab') || e.target.closest('.tool-titlebar-btn')) return;
+    isDragging = true;
+    const rect = windowEl.getBoundingClientRect();
+    dragOffsetX = e.clientX - rect.left;
+    dragOffsetY = e.clientY - rect.top;
+    windowEl.style.transition = 'none';
+    document.addEventListener('mousemove', onDragMove);
+    document.addEventListener('mouseup', onDragEnd);
+    e.preventDefault();
+  }
+
+  function onDragMove(e) {
+    if (!isDragging) return;
+    applyPosition(e.clientX - dragOffsetX, e.clientY - dragOffsetY);
+  }
+
+  function onDragEnd() {
+    isDragging = false;
+    document.removeEventListener('mousemove', onDragMove);
+    document.removeEventListener('mouseup', onDragEnd);
+    savePosition();
+  }
+
+  /* Drag: touch */
+  function onTouchStart(e) {
+    if (e.target.closest('.tool-tab') || e.target.closest('.tool-titlebar-btn')) return;
+    if (e.touches.length !== 1) return;
+    isDragging = true;
+    const t = e.touches[0];
+    const rect = windowEl.getBoundingClientRect();
+    dragOffsetX = t.clientX - rect.left;
+    dragOffsetY = t.clientY - rect.top;
+    windowEl.style.transition = 'none';
+    document.addEventListener('touchmove', onTouchMove, { passive: false });
+    document.addEventListener('touchend', onTouchEnd);
+    e.preventDefault();
+  }
+
+  function onTouchMove(e) {
+    if (!isDragging || e.touches.length !== 1) return;
+    const t = e.touches[0];
+    applyPosition(t.clientX - dragOffsetX, t.clientY - dragOffsetY);
+    e.preventDefault();
+  }
+
+  function onTouchEnd() {
+    isDragging = false;
+    document.removeEventListener('touchmove', onTouchMove);
+    document.removeEventListener('touchend', onTouchEnd);
+    savePosition();
+  }
+
+  function applyPosition(x, y) {
+    x = Math.max(0, Math.min(x, window.innerWidth - windowEl.offsetWidth));
+    y = Math.max(0, Math.min(y, window.innerHeight - windowEl.offsetHeight));
+    windowEl.style.left = x + 'px';
+    windowEl.style.top = y + 'px';
+    windowEl.style.right = 'auto';
+    windowEl.style.bottom = 'auto';
+  }
+
+  function savePosition() {
+    if (!windowEl) return;
+    const rect = windowEl.getBoundingClientRect();
+    localStorage.setItem(POS_KEY, JSON.stringify({ left: rect.left, top: rect.top }));
+  }
+
+  function restorePosition() {
+    if (isMobile || !windowEl) return;
+    const saved = localStorage.getItem(POS_KEY);
+    if (!saved) return;
+    try {
+      const pos = JSON.parse(saved);
+      const maxX = window.innerWidth - windowEl.offsetWidth;
+      const maxY = window.innerHeight - windowEl.offsetHeight;
+      applyPosition(Math.min(pos.left, maxX), Math.min(pos.top, maxY));
+    } catch { /* ignore */ }
+  }
+
+  function init() {
+    if (localStorage.getItem(PIN_KEY) === '1') {
+      openWindow('notepad');
+    }
+  }
+
+  return { init, toggleWindow, openWindow, closeWindow, isOpen, switchTab };
+})();
+
+
+/* ===== Notepad: content module (no window management) ===== */
 const Notepad = (() => {
   const NOTEPAD_KEY = 'yaoguayi_notepad';
   const PIN_KEY = 'yaoguayi_notepad_pin';
-  const POS_KEY = 'yaoguayi_notepad_pos';
-  let isVisible = false;
   let isPinned = false;
-  let isDragging = false;
-  let dragOffsetX = 0, dragOffsetY = 0;
   let initialized = false;
 
   function getEls() {
     return {
-      win: document.getElementById('notepad-window'),
       area: document.getElementById('notepad-area'),
       lines: document.getElementById('notepad-lines'),
       count: document.getElementById('notepad-count')
     };
   }
 
-  function show() {
-    const { win } = getEls();
-    if (!win) return;
-    isVisible = true;
-    win.classList.add('visible');
-    updateLineNumbers();
-    updateCharCount();
-  }
+  function createPanel(container) {
+    if (!container) return;
+    container.innerHTML = `
+      <div class="notepad-toolbar">
+        <button class="notepad-btn" onclick="Notepad.selectAll()">全选</button>
+        <button class="notepad-btn" onclick="Notepad.clear()">清除</button>
+        <button class="notepad-btn" onclick="Notepad.saveToFile()">保存文件</button>
+        <span class="notepad-count" id="notepad-count">0 字 / 1 行</span>
+      </div>
+      <div class="notepad-body">
+        <div class="notepad-lines" id="notepad-lines">1\n</div>
+        <textarea class="notepad-area" id="notepad-area" placeholder="随手记录..." spellcheck="false"></textarea>
+      </div>`;
 
-  function hide() {
-    const { win } = getEls();
-    if (!win) return;
-    isVisible = false;
-    win.classList.remove('visible');
+    init();
   }
-
-  function toggle() { isVisible ? hide() : show(); }
 
   function togglePin() {
     isPinned = !isPinned;
     localStorage.setItem(PIN_KEY, isPinned ? '1' : '');
-    updatePinButton();
-    if (isPinned && !isVisible) show();
-  }
-
-  function updatePinButton() {
-    const btn = document.getElementById('notepad-pin-btn');
-    if (!btn) return;
-    btn.title = isPinned ? '取消固定' : '固定显示';
-    btn.classList.toggle('active', isPinned);
+    if (isPinned && !ToolWindow.isOpen()) {
+      ToolWindow.openWindow('notepad');
+    }
   }
 
   function updateLineNumbers() {
@@ -370,7 +539,6 @@ const Notepad = (() => {
     area.select();
   }
 
-  /** Save notepad content as a .txt file download */
   function saveToFile() {
     const { area } = getEls();
     if (!area) return;
@@ -393,74 +561,25 @@ const Notepad = (() => {
     URL.revokeObjectURL(url);
   }
 
-  /* Drag logic */
-  function onMouseDown(e) {
-    const { win } = getEls();
-    if (!win) return;
-    isDragging = true;
-    const rect = win.getBoundingClientRect();
-    dragOffsetX = e.clientX - rect.left;
-    dragOffsetY = e.clientY - rect.top;
-    win.style.transition = 'none';
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-    e.preventDefault();
-  }
-
-  function onMouseMove(e) {
-    if (!isDragging) return;
-    const { win } = getEls();
-    if (!win) return;
-    const x = Math.max(0, Math.min(e.clientX - dragOffsetX, window.innerWidth - win.offsetWidth));
-    const y = Math.max(0, Math.min(e.clientY - dragOffsetY, window.innerHeight - win.offsetHeight));
-    win.style.left = x + 'px';
-    win.style.top = y + 'px';
-    win.style.right = 'auto';
-    win.style.bottom = 'auto';
-  }
-
-  function onMouseUp() {
-    isDragging = false;
-    document.removeEventListener('mousemove', onMouseMove);
-    document.removeEventListener('mouseup', onMouseUp);
-
-    // Save position to localStorage for persistence across page navigations
-    const { win } = getEls();
-    if (win) {
-      const rect = win.getBoundingClientRect();
-      localStorage.setItem(POS_KEY, JSON.stringify({
-        left: rect.left,
-        top: rect.top
-      }));
-    }
-  }
-
   function init() {
     if (initialized) return;
-    const { win, area, lines } = getEls();
+    const { area, lines } = getEls();
     if (!area) return;
     initialized = true;
 
-    // Load saved content
+    isPinned = localStorage.getItem(PIN_KEY) === '1';
     area.value = localStorage.getItem(NOTEPAD_KEY) || '';
 
-    // Load pin state
-    isPinned = localStorage.getItem(PIN_KEY) === '1';
-    updatePinButton();
-
-    // Auto-save
     area.addEventListener('input', () => {
       localStorage.setItem(NOTEPAD_KEY, area.value);
       updateLineNumbers();
       updateCharCount();
     });
 
-    // Sync scroll
     area.addEventListener('scroll', () => {
       if (lines) lines.scrollTop = area.scrollTop;
     });
 
-    // Tab key
     area.addEventListener('keydown', (e) => {
       if (e.key === 'Tab') {
         e.preventDefault();
@@ -472,39 +591,15 @@ const Notepad = (() => {
       }
     });
 
-    // Drag title bar
-    const titleBar = win && win.querySelector('.notepad-titlebar');
-    if (titleBar) titleBar.addEventListener('mousedown', onMouseDown);
-
-    // Restore saved position if previously dragged
-    const savedPos = localStorage.getItem(POS_KEY);
-    if (savedPos && win) {
-      try {
-        const pos = JSON.parse(savedPos);
-        // Clamp to viewport bounds
-        const maxX = window.innerWidth - win.offsetWidth;
-        const maxY = window.innerHeight - win.offsetHeight;
-        const x = Math.max(0, Math.min(pos.left, maxX));
-        const y = Math.max(0, Math.min(pos.top, maxY));
-        win.style.left = x + 'px';
-        win.style.top = y + 'px';
-        win.style.right = 'auto';
-        win.style.bottom = 'auto';
-      } catch { /* ignore invalid JSON */ }
-    }
-
     updateLineNumbers();
     updateCharCount();
-
-    // If pinned, auto-show on page load
-    if (isPinned) show();
   }
 
-  return { init, show, hide, toggle, clear, selectAll, togglePin, saveToFile };
+  return { createPanel, init, clear, selectAll, togglePin, saveToFile };
 })();
 
 
-/* ===== AIChat: floating chat window (all pages) ===== */
+/* ===== AIChat: AI conversation module (no window management) ===== */
 const AIChat = (() => {
   const KEYS = {
     provider: 'yaoguayi_ai_provider',
@@ -532,28 +627,19 @@ const AIChat = (() => {
   let abortController = null;
   let currentHexData = null;
   let pendingImage = null;
-  let useProxy = true;
-  let windowEl = null;
-  let windowCreated = false;
+  let panelEl = null;
 
-  function createChatWindow() {
-    if (windowCreated) return;
-    windowCreated = true;
+  function createPanel(container) {
+    if (!container) return;
+    panelEl = container;
 
     const isAdmin = typeof YaoguayiAuth !== 'undefined' && YaoguayiAuth.isAdmin();
     const hasHexContext = location.pathname.includes('hexagram.html');
 
-    const el = document.createElement('div');
-    el.className = 'ai-chat-window hidden';
-    el.id = 'ai-chat-window';
-    el.innerHTML = `
-      <div class="ai-chat-header">
-        <span class="ai-chat-header-title">AI 助手</span>
-        <div class="ai-chat-header-actions">
-          <button class="ai-chat-header-btn" onclick="AIChat.saveChatToFile()" title="保存对话">保存</button>
-          <button class="ai-chat-header-btn" onclick="AIChat.clearChat()" title="清除对话">清除</button>
-          <button class="ai-chat-header-btn ai-chat-header-close" onclick="AIChat.closeWindow()" title="关闭">×</button>
-        </div>
+    container.innerHTML = `
+      <div class="ai-panel-actions">
+        <button class="ai-panel-actions-btn" onclick="AIChat.saveChatToFile()" title="保存对话">保存</button>
+        <button class="ai-panel-actions-btn" onclick="AIChat.clearChat()" title="清除对话">清除</button>
       </div>
       <div id="ai-config-admin" style="display:${isAdmin ? '' : 'none'};">
         <div class="ai-config-section">
@@ -598,9 +684,6 @@ const AIChat = (() => {
         </div>
       </div>`;
 
-    document.body.appendChild(el);
-    windowEl = el;
-
     if (isAdmin) {
       const settings = loadSettings();
       const p = document.getElementById('ai-provider');
@@ -629,23 +712,6 @@ const AIChat = (() => {
     }
   }
 
-  function toggleWindow() {
-    if (!windowCreated) createChatWindow();
-    if (windowEl.classList.contains('hidden')) openWindow();
-    else closeWindow();
-  }
-
-  function openWindow() {
-    if (!windowCreated) createChatWindow();
-    windowEl.classList.remove('hidden');
-    const input = document.getElementById('ai-chat-input');
-    if (input) setTimeout(() => input.focus(), 100);
-  }
-
-  function closeWindow() {
-    if (windowEl) windowEl.classList.add('hidden');
-  }
-
   function loadSettings() {
     const provider = localStorage.getItem(KEYS.provider) || 'agnes';
     return {
@@ -667,7 +733,6 @@ const AIChat = (() => {
     if (b) localStorage.setItem(KEYS.base, b.value);
     if (m) localStorage.setItem(KEYS.model, m.value);
     if (s) { s.textContent = '已保存至浏览器'; s.className = 'ai-status saved'; setTimeout(updateStatus, 1500); }
-    // Auto-collapse config after save
     const body = document.getElementById('ai-config-body');
     const icon = document.getElementById('ai-config-toggle');
     if (body) body.classList.add('collapsed');
@@ -711,14 +776,12 @@ const AIChat = (() => {
     if (icon) icon.textContent = collapsed ? '▸' : '▾';
   }
 
-  /** Update model/base defaults when provider changes */
   function onProviderChange() {
     const p = document.getElementById('ai-provider');
     const m = document.getElementById('ai-model');
     const b = document.getElementById('ai-base');
     if (!p) return;
     const pv = p.value;
-    // If model is empty or was a default from another provider, replace with new default
     const allDefaults = Object.values(DEFAULT_MODELS);
     if (m && (!m.value || allDefaults.includes(m.value))) {
       m.value = DEFAULT_MODELS[pv] || '';
@@ -731,7 +794,6 @@ const AIChat = (() => {
     if (b) b.placeholder = DEFAULT_BASES[pv] || 'https://...';
   }
 
-  /** Site overview blurb (lightweight, avoids bloating context) */
   const SITE_OVERVIEW = [
     '【关于本网站】',
     '爻卦易 (yaoguayi.com) 是一个在线《周易》六十四卦查阅工具，主要功能：',
@@ -754,7 +816,6 @@ const AIChat = (() => {
     ''
   ].join('\n');
 
-  /** Build system prompt with hexagram content */
   function buildSystemPrompt() {
     const cb = document.getElementById('ai-include-context');
     if (!cb || !cb.checked || !currentHexData) {
@@ -786,11 +847,9 @@ const AIChat = (() => {
     return prompt;
   }
 
-  /** Render a single message into HTML */
   function renderMessage(msg) {
     const cls = msg.role === 'user' ? 'ai-msg ai-msg-user' : 'ai-msg ai-msg-assistant';
     let html = '';
-    // Show image thumbnail for user messages with images
     if (msg.image) {
       html += `<img class="ai-msg-img" src="data:${msg.image.mediaType};base64,${msg.image.base64}" alt="image">`;
     }
@@ -807,7 +866,6 @@ const AIChat = (() => {
     return d.innerHTML;
   }
 
-  /** Refresh the chat message list */
   function renderMessages() {
     const list = document.getElementById('ai-chat-messages');
     if (!list) return;
@@ -819,7 +877,6 @@ const AIChat = (() => {
     list.scrollTop = list.scrollHeight;
   }
 
-  /** Append text to the last assistant message (streaming) */
   function appendToLastMessage(text) {
     const last = messages[messages.length - 1];
     if (!last || last.role !== 'assistant') return;
@@ -837,18 +894,16 @@ const AIChat = (() => {
     }
   }
 
-  /* ---- Slash commands ---- */
+  /* Slash commands */
   const SLASH_COMMANDS = [
     { cmd: '/clear',   desc: '清除全部对话',         fn: cmdClear },
     { cmd: '/compact', desc: '仅保留最近几条消息',   fn: cmdCompact },
     { cmd: '/help',    desc: '显示可用命令列表',      fn: cmdHelp }
   ];
 
-  /** Insert a local system notice into the chat (not sent to API) */
   function addSystemMsg(text) {
     const list = document.getElementById('ai-chat-messages');
     if (!list) return;
-    // Remove empty-state placeholder if present
     const empty = list.querySelector('.ai-chat-empty');
     if (empty) empty.remove();
     const div = document.createElement('div');
@@ -880,7 +935,6 @@ const AIChat = (() => {
     addSystemMsg('可用命令：\n' + lines);
   }
 
-  /** Try to handle a slash command; returns true if handled */
   function handleSlashCommand(text) {
     if (!text.startsWith('/')) return false;
     const cmd = text.split(/\s/)[0].toLowerCase();
@@ -890,7 +944,7 @@ const AIChat = (() => {
     return true;
   }
 
-  /* ---- Slash menu popup ---- */
+  /* Slash menu popup */
   let slashMenuEl = null;
 
   function createSlashMenu() {
@@ -898,13 +952,12 @@ const AIChat = (() => {
     const el = document.createElement('div');
     el.className = 'ai-slash-menu';
     el.style.display = 'none';
-    // Build items
     SLASH_COMMANDS.forEach(c => {
       const item = document.createElement('div');
       item.className = 'ai-slash-item';
       item.innerHTML = `<span class="ai-slash-cmd">${c.cmd}</span><span class="ai-slash-desc">${c.desc}</span>`;
       item.addEventListener('mousedown', (e) => {
-        e.preventDefault(); // keep focus on input
+        e.preventDefault();
         const input = document.getElementById('ai-chat-input');
         if (input) { input.value = c.cmd; }
         hideSlashMenu();
@@ -913,8 +966,7 @@ const AIChat = (() => {
       });
       el.appendChild(item);
     });
-    // Insert before input row
-    const inputRow = document.querySelector('.ai-chat-input-row');
+    const inputRow = panelEl && panelEl.querySelector('.ai-chat-input-row');
     if (inputRow) inputRow.parentNode.insertBefore(el, inputRow);
     slashMenuEl = el;
     return el;
@@ -945,7 +997,6 @@ const AIChat = (() => {
     }
   }
 
-  /** Send message to AI */
   async function send() {
     const input = document.getElementById('ai-chat-input');
     if (!input) return;
@@ -953,7 +1004,6 @@ const AIChat = (() => {
     if (!text || isStreaming) return;
     hideSlashMenu();
 
-    // Handle slash commands locally
     if (handleSlashCommand(text)) {
       input.value = '';
       return;
@@ -962,7 +1012,6 @@ const AIChat = (() => {
     const settings = loadSettings();
     const hasLocalKey = settings.key && YaoguayiAuth.isAdmin();
 
-    // Add user message (with optional image)
     const userMsg = { role: 'user', content: text };
     if (pendingImage) {
       userMsg.image = pendingImage;
@@ -974,7 +1023,6 @@ const AIChat = (() => {
     renderMessages();
     setStreaming(true);
 
-    // Add empty assistant message placeholder with typing indicator
     messages.push({ role: 'assistant', content: '' });
     renderMessages();
     const chatList = document.getElementById('ai-chat-messages');
@@ -1012,7 +1060,6 @@ const AIChat = (() => {
     }
   }
 
-  /** Stream via server proxy (/api/chat) — no API key needed on client */
   async function streamViaProxy(systemPrompt) {
     const apiMessages = [
       { role: 'system', content: systemPrompt },
@@ -1039,43 +1086,17 @@ const AIChat = (() => {
       throw new Error(`API ${resp.status}: ${errText}`);
     }
 
-    const reader = resp.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = '';
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buffer += decoder.decode(value, { stream: true });
-
-      const lines = buffer.split('\n');
-      buffer = lines.pop() || '';
-
-      for (const line of lines) {
-        const trimmed = line.trim();
-        if (!trimmed || !trimmed.startsWith('data: ')) continue;
-        const data = trimmed.slice(6);
-        if (data === '[DONE]') return;
-        try {
-          const json = JSON.parse(data);
-          const delta = json.choices?.[0]?.delta?.content;
-          if (delta) appendToLastMessage(delta);
-        } catch { /* skip malformed chunks */ }
-      }
-    }
+    await readSSEStream(resp);
   }
 
-  /** Stream from OpenAI-compatible API */
   async function streamOpenAI(settings, systemPrompt) {
     const baseUrl = (settings.base || DEFAULT_BASES.openai).replace(/\/+$/, '');
     const model = settings.model || DEFAULT_MODELS[settings.provider] || DEFAULT_MODELS.openai;
 
-    // Build API messages: system prompt + all messages with content (excludes empty assistant placeholder)
     const apiMessages = [
       { role: 'system', content: systemPrompt },
       ...messages.filter(m => m.content).map(m => {
         if (m.image) {
-          // OpenAI vision format: content array with text + image_url
           return { role: m.role, content: [
             { type: 'image_url', image_url: { url: `data:${m.image.mediaType};base64,${m.image.base64}` } },
             { type: 'text', text: m.content }
@@ -1091,11 +1112,7 @@ const AIChat = (() => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${settings.key}`
       },
-      body: JSON.stringify({
-        model,
-        messages: apiMessages,
-        stream: true
-      }),
+      body: JSON.stringify({ model, messages: apiMessages, stream: true }),
       signal: abortController.signal
     });
 
@@ -1104,43 +1121,17 @@ const AIChat = (() => {
       throw new Error(`API ${resp.status}: ${errText}`);
     }
 
-    const reader = resp.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = '';
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buffer += decoder.decode(value, { stream: true });
-
-      const lines = buffer.split('\n');
-      buffer = lines.pop() || '';
-
-      for (const line of lines) {
-        const trimmed = line.trim();
-        if (!trimmed || !trimmed.startsWith('data: ')) continue;
-        const data = trimmed.slice(6);
-        if (data === '[DONE]') return;
-        try {
-          const json = JSON.parse(data);
-          const delta = json.choices?.[0]?.delta?.content;
-          if (delta) appendToLastMessage(delta);
-        } catch { /* skip malformed chunks */ }
-      }
-    }
+    await readSSEStream(resp);
   }
 
-  /** Stream from Anthropic API */
   async function streamAnthropic(settings, systemPrompt) {
     const baseUrl = (settings.base || 'https://api.anthropic.com').replace(/\/+$/, '');
     const model = settings.model || DEFAULT_MODELS.anthropic;
 
-    // Anthropic: system is separate, messages are user/assistant only (excludes empty placeholder)
     const apiMessages = messages
       .filter(m => m.content)
       .map(m => {
         if (m.image) {
-          // Anthropic vision format: content array with image + text
           return { role: m.role, content: [
             { type: 'image', source: { type: 'base64', media_type: m.image.mediaType, data: m.image.base64 } },
             { type: 'text', text: m.content }
@@ -1172,6 +1163,37 @@ const AIChat = (() => {
       throw new Error(`API ${resp.status}: ${errText}`);
     }
 
+    await readAnthropicStream(resp);
+  }
+
+  async function readSSEStream(resp) {
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+
+      const lines = buffer.split('\n');
+      buffer = lines.pop() || '';
+
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed || !trimmed.startsWith('data: ')) continue;
+        const data = trimmed.slice(6);
+        if (data === '[DONE]') return;
+        try {
+          const json = JSON.parse(data);
+          const delta = json.choices?.[0]?.delta?.content;
+          if (delta) appendToLastMessage(delta);
+        } catch { /* skip malformed chunks */ }
+      }
+    }
+  }
+
+  async function readAnthropicStream(resp) {
     const reader = resp.body.getReader();
     const decoder = new TextDecoder();
     let buffer = '';
@@ -1221,7 +1243,6 @@ const AIChat = (() => {
     currentHexData = hex;
   }
 
-  /** Save chat history as a .txt file */
   function saveChatToFile() {
     if (messages.length === 0) return;
     const now = new Date();
@@ -1255,7 +1276,6 @@ const AIChat = (() => {
     URL.revokeObjectURL(url);
   }
 
-  /** Handle image paste from clipboard */
   function handlePaste(e) {
     const items = e.clipboardData && e.clipboardData.items;
     if (!items) return;
@@ -1284,7 +1304,7 @@ const AIChat = (() => {
     preview.className = 'ai-image-preview';
     preview.id = 'ai-image-preview';
     preview.innerHTML = `<img src="${dataUrl}" alt="preview"><button class="ai-image-remove" onclick="AIChat.removeImage()" title="移除图片">×</button>`;
-    const inputRow = document.querySelector('.ai-chat-input-row');
+    const inputRow = panelEl && panelEl.querySelector('.ai-chat-input-row');
     if (inputRow) inputRow.parentNode.insertBefore(preview, inputRow);
   }
 
@@ -1309,22 +1329,17 @@ const AIChat = (() => {
     }
   }
 
-  function init() {
-    // Window is created lazily on first toggleWindow() call
-  }
-
   return {
-    init, toggleWindow, openWindow, closeWindow,
-    saveSettings, clearSettings, toggleKey, toggleExpand,
+    createPanel, saveSettings, clearSettings, toggleKey, toggleExpand,
     send, stopStreaming, clearChat, setHexData, onProviderChange,
     removeImage, saveChatToFile
   };
 })();
 
 
-/* ===== Auto-init Notepad on DOMContentLoaded (works for all users) ===== */
+/* ===== Auto-init ToolWindow on DOMContentLoaded ===== */
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => { Notepad.init(); });
+  document.addEventListener('DOMContentLoaded', () => { ToolWindow.init(); });
 } else {
-  Notepad.init();
+  ToolWindow.init();
 }

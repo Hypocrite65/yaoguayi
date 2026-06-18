@@ -70,7 +70,7 @@
         <button class="nav-btn" id="admin-nav-btn" title="开发模式 (Ctrl+Shift+A)" onclick="typeof AdminPanel!=='undefined'&&AdminPanel.toggle()" style="display:none;">
           ${ICON_ADMIN}
         </button>
-        <button class="nav-btn" id="ai-chat-toggle" title="AI 助手" onclick="typeof AIChat!=='undefined'&&AIChat.toggleWindow()">
+        <button class="nav-btn" id="ai-chat-toggle" title="AI 助手 / 记事本" onclick="typeof ToolWindow!=='undefined'&&ToolWindow.toggleWindow()">
           ${ICON_AI}
         </button>
         <button class="nav-btn" id="theme-toggle" title="切换主题" onclick="toggleTheme()">
@@ -82,10 +82,6 @@
           </button>
           <div class="account-dropdown" id="account-dropdown">
             <div class="dropdown-header">账户</div>
-            <a class="dropdown-item" onclick="closeAccountMenu();typeof Notepad!=='undefined'&&Notepad.toggle();">
-              ${ICON_NOTEPAD}
-              记事本
-            </a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" id="auth-action-link">
               <span id="auth-action-icon">${ICON_LOGOUT}</span>

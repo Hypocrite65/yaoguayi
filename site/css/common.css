@@ -207,65 +207,6 @@ body {
   box-shadow: 0 1px 4px rgba(0,0,0,0.2);
 }
 
-/* ===== Floating Notepad ===== */
-.notepad-window {
-  position: fixed; right: 24px; bottom: 24px; width: 380px; height: 320px;
-  z-index: 150; display: none; flex-direction: column;
-  background: var(--bg); border: 0.5px solid var(--border-strong);
-  border-radius: 6px; box-shadow: 0 8px 32px var(--shadow);
-  transition: opacity 0.2s; overflow: hidden;
-}
-.notepad-window.visible { display: flex; }
-.notepad-titlebar {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 8px 12px; background: var(--bg-alt); cursor: grab; user-select: none;
-  border-bottom: 0.5px solid var(--border); flex-shrink: 0;
-}
-.notepad-titlebar:active { cursor: grabbing; }
-.notepad-title {
-  font-size: 10px; letter-spacing: 0.14em; color: var(--faint);
-  font-family: 'Noto Sans SC',system-ui,sans-serif; font-weight: 500;
-}
-.notepad-titlebar-btns { display: flex; align-items: center; gap: 2px; }
-.notepad-pin, .notepad-close {
-  width: 24px; height: 24px; border: none; background: none; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; border-radius: 4px;
-  color: var(--muted); transition: background 0.2s, color 0.2s;
-}
-.notepad-pin:hover, .notepad-close:hover { background: var(--hover-bg); color: var(--vermilion); }
-.notepad-pin.active { color: var(--vermilion); }
-.notepad-pin svg, .notepad-close svg { width: 14px; height: 14px; }
-.notepad-toolbar {
-  display: flex; align-items: center; gap: 6px; padding: 6px 12px;
-  border-bottom: 0.5px solid var(--border); flex-shrink: 0;
-}
-.notepad-btn {
-  padding: 3px 7px; border: 0.5px solid var(--border); border-radius: 3px;
-  background: none; color: var(--muted); font-size: 9px; letter-spacing: 0.06em;
-  cursor: pointer; transition: background 0.15s, color 0.15s;
-  font-family: 'Noto Sans SC',system-ui,sans-serif;
-}
-.notepad-btn:hover { background: var(--hover-bg); color: var(--vermilion); }
-.notepad-count {
-  margin-left: auto; font-size: 9px; color: var(--ghost);
-  font-family: 'Cascadia Code','Fira Code','Consolas',monospace;
-}
-.notepad-body { display: flex; flex: 1; min-height: 0; }
-.notepad-lines {
-  width: 32px; flex-shrink: 0; padding: 8px 4px;
-  background: var(--bg-alt); color: var(--ghost);
-  font-size: 11px; line-height: 1.5; text-align: right;
-  font-family: 'Cascadia Code','Fira Code','Consolas',monospace;
-  overflow: hidden; white-space: pre; user-select: none;
-  border-right: 0.5px solid var(--border);
-}
-.notepad-area {
-  flex: 1; resize: none; border: none; outline: none; padding: 8px;
-  background: var(--bg); color: var(--ink);
-  font-size: 11px; line-height: 1.5;
-  font-family: 'Cascadia Code','Fira Code','Consolas',monospace;
-  overflow-y: auto;
-}
 
 /* ===== Footer ===== */
 .site-footer {

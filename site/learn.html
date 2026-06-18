@@ -14,7 +14,7 @@
 <link rel="canonical" href="https://yaoguayi.com/learn.html">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
 <link rel="stylesheet" href="/css/common.css?v=4"/>
-<link rel="stylesheet" href="/css/ai-chat.css?v=1"/>
+<link rel="stylesheet" href="/css/tool-window.css?v=1"/>
 <style>
 html{scroll-padding-top:64px;}
 
@@ -152,23 +152,6 @@ html{scroll-padding-top:64px;}
   </div>
 </div>
 
-<!-- ===== Floating Notepad (all users) ===== -->
-<div class="notepad-window" id="notepad-window">
-  <div class="notepad-titlebar">
-    <span class="notepad-title">记事本</span>
-    <div class="notepad-titlebar-btns">
-      <button class="notepad-pin" id="notepad-pin-btn" onclick="Notepad.togglePin()" title="固定显示">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 17v5"/><path d="M9 11V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v7"/><path d="M5 17h14"/><path d="M7 11l-2 6h14l-2-6"/></svg>
-      </button>
-      <button class="notepad-close" onclick="Notepad.hide()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
-  </div>
-  <div class="notepad-toolbar"><button class="notepad-btn" onclick="Notepad.selectAll()">全选</button><button class="notepad-btn" onclick="Notepad.clear()">清除</button><button class="notepad-btn" onclick="Notepad.saveToFile()">保存文件</button><span class="notepad-count" id="notepad-count">0 字 / 1 行</span></div>
-  <div class="notepad-body"><div class="notepad-lines" id="notepad-lines">1
-</div><textarea class="notepad-area" id="notepad-area" placeholder="随手记录..." spellcheck="false"></textarea></div>
-</div>
 
 <script src="/js/layout.js?v=30"></script>
 <script src="/js/theme.js?v=3"></script>
