@@ -485,11 +485,10 @@ const Notepad = (() => {
   function createPanel(container) {
     if (!container) return;
     container.innerHTML = `
-      <div class="notepad-toolbar">
-        <button class="notepad-btn" onclick="Notepad.selectAll()">全选</button>
-        <button class="notepad-btn" onclick="Notepad.clear()">清除</button>
-        <button class="notepad-btn" onclick="Notepad.saveToFile()">保存文件</button>
-        <span class="notepad-count" id="notepad-count">0 字 / 1 行</span>
+      <div class="tool-toolbar">
+        <button class="tool-btn" onclick="Notepad.saveToFile()">保存</button>
+        <button class="tool-btn" onclick="Notepad.clear()">清除</button>
+        <span class="tool-toolbar-status" id="notepad-count">0 字 / 1 行</span>
       </div>
       <div class="notepad-body">
         <div class="notepad-lines" id="notepad-lines">1\n</div>
@@ -637,9 +636,9 @@ const AIChat = (() => {
     const hasHexContext = location.pathname.includes('hexagram.html');
 
     container.innerHTML = `
-      <div class="ai-panel-actions">
-        <button class="ai-panel-actions-btn" onclick="AIChat.saveChatToFile()" title="保存对话">保存</button>
-        <button class="ai-panel-actions-btn" onclick="AIChat.clearChat()" title="清除对话">清除</button>
+      <div class="tool-toolbar">
+        <button class="tool-btn" onclick="AIChat.saveChatToFile()" title="保存对话">保存</button>
+        <button class="tool-btn" onclick="AIChat.clearChat()" title="清除对话">清除</button>
       </div>
       <div id="ai-config-admin" style="display:${isAdmin ? '' : 'none'};">
         <div class="ai-config-section">
