@@ -45,12 +45,14 @@
       case 'hexagram':
         return '<a class="nav-back" href="/">首页</a>';
       case 'learn':
-        return '<a class="nav-home" href="/">首页</a><a class="nav-home" href="/#hexagrams">六十四卦</a>';
+        return '<a class="nav-home" href="/">首页</a><a class="nav-home" href="/#hexagrams">六十四卦</a><a class="nav-home" href="/guanxiang.html">观象</a>';
       case 'qigua':
-        return '<a class="nav-home" href="/">首页</a><a class="nav-home" href="/#hexagrams">六十四卦</a>';
+        return '<a class="nav-home" href="/">首页</a><a class="nav-home" href="/#hexagrams">六十四卦</a><a class="nav-home" href="/guanxiang.html">观象</a>';
+      case 'guanxiang':
+        return '<a class="nav-home" href="/">首页</a><a class="nav-home" href="/#hexagrams">六十四卦</a><a class="nav-home" href="/learn.html">读易</a>';
       case 'index':
       default:
-        return '<a class="nav-home" href="#hexagrams">六十四卦</a><a class="nav-home" href="/qigua.html">起卦</a><a class="nav-home" href="#learn">读易</a>';
+        return '<a class="nav-home" href="#hexagrams">六十四卦</a><a class="nav-home" href="/qigua.html">起卦</a><a class="nav-home" href="/guanxiang.html">观象</a><a class="nav-home" href="#learn">读易</a>';
     }
   }
 

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<script>if(localStorage.getItem('yaoguayi_theme')==='dark')document.documentElement.classList.add('dark-theme');</script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>观象 · 爻卦易</title>
+<meta name="description" content="观象 · 从方位、姓名、时间出发，在生活中理解易学的思维方式。">
+<meta property="og:title" content="观象 · 爻卦易">
+<meta property="og:description" content="从生活场景走进易学：方位与八卦、姓名与五行、时间与阴阳。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yaoguayi.com/guanxiang.html">
+<meta property="og:locale" content="zh_CN">
+<link rel="canonical" href="https://yaoguayi.com/guanxiang.html">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<link rel="stylesheet" href="/css/common.css?v=4"/>
+<link rel="stylesheet" href="/css/tool-window.css?v=2"/>
+<style>
+html{scroll-padding-top:64px;}
+
+/* ===== Page ===== */
+.gx-page{max-width:760px;margin:0 auto;padding:72px 28px 64px;}
+
+/* ===== Header ===== */
+.gx-header{text-align:center;margin-bottom:56px;}
+.gx-title{font-size:28px;font-weight:700;letter-spacing:0.12em;
+  margin-bottom:8px;}
+.gx-sub{font-size:13px;color:var(--muted);letter-spacing:0.06em;
+  margin-bottom:20px;}
+.gx-intro{font-size:14px;line-height:2;color:var(--ink-light);
+  max-width:520px;margin:0 auto;letter-spacing:0.03em;}
+
+/* ===== Topic nav ===== */
+.gx-topics{display:flex;gap:12px;justify-content:center;margin-bottom:48px;
+  flex-wrap:wrap;}
+.gx-topic-chip{padding:8px 20px;border:0.5px solid var(--border);
+  border-radius:20px;font-size:13px;color:var(--muted);text-decoration:none;
+  letter-spacing:0.06em;transition:all 0.2s;background:var(--card-bg);
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.gx-topic-chip:hover{color:var(--vermilion);border-color:var(--vermilion-faint);
+  background:var(--vermilion-faint);}
+
+/* ===== Article ===== */
+.gx-article{margin-bottom:56px;padding-bottom:56px;
+  border-bottom:0.5px solid var(--border);scroll-margin-top:80px;}
+.gx-article:last-child{border-bottom:none;margin-bottom:0;}
+.gx-article-icon{font-size:32px;margin-bottom:12px;display:block;}
+.gx-article-title{font-size:20px;font-weight:700;letter-spacing:0.08em;
+  margin-bottom:4px;}
+.gx-article-hook{font-size:13px;color:var(--vermilion);letter-spacing:0.04em;
+  margin-bottom:24px;font-family:'Noto Sans SC',system-ui,sans-serif;}
+
+/* Scene: life context block */
+.gx-scene{background:var(--card-bg);border:0.5px solid var(--border);
+  border-radius:8px;padding:20px 24px;margin-bottom:24px;}
+.gx-scene-q{font-size:15px;font-weight:600;color:var(--ink);
+  margin-bottom:10px;line-height:1.6;letter-spacing:0.04em;}
+.gx-scene-body{font-size:14px;line-height:2;color:var(--ink-light);
+  letter-spacing:0.03em;}
+
+/* Knowledge section */
+.gx-know{margin-bottom:24px;}
+.gx-know-label{font-size:11px;letter-spacing:0.18em;color:var(--vermilion);
+  font-weight:600;margin-bottom:12px;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.gx-know-body{font-size:14px;line-height:2;color:var(--ink-light);
+  letter-spacing:0.03em;}
+.gx-know-body strong{color:var(--ink);font-weight:600;}
+
+/* Diagram */
+.gx-diagram{margin:20px 0;text-align:center;overflow-x:auto;}
+.gx-diagram svg{max-width:100%;height:auto;}
+.gx-diagram svg text{font-family:'Noto Serif SC','STSong','SimSun',serif;}
+
+/* Inline cards */
+.gx-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:12px;margin:16px 0;}
+.gx-card{background:var(--card-bg);border:0.5px solid var(--border);
+  border-radius:6px;padding:14px 12px;text-align:center;
+  transition:border-color 0.2s;}
+.gx-card:hover{border-color:var(--vermilion-faint);}
+.gx-card-title{font-size:14px;font-weight:600;color:var(--ink);
+  margin-bottom:4px;letter-spacing:0.06em;}
+.gx-card-sub{font-size:11px;color:var(--muted);line-height:1.5;}
+
+/* Deep link */
+.gx-deep{display:inline-flex;align-items:center;gap:6px;font-size:12px;
+  color:var(--vermilion);text-decoration:none;letter-spacing:0.08em;
+  margin-top:8px;transition:color 0.2s;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.gx-deep:hover{color:var(--ink);}
+
+/* ===== Responsive ===== */
+@media(max-width:768px){
+  .gx-page{padding:64px 16px 40px;}
+  .gx-title{font-size:22px;}
+  .gx-article-title{font-size:18px;}
+  .gx-cards{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body data-page="guanxiang">
+
+<nav class="top-nav" id="top-nav"></nav>
+
+<main class="gx-page">
+  <!-- Header -->
+  <header class="gx-header">
+    <h1 class="gx-title">观 象</h1>
+    <p class="gx-sub">生活中的易学</p>
+    <p class="gx-intro">
+      古人仰观天象、俯察地理，在日常生活中领悟天地之道。
+      这里从几个你可能好奇的话题出发，聊聊它们和易学的关系。
+    </p>
+  </header>
+
+  <!-- Topic chips -->
+  <nav class="gx-topics">
+    <a class="gx-topic-chip" href="#fangwei">从方位说起</a>
+    <a class="gx-topic-chip" href="#mingzi">从名字说起</a>
+    <a class="gx-topic-chip" href="#shijian">从时间说起</a>
+  </nav>
+
+  <!-- ===== Topic 1: 方位 ===== -->
+  <article class="gx-article fade-in" id="fangwei">
+    <span class="gx-article-icon">🧭</span>
+    <h2 class="gx-article-title">从方位说起</h2>
+    <div class="gx-article-hook">为什么中国人讲究"坐北朝南"？</div>
+
+    <div class="gx-scene">
+      <div class="gx-scene-q">买房时常听到"南北通透好"、"东南朝向旺"——这些说法从哪来？</div>
+      <div class="gx-scene-body">
+        现代人把它归为"风水"，但追根溯源，这套方位观念的底层逻辑来自易学中的<strong>后天八卦方位图</strong>。
+        它不是迷信，而是古人对自然环境长期观察后形成的空间认知体系。
+      </div>
+    </div>
+
+    <div class="gx-know">
+      <div class="gx-know-label">八 卦 与 方 位</div>
+      <div class="gx-know-body">
+        <p>后天八卦（又称文王八卦）将八个基本卦象分配到八个方位，每个方位对应一种自然力量和五行属性：</p>
+      </div>
+      <div class="gx-cards">
+        <div class="gx-card">
+          <div class="gx-card-title">☲ 离 · 南</div>
+          <div class="gx-card-sub">火 · 光明<br/>古人面南而治</div>
+        </div>
+        <div class="gx-card">
+          <div class="gx-card-title">☵ 坎 · 北</div>
+          <div class="gx-card-sub">水 · 寒冷<br/>冬季寒风所向</div>
+        </div>
+        <div class="gx-card">
+          <div class="gx-card-title">☳ 震 · 东</div>
+          <div class="gx-card-sub">雷 · 生发<br/>日出之方，万物始生</div>
+        </div>
+        <div class="gx-card">
+          <div class="gx-card-title">☱ 兑 · 西</div>
+          <div class="gx-card-sub">泽 · 收敛<br/>日落之方，万物归藏</div>
+        </div>
+        <div class="gx-card">
+          <div class="gx-card-title">☴ 巽 · 东南</div>
+          <div class="gx-card-sub">风 · 柔和<br/>春风入户之位</div>
+        </div>
+        <div class="gx-card">
+          <div class="gx-card-title">☶ 艮 · 东北</div>
+          <div class="gx-card-sub">山 · 止息<br/>冬春交替之位</div>
+        </div>
+        <div class="gx-card">
+          <div class="gx-card-title">☷ 坤 · 西南</div>
+          <div class="gx-card-sub">地 · 承载<br/>大地厚德之位</div>
+        </div>
+        <div class="gx-card">
+          <div class="gx-card-title">☰ 乾 · 西北</div>
+          <div class="gx-card-sub">天 · 刚健<br/>天门之位</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gx-know">
+      <div class="gx-know-label">背 后 的 逻 辑</div>
+      <div class="gx-know-body">
+        <p>"坐北朝南"在这个体系里很好理解：<strong>南方属离卦，代表火与光明</strong>，面朝南方就是面向光明与温暖；<strong>北方属坎卦，代表水与寒冷</strong>，背靠北方意味着抵御寒气。这不是随意的象征，而是中原地区真实的气候体验——冬天西北风从坎位（北）吹来，夏天东南风从巽位（东南）送爽。</p>
+        <p style="margin-top:12px;">所谓"风水"，拆开看就是"风"和"水"——巽卦（风）和坎卦（水），恰好是八卦中两个与居住环境最直接相关的自然力量。古人观察到风向、水流对居住舒适度的影响，再用八卦框架去描述和传承这些经验。</p>
+      </div>
+    </div>
+
+    <a class="gx-deep" href="/learn.html#xiantian-houtian">深入了解 · 先天八卦与后天八卦 →</a><br/>
+    <a class="gx-deep" href="/learn.html#bagua-xiangzheng">深入了解 · 八卦象征总览 →</a>
+  </article>
+
+  <!-- ===== Topic 2: 名字 ===== -->
+  <article class="gx-article fade-in" id="mingzi">
+    <span class="gx-article-icon">✍️</span>
+    <h2 class="gx-article-title">从名字说起</h2>
+    <div class="gx-article-hook">取名为什么要看五行？"五行缺水"是什么意思？</div>
+
+    <div class="gx-scene">
+      <div class="gx-scene-q">长辈说"这孩子五行缺水，名字里得带个三点水"——这套说法的根据是什么？</div>
+      <div class="gx-scene-body">
+        中国传统取名讲究"五行平衡"。具体做法是：先根据出生年月日时（即<strong>生辰八字</strong>）推算出命主的五行分布，
+        如果某一行偏弱或缺失，就在名字中加入对应五行属性的字来补全。
+        这套方法的底层框架，就是易学中的<strong>天干地支</strong>与<strong>五行学说</strong>。
+      </div>
+    </div>
+
+    <div class="gx-know">
+      <div class="gx-know-label">天 干 地 支 与 五 行</div>
+      <div class="gx-know-body">
+        <p>天干有十个，地支有十二个，每个都有对应的五行属性：</p>
+      </div>
+      <div class="gx-cards">
+        <div class="gx-card">
+          <div class="gx-card-title" style="color:#4a8c5c;">木</div>
+          <div class="gx-card-sub">天干：甲、乙<br/>地支：寅、卯</div>
+        </div>
+        <div class="gx-card">
+          <div class="gx-card-title" style="color:#c0392b;">火</div>
+          <div class="gx-card-sub">天干：丙、丁<br/>地支：巳、午</div>
+        </div>
+        <div class="gx-card">
+          <div class="gx-card-title" style="color:#b8860b;">土</div>
+          <div class="gx-card-sub">天干：戊、己<br/>地支：辰戌丑未</div>
+        </div>
+        <div class="gx-card">
+          <div class="gx-card-title" style="color:#8c7853;">金</div>
+          <div class="gx-card-sub">天干：庚、辛<br/>地支：申、酉</div>
+        </div>
+        <div class="gx-card">
+          <div class="gx-card-title" style="color:#2c6fbb;">水</div>
+          <div class="gx-card-sub">天干：壬、癸<br/>地支：亥、子</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gx-know">
+      <div class="gx-know-label">举 个 例 子</div>
+      <div class="gx-know-body">
+        <p>一个人的出生时间可以用四组干支表示（年柱、月柱、日柱、时柱，共八个字，所以叫"八字"）。比如某人八字中天干地支以木、火居多，金、水偏少，就会被认为"五行缺水"。</p>
+        <p style="margin-top:12px;">五行之间存在<strong>生克关系</strong>：木生火、火生土、土生金、金生水、水生木——这是一个循环相生的链条。取名时不仅看"缺什么补什么"，还要考虑生克是否协调。比如缺水，取名用"淼""泽"等水属性字；但如果命中土太旺（土克水），单纯补水可能不够，还需要考虑用金来通关（土生金、金生水）。</p>
+      </div>
+    </div>
+
+    <div class="gx-know">
+      <div class="gx-know-label">理 性 看 待</div>
+      <div class="gx-know-body">
+        <p>五行取名是中国文化中一个有趣的传统，其内在逻辑自成体系。
+        天干地支本身是古代的纪时系统，五行是古人对自然规律的一种分类模型。
+        把它们结合用于取名，体现的是古人追求"人与自然和谐"的思维方式。
+        了解它的来龙去脉，比盲目遵从或一概否定都更有意义。</p>
+      </div>
+    </div>
+
+    <a class="gx-deep" href="/learn.html#tiangan-dizhi">深入了解 · 天干地支基础 →</a><br/>
+    <a class="gx-deep" href="/learn.html#wuxing">深入了解 · 五行与八卦 →</a>
+  </article>
+
+  <!-- ===== Topic 3: 时间 ===== -->
+  <article class="gx-article fade-in" id="shijian">
+    <span class="gx-article-icon">🕰️</span>
+    <h2 class="gx-article-title">从时间说起</h2>
+    <div class="gx-article-hook">"黄道吉日"到底在说什么？</div>
+
+    <div class="gx-scene">
+      <div class="gx-scene-q">结婚要挑日子、搬家要看黄历——老一辈说的"吉日"，背后有什么逻辑？</div>
+      <div class="gx-scene-body">
+        "黄道吉日"这个词本身来自天文历法，但在民间择日传统中，易学的<strong>十二消息卦</strong>和
+        <strong>天干地支纪时</strong>是两个核心框架。它们描述的不是"哪天运气好"，
+        而是古人对一年中<strong>阴阳之气消长节律</strong>的观察和总结。
+      </div>
+    </div>
+
+    <div class="gx-know">
+      <div class="gx-know-label">十 二 消 息 卦 · 一 年 的 阴 阳 节 律</div>
+      <div class="gx-know-body">
+        <p>古人用十二个特殊的六爻卦来对应十二个月份，每一卦的阳爻和阴爻数量恰好反映了该月阳气的强弱：</p>
+      </div>
+      <div class="gx-diagram">
+        <svg viewBox="0 0 660 200" xmlns="http://www.w3.org/2000/svg">
+          <!-- 12 months -->
+          <g transform="translate(30,10)">
+            <!-- Labels -->
+            <text x="0" y="15" font-size="11" fill="var(--faint)" text-anchor="middle">子月</text>
+            <text x="55" y="15" font-size="11" fill="var(--faint)" text-anchor="middle">丑月</text>
+            <text x="110" y="15" font-size="11" fill="var(--faint)" text-anchor="middle">寅月</text>
+            <text x="165" y="15" font-size="11" fill="var(--faint)" text-anchor="middle">卯月</text>
+            <text x="220" y="15" font-size="11" fill="var(--faint)" text-anchor="middle">辰月</text>
+            <text x="275" y="15" font-size="11" fill="var(--faint)" text-anchor="middle">巳月</text>
+            <text x="330" y="15" font-size="11" fill="var(--faint)" text-anchor="middle">午月</text>
+            <text x="385" y="15" font-size="11" fill="var(--faint)" text-anchor="middle">未月</text>
+            <text x="440" y="15" font-size="11" fill="var(--faint)" text-anchor="middle">申月</text>
+            <text x="495" y="15" font-size="11" fill="var(--faint)" text-anchor="middle">酉月</text>
+            <text x="550" y="15" font-size="11" fill="var(--faint)" text-anchor="middle">戌月</text>
+            <text x="605" y="15" font-size="11" fill="var(--faint)" text-anchor="middle">亥月</text>
+            <!-- Month numbers -->
+            <text x="0" y="30" font-size="9" fill="var(--ghost)" text-anchor="middle">12月</text>
+            <text x="55" y="30" font-size="9" fill="var(--ghost)" text-anchor="middle">1月</text>
+            <text x="110" y="30" font-size="9" fill="var(--ghost)" text-anchor="middle">2月</text>
+            <text x="165" y="30" font-size="9" fill="var(--ghost)" text-anchor="middle">3月</text>
+            <text x="220" y="30" font-size="9" fill="var(--ghost)" text-anchor="middle">4月</text>
+            <text x="275" y="30" font-size="9" fill="var(--ghost)" text-anchor="middle">5月</text>
+            <text x="330" y="30" font-size="9" fill="var(--ghost)" text-anchor="middle">6月</text>
+            <text x="385" y="30" font-size="9" fill="var(--ghost)" text-anchor="middle">7月</text>
+            <text x="440" y="30" font-size="9" fill="var(--ghost)" text-anchor="middle">8月</text>
+            <text x="495" y="30" font-size="9" fill="var(--ghost)" text-anchor="middle">9月</text>
+            <text x="550" y="30" font-size="9" fill="var(--ghost)" text-anchor="middle">10月</text>
+            <text x="605" y="30" font-size="9" fill="var(--ghost)" text-anchor="middle">11月</text>
+            <!-- Yang bars (height = yang count * 16) -->
+            <rect x="-12" y="40" width="24" height="16" rx="2" fill="var(--vermilion)" opacity="0.7"/>
+            <rect x="43" y="40" width="24" height="32" rx="2" fill="var(--vermilion)" opacity="0.7"/>
+            <rect x="98" y="40" width="24" height="48" rx="2" fill="var(--vermilion)" opacity="0.7"/>
+            <rect x="153" y="40" width="24" height="64" rx="2" fill="var(--vermilion)" opacity="0.7"/>
+            <rect x="208" y="40" width="24" height="80" rx="2" fill="var(--vermilion)" opacity="0.7"/>
+            <rect x="263" y="40" width="24" height="96" rx="2" fill="var(--vermilion)" opacity="0.7"/>
+            <rect x="318" y="40" width="24" height="80" rx="2" fill="var(--ink)" opacity="0.15"/>
+            <rect x="373" y="40" width="24" height="64" rx="2" fill="var(--ink)" opacity="0.15"/>
+            <rect x="428" y="40" width="24" height="48" rx="2" fill="var(--ink)" opacity="0.15"/>
+            <rect x="483" y="40" width="24" height="32" rx="2" fill="var(--ink)" opacity="0.15"/>
+            <rect x="538" y="40" width="24" height="16" rx="2" fill="var(--ink)" opacity="0.15"/>
+            <rect x="593" y="40" width="24" height="0" rx="2"/>
+            <!-- Hex names -->
+            <text x="0" y="155" font-size="13" font-weight="600" fill="var(--ink)" text-anchor="middle">复</text>
+            <text x="55" y="155" font-size="13" font-weight="600" fill="var(--ink)" text-anchor="middle">临</text>
+            <text x="110" y="155" font-size="13" font-weight="600" fill="var(--ink)" text-anchor="middle">泰</text>
+            <text x="165" y="155" font-size="13" font-weight="600" fill="var(--ink)" text-anchor="middle">大壮</text>
+            <text x="220" y="155" font-size="13" font-weight="600" fill="var(--ink)" text-anchor="middle">夬</text>
+            <text x="275" y="155" font-size="13" font-weight="600" fill="var(--ink)" text-anchor="middle">乾</text>
+            <text x="330" y="155" font-size="13" font-weight="600" fill="var(--ink)" text-anchor="middle">姤</text>
+            <text x="385" y="155" font-size="13" font-weight="600" fill="var(--ink)" text-anchor="middle">遁</text>
+            <text x="440" y="155" font-size="13" font-weight="600" fill="var(--ink)" text-anchor="middle">否</text>
+            <text x="495" y="155" font-size="13" font-weight="600" fill="var(--ink)" text-anchor="middle">观</text>
+            <text x="550" y="155" font-size="13" font-weight="600" fill="var(--ink)" text-anchor="middle">剥</text>
+            <text x="605" y="155" font-size="13" font-weight="600" fill="var(--ink)" text-anchor="middle">坤</text>
+            <!-- Description -->
+            <text x="0" y="172" font-size="9" fill="var(--vermilion)" text-anchor="middle">一阳初生</text>
+            <text x="275" y="172" font-size="9" fill="var(--vermilion)" text-anchor="middle">纯阳极盛</text>
+            <text x="330" y="172" font-size="9" fill="var(--muted)" text-anchor="middle">一阴初生</text>
+            <text x="605" y="172" font-size="9" fill="var(--muted)" text-anchor="middle">纯阴极盛</text>
+            <!-- Axis -->
+            <line x1="-20" y1="138" x2="620" y2="138" stroke="var(--border)" stroke-width="0.5"/>
+            <text x="310" y="192" font-size="10" fill="var(--ghost)" text-anchor="middle">← 阳长阴消 · 阳气 · 阴长阳消 →</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="gx-know">
+      <div class="gx-know-label">如 何 理 解</div>
+      <div class="gx-know-body">
+        <p>冬至（子月·12月）对应<strong>复卦</strong>——六爻中只有最底下一根是阳爻，表示"一阳初生"。
+          此后阳气逐月增长：临卦（二阳）、泰卦（三阳，即"三阳开泰"的出处）……到巳月（5月）达到
+          <strong>乾卦</strong>（纯阳）。</p>
+        <p style="margin-top:12px;">夏至（午月·6月）开始反转：<strong>姤卦</strong>一阴初生，阴气逐渐增长，
+          直到亥月（11月）的<strong>坤卦</strong>（纯阴）。然后冬至再次一阳复始——周而复始，循环不息。</p>
+        <p style="margin-top:12px;">古人择日的基本逻辑就是顺应这个节律：阳气生发的时段适合开始、行动（如春季婚嫁、动土）；
+          阴气收藏的时段适合收束、沉淀。这不是玄学判断，而是农业社会对季节规律的经验总结，
+          用卦象作为记录和传授的工具。</p>
+      </div>
+    </div>
+
+    <div class="gx-know">
+      <div class="gx-know-label">与 本 站 的 关 联</div>
+      <div class="gx-know-body">
+        <p>首页的<strong>「本月卦象」</strong>展示的就是当月对应的消息卦。
+          你可以回到首页查看当前月份处于阴阳消长的哪个阶段。</p>
+      </div>
+    </div>
+
+    <a class="gx-deep" href="/learn.html#shier-xiaoxi">深入了解 · 十二消息卦 →</a><br/>
+    <a class="gx-deep" href="/learn.html#tiangan-dizhi">深入了解 · 天干地支基础 →</a>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script src="/js/layout.js?v=31"></script>
+<script src="/js/theme.js?v=3"></script>
+<script src="/js/admin-panel.js?v=33"></script>
+<script>
+if (typeof AdminPanel !== 'undefined') AdminPanel.init();
+
+/* Fade-in on scroll — trigger immediately for above-fold elements */
+requestAnimationFrame(() => {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.05 });
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+});
+
+/* Smooth scroll for topic chips */
+document.querySelectorAll('.gx-topic-chip').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.getElementById(a.getAttribute('href').slice(1));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+</body>
+</html>
