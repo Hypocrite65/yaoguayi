@@ -91,14 +91,14 @@ html{scroll-padding-top:64px;}
   padding:14px 24px;
   border:0.5px solid var(--border);border-radius:4px;
   cursor:pointer;text-decoration:none;color:inherit;
-  background:var(--card-bg);
+  background:var(--vermilion-faint);
   transition:background 0.35s,border-color 0.35s,box-shadow 0.35s,transform 0.25s;
 }
 .cover-card:hover{
-  background:var(--bg-alt);border-color:var(--vermilion-faint);
+  border-color:var(--vermilion-faint);
   box-shadow:0 2px 12px var(--shadow);transform:translateY(-2px);
 }
-.cover-card-sym{line-height:1;color:var(--ink);opacity:0.75;
+.cover-card-sym{line-height:1;color:var(--vermilion);opacity:0.9;
   transition:opacity 0.3s,transform 0.3s;}
 .cover-card:hover .cover-card-sym{opacity:1;transform:scale(1.08);}
 .cover-card-info{display:flex;flex-direction:column;gap:3px;min-width:0;}
@@ -113,10 +113,11 @@ html{scroll-padding-top:64px;}
   transition:transform 0.3s,color 0.3s;}
 .cover-card:hover .cover-card-arrow{transform:translateX(6px);color:var(--vermilion);}
 
-/* Monthly card: slightly smaller */
-.cover-card-month{padding:10px 24px;}
+/* Monthly card: slightly smaller, subtler background */
+.cover-card-month{padding:10px 24px;background:var(--hover-bg);}
 .cover-card-month .cover-card-name{font-size:13px;}
-.cover-card-month .cover-card-label{font-size:8px;}
+.cover-card-month .cover-card-label{font-size:8px;color:var(--faint);}
+.cover-card-month .cover-card-sym{color:var(--ink);opacity:0.85;}
 
 /* Scroll hint */
 .scroll-hint{
@@ -449,7 +450,7 @@ function renderCoverCards(hexagrams) {
   /* 每日一卦 */
   if (dailyCard) {
     const dHex = hexagrams[dailyHexId - 1];
-    const dateStr = (d.getMonth() + 1) + '月' + d.getDate() + '日';
+    const dateStr = d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日';
     const guaci = (dHex.guaci || '').replace(/^.*?[：:]/, '').slice(0, 30);
     dailyCard.innerHTML = `<span class="cover-card-sym">${miniHexSVG(dHex.lines, 42)}</span>
       <div class="cover-card-info">
