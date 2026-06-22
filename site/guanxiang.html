@@ -122,7 +122,7 @@ html{scroll-padding-top:64px;}
   </nav>
 
   <!-- ===== Topic 1: 方位 ===== -->
-  <article class="gx-article fade-in" id="fangwei">
+  <article class="gx-article" id="fangwei">
     <span class="gx-article-icon">🧭</span>
     <h2 class="gx-article-title">从方位说起</h2>
     <div class="gx-article-hook">为什么中国人讲究"坐北朝南"？</div>
@@ -189,7 +189,7 @@ html{scroll-padding-top:64px;}
   </article>
 
   <!-- ===== Topic 2: 名字 ===== -->
-  <article class="gx-article fade-in" id="mingzi">
+  <article class="gx-article" id="mingzi">
     <span class="gx-article-icon">✍️</span>
     <h2 class="gx-article-title">从名字说起</h2>
     <div class="gx-article-hook">取名为什么要看五行？"五行缺水"是什么意思？</div>
@@ -255,7 +255,7 @@ html{scroll-padding-top:64px;}
   </article>
 
   <!-- ===== Topic 3: 时间 ===== -->
-  <article class="gx-article fade-in" id="shijian">
+  <article class="gx-article" id="shijian">
     <span class="gx-article-icon">🕰️</span>
     <h2 class="gx-article-title">从时间说起</h2>
     <div class="gx-article-hook">"黄道吉日"到底在说什么？</div>
@@ -372,19 +372,11 @@ html{scroll-padding-top:64px;}
 
 <footer class="site-footer" id="site-footer"></footer>
 
-<script src="/js/layout.js?v=31"></script>
+<script src="/js/layout.js?v=32"></script>
 <script src="/js/theme.js?v=3"></script>
 <script src="/js/admin-panel.js?v=33"></script>
 <script>
 if (typeof AdminPanel !== 'undefined') AdminPanel.init();
-
-/* Fade-in on scroll — trigger immediately for above-fold elements */
-requestAnimationFrame(() => {
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-  }, { threshold: 0.05 });
-  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
-});
 
 /* Smooth scroll for topic chips */
 document.querySelectorAll('.gx-topic-chip').forEach(a => {
