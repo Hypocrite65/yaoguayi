@@ -147,6 +147,22 @@ html{scroll-padding-top:64px;}
   font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:500;}
 .hex-hint{font-size:10px;letter-spacing:0.12em;color:var(--ghost);}
 
+/* Search */
+.hex-search-wrap{max-width:960px;margin:0 auto 20px;position:relative;}
+.hex-search{width:100%;padding:10px 14px 10px 36px;
+  background:var(--card-bg);border:0.5px solid var(--border);border-radius:6px;
+  font-size:13px;color:var(--ink);letter-spacing:0.04em;
+  font-family:'Noto Serif SC','STSong',serif;outline:none;
+  transition:border-color 0.2s,box-shadow 0.2s;}
+.hex-search::placeholder{color:var(--ghost);letter-spacing:0.06em;}
+.hex-search:focus{border-color:var(--vermilion-faint);
+  box-shadow:0 0 0 3px var(--vermilion-faint);}
+.hex-search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);
+  width:14px;height:14px;color:var(--ghost);pointer-events:none;}
+.hex-cell.search-hidden{display:none;}
+.hex-no-result{grid-column:1/-1;text-align:center;padding:32px 0;
+  font-size:13px;color:var(--ghost);letter-spacing:0.08em;display:none;}
+
 /* Grid */
 .hex-grid{
   max-width:960px;margin:0 auto;
@@ -300,6 +316,21 @@ html{scroll-padding-top:64px;}
   transition:color 0.2s;}
 .hm-footer a:hover{color:var(--ink);}
 
+/* Related hexagrams (错综互) */
+.hm-related{display:flex;gap:12px;flex-wrap:wrap;}
+.hm-related-card{flex:1;min-width:100px;background:var(--card-bg);
+  border:0.5px solid var(--border);border-radius:6px;padding:12px 10px;
+  text-align:center;cursor:pointer;transition:border-color 0.2s,background 0.2s;
+  text-decoration:none;color:inherit;}
+.hm-related-card:hover{border-color:var(--vermilion-faint);background:var(--hover-bg);}
+.hm-related-type{font-size:10px;letter-spacing:0.12em;color:var(--faint);
+  margin-bottom:6px;font-family:'Noto Sans SC',system-ui,sans-serif;}
+.hm-related-sym{font-size:18px;color:var(--ink);opacity:0.7;margin-bottom:4px;}
+.hm-related-name{font-size:13px;font-weight:600;color:var(--ink);letter-spacing:0.06em;}
+.hm-related-id{font-size:10px;color:var(--ghost);margin-top:2px;}
+.hm-related-card.hm-same{opacity:0.4;pointer-events:none;
+  border-style:dashed;}
+
 /* Prev/Next buttons in modal */
 .hex-modal-nav{display:flex;align-items:center;gap:8px;flex-shrink:0;}
 .hex-modal-nav button{width:28px;height:28px;border:0.5px solid var(--border);
@@ -368,7 +399,13 @@ html{scroll-padding-top:64px;}
     <span class="hex-title">六十四卦</span>
     <span class="hex-hint">点击查看卦辞</span>
   </div>
-  <div class="hex-grid" id="hex-grid"></div>
+  <div class="hex-search-wrap fade-in">
+    <svg class="hex-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input class="hex-search" id="hex-search" type="text" placeholder="搜索卦名、拼音或序号…" autocomplete="off"/>
+  </div>
+  <div class="hex-grid" id="hex-grid">
+    <div class="hex-no-result" id="hex-no-result">未找到匹配的卦象</div>
+  </div>
 </section>
 
 <!-- ===== Divider ===== -->
@@ -480,6 +517,7 @@ fetch('/data/hexagrams.json?v=3')
     renderGrid(hexagrams);
     initScrollAnimations();
     initHexModal();
+    initHexSearch();
   })
   .catch(err => {
     console.error('Failed to load hexagram data:', err);
@@ -728,6 +766,19 @@ function showHexModal(id) {
       ${hex.tuan_trans ? `<div class="hm-trans">${esc(hex.tuan_trans)}</div>` : ''}
     </div>`;
   }
+  // 错综互卦
+  const cuo = findHexByLines(hex.lines.map(l => l === 1 ? 0 : 1));
+  const zong = findHexByLines([...hex.lines].reverse());
+  const huLines = [hex.lines[1],hex.lines[2],hex.lines[3],hex.lines[2],hex.lines[3],hex.lines[4]];
+  const hu = findHexByLines(huLines);
+  html += `<div class="hm-section">
+    <div class="hm-label">关 联 卦</div>
+    <div class="hm-related">`;
+  html += relatedCard('错卦', cuo, hex.id);
+  html += relatedCard('综卦', zong, hex.id);
+  html += relatedCard('互卦', hu, hex.id);
+  html += `</div></div>`;
+
   // 爻辞
   if (hex.yaoci && hex.yaoci.length) {
     html += `<div class="hm-section">
@@ -744,6 +795,10 @@ function showHexModal(id) {
   }
 
   document.getElementById('hm-body').innerHTML = html;
+  // Bind click on related cards
+  document.querySelectorAll('.hm-related-card[data-id]').forEach(card => {
+    card.onclick = () => showHexModal(parseInt(card.dataset.id));
+  });
   document.getElementById('hm-body').scrollTop = 0;
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -779,6 +834,51 @@ function stepHexModal(dir) {
   if (next < 1) next = 64;
   if (next > 64) next = 1;
   showHexModal(next);
+}
+
+function findHexByLines(lines) {
+  const key = lines.join('');
+  return allHexagrams.find(h => h.lines.join('') === key) || null;
+}
+
+function relatedCard(type, target, currentId) {
+  if (!target) return '';
+  const same = target.id === currentId;
+  const sym = String.fromCodePoint(0x4DBF + target.id);
+  return `<div class="hm-related-card${same ? ' hm-same' : ''}" ${same ? '' : `data-id="${target.id}"`}>
+    <div class="hm-related-type">${type}${same ? '（同卦）' : ''}</div>
+    <div class="hm-related-sym">${sym}</div>
+    <div class="hm-related-name">${esc(target.name)}</div>
+    <div class="hm-related-id">第${target.id}卦</div>
+  </div>`;
+}
+
+/* ===== Hexagram Search ===== */
+function initHexSearch() {
+  const input = document.getElementById('hex-search');
+  const grid = document.getElementById('hex-grid');
+  const noResult = document.getElementById('hex-no-result');
+  if (!input || !grid) return;
+
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    const cells = grid.querySelectorAll('.hex-cell');
+    let visible = 0;
+    cells.forEach(cell => {
+      if (!q) { cell.classList.remove('search-hidden'); visible++; return; }
+      const name = cell.querySelector('.hex-name')?.textContent || '';
+      const num = cell.querySelector('.hex-num')?.textContent || '';
+      const idx = parseInt(num) - 1;
+      const hex = allHexagrams[idx];
+      const pinyin = hex ? hex.pinyin.toLowerCase().replace(/[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ]/g, c => {
+        return 'aaaaeeeeiiiioooouuuuvvvv'['āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ'.indexOf(c)] || c;
+      }) : '';
+      const match = name.includes(q) || num === q || pinyin.includes(q) || (hex && hex.pinyin.toLowerCase().includes(q));
+      cell.classList.toggle('search-hidden', !match);
+      if (match) visible++;
+    });
+    noResult.style.display = visible === 0 ? 'block' : 'none';
+  });
 }
 
 function esc(s) {
