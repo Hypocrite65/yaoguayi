@@ -79,33 +79,44 @@ html{scroll-padding-top:64px;}
   text-align:center;line-height:2.2;}
 .cover-quote em{font-style:normal;font-size:10px;color:var(--whisper);}
 
-/* Random hexagram card */
-.random-card{
+/* Cover cards container */
+.cover-cards{
+  display:flex;flex-direction:column;gap:10px;
+  width:min(400px, 85vw);margin-bottom:48px;
+}
+
+/* Shared card style */
+.cover-card{
   display:flex;align-items:center;gap:20px;
-  padding:14px 24px;margin-bottom:48px;
-  width:min(400px, 85vw);
+  padding:14px 24px;
   border:0.5px solid var(--border);border-radius:4px;
   cursor:pointer;text-decoration:none;color:inherit;
   background:var(--card-bg);
   transition:background 0.35s,border-color 0.35s,box-shadow 0.35s,transform 0.25s;
 }
-.random-card:hover{
+.cover-card:hover{
   background:var(--bg-alt);border-color:var(--vermilion-faint);
   box-shadow:0 2px 12px var(--shadow);transform:translateY(-2px);
 }
-.random-sym{font-size:36px;line-height:1;color:var(--ink);opacity:0.75;
+.cover-card-sym{line-height:1;color:var(--ink);opacity:0.75;
   transition:opacity 0.3s,transform 0.3s;}
-.random-card:hover .random-sym{opacity:1;transform:scale(1.08);}
-.random-info{display:flex;flex-direction:column;gap:3px;}
-.random-label{font-size:9px;letter-spacing:0.2em;color:var(--vermilion);
+.cover-card:hover .cover-card-sym{opacity:1;transform:scale(1.08);}
+.cover-card-info{display:flex;flex-direction:column;gap:3px;min-width:0;}
+.cover-card-label{font-size:9px;letter-spacing:0.2em;color:var(--vermilion);
   font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:600;}
-.random-name{font-size:16px;letter-spacing:0.12em;color:var(--ink);}
-.random-guaci{font-size:10px;color:var(--muted);letter-spacing:0.06em;line-height:1.6;}
-.random-month{font-size:10px;color:var(--faint);letter-spacing:0.08em;
+.cover-card-name{font-size:16px;letter-spacing:0.12em;color:var(--ink);}
+.cover-card-desc{font-size:10px;color:var(--muted);letter-spacing:0.06em;line-height:1.6;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.cover-card-sub{font-size:10px;color:var(--faint);letter-spacing:0.08em;
   font-family:'Noto Sans SC',system-ui,sans-serif;}
-.random-arrow{margin-left:auto;font-size:14px;color:var(--ghost);
+.cover-card-arrow{margin-left:auto;font-size:14px;color:var(--ghost);flex-shrink:0;
   transition:transform 0.3s,color 0.3s;}
-.random-card:hover .random-arrow{transform:translateX(6px);color:var(--vermilion);}
+.cover-card:hover .cover-card-arrow{transform:translateX(6px);color:var(--vermilion);}
+
+/* Monthly card: slightly smaller */
+.cover-card-month{padding:10px 24px;}
+.cover-card-month .cover-card-name{font-size:13px;}
+.cover-card-month .cover-card-label{font-size:8px;}
 
 /* Scroll hint */
 .scroll-hint{
@@ -162,6 +173,9 @@ html{scroll-padding-top:64px;}
   transition:color 0.2s;}
 .hex-cell:hover .hex-name{color:var(--ink);}
 .hex-cell.today .hex-name{color:var(--vermilion);}
+.hex-cell.month{background:var(--hover-bg);}
+.hex-cell.month .hex-sym{opacity:0.85;}
+.hex-cell.month .hex-name{color:var(--ink);}
 .hex-num{font-size:8px;color:var(--ghost);margin-top:3px;}
 
 /* ===== Learn Section ===== */
@@ -201,7 +215,7 @@ html{scroll-padding-top:64px;}
   .cover-title{font-size:40px;margin-bottom:12px;}
   .cover-sub{margin-bottom:28px;}
   .cover-nav{margin-bottom:32px;}
-  .random-card{margin-bottom:24px;}
+  .cover-cards{margin-bottom:24px;}
   .cover-quote{padding:10px 0;}
   .scroll-hint{padding-bottom:16px;}
 }
@@ -245,7 +259,10 @@ html{scroll-padding-top:64px;}
       <a href="#learn">读易</a>
     </nav>
 
-    <a class="random-card fade-in d5" id="random-card" href="#hexagrams"></a>
+    <div class="cover-cards fade-in d5">
+      <a class="cover-card" id="daily-card" href="#"></a>
+      <a class="cover-card cover-card-month" id="month-card" href="#"></a>
+    </div>
   </div>
 
   <div class="cover-quote fade-in d5">
@@ -343,7 +360,7 @@ const monthHexId = monthInfo.id;
 fetch('/data/hexagrams.json?v=3')
   .then(r => r.json())
   .then(hexagrams => {
-    renderRandomCard(hexagrams);
+    renderCoverCards(hexagrams);
     renderGrid(hexagrams);
     initScrollAnimations();
   })
@@ -411,26 +428,53 @@ function miniHexSVG(lines, size) {
 }
 
 /**
- * 渲染本月消息卦卡片
- * 设计说明：基于十二消息卦体系，展示当月对应卦象及阴阳消长特征
- * @param {Array} hexagrams - 64 卦数据数组
+ * 每日一卦：基于日期的确定性选卦
+ * 同一天所有用户看到同一卦，次日自动更换。
+ * 使用简单哈希将日期字符串映射到 1-64。
  */
-function renderRandomCard(hexagrams) {
-  const rHex = hexagrams[monthHexId - 1];
-  const rCard = document.getElementById('random-card');
-  if (!rCard) return;
-  const solarMonth = d.getMonth() + 1;
-  rCard.innerHTML = `<span class="random-sym">${miniHexSVG(rHex.lines, 42)}</span>
-    <div class="random-info">
-      <span class="random-label">本 月 卦 象</span>
-      <span class="random-name">第${monthHexId}卦 · ${rHex.name}</span>
-      <span class="random-month">${monthInfo.month} · ${solarMonth}月 · ${monthInfo.desc}</span>
-    </div>
-    <span class="random-arrow">→</span>`;
-  rCard.onclick = (e) => {
-    e.preventDefault();
-    location.href = '/hexagram.html?id=' + monthHexId;
-  };
+function getDailyHexId() {
+  const str = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash + str.charCodeAt(i)) | 0;
+  }
+  return (((hash % 64) + 64) % 64) + 1;
+}
+const dailyHexId = getDailyHexId();
+
+function renderCoverCards(hexagrams) {
+  const dailyCard = document.getElementById('daily-card');
+  const monthCard = document.getElementById('month-card');
+
+  /* 每日一卦 */
+  if (dailyCard) {
+    const dHex = hexagrams[dailyHexId - 1];
+    const dateStr = (d.getMonth() + 1) + '月' + d.getDate() + '日';
+    const guaci = (dHex.guaci || '').replace(/^.*?[：:]/, '').slice(0, 30);
+    dailyCard.innerHTML = `<span class="cover-card-sym">${miniHexSVG(dHex.lines, 42)}</span>
+      <div class="cover-card-info">
+        <span class="cover-card-label">每 日 一 卦</span>
+        <span class="cover-card-name">第${dailyHexId}卦 · ${dHex.name}</span>
+        <span class="cover-card-desc">${guaci}</span>
+        <span class="cover-card-sub">${dateStr}</span>
+      </div>
+      <span class="cover-card-arrow">→</span>`;
+    dailyCard.onclick = (e) => { e.preventDefault(); location.href = '/hexagram.html?id=' + dailyHexId; };
+  }
+
+  /* 本月消息卦 */
+  if (monthCard) {
+    const mHex = hexagrams[monthHexId - 1];
+    const solarMonth = d.getMonth() + 1;
+    monthCard.innerHTML = `<span class="cover-card-sym">${miniHexSVG(mHex.lines, 28)}</span>
+      <div class="cover-card-info">
+        <span class="cover-card-label">本 月 卦 象</span>
+        <span class="cover-card-name">第${monthHexId}卦 · ${mHex.name}</span>
+        <span class="cover-card-sub">${monthInfo.month} · ${solarMonth}月 · ${monthInfo.desc}</span>
+      </div>
+      <span class="cover-card-arrow">→</span>`;
+    monthCard.onclick = (e) => { e.preventDefault(); location.href = '/hexagram.html?id=' + monthHexId; };
+  }
 }
 
 /**
@@ -444,7 +488,7 @@ function renderGrid(hexagrams) {
     const id = hex.id;
     const sym = String.fromCodePoint(0x4DBF + id);
     const cell = document.createElement('div');
-    cell.className = 'hex-cell' + (id === monthHexId ? ' today' : '');
+    cell.className = 'hex-cell' + (id === dailyHexId ? ' today' : id === monthHexId ? ' month' : '');
     cell.innerHTML = `<span class="hex-sym">${sym}</span>
       <span class="hex-name">${hex.name}</span>
       <span class="hex-num">${id}</span>`;
@@ -469,7 +513,7 @@ function renderFallbackGrid() {
     const id = i + 1;
     const sym = String.fromCodePoint(0x4DBF + id);
     const cell = document.createElement('div');
-    cell.className = 'hex-cell' + (id === monthHexId ? ' today' : '');
+    cell.className = 'hex-cell' + (id === dailyHexId ? ' today' : id === monthHexId ? ' month' : '');
     cell.innerHTML = `<span class="hex-sym">${sym}</span>
       <span class="hex-name">${name}</span>
       <span class="hex-num">${id}</span>`;

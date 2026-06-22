@@ -80,8 +80,11 @@ const AdminPanel = (() => {
     if (document.querySelector('.cover-nav')) {
       sections.push({ id: pad(), name: '导航链接', selector: '.cover-nav' });
     }
-    if (document.getElementById('random-card')) {
-      sections.push({ id: pad(), name: '本月卦象', selector: '#random-card' });
+    if (document.getElementById('daily-card')) {
+      sections.push({ id: pad(), name: '每日一卦', selector: '#daily-card' });
+    }
+    if (document.getElementById('month-card')) {
+      sections.push({ id: pad(), name: '本月卦象', selector: '#month-card' });
     }
     if (document.querySelector('.cover-quote')) {
       sections.push({ id: pad(), name: '封面引文', selector: '.cover-quote' });
