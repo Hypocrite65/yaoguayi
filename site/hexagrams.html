@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<script>if(localStorage.getItem('yaoguayi_theme')==='dark')document.documentElement.classList.add('dark-theme');</script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>六十四卦 · 爻卦易</title>
+<meta name="description" content="周易六十四卦在线查阅，包含卦辞、爻辞、彖传、象传原文及白话译文。">
+<meta property="og:title" content="六十四卦 · 爻卦易">
+<meta property="og:description" content="周易六十四卦在线查阅，卦辞爻辞原文及白话译文。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yaoguayi.com/hexagrams.html">
+<meta property="og:locale" content="zh_CN">
+<link rel="canonical" href="https://yaoguayi.com/hexagrams.html">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<link rel="stylesheet" href="/css/common.css?v=6"/>
+<link rel="stylesheet" href="/css/tool-window.css?v=2"/>
+<style>
+html{scroll-padding-top:64px;}
+
+/* ===== Hexagram Section ===== */
+.hex-section{
+  background:var(--bg-alt);
+  padding:72px 32px 48px;
+  min-height:100vh;transition:background 0.4s;
+}
+.hex-header{
+  max-width:960px;margin:0 auto 40px;
+  display:flex;align-items:baseline;justify-content:space-between;
+}
+.hex-title{font-size:11px;letter-spacing:0.22em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:500;}
+.hex-hint{font-size:10px;letter-spacing:0.12em;color:var(--ghost);}
+
+/* Search */
+.hex-search-wrap{max-width:960px;margin:0 auto 20px;position:relative;}
+.hex-search{width:100%;padding:10px 14px 10px 36px;
+  background:var(--card-bg);border:0.5px solid var(--border);border-radius:6px;
+  font-size:13px;color:var(--ink);letter-spacing:0.04em;
+  font-family:'Noto Serif SC','STSong',serif;outline:none;
+  transition:border-color 0.2s,box-shadow 0.2s;}
+.hex-search::placeholder{color:var(--ghost);letter-spacing:0.06em;}
+.hex-search:focus{border-color:var(--vermilion-faint);
+  box-shadow:0 0 0 3px var(--vermilion-faint);}
+.hex-search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);
+  width:14px;height:14px;color:var(--ghost);pointer-events:none;}
+.hex-cell.search-hidden{display:none;}
+.hex-no-result{grid-column:1/-1;text-align:center;padding:32px 0;
+  font-size:13px;color:var(--ghost);letter-spacing:0.08em;display:none;}
+
+/* Grid */
+.hex-grid{
+  max-width:960px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(8,1fr);gap:2px;
+}
+.hex-cell{
+  display:flex;flex-direction:column;align-items:center;
+  padding:12px 4px;cursor:pointer;border-radius:3px;
+  transition:background 0.2s,transform 0.2s,box-shadow 0.2s;
+  opacity:0;transform:translateY(16px);
+}
+.hex-cell.show{opacity:1;transform:translateY(0);
+  transition:opacity 0.5s cubic-bezier(0.25,0.46,0.45,0.94),
+    transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94),
+    background 0.2s,box-shadow 0.2s;}
+.hex-cell:hover{background:var(--hover-bg);transform:scale(1.06);
+  box-shadow:0 2px 8px var(--shadow);}
+.hex-cell.today{background:var(--vermilion-faint);}
+.hex-sym{font-size:22px;line-height:1;color:var(--ink);opacity:0.65;margin-bottom:5px;
+  transition:opacity 0.2s,transform 0.3s;}
+.hex-cell:hover .hex-sym{opacity:0.9;transform:scale(1.1);}
+.hex-cell.today .hex-sym{color:var(--vermilion);opacity:0.9;}
+.hex-name{font-size:11px;letter-spacing:0.08em;color:var(--ink-light);
+  transition:color 0.2s;}
+.hex-cell:hover .hex-name{color:var(--ink);}
+.hex-cell.today .hex-name{color:var(--vermilion);}
+.hex-cell.month{background:var(--hover-bg);}
+.hex-cell.month .hex-sym{opacity:0.85;}
+.hex-cell.month .hex-name{color:var(--ink);}
+.hex-num{font-size:8px;color:var(--ghost);margin-top:3px;}
+
+/* ===== Hexagram Detail Modal ===== */
+.hex-modal-overlay{position:fixed;inset:0;z-index:200;
+  background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);
+  opacity:0;pointer-events:none;transition:opacity 0.3s ease;
+  display:flex;align-items:center;justify-content:center;padding:24px;}
+.hex-modal-overlay.open{opacity:1;pointer-events:auto;}
+.hex-modal{background:var(--bg);border:0.5px solid var(--border-strong);
+  border-radius:10px;max-width:600px;width:100%;max-height:85vh;
+  overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 20px 60px rgba(0,0,0,0.3);
+  transform:translateY(20px) scale(0.97);
+  transition:transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94);}
+.hex-modal-overlay.open .hex-modal{transform:translateY(0) scale(1);}
+.hex-modal-head{display:flex;align-items:center;gap:16px;
+  padding:24px 28px 20px;border-bottom:0.5px solid var(--border);flex-shrink:0;}
+.hex-modal-sym{font-size:22px;color:var(--ink);flex-shrink:0;}
+.hex-modal-info{flex:1;min-width:0;}
+.hex-modal-name{font-size:22px;font-weight:700;letter-spacing:0.08em;
+  color:var(--ink);margin-bottom:2px;}
+.hex-modal-name .hm-pinyin{font-size:13px;font-weight:400;color:var(--faint);
+  margin-left:8px;letter-spacing:0.02em;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.hex-modal-sub{font-size:12px;color:var(--muted);letter-spacing:0.06em;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.hex-modal-close{width:32px;height:32px;border:none;background:none;
+  cursor:pointer;color:var(--faint);display:flex;align-items:center;
+  justify-content:center;border-radius:6px;transition:background 0.2s,color 0.2s;
+  flex-shrink:0;}
+.hex-modal-close:hover{background:var(--hover-bg);color:var(--ink);}
+.hex-modal-body{overflow-y:auto;padding:24px 28px 28px;flex:1;}
+.hex-modal-body::-webkit-scrollbar{width:4px;}
+.hex-modal-body::-webkit-scrollbar-thumb{background:var(--ghost);border-radius:2px;}
+.hm-section{margin-bottom:24px;}
+.hm-section:last-child{margin-bottom:0;}
+.hm-label{font-size:11px;letter-spacing:0.2em;color:var(--vermilion);
+  margin-bottom:10px;font-weight:600;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.hm-text{font-size:16px;line-height:2.2;letter-spacing:0.12em;color:var(--ink);}
+.hm-trans{font-size:13px;line-height:1.8;color:var(--muted);margin-top:6px;
+  padding-left:14px;border-left:2px solid var(--vermilion-faint);
+  letter-spacing:0.02em;}
+.hm-yaoci{list-style:none;padding:0;margin:0;}
+.hm-yaoci-item{margin-bottom:16px;padding-bottom:16px;
+  border-bottom:0.5px solid var(--border);}
+.hm-yaoci-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.hm-yaoci-name{font-size:12px;letter-spacing:0.14em;color:var(--vermilion);
+  font-weight:600;margin-bottom:4px;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.hm-yaoci-text{font-size:15px;line-height:2;letter-spacing:0.1em;color:var(--ink);}
+.hm-yaoci-trans{font-size:12px;line-height:1.7;color:var(--muted);margin-top:4px;
+  padding-left:12px;border-left:1.5px solid var(--border-strong);}
+.hm-footer{padding:16px 28px;border-top:0.5px solid var(--border);
+  text-align:center;flex-shrink:0;}
+.hm-footer a{font-size:12px;color:var(--vermilion);text-decoration:none;
+  letter-spacing:0.1em;font-family:'Noto Sans SC',system-ui,sans-serif;
+  transition:color 0.2s;}
+.hm-footer a:hover{color:var(--ink);}
+.hm-related{display:flex;gap:12px;flex-wrap:wrap;}
+.hm-related-card{flex:1;min-width:100px;background:var(--card-bg);
+  border:0.5px solid var(--border);border-radius:6px;padding:12px 10px;
+  text-align:center;cursor:pointer;transition:border-color 0.2s,background 0.2s;
+  text-decoration:none;color:inherit;}
+.hm-related-card:hover{border-color:var(--vermilion-faint);background:var(--hover-bg);}
+.hm-related-type{font-size:10px;letter-spacing:0.12em;color:var(--faint);
+  margin-bottom:6px;font-family:'Noto Sans SC',system-ui,sans-serif;}
+.hm-related-sym{font-size:18px;color:var(--ink);opacity:0.7;margin-bottom:4px;}
+.hm-related-name{font-size:13px;font-weight:600;color:var(--ink);letter-spacing:0.06em;}
+.hm-related-id{font-size:10px;color:var(--ghost);margin-top:2px;}
+.hm-related-card.hm-same{opacity:0.4;pointer-events:none;border-style:dashed;}
+.hex-modal-nav{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.hex-modal-nav button{width:28px;height:28px;border:0.5px solid var(--border);
+  background:var(--card-bg);cursor:pointer;color:var(--muted);
+  display:flex;align-items:center;justify-content:center;border-radius:6px;
+  transition:background 0.2s,color 0.2s,border-color 0.2s;font-size:14px;}
+.hex-modal-nav button:hover{background:var(--hover-bg);color:var(--ink);
+  border-color:var(--border-strong);}
+
+@media(max-width:768px){
+  .hex-section{padding:64px 16px 16px;}
+  .hex-grid{grid-template-columns:repeat(4,1fr);}
+  .hex-modal-overlay{padding:12px;}
+  .hex-modal{max-height:90vh;border-radius:8px;}
+  .hex-modal-head{padding:18px 20px 16px;gap:12px;}
+  .hex-modal-body{padding:20px;}
+  .hex-modal-name{font-size:18px;}
+  .hm-text{font-size:15px;}
+  .hm-footer{padding:12px 20px;}
+}
+</style>
+</head>
+<body data-page="hexagrams">
+
+<nav class="top-nav" id="top-nav"></nav>
+
+<!-- ===== Hexagram Grid ===== -->
+<section class="hex-section" id="hexagrams">
+  <div class="hex-header fade-in">
+    <span class="hex-title">六十四卦</span>
+    <span class="hex-hint">点击查看卦辞</span>
+  </div>
+  <div class="hex-search-wrap fade-in">
+    <svg class="hex-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input class="hex-search" id="hex-search" type="text" placeholder="搜索卦名、拼音或序号…" autocomplete="off"/>
+  </div>
+  <div class="hex-grid" id="hex-grid">
+    <div class="hex-no-result" id="hex-no-result">未找到匹配的卦象</div>
+  </div>
+</section>
+
+<!-- ===== Hexagram Detail Modal ===== -->
+<div class="hex-modal-overlay" id="hex-modal-overlay">
+  <div class="hex-modal">
+    <div class="hex-modal-head">
+      <div class="hex-modal-sym" id="hm-sym"></div>
+      <div class="hex-modal-info">
+        <div class="hex-modal-name" id="hm-name"></div>
+        <div class="hex-modal-sub" id="hm-sub"></div>
+      </div>
+      <div class="hex-modal-nav" id="hm-nav">
+        <button id="hm-prev" title="上一卦">◂</button>
+        <button id="hm-next" title="下一卦">▸</button>
+      </div>
+      <button class="hex-modal-close" id="hm-close">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="hex-modal-body" id="hm-body"></div>
+    <div class="hm-footer">
+      <a id="hm-link" href="#">查看完整详情 →</a>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script src="/js/layout.js?v=34"></script>
+<script src="/js/theme.js?v=3"></script>
+<script src="/js/auth.js?v=5"></script>
+<script src="/js/admin-panel.js?v=33"></script>
+<script>
+if (typeof AdminPanel !== 'undefined') AdminPanel.init();
+
+const MONTH_HEX = [
+  { month: '丑月', id: 19, desc: '二阳渐长' },
+  { month: '寅月', id: 11, desc: '三阳开泰' },
+  { month: '卯月', id: 34, desc: '四阳壮盛' },
+  { month: '辰月', id: 43, desc: '五阳决阴' },
+  { month: '巳月', id: 1,  desc: '纯阳极盛' },
+  { month: '午月', id: 44, desc: '一阴初生' },
+  { month: '未月', id: 33, desc: '二阴渐长' },
+  { month: '申月', id: 12, desc: '阴阳相隔' },
+  { month: '酉月', id: 20, desc: '四阴盛行' },
+  { month: '戌月', id: 23, desc: '五阴剥阳' },
+  { month: '亥月', id: 2,  desc: '纯阴极盛' },
+  { month: '子月', id: 24, desc: '一阳初生' }
+];
+const today = new Date();
+const monthHexId = MONTH_HEX[today.getMonth()].id;
+
+function getDailyHexId() {
+  const str = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash + str.charCodeAt(i)) | 0;
+  }
+  return (((hash % 64) + 64) % 64) + 1;
+}
+const dailyHexId = getDailyHexId();
+
+function miniHexSVG(lines, size) {
+  if (!lines || lines.length < 6) return '';
+  const s = size || 28;
+  const lw = s * 0.8, lh = s * 0.07, gap = s * 0.1, bg = s * 0.16;
+  const th = 6 * lh + 5 * gap;
+  const x0 = (s - lw) / 2;
+  let svg = '';
+  for (let i = 0; i < 6; i++) {
+    const li = 5 - i, y = i * (lh + gap);
+    if (lines[li] === 1) {
+      svg += `<rect x="${x0}" y="${y}" width="${lw}" height="${lh}" rx="0.5" fill="currentColor"/>`;
+    } else {
+      const sw = (lw - bg) / 2;
+      svg += `<rect x="${x0}" y="${y}" width="${sw}" height="${lh}" rx="0.5" fill="currentColor"/>`;
+      svg += `<rect x="${x0 + sw + bg}" y="${y}" width="${sw}" height="${lh}" rx="0.5" fill="currentColor"/>`;
+    }
+  }
+  return `<svg viewBox="0 0 ${s} ${th}" width="${s}" height="${th}" style="display:block" xmlns="http://www.w3.org/2000/svg">${svg}</svg>`;
+}
+
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s || '';
+  return d.innerHTML;
+}
+
+let allHexagrams = [];
+
+fetch('/data/hexagrams.json?v=3')
+  .then(r => r.json())
+  .then(hexagrams => {
+    allHexagrams = hexagrams;
+    renderGrid(hexagrams);
+    initAnimations();
+    initHexModal();
+    initHexSearch();
+  })
+  .catch(() => {
+    renderFallbackGrid();
+    initAnimations();
+  });
+
+function renderGrid(hexagrams) {
+  const grid = document.getElementById('hex-grid');
+  if (!grid) return;
+  hexagrams.forEach(hex => {
+    const id = hex.id;
+    const sym = String.fromCodePoint(0x4DBF + id);
+    const cell = document.createElement('div');
+    cell.className = 'hex-cell' + (id === dailyHexId ? ' today' : id === monthHexId ? ' month' : '');
+    cell.innerHTML = `<span class="hex-sym">${sym}</span>
+      <span class="hex-name">${hex.name}</span>
+      <span class="hex-num">${id}</span>`;
+    cell.onclick = () => showHexModal(id);
+    grid.appendChild(cell);
+  });
+}
+
+function renderFallbackGrid() {
+  const names = ['乾','坤','屯','蒙','需','讼','师','比','小畜','履','泰','否',
+    '同人','大有','谦','豫','随','蛊','临','观','噬嗑','贲','剥','复',
+    '无妄','大畜','颐','大过','坎','离','咸','恒','遁','大壮','晋','明夷',
+    '家人','睽','蹇','解','损','益','夬','姤','萃','升','困','井',
+    '革','鼎','震','艮','渐','归妹','丰','旅','巽','兑','涣','节',
+    '中孚','小过','既济','未济'];
+  const grid = document.getElementById('hex-grid');
+  if (!grid) return;
+  names.forEach((name, i) => {
+    const id = i + 1;
+    const sym = String.fromCodePoint(0x4DBF + id);
+    const cell = document.createElement('div');
+    cell.className = 'hex-cell' + (id === dailyHexId ? ' today' : id === monthHexId ? ' month' : '');
+    cell.innerHTML = `<span class="hex-sym">${sym}</span>
+      <span class="hex-name">${name}</span>
+      <span class="hex-num">${id}</span>`;
+    cell.onclick = () => { location.href = '/hexagram.html?id=' + id; };
+    grid.appendChild(cell);
+  });
+}
+
+function initAnimations() {
+  const grid = document.getElementById('hex-grid');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        if (entry.target.classList.contains('hex-cell') && grid) {
+          const idx = Array.from(grid.children).indexOf(entry.target);
+          const row = Math.floor(idx / 8);
+          const col = idx % 8;
+          entry.target.style.transitionDelay = (row * 0.04 + col * 0.02) + 's';
+          entry.target.classList.add('show');
+        } else {
+          entry.target.classList.add('visible');
+        }
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  document.querySelectorAll('.hex-cell').forEach(el => observer.observe(el));
+}
+
+/* ===== Modal ===== */
+function showHexModal(id) {
+  const hex = allHexagrams[id - 1];
+  if (!hex) return;
+  const overlay = document.getElementById('hex-modal-overlay');
+  document.getElementById('hm-sym').innerHTML = miniHexSVG(hex.lines, 38);
+  document.getElementById('hm-name').innerHTML =
+    `第${hex.id}卦 · ${hex.name}<span class="hm-pinyin">${hex.pinyin}</span>`;
+  document.getElementById('hm-sub').textContent =
+    `上${hex.upperTrigram} 下${hex.lowerTrigram}`;
+  document.getElementById('hm-link').href = '/hexagram.html?id=' + hex.id;
+
+  let html = '';
+  html += `<div class="hm-section"><div class="hm-label">卦 辞</div>
+    <div class="hm-text">${esc(hex.guaci)}</div>
+    ${hex.guaci_trans ? `<div class="hm-trans">${esc(hex.guaci_trans)}</div>` : ''}</div>`;
+  if (hex.xiang) {
+    html += `<div class="hm-section"><div class="hm-label">大 象 传</div>
+      <div class="hm-text">${esc(hex.xiang)}</div>
+      ${hex.xiang_trans ? `<div class="hm-trans">${esc(hex.xiang_trans)}</div>` : ''}</div>`;
+  }
+  if (hex.tuan) {
+    html += `<div class="hm-section"><div class="hm-label">彖 传</div>
+      <div class="hm-text">${esc(hex.tuan)}</div>
+      ${hex.tuan_trans ? `<div class="hm-trans">${esc(hex.tuan_trans)}</div>` : ''}</div>`;
+  }
+  const cuo = findHexByLines(hex.lines.map(l => l === 1 ? 0 : 1));
+  const zong = findHexByLines([...hex.lines].reverse());
+  const huLines = [hex.lines[1],hex.lines[2],hex.lines[3],hex.lines[2],hex.lines[3],hex.lines[4]];
+  const hu = findHexByLines(huLines);
+  html += `<div class="hm-section"><div class="hm-label">关 联 卦</div><div class="hm-related">`;
+  html += relatedCard('错卦', cuo, hex.id);
+  html += relatedCard('综卦', zong, hex.id);
+  html += relatedCard('互卦', hu, hex.id);
+  html += `</div></div>`;
+  if (hex.yaoci && hex.yaoci.length) {
+    html += `<div class="hm-section"><div class="hm-label">爻 辞</div><ul class="hm-yaoci">`;
+    hex.yaoci.forEach(y => {
+      html += `<li class="hm-yaoci-item">
+        <div class="hm-yaoci-name">${esc(y.name)}</div>
+        <div class="hm-yaoci-text">${esc(y.text)}</div>
+        ${y.text_trans ? `<div class="hm-yaoci-trans">${esc(y.text_trans)}</div>` : ''}
+      </li>`;
+    });
+    html += `</ul></div>`;
+  }
+  document.getElementById('hm-body').innerHTML = html;
+  document.querySelectorAll('.hm-related-card[data-id]').forEach(card => {
+    card.onclick = () => showHexModal(parseInt(card.dataset.id));
+  });
+  document.getElementById('hm-body').scrollTop = 0;
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  overlay._hexId = id;
+}
+
+function closeHexModal() {
+  document.getElementById('hex-modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function initHexModal() {
+  const overlay = document.getElementById('hex-modal-overlay');
+  document.getElementById('hm-close').onclick = closeHexModal;
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeHexModal(); });
+  document.addEventListener('keydown', e => {
+    if (!overlay.classList.contains('open')) return;
+    if (e.key === 'Escape') closeHexModal();
+    if (e.key === 'ArrowLeft') stepHexModal(-1);
+    if (e.key === 'ArrowRight') stepHexModal(1);
+  });
+  document.getElementById('hm-prev').onclick = () => stepHexModal(-1);
+  document.getElementById('hm-next').onclick = () => stepHexModal(1);
+}
+
+function stepHexModal(dir) {
+  const overlay = document.getElementById('hex-modal-overlay');
+  let next = (overlay._hexId || 1) + dir;
+  if (next < 1) next = 64;
+  if (next > 64) next = 1;
+  showHexModal(next);
+}
+
+function findHexByLines(lines) {
+  const key = lines.join('');
+  return allHexagrams.find(h => h.lines.join('') === key) || null;
+}
+
+function relatedCard(type, target, currentId) {
+  if (!target) return '';
+  const same = target.id === currentId;
+  const sym = String.fromCodePoint(0x4DBF + target.id);
+  return `<div class="hm-related-card${same ? ' hm-same' : ''}" ${same ? '' : `data-id="${target.id}"`}>
+    <div class="hm-related-type">${type}${same ? '（同卦）' : ''}</div>
+    <div class="hm-related-sym">${sym}</div>
+    <div class="hm-related-name">${esc(target.name)}</div>
+    <div class="hm-related-id">第${target.id}卦</div>
+  </div>`;
+}
+
+/* ===== Search ===== */
+function initHexSearch() {
+  const input = document.getElementById('hex-search');
+  const grid = document.getElementById('hex-grid');
+  const noResult = document.getElementById('hex-no-result');
+  if (!input || !grid) return;
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    const cells = grid.querySelectorAll('.hex-cell');
+    let visible = 0;
+    cells.forEach(cell => {
+      if (!q) { cell.classList.remove('search-hidden'); visible++; return; }
+      const name = cell.querySelector('.hex-name')?.textContent || '';
+      const num = cell.querySelector('.hex-num')?.textContent || '';
+      const idx = parseInt(num) - 1;
+      const hex = allHexagrams[idx];
+      const pinyin = hex ? hex.pinyin.toLowerCase().replace(/[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ]/g, c => {
+        return 'aaaaeeeeiiiioooouuuuvvvv'['āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ'.indexOf(c)] || c;
+      }) : '';
+      const match = name.includes(q) || num === q || pinyin.includes(q) || (hex && hex.pinyin.toLowerCase().includes(q));
+      cell.classList.toggle('search-hidden', !match);
+      if (match) visible++;
+    });
+    noResult.style.display = visible === 0 ? 'block' : 'none';
+  });
+}
+</script>
+</body>
+</html>

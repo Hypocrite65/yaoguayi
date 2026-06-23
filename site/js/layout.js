@@ -41,11 +41,11 @@
 
   /* ===== Unified nav links — same on every page, current page dimmed ===== */
   const NAV_LINKS = [
-    { label: '首页',    href: '/',               page: 'index' },
-    { label: '六十四卦', href: '/#hexagrams',     page: 'index' },
-    { label: '起卦',    href: '/qigua.html',      page: 'qigua' },
-    { label: '观象',    href: '/guanxiang.html',   page: 'guanxiang' },
-    { label: '读易',    href: '/learn.html',       page: 'learn' },
+    { label: '首页',    href: '/',                 page: 'index' },
+    { label: '六十四卦', href: '/hexagrams.html',   page: 'hexagrams' },
+    { label: '起卦',    href: '/qigua.html',        page: 'qigua' },
+    { label: '观象',    href: '/guanxiang.html',     page: 'guanxiang' },
+    { label: '读易',    href: '/learn.html',         page: 'learn' },
   ];
 
   function buildNavLeft(page) {
@@ -53,11 +53,8 @@
     return NAV_LINKS.map(item => {
       if (isIndex && item.label === '首页') return '';
       const isCurrent = !isIndex && item.page === page;
-      const href = isIndex && item.href.startsWith('/#')
-        ? item.href.slice(1)
-        : item.href;
       const cls = 'nav-home' + (isCurrent ? ' nav-current' : '');
-      return `<a class="${cls}" href="${href}">${item.label}</a>`;
+      return `<a class="${cls}" href="${item.href}">${item.label}</a>`;
     }).join('');
   }
 

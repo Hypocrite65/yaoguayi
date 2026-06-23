@@ -16,9 +16,6 @@
 <link rel="stylesheet" href="/css/common.css?v=6"/>
 <link rel="stylesheet" href="/css/tool-window.css?v=2"/>
 <style>
-/* index.html — scroll-padding for anchor offset */
-html{scroll-padding-top:64px;}
-
 /* index.html — nav initially hidden, shown on scroll */
 .top-nav{opacity:0;transform:translateY(-100%);pointer-events:none;}
 .top-nav.visible{opacity:1;transform:translateY(0);pointer-events:auto;
@@ -26,14 +23,12 @@ html{scroll-padding-top:64px;}
 
 /* ===== Cover: full viewport ===== */
 .cover{
-  width:100%;height:100vh;
+  width:100%;min-height:100vh;
   display:flex;flex-direction:column;
   align-items:center;
   overflow:hidden;
   background:var(--bg);
 }
-
-/* Cover parallax: content fades out + drifts up on scroll */
 .cover-inner{
   display:flex;flex-direction:column;align-items:center;
   flex:1;justify-content:center;
@@ -42,11 +37,10 @@ html{scroll-padding-top:64px;}
 }
 
 /* Logo */
-.cover-logo{margin-bottom:48px;display:flex;flex-direction:column;align-items:center;gap:16px;}
+.cover-logo{margin-bottom:40px;display:flex;flex-direction:column;align-items:center;gap:16px;}
 .cover-logo svg{width:72px;height:72px;}
 .cover-brand{font-size:12px;letter-spacing:0.4em;color:var(--faint);
   font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:500;}
-/* Logo circle draw animation */
 .logo-circle{stroke-dasharray:530;stroke-dashoffset:530;
   animation:drawCircle 1.6s cubic-bezier(0.4,0,0.2,1) 0.2s forwards;}
 .logo-line{opacity:0;animation:fadeInLine 0.6s cubic-bezier(0.4,0,0.2,1) forwards;}
@@ -59,33 +53,39 @@ html{scroll-padding-top:64px;}
 
 /* Title */
 .cover-title{font-size:48px;letter-spacing:0.2em;color:var(--ink);
-  font-weight:400;margin-bottom:20px;text-align:center;}
-.cover-sub{font-size:14px;letter-spacing:0.3em;color:var(--muted);
-  text-align:center;margin-bottom:44px;}
+  font-weight:400;margin-bottom:36px;text-align:center;}
 
-/* Navigation row */
-.cover-nav{display:flex;gap:32px;margin-bottom:56px;}
-.cover-nav a{font-size:11px;letter-spacing:0.18em;color:var(--muted);
-  text-decoration:none;
-  font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:500;
-  padding-bottom:2px;border-bottom:0.5px solid transparent;
-  transition:color 0.3s,border-color 0.3s,transform 0.2s;}
-.cover-nav a:hover{color:var(--vermilion);border-bottom-color:var(--vermilion);transform:translateY(-1px);}
-
-/* Quote at bottom */
-.cover-quote{
-  padding:20px 0;
-  font-size:11px;letter-spacing:0.16em;color:var(--ghost);
-  text-align:center;line-height:2.2;}
-.cover-quote em{font-style:normal;font-size:10px;color:var(--whisper);}
-
-/* Cover cards container */
-.cover-cards{
-  display:flex;flex-direction:column;gap:10px;
-  width:min(400px, 85vw);margin-bottom:48px;
+/* ===== Section navigation cards ===== */
+.cover-sections{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:12px;
+  width:min(440px, 85vw);margin-bottom:32px;
+}
+.section-link{
+  display:flex;flex-direction:column;gap:4px;
+  padding:18px 22px;
+  border:0.5px solid var(--border);border-radius:6px;
+  text-decoration:none;color:inherit;
+  background:var(--card-bg);
+  transition:background 0.3s,border-color 0.3s,box-shadow 0.3s,transform 0.25s;
+}
+.section-link:hover{
+  transform:translateY(-2px);
+  box-shadow:0 4px 16px var(--shadow);
+  border-color:var(--border-strong);
+}
+.section-link-title{
+  font-size:16px;font-weight:600;letter-spacing:0.1em;color:var(--ink);
+}
+.section-link-desc{
+  font-size:11px;color:var(--muted);letter-spacing:0.04em;
+  font-family:'Noto Sans SC',system-ui,sans-serif;
 }
 
-/* Shared card style */
+/* ===== Cover cards (daily / monthly) ===== */
+.cover-cards{
+  display:flex;flex-direction:column;gap:10px;
+  width:min(400px, 85vw);margin-bottom:40px;
+}
 .cover-card{
   display:flex;align-items:center;gap:20px;
   padding:14px 24px;
@@ -112,253 +112,46 @@ html{scroll-padding-top:64px;}
 .cover-card-arrow{margin-left:auto;font-size:14px;color:var(--ghost);flex-shrink:0;
   transition:transform 0.3s,color 0.3s;}
 .cover-card:hover .cover-card-arrow{transform:translateX(6px);color:var(--vermilion);}
-
-/* Monthly card: slightly smaller, subtler background */
 .cover-card-month{padding:10px 24px;background:var(--hover-bg);}
 .cover-card-month .cover-card-name{font-size:13px;}
 .cover-card-month .cover-card-label{font-size:8px;color:var(--faint);}
 .cover-card-month .cover-card-sym{color:var(--ink);opacity:0.85;}
 
-/* Scroll hint */
-.scroll-hint{
-  padding-bottom:32px;
-  display:flex;flex-direction:column;align-items:center;gap:6px;
-  color:var(--ghost);font-size:9px;letter-spacing:0.2em;
-  animation:hintPulse 2.5s ease-in-out infinite;
-  transition:opacity 0.4s;}
-.scroll-hint.hidden{opacity:0;pointer-events:none;}
-.scroll-hint::after{content:'';width:1px;height:20px;background:var(--ghost);
-  animation:hintLine 2.5s ease-in-out infinite;transform-origin:top;}
-@keyframes hintPulse{0%,100%{opacity:0.4;}50%{opacity:0.8;}}
-@keyframes hintLine{0%,100%{transform:scaleY(0.8);opacity:0.3;}50%{transform:scaleY(1.2);opacity:0.7;}}
+/* Quote at bottom */
+.cover-quote{
+  padding:20px 0;
+  font-size:11px;letter-spacing:0.16em;color:var(--ghost);
+  text-align:center;line-height:2.2;}
+.cover-quote em{font-style:normal;font-size:10px;color:var(--whisper);}
 
-/* ===== Hexagram Section ===== */
-.hex-section{
-  background:var(--bg-alt);
-  padding:80px 32px 80px;
-  min-height:100vh;transition:background 0.4s;
-  scroll-margin-top:64px;
-}
-.hex-header{
-  max-width:960px;margin:0 auto 40px;
-  display:flex;align-items:baseline;justify-content:space-between;
-}
-.hex-title{font-size:11px;letter-spacing:0.22em;color:var(--faint);
-  font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:500;}
-.hex-hint{font-size:10px;letter-spacing:0.12em;color:var(--ghost);}
-
-/* Search */
-.hex-search-wrap{max-width:960px;margin:0 auto 20px;position:relative;}
-.hex-search{width:100%;padding:10px 14px 10px 36px;
-  background:var(--card-bg);border:0.5px solid var(--border);border-radius:6px;
-  font-size:13px;color:var(--ink);letter-spacing:0.04em;
-  font-family:'Noto Serif SC','STSong',serif;outline:none;
-  transition:border-color 0.2s,box-shadow 0.2s;}
-.hex-search::placeholder{color:var(--ghost);letter-spacing:0.06em;}
-.hex-search:focus{border-color:var(--vermilion-faint);
-  box-shadow:0 0 0 3px var(--vermilion-faint);}
-.hex-search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);
-  width:14px;height:14px;color:var(--ghost);pointer-events:none;}
-.hex-cell.search-hidden{display:none;}
-.hex-no-result{grid-column:1/-1;text-align:center;padding:32px 0;
-  font-size:13px;color:var(--ghost);letter-spacing:0.08em;display:none;}
-
-/* Grid */
-.hex-grid{
-  max-width:960px;margin:0 auto;
-  display:grid;grid-template-columns:repeat(8,1fr);gap:2px;
-}
-.hex-cell{
-  display:flex;flex-direction:column;align-items:center;
-  padding:12px 4px;cursor:pointer;border-radius:3px;
-  transition:background 0.2s,transform 0.2s,box-shadow 0.2s;
-  /* Staggered entrance */
-  opacity:0;transform:translateY(16px);
-}
-.hex-cell.show{opacity:1;transform:translateY(0);
-  transition:opacity 0.5s cubic-bezier(0.25,0.46,0.45,0.94),
-    transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94),
-    background 0.2s,box-shadow 0.2s;}
-.hex-cell:hover{background:var(--hover-bg);transform:scale(1.06);
-  box-shadow:0 2px 8px var(--shadow);}
-.hex-cell.today{background:var(--vermilion-faint);}
-.hex-sym{font-size:22px;line-height:1;color:var(--ink);opacity:0.65;margin-bottom:5px;
-  transition:opacity 0.2s,transform 0.3s;}
-.hex-cell:hover .hex-sym{opacity:0.9;transform:scale(1.1);}
-.hex-cell.today .hex-sym{color:var(--vermilion);opacity:0.9;}
-.hex-name{font-size:11px;letter-spacing:0.08em;color:var(--ink-light);
-  transition:color 0.2s;}
-.hex-cell:hover .hex-name{color:var(--ink);}
-.hex-cell.today .hex-name{color:var(--vermilion);}
-.hex-cell.month{background:var(--hover-bg);}
-.hex-cell.month .hex-sym{opacity:0.85;}
-.hex-cell.month .hex-name{color:var(--ink);}
-.hex-num{font-size:8px;color:var(--ghost);margin-top:3px;}
-
-/* ===== Learn Section ===== */
-.learn-section{background:var(--bg);padding:80px 32px 80px;
-  min-height:100vh;transition:background 0.4s;
-  scroll-margin-top:64px;}
-.learn-header{max-width:960px;margin:0 auto 40px;
-  display:flex;align-items:baseline;justify-content:space-between;}
-.learn-title{font-size:11px;letter-spacing:0.22em;color:var(--faint);
-  font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:500;}
-.learn-more{font-size:10px;color:var(--vermilion);text-decoration:none;
-  letter-spacing:0.08em;transition:color 0.2s;
-  font-family:'Noto Sans SC',system-ui,sans-serif;}
-.learn-more:hover{color:var(--muted);}
-.learn-grid{max-width:960px;margin:0 auto;
-  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
-.learn-card{background:var(--card-bg);border:0.5px solid var(--border);
-  border-radius:10px;padding:28px 24px;cursor:pointer;text-decoration:none;
-  color:inherit;transition:all 0.25s ease;display:block;}
-.learn-card:hover{transform:translateY(-3px);
-  box-shadow:0 6px 24px var(--shadow);border-color:var(--border-strong);}
-.learn-card-icon{font-size:28px;margin-bottom:12px;display:block;}
-.learn-card-title{font-size:16px;font-weight:600;margin-bottom:6px;
-  letter-spacing:0.04em;}
-.learn-card-sub{font-size:11px;color:var(--faint);margin-bottom:12px;
-  font-family:'Noto Sans SC',system-ui,sans-serif;}
-.learn-card-summary{font-size:13px;color:var(--muted);line-height:1.8;}
-@media(max-width:768px){
-  .learn-grid{grid-template-columns:1fr;gap:16px;}
-  .learn-section{padding:48px 16px 48px;min-height:auto;}
-}
-
-/* ===== Responsive: short viewport (1080p and below) ===== */
+/* ===== Responsive: short viewport ===== */
 @media(max-height:800px){
-  .cover-logo{margin-bottom:28px;gap:10px;}
+  .cover-logo{margin-bottom:20px;gap:10px;}
   .cover-logo svg{width:56px;height:56px;}
-  .cover-title{font-size:40px;margin-bottom:12px;}
-  .cover-sub{margin-bottom:28px;}
-  .cover-nav{margin-bottom:32px;}
-  .cover-cards{margin-bottom:24px;}
+  .cover-title{font-size:40px;margin-bottom:24px;}
+  .cover-sections{margin-bottom:20px;gap:10px;}
+  .section-link{padding:14px 18px;}
+  .cover-cards{margin-bottom:20px;}
   .cover-quote{padding:10px 0;}
-  .scroll-hint{padding-bottom:16px;}
 }
 
 /* ===== Responsive: narrow width (mobile) ===== */
 @media(max-width:768px){
   .cover-title{font-size:32px;}
-  .cover-nav{gap:20px;flex-wrap:wrap;justify-content:center;}
+  .cover-sections{width:90vw;gap:10px;}
+  .section-link{padding:14px 16px;}
+  .section-link-title{font-size:14px;}
   .cover-quote{padding:12px 0;}
-  .scroll-hint{padding-bottom:16px;}
-  .hex-grid{grid-template-columns:repeat(4,1fr);}
-  .hex-section{padding:28px 16px 16px;}
-}
-
-/* ===== Hexagram Detail Modal ===== */
-.hex-modal-overlay{position:fixed;inset:0;z-index:200;
-  background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);
-  opacity:0;pointer-events:none;transition:opacity 0.3s ease;
-  display:flex;align-items:center;justify-content:center;padding:24px;}
-.hex-modal-overlay.open{opacity:1;pointer-events:auto;}
-
-.hex-modal{background:var(--bg);border:0.5px solid var(--border-strong);
-  border-radius:10px;max-width:600px;width:100%;max-height:85vh;
-  overflow:hidden;display:flex;flex-direction:column;
-  box-shadow:0 20px 60px rgba(0,0,0,0.3);
-  transform:translateY(20px) scale(0.97);
-  transition:transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94);}
-.hex-modal-overlay.open .hex-modal{transform:translateY(0) scale(1);}
-
-/* Modal header */
-.hex-modal-head{display:flex;align-items:center;gap:16px;
-  padding:24px 28px 20px;border-bottom:0.5px solid var(--border);flex-shrink:0;}
-.hex-modal-sym{font-size:22px;color:var(--ink);flex-shrink:0;}
-.hex-modal-info{flex:1;min-width:0;}
-.hex-modal-name{font-size:22px;font-weight:700;letter-spacing:0.08em;
-  color:var(--ink);margin-bottom:2px;}
-.hex-modal-name .hm-pinyin{font-size:13px;font-weight:400;color:var(--faint);
-  margin-left:8px;letter-spacing:0.02em;
-  font-family:'Noto Sans SC',system-ui,sans-serif;}
-.hex-modal-sub{font-size:12px;color:var(--muted);letter-spacing:0.06em;
-  font-family:'Noto Sans SC',system-ui,sans-serif;}
-.hex-modal-close{width:32px;height:32px;border:none;background:none;
-  cursor:pointer;color:var(--faint);display:flex;align-items:center;
-  justify-content:center;border-radius:6px;transition:background 0.2s,color 0.2s;
-  flex-shrink:0;}
-.hex-modal-close:hover{background:var(--hover-bg);color:var(--ink);}
-
-/* Modal body */
-.hex-modal-body{overflow-y:auto;padding:24px 28px 28px;flex:1;}
-.hex-modal-body::-webkit-scrollbar{width:4px;}
-.hex-modal-body::-webkit-scrollbar-thumb{background:var(--ghost);border-radius:2px;}
-
-/* Section */
-.hm-section{margin-bottom:24px;}
-.hm-section:last-child{margin-bottom:0;}
-.hm-label{font-size:11px;letter-spacing:0.2em;color:var(--vermilion);
-  margin-bottom:10px;font-weight:600;
-  font-family:'Noto Sans SC',system-ui,sans-serif;}
-.hm-text{font-size:16px;line-height:2.2;letter-spacing:0.12em;color:var(--ink);}
-.hm-trans{font-size:13px;line-height:1.8;color:var(--muted);margin-top:6px;
-  padding-left:14px;border-left:2px solid var(--vermilion-faint);
-  letter-spacing:0.02em;}
-
-/* Yaoci list */
-.hm-yaoci{list-style:none;padding:0;margin:0;}
-.hm-yaoci-item{margin-bottom:16px;padding-bottom:16px;
-  border-bottom:0.5px solid var(--border);}
-.hm-yaoci-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
-.hm-yaoci-name{font-size:12px;letter-spacing:0.14em;color:var(--vermilion);
-  font-weight:600;margin-bottom:4px;
-  font-family:'Noto Sans SC',system-ui,sans-serif;}
-.hm-yaoci-text{font-size:15px;line-height:2;letter-spacing:0.1em;color:var(--ink);}
-.hm-yaoci-trans{font-size:12px;line-height:1.7;color:var(--muted);margin-top:4px;
-  padding-left:12px;border-left:1.5px solid var(--border-strong);}
-
-/* Footer link */
-.hm-footer{padding:16px 28px;border-top:0.5px solid var(--border);
-  text-align:center;flex-shrink:0;}
-.hm-footer a{font-size:12px;color:var(--vermilion);text-decoration:none;
-  letter-spacing:0.1em;font-family:'Noto Sans SC',system-ui,sans-serif;
-  transition:color 0.2s;}
-.hm-footer a:hover{color:var(--ink);}
-
-/* Related hexagrams (错综互) */
-.hm-related{display:flex;gap:12px;flex-wrap:wrap;}
-.hm-related-card{flex:1;min-width:100px;background:var(--card-bg);
-  border:0.5px solid var(--border);border-radius:6px;padding:12px 10px;
-  text-align:center;cursor:pointer;transition:border-color 0.2s,background 0.2s;
-  text-decoration:none;color:inherit;}
-.hm-related-card:hover{border-color:var(--vermilion-faint);background:var(--hover-bg);}
-.hm-related-type{font-size:10px;letter-spacing:0.12em;color:var(--faint);
-  margin-bottom:6px;font-family:'Noto Sans SC',system-ui,sans-serif;}
-.hm-related-sym{font-size:18px;color:var(--ink);opacity:0.7;margin-bottom:4px;}
-.hm-related-name{font-size:13px;font-weight:600;color:var(--ink);letter-spacing:0.06em;}
-.hm-related-id{font-size:10px;color:var(--ghost);margin-top:2px;}
-.hm-related-card.hm-same{opacity:0.4;pointer-events:none;
-  border-style:dashed;}
-
-/* Prev/Next buttons in modal */
-.hex-modal-nav{display:flex;align-items:center;gap:8px;flex-shrink:0;}
-.hex-modal-nav button{width:28px;height:28px;border:0.5px solid var(--border);
-  background:var(--card-bg);cursor:pointer;color:var(--muted);
-  display:flex;align-items:center;justify-content:center;border-radius:6px;
-  transition:background 0.2s,color 0.2s,border-color 0.2s;font-size:14px;}
-.hex-modal-nav button:hover{background:var(--hover-bg);color:var(--ink);
-  border-color:var(--border-strong);}
-
-@media(max-width:768px){
-  .hex-modal-overlay{padding:12px;}
-  .hex-modal{max-height:90vh;border-radius:8px;}
-  .hex-modal-head{padding:18px 20px 16px;gap:12px;}
-  .hex-modal-body{padding:20px;}
-  .hex-modal-name{font-size:18px;}
-  .hm-text{font-size:15px;}
-  .hm-footer{padding:12px 20px;}
 }
 </style>
 </head>
 <body data-page="index">
-<!-- ===== Top Nav (appears on scroll) ===== -->
+
 <nav class="top-nav" id="top-nav"></nav>
 
-<!-- ===== First Screen: Cover ===== -->
+<!-- ===== Cover ===== -->
 <section class="cover">
   <div class="cover-inner">
-    <!-- Logo with draw animation -->
     <div class="cover-logo fade-in d1">
       <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle class="logo-circle" cx="100" cy="100" r="84" stroke="#5c3a30" stroke-width="5" fill="none"/>
@@ -371,16 +164,27 @@ html{scroll-padding-top:64px;}
     </div>
 
     <h1 class="cover-title fade-in d2">观 象 明 理</h1>
-    <p class="cover-sub fade-in d3">清本溯源</p>
 
-    <nav class="cover-nav fade-in d4">
-      <a href="#hexagrams">六十四卦</a>
-      <a href="/qigua.html">起卦</a>
-      <a href="/guanxiang.html">观象</a>
-      <a href="#learn">读易</a>
-    </nav>
+    <div class="cover-sections fade-in d3">
+      <a class="section-link" href="/hexagrams.html">
+        <span class="section-link-title">六十四卦</span>
+        <span class="section-link-desc">卦辞爻辞 · 原文译文</span>
+      </a>
+      <a class="section-link" href="/qigua.html">
+        <span class="section-link-title">起卦</span>
+        <span class="section-link-desc">铜钱在线起卦</span>
+      </a>
+      <a class="section-link" href="/guanxiang.html">
+        <span class="section-link-title">观象</span>
+        <span class="section-link-desc">生活中的易学</span>
+      </a>
+      <a class="section-link" href="/learn.html">
+        <span class="section-link-title">读易</span>
+        <span class="section-link-desc">基础知识入门</span>
+      </a>
+    </div>
 
-    <div class="cover-cards fade-in d5">
+    <div class="cover-cards fade-in d4">
       <a class="cover-card" id="daily-card" href="#"></a>
       <a class="cover-card cover-card-month" id="month-card" href="#"></a>
     </div>
@@ -390,187 +194,55 @@ html{scroll-padding-top:64px;}
     仰则观象于天，俯则观法于地<br>
     <em>——《周易 · 系辞传》</em>
   </div>
-
-  <div class="scroll-hint" id="scroll-hint">向下</div>
 </section>
 
-<!-- ===== Hexagram Grid ===== -->
-<section class="hex-section" id="hexagrams">
-  <div class="hex-header fade-in">
-    <span class="hex-title">六十四卦</span>
-    <span class="hex-hint">点击查看卦辞</span>
-  </div>
-  <div class="hex-search-wrap fade-in">
-    <svg class="hex-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input class="hex-search" id="hex-search" type="text" placeholder="搜索卦名、拼音或序号…" autocomplete="off"/>
-  </div>
-  <div class="hex-grid" id="hex-grid">
-    <div class="hex-no-result" id="hex-no-result">未找到匹配的卦象</div>
-  </div>
-</section>
-
-<!-- ===== Divider ===== -->
-<!-- ===== Learn Section ===== -->
-<section class="learn-section" id="learn">
-  <div class="learn-header fade-in">
-    <span class="learn-title">读 易</span>
-    <a class="learn-more" href="/learn.html">查看全部 →</a>
-  </div>
-  <div class="learn-grid" id="learn-grid">
-    <!-- Dynamically populated from knowledge.json -->
-  </div>
-</section>
-
-<!-- ===== Footer ===== -->
 <footer class="site-footer fade-in" id="site-footer"></footer>
 
-<!-- ===== Admin Panel (right sidebar, admin-only) ===== -->
-<div class="admin-panel" id="admin-panel">
-  <div class="admin-header">
-    <span class="admin-header-title">开发模式</span>
-    <button class="admin-close" onclick="AdminPanel.close()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button>
-  </div>
-  <div class="admin-body" id="admin-sections">
-    <!-- Dynamically populated by AdminPanel.init() -->
-  </div>
-</div>
-
-
-<!-- ===== Hexagram Detail Modal ===== -->
-<div class="hex-modal-overlay" id="hex-modal-overlay">
-  <div class="hex-modal">
-    <div class="hex-modal-head">
-      <div class="hex-modal-sym" id="hm-sym"></div>
-      <div class="hex-modal-info">
-        <div class="hex-modal-name" id="hm-name"></div>
-        <div class="hex-modal-sub" id="hm-sub"></div>
-      </div>
-      <div class="hex-modal-nav" id="hm-nav">
-        <button id="hm-prev" title="上一卦">◂</button>
-        <button id="hm-next" title="下一卦">▸</button>
-      </div>
-      <button class="hex-modal-close" id="hm-close">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
-    <div class="hex-modal-body" id="hm-body"></div>
-    <div class="hm-footer">
-      <a id="hm-link" href="#">查看完整详情 →</a>
-    </div>
-  </div>
-</div>
-
-<script src="/js/layout.js?v=33"></script>
+<script src="/js/layout.js?v=34"></script>
 <script src="/js/theme.js?v=3"></script>
 <script src="/js/auth.js?v=5"></script>
 <script src="/js/admin-panel.js?v=33"></script>
 <script>
-/**
- * index.html — 首页主逻辑
- *
- * 设计说明：
- * 从 hexagrams.json 加载完整卦象数据，渲染随机卦卡片和 64 卦网格。
- * 点击卦象跳转到详情页 hexagram.html?id=N。
- * 密码门由共享模块 auth.js 处理。
- */
-
-/* 初始化 */
 YaoguayiAuth.init();
 document.querySelectorAll('.cover .fade-in').forEach(el => el.classList.add('visible'));
 if (typeof AdminPanel !== 'undefined') AdminPanel.init();
 
-/**
- * 十二消息卦（辟卦）— 月卦映射
- * 设计说明：
- *   源自汉代孟喜、京房卦气说，以十二卦对应十二地支月，
- *   反映一年中阴阳消长的自然规律。
- *   此处用阳历月份近似对应传统地支月份。
- */
 const MONTH_HEX = [
-  /* 阳历月: 地支月, 卦ID, 卦名, 阴阳特征 */
-  /* 0=Jan */ { month: '丑月', id: 19, desc: '二阳渐长' },
-  /* 1=Feb */ { month: '寅月', id: 11, desc: '三阳开泰' },
-  /* 2=Mar */ { month: '卯月', id: 34, desc: '四阳壮盛' },
-  /* 3=Apr */ { month: '辰月', id: 43, desc: '五阳决阴' },
-  /* 4=May */ { month: '巳月', id: 1,  desc: '纯阳极盛' },
-  /* 5=Jun */ { month: '午月', id: 44, desc: '一阴初生' },
-  /* 6=Jul */ { month: '未月', id: 33, desc: '二阴渐长' },
-  /* 7=Aug */ { month: '申月', id: 12, desc: '阴阳相隔' },
-  /* 8=Sep */ { month: '酉月', id: 20, desc: '四阴盛行' },
-  /* 9=Oct */ { month: '戌月', id: 23, desc: '五阴剥阳' },
-  /* 10=Nov */{ month: '亥月', id: 2,  desc: '纯阴极盛' },
-  /* 11=Dec */{ month: '子月', id: 24, desc: '一阳初生' }
+  { month: '丑月', id: 19, desc: '二阳渐长' },
+  { month: '寅月', id: 11, desc: '三阳开泰' },
+  { month: '卯月', id: 34, desc: '四阳壮盛' },
+  { month: '辰月', id: 43, desc: '五阳决阴' },
+  { month: '巳月', id: 1,  desc: '纯阳极盛' },
+  { month: '午月', id: 44, desc: '一阴初生' },
+  { month: '未月', id: 33, desc: '二阴渐长' },
+  { month: '申月', id: 12, desc: '阴阳相隔' },
+  { month: '酉月', id: 20, desc: '四阴盛行' },
+  { month: '戌月', id: 23, desc: '五阴剥阳' },
+  { month: '亥月', id: 2,  desc: '纯阴极盛' },
+  { month: '子月', id: 24, desc: '一阳初生' }
 ];
 const d = new Date();
 const monthInfo = MONTH_HEX[d.getMonth()];
-const monthHexId = monthInfo.id;
 
-let allHexagrams = [];
+function getDailyHexId() {
+  const str = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash + str.charCodeAt(i)) | 0;
+  }
+  return (((hash % 64) + 64) % 64) + 1;
+}
+const dailyHexId = getDailyHexId();
 
-/* 加载卦象数据并渲染页面 */
-fetch('/data/hexagrams.json?v=3')
-  .then(r => r.json())
-  .then(hexagrams => {
-    allHexagrams = hexagrams;
-    renderCoverCards(hexagrams);
-    renderGrid(hexagrams);
-    initScrollAnimations();
-    initHexModal();
-    initHexSearch();
-  })
-  .catch(err => {
-    console.error('Failed to load hexagram data:', err);
-    renderFallbackGrid();
-    initScrollAnimations();
-  });
-
-/* Load knowledge cards for learn section */
-fetch('/data/knowledge.json?v=9')
-  .then(r => r.json())
-  .then(articles => {
-    const grid = document.getElementById('learn-grid');
-    if (!grid || !articles || articles.length === 0) return;
-    grid.innerHTML = articles.map(a => {
-      const esc = s => { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; };
-      return `<a class="learn-card fade-in" href="/learn.html#${a.id}">
-        <span class="learn-card-icon">${a.icon || ''}</span>
-        <div class="learn-card-title">${esc(a.title)}</div>
-        <div class="learn-card-sub">${esc(a.subtitle || '')}</div>
-        <div class="learn-card-summary">${esc(a.summary)}</div>
-      </a>`;
-    }).join('');
-    // Re-run fade-in observer for new cards
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.05 });
-    grid.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
-  })
-  .catch(() => { /* Silently ignore - learn section simply stays empty */ });
-
-/**
- * 生成小型 SVG 卦象图标（替代 Unicode 字符，跨平台一致）
- * 设计说明：
- *   阳爻(1)=实线，阴爻(0)=断线，由下至上排列。
- *   用 currentColor 跟随主题颜色。
- * @param {number[]} lines - 六爻数组
- * @param {number} size - 图标尺寸(px)
- * @returns {string} SVG HTML
- */
 function miniHexSVG(lines, size) {
   if (!lines || lines.length < 6) return '';
   const s = size || 28;
-  const lw = s * 0.8;       // 爻线宽度
-  const lh = s * 0.07;      // 爻线高度
-  const gap = s * 0.1;      // 爻间距
-  const bg = s * 0.16;      // 阴爻断口
+  const lw = s * 0.8, lh = s * 0.07, gap = s * 0.1, bg = s * 0.16;
   const th = 6 * lh + 5 * gap;
   const x0 = (s - lw) / 2;
   let svg = '';
   for (let i = 0; i < 6; i++) {
-    const li = 5 - i;
-    const y = i * (lh + gap);
+    const li = 5 - i, y = i * (lh + gap);
     if (lines[li] === 1) {
       svg += `<rect x="${x0}" y="${y}" width="${lw}" height="${lh}" rx="0.5" fill="currentColor"/>`;
     } else {
@@ -582,311 +254,56 @@ function miniHexSVG(lines, size) {
   return `<svg viewBox="0 0 ${s} ${th}" width="${s}" height="${th}" style="display:block" xmlns="http://www.w3.org/2000/svg">${svg}</svg>`;
 }
 
-/**
- * 每日一卦：基于日期的确定性选卦
- * 同一天所有用户看到同一卦，次日自动更换。
- * 使用简单哈希将日期字符串映射到 1-64。
- */
-function getDailyHexId() {
-  const str = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = ((hash << 5) - hash + str.charCodeAt(i)) | 0;
-  }
-  return (((hash % 64) + 64) % 64) + 1;
-}
-const dailyHexId = getDailyHexId();
-
-function renderCoverCards(hexagrams) {
-  const dailyCard = document.getElementById('daily-card');
-  const monthCard = document.getElementById('month-card');
-
-  /* 每日一卦 */
-  if (dailyCard) {
-    const dHex = hexagrams[dailyHexId - 1];
-    const dateStr = d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日';
-    const guaci = (dHex.guaci || '').replace(/^.*?[：:]/, '').slice(0, 30);
-    dailyCard.innerHTML = `<span class="cover-card-sym">${miniHexSVG(dHex.lines, 42)}</span>
-      <div class="cover-card-info">
-        <span class="cover-card-label">每 日 一 卦</span>
-        <span class="cover-card-name">第${dailyHexId}卦 · ${dHex.name}</span>
-        <span class="cover-card-desc">${guaci}</span>
-        <span class="cover-card-sub">${dateStr}</span>
-      </div>
-      <span class="cover-card-arrow">→</span>`;
-    dailyCard.onclick = (e) => { e.preventDefault(); location.href = '/hexagram.html?id=' + dailyHexId; };
-  }
-
-  /* 本月消息卦 */
-  if (monthCard) {
-    const mHex = hexagrams[monthHexId - 1];
-    const solarMonth = d.getMonth() + 1;
-    monthCard.innerHTML = `<span class="cover-card-sym">${miniHexSVG(mHex.lines, 28)}</span>
-      <div class="cover-card-info">
-        <span class="cover-card-label">本 月 卦 象</span>
-        <span class="cover-card-name">第${monthHexId}卦 · ${mHex.name}</span>
-        <span class="cover-card-sub">${monthInfo.month} · ${solarMonth}月 · ${monthInfo.desc}</span>
-      </div>
-      <span class="cover-card-arrow">→</span>`;
-    monthCard.onclick = (e) => { e.preventDefault(); location.href = '/hexagram.html?id=' + monthHexId; };
-  }
-}
-
-/**
- * 渲染 64 卦网格
- * @param {Array} hexagrams - 64 卦数据数组
- */
-function renderGrid(hexagrams) {
-  const grid = document.getElementById('hex-grid');
-  if (!grid) return;
-  hexagrams.forEach((hex) => {
-    const id = hex.id;
-    const sym = String.fromCodePoint(0x4DBF + id);
-    const cell = document.createElement('div');
-    cell.className = 'hex-cell' + (id === dailyHexId ? ' today' : id === monthHexId ? ' month' : '');
-    cell.innerHTML = `<span class="hex-sym">${sym}</span>
-      <span class="hex-name">${hex.name}</span>
-      <span class="hex-num">${id}</span>`;
-    cell.onclick = () => showHexModal(id);
-    grid.appendChild(cell);
-  });
-}
-
-/**
- * 降级网格：数据加载失败时使用卦名常量渲染
- */
-function renderFallbackGrid() {
-  const names = ['乾','坤','屯','蒙','需','讼','师','比','小畜','履','泰','否',
-    '同人','大有','谦','豫','随','蛊','临','观','噬嗑','贲','剥','复',
-    '无妄','大畜','颐','大过','坎','离','咸','恒','遁','大壮','晋','明夷',
-    '家人','睽','蹇','解','损','益','夬','姤','萃','升','困','井',
-    '革','鼎','震','艮','渐','归妹','丰','旅','巽','兑','涣','节',
-    '中孚','小过','既济','未济'];
-  const grid = document.getElementById('hex-grid');
-  if (!grid) return;
-  names.forEach((name, i) => {
-    const id = i + 1;
-    const sym = String.fromCodePoint(0x4DBF + id);
-    const cell = document.createElement('div');
-    cell.className = 'hex-cell' + (id === dailyHexId ? ' today' : id === monthHexId ? ' month' : '');
-    cell.innerHTML = `<span class="hex-sym">${sym}</span>
-      <span class="hex-name">${name}</span>
-      <span class="hex-num">${id}</span>`;
-    cell.onclick = () => { location.href = '/hexagram.html?id=' + id; };
-    grid.appendChild(cell);
-  });
-}
-
-/**
- * 初始化滚动触发动画和封面视差效果
- */
-function initScrollAnimations() {
-  const grid = document.getElementById('hex-grid');
-
-  /* IntersectionObserver: 滚动触发淡入 */
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        if (entry.target.classList.contains('hex-cell') && grid) {
-          const idx = Array.from(grid.children).indexOf(entry.target);
-          const row = Math.floor(idx / 8);
-          const col = idx % 8;
-          entry.target.style.transitionDelay = (row * 0.04 + col * 0.02) + 's';
-          entry.target.classList.add('show');
-        } else {
-          entry.target.classList.add('visible');
-        }
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-  document.querySelectorAll('.hex-cell').forEach(el => observer.observe(el));
-
-  /* 封面视差：滚动时淡出上移 + 导航栏显示控制 */
-  const coverInner = document.querySelector('.cover-inner');
-  const scrollHint = document.getElementById('scroll-hint');
-  const topNav = document.getElementById('top-nav');
-
-  window.addEventListener('scroll', () => {
-    const scrollY = window.scrollY;
-    const vh = window.innerHeight;
-    const progress = Math.min(scrollY / (vh * 0.5), 1);
-    if (coverInner) {
-      coverInner.style.opacity = 1 - progress;
-      coverInner.style.transform = 'translateY(' + (-scrollY * 0.3) + 'px)';
+fetch('/data/hexagrams.json?v=3')
+  .then(r => r.json())
+  .then(hexagrams => {
+    const dailyCard = document.getElementById('daily-card');
+    const monthCard = document.getElementById('month-card');
+    if (dailyCard) {
+      const dHex = hexagrams[dailyHexId - 1];
+      const dateStr = d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日';
+      const guaci = (dHex.guaci || '').replace(/^.*?[：:]/, '').slice(0, 30);
+      dailyCard.innerHTML = `<span class="cover-card-sym">${miniHexSVG(dHex.lines, 42)}</span>
+        <div class="cover-card-info">
+          <span class="cover-card-label">每 日 一 卦</span>
+          <span class="cover-card-name">第${dailyHexId}卦 · ${dHex.name}</span>
+          <span class="cover-card-desc">${guaci}</span>
+          <span class="cover-card-sub">${dateStr}</span>
+        </div>
+        <span class="cover-card-arrow">→</span>`;
+      dailyCard.onclick = (e) => { e.preventDefault(); location.href = '/hexagram.html?id=' + dailyHexId; };
     }
-    if (scrollHint) {
-      if (scrollY > 20) scrollHint.classList.add('hidden');
-      else scrollHint.classList.remove('hidden');
+    if (monthCard) {
+      const mHex = hexagrams[monthInfo.id - 1];
+      const solarMonth = d.getMonth() + 1;
+      monthCard.innerHTML = `<span class="cover-card-sym">${miniHexSVG(mHex.lines, 28)}</span>
+        <div class="cover-card-info">
+          <span class="cover-card-label">本 月 卦 象</span>
+          <span class="cover-card-name">第${monthInfo.id}卦 · ${mHex.name}</span>
+          <span class="cover-card-sub">${monthInfo.month} · ${solarMonth}月 · ${monthInfo.desc}</span>
+        </div>
+        <span class="cover-card-arrow">→</span>`;
+      monthCard.onclick = (e) => { e.preventDefault(); location.href = '/hexagram.html?id=' + monthInfo.id; };
     }
-    /* 滚过封面后显示顶部导航栏 */
-    if (topNav) {
-      if (scrollY > vh * 0.7) topNav.classList.add('visible');
-      else topNav.classList.remove('visible');
-    }
-  }, { passive: true });
-}
+  })
+  .catch(() => {});
 
-/* ===== Hexagram Detail Modal ===== */
-function showHexModal(id) {
-  const hex = allHexagrams[id - 1];
-  if (!hex) return;
-  const overlay = document.getElementById('hex-modal-overlay');
-
-  // Header
-  document.getElementById('hm-sym').innerHTML = miniHexSVG(hex.lines, 38);
-  document.getElementById('hm-name').innerHTML =
-    `第${hex.id}卦 · ${hex.name}<span class="hm-pinyin">${hex.pinyin}</span>`;
-  document.getElementById('hm-sub').textContent =
-    `上${hex.upperTrigram} 下${hex.lowerTrigram}`;
-  document.getElementById('hm-link').href = '/hexagram.html?id=' + hex.id;
-
-  // Body
-  let html = '';
-  // 卦辞
-  html += `<div class="hm-section">
-    <div class="hm-label">卦 辞</div>
-    <div class="hm-text">${esc(hex.guaci)}</div>
-    ${hex.guaci_trans ? `<div class="hm-trans">${esc(hex.guaci_trans)}</div>` : ''}
-  </div>`;
-  // 大象传
-  if (hex.xiang) {
-    html += `<div class="hm-section">
-      <div class="hm-label">大 象 传</div>
-      <div class="hm-text">${esc(hex.xiang)}</div>
-      ${hex.xiang_trans ? `<div class="hm-trans">${esc(hex.xiang_trans)}</div>` : ''}
-    </div>`;
+/* Cover parallax + nav show/hide */
+const coverInner = document.querySelector('.cover-inner');
+const topNav = document.getElementById('top-nav');
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY;
+  const vh = window.innerHeight;
+  const progress = Math.min(scrollY / (vh * 0.5), 1);
+  if (coverInner) {
+    coverInner.style.opacity = 1 - progress;
+    coverInner.style.transform = 'translateY(' + (-scrollY * 0.3) + 'px)';
   }
-  // 彖传
-  if (hex.tuan) {
-    html += `<div class="hm-section">
-      <div class="hm-label">彖 传</div>
-      <div class="hm-text">${esc(hex.tuan)}</div>
-      ${hex.tuan_trans ? `<div class="hm-trans">${esc(hex.tuan_trans)}</div>` : ''}
-    </div>`;
+  if (topNav) {
+    if (scrollY > vh * 0.7) topNav.classList.add('visible');
+    else topNav.classList.remove('visible');
   }
-  // 错综互卦
-  const cuo = findHexByLines(hex.lines.map(l => l === 1 ? 0 : 1));
-  const zong = findHexByLines([...hex.lines].reverse());
-  const huLines = [hex.lines[1],hex.lines[2],hex.lines[3],hex.lines[2],hex.lines[3],hex.lines[4]];
-  const hu = findHexByLines(huLines);
-  html += `<div class="hm-section">
-    <div class="hm-label">关 联 卦</div>
-    <div class="hm-related">`;
-  html += relatedCard('错卦', cuo, hex.id);
-  html += relatedCard('综卦', zong, hex.id);
-  html += relatedCard('互卦', hu, hex.id);
-  html += `</div></div>`;
-
-  // 爻辞
-  if (hex.yaoci && hex.yaoci.length) {
-    html += `<div class="hm-section">
-      <div class="hm-label">爻 辞</div>
-      <ul class="hm-yaoci">`;
-    hex.yaoci.forEach(y => {
-      html += `<li class="hm-yaoci-item">
-        <div class="hm-yaoci-name">${esc(y.name)}</div>
-        <div class="hm-yaoci-text">${esc(y.text)}</div>
-        ${y.text_trans ? `<div class="hm-yaoci-trans">${esc(y.text_trans)}</div>` : ''}
-      </li>`;
-    });
-    html += `</ul></div>`;
-  }
-
-  document.getElementById('hm-body').innerHTML = html;
-  // Bind click on related cards
-  document.querySelectorAll('.hm-related-card[data-id]').forEach(card => {
-    card.onclick = () => showHexModal(parseInt(card.dataset.id));
-  });
-  document.getElementById('hm-body').scrollTop = 0;
-  overlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
-  overlay._hexId = id;
-}
-
-function closeHexModal() {
-  const overlay = document.getElementById('hex-modal-overlay');
-  overlay.classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-function initHexModal() {
-  const overlay = document.getElementById('hex-modal-overlay');
-  document.getElementById('hm-close').onclick = closeHexModal;
-  overlay.addEventListener('click', e => {
-    if (e.target === overlay) closeHexModal();
-  });
-  document.addEventListener('keydown', e => {
-    if (!overlay.classList.contains('open')) return;
-    if (e.key === 'Escape') closeHexModal();
-    if (e.key === 'ArrowLeft') stepHexModal(-1);
-    if (e.key === 'ArrowRight') stepHexModal(1);
-  });
-  document.getElementById('hm-prev').onclick = () => stepHexModal(-1);
-  document.getElementById('hm-next').onclick = () => stepHexModal(1);
-}
-
-function stepHexModal(dir) {
-  const overlay = document.getElementById('hex-modal-overlay');
-  const cur = overlay._hexId || 1;
-  let next = cur + dir;
-  if (next < 1) next = 64;
-  if (next > 64) next = 1;
-  showHexModal(next);
-}
-
-function findHexByLines(lines) {
-  const key = lines.join('');
-  return allHexagrams.find(h => h.lines.join('') === key) || null;
-}
-
-function relatedCard(type, target, currentId) {
-  if (!target) return '';
-  const same = target.id === currentId;
-  const sym = String.fromCodePoint(0x4DBF + target.id);
-  return `<div class="hm-related-card${same ? ' hm-same' : ''}" ${same ? '' : `data-id="${target.id}"`}>
-    <div class="hm-related-type">${type}${same ? '（同卦）' : ''}</div>
-    <div class="hm-related-sym">${sym}</div>
-    <div class="hm-related-name">${esc(target.name)}</div>
-    <div class="hm-related-id">第${target.id}卦</div>
-  </div>`;
-}
-
-/* ===== Hexagram Search ===== */
-function initHexSearch() {
-  const input = document.getElementById('hex-search');
-  const grid = document.getElementById('hex-grid');
-  const noResult = document.getElementById('hex-no-result');
-  if (!input || !grid) return;
-
-  input.addEventListener('input', () => {
-    const q = input.value.trim().toLowerCase();
-    const cells = grid.querySelectorAll('.hex-cell');
-    let visible = 0;
-    cells.forEach(cell => {
-      if (!q) { cell.classList.remove('search-hidden'); visible++; return; }
-      const name = cell.querySelector('.hex-name')?.textContent || '';
-      const num = cell.querySelector('.hex-num')?.textContent || '';
-      const idx = parseInt(num) - 1;
-      const hex = allHexagrams[idx];
-      const pinyin = hex ? hex.pinyin.toLowerCase().replace(/[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ]/g, c => {
-        return 'aaaaeeeeiiiioooouuuuvvvv'['āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ'.indexOf(c)] || c;
-      }) : '';
-      const match = name.includes(q) || num === q || pinyin.includes(q) || (hex && hex.pinyin.toLowerCase().includes(q));
-      cell.classList.toggle('search-hidden', !match);
-      if (match) visible++;
-    });
-    noResult.style.display = visible === 0 ? 'block' : 'none';
-  });
-}
-
-function esc(s) {
-  const d = document.createElement('div');
-  d.textContent = s || '';
-  return d.innerHTML;
-}
+}, { passive: true });
 </script>
 </body>
 </html>
