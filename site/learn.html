@@ -13,6 +13,8 @@
 <meta property="og:locale" content="zh_CN">
 <link rel="canonical" href="https://yaoguayi.com/learn.html">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<link rel="manifest" href="/manifest.json"/>
+<meta name="theme-color" content="#5c3a30"/>
 <link rel="stylesheet" href="/css/common.css?v=6"/>
 <link rel="stylesheet" href="/css/tool-window.css?v=2"/>
 <style>
@@ -153,7 +155,8 @@ html{scroll-padding-top:64px;}
 </div>
 
 
-<script src="/js/layout.js?v=34"></script>
+<script src="/js/search.js?v=1"></script>
+<script src="/js/layout.js?v=35"></script>
 <script src="/js/theme.js?v=3"></script>
 <script src="/js/auth.js?v=5"></script>
 <script src="/js/admin-panel.js?v=33"></script>
@@ -324,5 +327,6 @@ html{scroll-padding-top:64px;}
 if (typeof AdminPanel !== 'undefined') AdminPanel.init();
 if (typeof Notepad !== 'undefined') Notepad.init();
 </script>
+<script>if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>

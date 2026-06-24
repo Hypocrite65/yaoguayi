@@ -13,6 +13,8 @@
 <meta property="og:locale" content="zh_CN">
 <link rel="canonical" href="https://yaoguayi.com/">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<link rel="manifest" href="/manifest.json"/>
+<meta name="theme-color" content="#5c3a30"/>
 <link rel="stylesheet" href="/css/common.css?v=6"/>
 <link rel="stylesheet" href="/css/tool-window.css?v=2"/>
 <style>
@@ -199,7 +201,8 @@
 
 <footer class="site-footer fade-in" id="site-footer"></footer>
 
-<script src="/js/layout.js?v=34"></script>
+<script src="/js/search.js?v=1"></script>
+<script src="/js/layout.js?v=35"></script>
 <script src="/js/theme.js?v=3"></script>
 <script src="/js/auth.js?v=5"></script>
 <script src="/js/admin-panel.js?v=33"></script>
@@ -306,5 +309,6 @@ window.addEventListener('scroll', () => {
   }
 }, { passive: true });
 </script>
+<script>if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>

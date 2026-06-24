@@ -1,0 +1,30 @@
+{
+  "name": "爻卦易 · 观象明理",
+  "short_name": "爻卦易",
+  "description": "周易六十四卦 · 起卦 · 观象 · 读易",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f0e8",
+  "theme_color": "#5c3a30",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "lang": "zh-Hans",
+  "categories": ["education", "books"],
+  "orientation": "portrait-primary"
+}
