@@ -3,7 +3,7 @@
  *
  * 设计说明：
  * 将 packages/iching-data 中的 64 个独立 JSON 文件合并为一个
- * site/data/hexagrams.json，供前端页面 fetch 加载。
+ * apps/site/data/hexagrams.json，供前端页面 fetch 加载。
  * 按卦序(id)排序，剔除 aiSummary 等前端不需要的字段。
  */
 
@@ -15,7 +15,7 @@ const SRC_DIR = path.join(__dirname, '..', 'packages', 'iching-data', 'src', 'he
 // 译文目录
 const TRANS_DIR = path.join(__dirname, '..', 'packages', 'iching-data', 'src', 'translations');
 // 输出文件
-const OUT_FILE = path.join(__dirname, '..', 'site', 'data', 'hexagrams.json');
+const OUT_FILE = path.join(__dirname, '..', 'apps', 'site', 'data', 'hexagrams.json');
 
 // 确保输出目录存在
 const outDir = path.dirname(OUT_FILE);

@@ -5,6 +5,25 @@
 
 ---
 
+## ⚠️ 当前状态（2026-07 更新）
+
+本文档为 **v0.1 原始愿景稿（2026-05-29）**，部分技术选型在实际迭代中已调整，阅读时请以下述现状为准：
+
+| 计划中 | 实际现状 |
+|--------|----------|
+| Next.js + Tailwind 作为 Web 主站 | 改为**手写静态站点**（`apps/site/`，原生 HTML/CSS/JS），Next.js scaffold 已移除 |
+| Vercel 托管 | **Nginx + Let's Encrypt**，Oracle Cloud Ubuntu，git pull / webhook 部署 |
+| `packages/ui` React 组件包 | 已移除（静态站点不依赖框架组件） |
+| `content/` MDX 内容 | 未使用；知识文章走 `apps/site/data/knowledge.json` |
+
+**已落地**：六十四卦库、单卦详情、起卦（金钱卦）+ 变卦、知识文章（读易）、观象、全局搜索（Ctrl+K）、PWA 离线、AI 解读（用户自带 Key）。
+
+**仍规划中**：移动端（`apps/mobile`，React Native + Expo）尚未开始；蓍草法、数字起卦、打赏模块等见下文路线图。
+
+下文的技术栈与路线图保留原始设想，作为方向参考，不代表当前实现。
+
+---
+
 ## 一、项目定位
 
 | 维度 | 说明 |

@@ -50,7 +50,7 @@ sudo chown -R ubuntu:ubuntu /var/www/yaoguayi
 
 验证站点文件：
 ```bash
-ls /var/www/yaoguayi/site/
+ls /var/www/yaoguayi/apps/site/
 # 应看到 index.html  favicon.svg
 ```
 
@@ -67,7 +67,7 @@ server {
     listen [::]:80;
     server_name yaoguayi.com www.yaoguayi.com;
 
-    root /var/www/yaoguayi/site;
+    root /var/www/yaoguayi/apps/site;
     index index.html;
 
     # Gzip compression
