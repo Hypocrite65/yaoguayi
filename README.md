@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Open Source](https://img.shields.io/badge/Open%20Source-%E2%9D%A4-red)](https://github.com/Hypocrite65/yaoguayi)
 
-**[Website](https://yaoguayi.com)** · **[部署手册](./deploy/DEPLOY.md)** · **[架构说明](./docs/architecture.md)**
+**[Website](https://yaoguayi.com)** · **[路线图](./ROADMAP.md)** · **[部署手册](./deploy/DEPLOY.md)** · **[架构说明](./docs/architecture.md)**
 
 ---
 
@@ -17,7 +17,7 @@
 - **起卦系统** — 金钱卦（三币法），支持变卦推导
 - **读易** — 原典经文与知识文章阅读
 - **观象** — 从生活场景切入易经知识
-- **AI 辅助解读** — 用户自带 API Key，密钥不经过本站服务器
+- **AI 辅助解读** — 默认走本站服务端代理（对话不落库）；也可填入自己的 API Key 由浏览器直连上游，密钥不经过本站服务器
 
 ---
 
@@ -60,7 +60,7 @@ yaoguayi/
 | 线上站点 | 原生 HTML · CSS · JavaScript（无框架，直接部署） |
 | 数据 | 64 卦 JSON（卦辞、爻辞、彖传、象传 + 白话文译文） |
 | 数据构建 | Node.js 脚本 + pnpm workspaces + Turborepo（管理 `packages/*`） |
-| AI 解读 | 用户自带 API Key，前端直连，密钥不落服务器 |
+| AI 解读 | 默认服务端代理（`/api/chat`，流式 SSE）；可选用户自带 Key 浏览器直连 |
 | 离线 | PWA（Service Worker + manifest） |
 | 部署 | Nginx + Let's Encrypt · Oracle Cloud Ubuntu 24.04 |
 | 移动端（规划） | React Native + Expo，复用 `iching-core` / `iching-data` |
@@ -83,8 +83,9 @@ python3 -m http.server -d apps/site 8000
 修改卦象数据后，重新生成前端 JSON：
 
 ```bash
-pnpm install                 # 首次安装数据包依赖
-node scripts/build-data.js   # 由 packages/iching-data 生成 apps/site/data/hexagrams.json
+pnpm install                    # 首次安装数据包依赖
+node scripts/build-data.js      # 由 packages/iching-data 生成 apps/site/data/hexagrams.json
+node scripts/build-sitemap.js   # 重新生成 apps/site/sitemap.xml（页面/卦数据变动后执行）
 ```
 
 ---

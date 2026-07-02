@@ -1,3 +1,6 @@
 export { castCoins } from './divination/coins.js'
-export type { DivinationResult, DivinationLine, CoinResult } from './divination/coins.js'
+export type { CoinResult } from './divination/coins.js'
+export { castYarrow } from './divination/yarrow.js'
+export { buildDivinationResult, castValueToLine } from './divination/types.js'
+export type { CastValue, DivinationResult, DivinationLine } from './divination/types.js'
 export { lookupHexagram, HEXAGRAM_INDEX } from './hexagram/lookup.js'

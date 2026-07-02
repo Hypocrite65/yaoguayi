@@ -4,7 +4,19 @@
 
 ## [Unreleased]
 
+### Added
+- `iching-core` 新增蓍草法(大衍筮法)起卦 `castYarrow`,概率分布符合经典理论值(6:1/16, 7:5/16, 8:7/16, 9:3/16);公共变卦逻辑抽出为 `buildDivinationResult`
+- `iching-core` 接入 Vitest,16 个单元测试覆盖金钱卦、蓍草法与查卦索引(含与 `iching-data` 的 64 卦交叉校验)
+- 数据校验脚本 `scripts/validate-data.js`:卦符/爻值/上下卦一致性、爻辞结构、译文覆盖等 8 类规则
+- CI 扩展为 install → 数据校验 → typecheck → test 完整流水线
+- SEO 基础:`robots.txt`、`sitemap.xml`(69 个 URL,由 `scripts/build-sitemap.js` 生成)、404 页 noindex
+- webhook 改经 Nginx HTTPS 反代(`/webhook`),9000 端口不再对公网开放;新增迁移脚本 `deploy/setup-webhook-https.sh`
+
+### Fixed
+- **第 60 卦「節」爻值数据错误**:`lines` 与上卦誊抄自 61 卦中孚(应为水泽节,上坎下兑),导致线上節卦卦象图错绘为中孚——由新增的交叉校验测试发现
+
 ### Changed
+- 修正 README / architecture.md 中 AI 解读架构描述:实际默认走服务端代理 `/api/chat`,用户自带 Key 直连为可选模式
 - 将线上站点目录 `site/` 迁移至 `apps/site/`，与 monorepo 的 `apps/*` 布局约定保持一致；同步更新 Nginx root、`deploy/DEPLOY.md`、`scripts/build-data.js` 及各文档中的路径引用
 
 ### Removed

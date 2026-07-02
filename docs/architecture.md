@@ -52,7 +52,7 @@ apps/site/*.html  (前端 fetch 加载并渲染 SVG 卦象)
 ### 3. 隐私优先
 - 占卦历史仅存 localStorage，不上传服务器
 - 无强制注册、无追踪代码
-- AI 解读接口：用户自带 API Key，密钥不经过本站服务器
+- AI 解读：默认走服务端代理（`deploy/webhook.py` 的 `/api/chat`，服务器不记录对话内容）；用户也可自带 API Key 由浏览器直连上游，密钥不经过本站服务器
 
 ## 构建与部署
 

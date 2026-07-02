@@ -1,4 +1,5 @@
-import type { LineValue } from '@yaoguayi/iching-data'
+import type { CastValue, DivinationResult } from './types.js'
+import { buildDivinationResult } from './types.js'
 
 /**
  * 金钱卦（三枚铜钱法）
@@ -10,35 +11,10 @@ import type { LineValue } from '@yaoguayi/iching-data'
  *     7 = 少阳（阳爻，不变）  ───
  *     8 = 少阴（阴爻，不变）  ── ──
  *     9 = 老阳（阳爻，变爻）  ●───●
+ *
+ * 概率分布：P(6)=P(9)=1/8，P(7)=P(8)=3/8
  */
-export type CoinResult = 6 | 7 | 8 | 9
-
-export interface DivinationLine {
-  /** 爻值（当前卦） */
-  value: LineValue
-  /** 是否为动爻（变爻） */
-  isChanging: boolean
-  /** 原始投掷结果 */
-  raw: CoinResult
-}
-
-export interface DivinationResult {
-  /** 本卦六爻（由下至上） */
-  lines: [
-    DivinationLine,
-    DivinationLine,
-    DivinationLine,
-    DivinationLine,
-    DivinationLine,
-    DivinationLine,
-  ]
-  /** 本卦爻值数组（便于查卦） */
-  hexagramLines: [LineValue, LineValue, LineValue, LineValue, LineValue, LineValue]
-  /** 是否有动爻 */
-  hasChangingLines: boolean
-  /** 变卦爻值（若有动爻） */
-  changedLines?: [LineValue, LineValue, LineValue, LineValue, LineValue, LineValue]
-}
+export type CoinResult = CastValue
 
 /**
  * 模拟投掷三枚铜钱
@@ -54,35 +30,10 @@ function tossThreeCoins(): CoinResult {
 }
 
 /**
- * 将投掷结果转为爻值
- * 9(老阳)/7(少阳) → 阳爻(1)
- * 6(老阴)/8(少阴) → 阴爻(0)
- */
-function coinResultToLine(result: CoinResult): DivinationLine {
-  const isYang = result === 9 || result === 7
-  return {
-    value: isYang ? 1 : 0,
-    isChanging: result === 9 || result === 6,
-    raw: result,
-  }
-}
-
-/**
  * 执行金钱卦占卜
  * @returns 本卦 + 变卦结果
  */
 export function castCoins(): DivinationResult {
-  const lines = Array.from({ length: 6 }, () =>
-    coinResultToLine(tossThreeCoins())
-  ) as DivinationResult['lines']
-
-  const hexagramLines = lines.map((l) => l.value) as DivinationResult['hexagramLines']
-  const hasChangingLines = lines.some((l) => l.isChanging)
-
-  let changedLines: DivinationResult['changedLines'] | undefined
-  if (hasChangingLines) {
-    changedLines = lines.map((l) => (l.isChanging ? ((1 - l.value) as LineValue) : l.value)) as DivinationResult['changedLines']
-  }
-
-  return { lines, hexagramLines, hasChangingLines, changedLines }
+  const raws = Array.from({ length: 6 }, () => tossThreeCoins())
+  return buildDivinationResult(raws)
 }

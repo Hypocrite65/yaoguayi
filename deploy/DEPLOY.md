@@ -204,25 +204,31 @@ sudo systemctl status webhook
 # 应显示 active (running)
 ```
 
-#### 第二步：开放防火墙端口 9000
+#### 第二步：通过 Nginx 反代暴露 webhook（HTTPS）
+
+webhook 服务只监听本机 9000 端口，**不对公网开放**，由 Nginx 以 HTTPS 反代：
 
 ```bash
-sudo iptables -I INPUT -p tcp --dport 9000 -j ACCEPT
-sudo netfilter-persistent save
+sudo bash /var/www/yaoguayi/deploy/setup-webhook-https.sh
 ```
 
-验证端口可访问：
+脚本会在 Nginx 配置中加入 `/webhook` 反代块、重载 Nginx 并验证连通。
+
+验证服务本身在运行：
 ```bash
 curl http://localhost:9000
 # 应返回: yaoguayi webhook is running
 ```
+
+> 历史部署迁移：若之前按旧版手册开放过 9000 端口（`iptables` + Oracle 安全列表），
+> 上述脚本会移除本机 iptables 规则；Oracle 控制台安全列表里的 9000 入站规则需手动删除。
 
 #### 第三步：GitHub 配置 Webhook
 
 1. 打开 https://github.com/Hypocrite65/yaoguayi/settings/hooks
 2. 点击 **Add webhook**
 3. 填写：
-   - **Payload URL**: `http://170.9.28.104:9000`
+   - **Payload URL**: `https://yaoguayi.com/webhook`
    - **Content type**: `application/json`
    - **Secret**: 填入第一步生成的密钥
    - **Which events**: 选择 `Just the push event`
