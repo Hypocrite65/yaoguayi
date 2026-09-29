@@ -9,7 +9,8 @@
 
 - https://yaoguayi.com/ — 首页：六十四卦总览
 - https://yaoguayi.com/hexagrams.html — 六十四卦索引（上经 1–30 / 下经 31–64）
-- https://yaoguayi.com/glossary.html — 易经术语表（33 个常见词大白话讲解）
+- https://yaoguayi.com/glossary.html
+- /guanxiang.html：观象，从方位/名字/时间/颜色/数字/节气/身体/家庭八个生活角度看懂八卦 — 易经术语表（33 个常见词大白话讲解）
 - https://yaoguayi.com/divination.html — 金钱卦起卦（三枚铜钱，六次摇卦）
 - https://yaoguayi.com/learn.html — 易经知识（15 篇文章：基础概念、起卦方法、
   断卦技巧，含图解；单篇如 https://yaoguayi.com/learn/zhouyi.html）
