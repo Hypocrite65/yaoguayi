@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>爻卦易 · 观象明理</title>
-<meta name="description" content="爻卦易 — 开源《易经》学习平台：六十四卦全览、金钱卦起卦、原典经文阅读。在 AI 加速的时代，用三千年的智慧定一定位。不是占卜，是观象。"/>
+<meta name="description" content="爻卦易 — 开源《易经》学习平台：六十四卦全览、金钱卦起卦、原典经文阅读，64卦注音全覆盖。"/>
 <meta name="keywords" content="易经,周易,六十四卦,起卦,金钱卦,卦辞,爻辞,彖传,象传,爻卦易"/>
 <meta name="theme-color" content="#faf8f1"/>
 <meta property="og:type" content="website"/>
@@ -156,6 +156,16 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 .random-card:hover{
   background:var(--bg-alt);border-color:var(--vermilion-faint);
   box-shadow:0 2px 12px var(--shadow);transform:translateY(-2px);
+}
+/* 每日一卦 + 随机一卦 双卡片 */
+.gua-cards{display:flex;gap:16px;margin-bottom:48px;flex-wrap:wrap;justify-content:center;}
+.gua-cards .random-card{margin-bottom:0;}
+.random-reroll{margin-left:auto;font-size:11px;color:var(--muted);border:1px solid var(--border);
+  border-radius:12px;padding:2px 10px;cursor:pointer;background:none;transition:all .2s;
+  font-family:inherit;letter-spacing:.1em;}
+.random-reroll:hover{color:var(--vermilion);border-color:var(--vermilion);}
+@media(max-width:640px){
+  .gua-cards{flex-direction:column;align-items:center;}
 }
 .random-sym{font-size:36px;line-height:1;color:var(--ink);opacity:0.75;
   transition:opacity 0.3s,transform 0.3s;}
@@ -413,18 +423,19 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
     </div>
 
     <h1 class="cover-title fade-in d2">观 象 明 理</h1>
-    <p class="cover-sub fade-in d3">
-      在 AI 加速的时代，用三千年的智慧定一定位。<br>
-      不是占卜，是观象。
-    </p>
 
     <nav class="cover-nav fade-in d4">
-      <a href="#hexagrams">六十四卦</a>
       <a href="/divination.html">起卦</a>
-      <a href="/learn.html">易经知识</a>
+      <a href="#hexagrams">卦象索引</a>
+      <a href="/guanxiang.html">观象</a>
+      <a href="/learn.html">知识</a>
+      <a href="/glossary.html">术语表</a>
     </nav>
 
-    <a class="random-card fade-in d5" id="random-card" href="#hexagrams"></a>
+    <div class="gua-cards fade-in d5">
+      <a class="random-card" id="random-card" href="#hexagrams"></a>
+      <a class="random-card" id="lucky-card" href="#hexagrams"></a>
+    </div>
   </div>
 
   <div class="cover-quote fade-in d5">
@@ -646,6 +657,7 @@ fetch('/data/hexagrams.json')
   .then(r => r.json())
   .then(hexagrams => {
     renderRandomCard(hexagrams);
+    renderLuckyCard(hexagrams, 1 + Math.floor(Math.random() * 64));
     renderGrid(hexagrams);
     initScrollAnimations();
   })
@@ -711,6 +723,33 @@ function renderRandomCard(hexagrams) {
   rCard.onclick = (e) => {
     e.preventDefault();
     location.href = '/hexagram.html?id=' + randomId;
+  };
+}
+
+/**
+ * 渲染随机一卦卡片：每次加载/点击"换一卦"都重新随机
+ */
+function renderLuckyCard(hexagrams, luckyId) {
+  const lCard = document.getElementById('lucky-card');
+  if (!lCard) return;
+  const lHex = hexagrams[luckyId - 1];
+  const lSym = String.fromCodePoint(0x4DBF + luckyId);
+  lCard.innerHTML = `<span class="random-sym">${lSym}</span>
+    <div class="random-info">
+      <span class="random-label">随机一卦 <button class="random-reroll" id="reroll-btn" title="换一卦">换一卦</button></span>
+      <span class="random-name">第${luckyId}卦 · ${lHex.name}</span>
+      <span class="random-guaci">${lHex.guaci}</span>
+    </div>
+    <span class="random-arrow">→</span>`;
+  lCard.onclick = (e) => {
+    if (e.target.id === 'reroll-btn') {
+      e.preventDefault();
+      e.stopPropagation();
+      renderLuckyCard(hexagrams, 1 + Math.floor(Math.random() * 64));
+      return;
+    }
+    e.preventDefault();
+    location.href = '/hexagram.html?id=' + luckyId;
   };
 }
 
