@@ -1,150 +1,894 @@
 {
-  "updated": "2026-09-29T07:07:01Z",
-  "branch": "claude",
+  "updated": "2026-09-29T07:07:20Z",
+  "branch": "main",
   "versions": [
     {
-      "v": 33,
+      "v": 157,
+      "sha": "bfb49212",
+      "date": "2026-09-29",
+      "subject": "版本脚本切换到 main 分支"
+    },
+    {
+      "v": 156,
+      "sha": "092668ad",
+      "date": "2026-09-29",
+      "subject": "合并 claude 分支：新版站点（site/ 目录）上线，保留 Pages Functions"
+    },
+    {
+      "v": 155,
       "sha": "26282e74",
       "date": "2026-09-29",
       "subject": "补回 build-sitemap.js（适配 site/ 目录），修复 Pages 构建"
     },
     {
-      "v": 32,
+      "v": 154,
       "sha": "603e0ba9",
       "date": "2026-09-29",
       "subject": "页脚版本号（每条git记录为一个版本）+ 浅色主题提亮"
     },
     {
-      "v": 31,
+      "v": 153,
       "sha": "34f6f833",
       "date": "2026-09-29",
       "subject": "移除纸密码门与死亡菜单，修复死链；新增可交互金钱卦起卦页"
     },
     {
-      "v": 30,
+      "v": 152,
+      "sha": "994c785c",
+      "date": "2026-07-06",
+      "subject": "feat: add cloudflare pages function for ai proxy"
+    },
+    {
+      "v": 151,
+      "sha": "4f5d7906",
+      "date": "2026-07-02",
+      "subject": "Implement near-term roadmap items: tests, SEO, yarrow method"
+    },
+    {
+      "v": 150,
+      "sha": "64dc4e2b",
+      "date": "2026-07-02",
+      "subject": "Move site/ to apps/site/, remove unused Next.js/React scaffo"
+    },
+    {
+      "v": 149,
+      "sha": "35b21828",
+      "date": "2026-06-24",
+      "subject": "Add global search (Ctrl+K) and PWA offline support"
+    },
+    {
+      "v": 148,
+      "sha": "43cd0819",
+      "date": "2026-06-24",
+      "subject": "Refine homepage layout: 4-col nav cards, reorder sections"
+    },
+    {
+      "v": 147,
+      "sha": "ea413293",
+      "date": "2026-06-23",
+      "subject": "Restructure homepage as portal, move hexagram grid to /hexag"
+    },
+    {
+      "v": 146,
+      "sha": "5ff13684",
+      "date": "2026-06-23",
+      "subject": "Add two new guanxiang topics: body (五行与中医) and family (八卦与家庭"
+    },
+    {
+      "v": 145,
+      "sha": "8b2af95c",
+      "date": "2026-06-23",
+      "subject": "Remove emojis from guanxiang page, add 3 new topics"
+    },
+    {
+      "v": 144,
+      "sha": "d21debbb",
+      "date": "2026-06-22",
+      "subject": "Redesign guanxiang page to match learn page layout (sidebar "
+    },
+    {
+      "v": 143,
+      "sha": "35c11a11",
+      "date": "2026-06-22",
+      "subject": "Bump layout.js cache to v33 and common.css to v6"
+    },
+    {
+      "v": 142,
+      "sha": "2843b055",
+      "date": "2026-06-22",
+      "subject": "Unify nav links across all pages with data-driven approach"
+    },
+    {
+      "v": 141,
+      "sha": "771563f6",
+      "date": "2026-06-22",
+      "subject": "Fix nav logo centering and mobile layout, bump common.css ca"
+    },
+    {
+      "v": 140,
+      "sha": "b6efd184",
+      "date": "2026-06-22",
+      "subject": "Fix guanxiang page: remove fade-in that hid content, bump la"
+    },
+    {
+      "v": 139,
+      "sha": "de33ef25",
+      "date": "2026-06-22",
+      "subject": "Add 观象 (guanxiang) page — life-scenario entry points to I Ch"
+    },
+    {
+      "v": 138,
+      "sha": "bd66dedd",
+      "date": "2026-06-22",
+      "subject": "Add hexagram search and related hexagrams (cuo/zong/hu) to m"
+    },
+    {
+      "v": 137,
+      "sha": "7e56fb44",
+      "date": "2026-06-22",
+      "subject": "Add hexagram detail modal to homepage grid"
+    },
+    {
+      "v": 136,
+      "sha": "9d8aca72",
+      "date": "2026-06-22",
+      "subject": "Fix learn page TOC/content order mismatch by grouping articl"
+    },
+    {
+      "v": 135,
+      "sha": "86e7be03",
+      "date": "2026-06-22",
+      "subject": "Remove editorial opinions from knowledge articles, keep tone"
+    },
+    {
+      "v": 134,
+      "sha": "ab1862b7",
+      "date": "2026-06-22",
+      "subject": "Replace flat 64-hexagram listing with 8×8 trigram matrix and"
+    },
+    {
+      "v": 133,
+      "sha": "197b44ba",
+      "date": "2026-06-22",
+      "subject": "Add rich visuals to knowledge articles: SVG diagrams, styled"
+    },
+    {
+      "v": 132,
+      "sha": "bacb0a7e",
+      "date": "2026-06-22",
+      "subject": "Add 4 new knowledge articles: 十二消息卦, 错综互卦, 天干地支, 卦序卦名"
+    },
+    {
+      "v": 131,
+      "sha": "93ba6f2d",
+      "date": "2026-06-22",
+      "subject": "Add visible loading indicator to AI interpretation on qigua "
+    },
+    {
+      "v": 130,
+      "sha": "e27bbe6c",
+      "date": "2026-06-22",
+      "subject": "Style cover cards to match grid highlights and add year to d"
+    },
+    {
+      "v": 129,
+      "sha": "5ee29108",
+      "date": "2026-06-22",
+      "subject": "Add daily hexagram to homepage and inline AI interpretation "
+    },
+    {
+      "v": 128,
+      "sha": "c6da2a9a",
+      "date": "2026-06-18",
+      "subject": "fix: 修复 hexagram 页面因 AIChat.init() 报错导致卡载入中问题"
+    },
+    {
+      "v": 127,
+      "sha": "889a2b15",
+      "date": "2026-06-18",
+      "subject": "Make pin button available on both AI and Notepad tabs"
+    },
+    {
+      "v": 126,
+      "sha": "74b60359",
+      "date": "2026-06-18",
+      "subject": "Unify toolbar style across AI and Notepad tabs"
+    },
+    {
+      "v": 125,
+      "sha": "616787d8",
+      "date": "2026-06-18",
+      "subject": "Bump cache versions for layout.js and admin-panel.js (v30 → "
+    },
+    {
+      "v": 124,
+      "sha": "8f405f47",
+      "date": "2026-06-18",
+      "subject": "Merge AI chat and notepad into unified draggable floating wi"
+    },
+    {
+      "v": 123,
+      "sha": "90c7a832",
+      "date": "2026-06-17",
+      "subject": "Security and release readiness: env file, 404 page, deploy s"
+    },
+    {
+      "v": 122,
+      "sha": "2099eeab",
+      "date": "2026-06-17",
+      "subject": "Remove dev auth gate, open site to public"
+    },
+    {
+      "v": 121,
+      "sha": "a154ead9",
+      "date": "2026-06-17",
+      "subject": "Move AI chat to floating window accessible from all pages"
+    },
+    {
+      "v": 120,
+      "sha": "391a4205",
+      "date": "2026-06-17",
+      "subject": "Add server setup script for AI chat proxy deployment"
+    },
+    {
+      "v": 119,
+      "sha": "8c770545",
+      "date": "2026-06-17",
+      "subject": "Add server-side AI chat proxy and admin-only config UI"
+    },
+    {
+      "v": 118,
+      "sha": "2456ebed",
+      "date": "2026-06-17",
+      "subject": "Add \"什么是变爻？\" link in qigua change-line legend"
+    },
+    {
+      "v": 117,
+      "sha": "8961d31e",
+      "date": "2026-06-17",
+      "subject": "Add cross-link between learn and qigua pages"
+    },
+    {
+      "v": 116,
+      "sha": "61dcb968",
+      "date": "2026-06-17",
+      "subject": "Add change-line legend to qigua page; make webhook multi-thr"
+    },
+    {
+      "v": 115,
+      "sha": "0a432d25",
+      "date": "2026-06-17",
+      "subject": "Fix yin line width: wrap segments in flex container to preve"
+    },
+    {
+      "v": 114,
+      "sha": "afdcbce3",
+      "date": "2026-06-17",
+      "subject": "Fix yang/yin line width alignment in qigua hexagram display"
+    },
+    {
+      "v": 113,
+      "sha": "fd946bcb",
+      "date": "2026-06-17",
+      "subject": "Add interactive divination page and enrich divination articl"
+    },
+    {
+      "v": 112,
+      "sha": "a81acb39",
+      "date": "2026-06-17",
+      "subject": "Bump layout.js cache version to v=20 to bypass Cloudflare ca"
+    },
+    {
+      "v": 111,
+      "sha": "94fad348",
+      "date": "2026-06-16",
+      "subject": "Add contact email link in footer (support@yaoguayi.com)"
+    },
+    {
+      "v": 110,
+      "sha": "fb5bb282",
+      "date": "2026-06-16",
+      "subject": "Fix legend overlap in Hetu/Luoshu SVGs and bottom clipping i"
+    },
+    {
+      "v": 109,
+      "sha": "0ed978ab",
+      "date": "2026-06-16",
+      "subject": "Show section badges on all sub-items in admin dev mode"
+    },
+    {
+      "v": 108,
+      "sha": "b0ca6ad0",
+      "date": "2026-06-16",
+      "subject": "Fix SVG viewBox clipping and admin panel badges on learn.htm"
+    },
+    {
+      "v": 107,
+      "sha": "aaf65a38",
+      "date": "2026-06-16",
+      "subject": "Fix Hetu SVG layout and remove duplicate article content"
+    },
+    {
+      "v": 106,
+      "sha": "05ca6583",
+      "date": "2026-06-16",
+      "subject": "Add SVG diagrams to hetu-luoshu and wuxing articles"
+    },
+    {
+      "v": 105,
+      "sha": "05110788",
+      "date": "2026-06-16",
+      "subject": "Add interactive SVG diagram articles and hexagram source dis"
+    },
+    {
+      "v": 104,
+      "sha": "509e16a3",
+      "date": "2026-06-15",
+      "subject": "Reorder knowledge articles and add Wikipedia source citation"
+    },
+    {
+      "v": 103,
+      "sha": "17e60d62",
+      "date": "2026-06-15",
+      "subject": "Unify knowledge article icons to consistent Unicode symbol s"
+    },
+    {
+      "v": 102,
+      "sha": "8f70b61d",
+      "date": "2026-06-15",
+      "subject": "Bump knowledge.json cache version to v=3 on index.html"
+    },
+    {
+      "v": 101,
+      "sha": "2fdb1872",
+      "date": "2026-06-15",
+      "subject": "Add 4 knowledge articles: Zhou Yi overview, Xiantian/Houtian"
+    },
+    {
+      "v": 100,
+      "sha": "69ed3d1f",
+      "date": "2026-06-15",
+      "subject": "Fix CI: remove lint/typecheck from web package, simplify wor"
+    },
+    {
+      "v": 99,
+      "sha": "4da00f5b",
+      "date": "2026-06-15",
+      "subject": "Redesign nav dropdown and footer for end-user clarity"
+    },
+    {
+      "v": 98,
+      "sha": "4e2b239c",
+      "date": "2026-06-15",
+      "subject": "Shrink AI chat send/stop button icon to 16px"
+    },
+    {
+      "v": 97,
+      "sha": "f30dc787",
+      "date": "2026-06-15",
+      "subject": "Change yao name color in sidebar SVG to vermilion"
+    },
+    {
+      "v": 96,
+      "sha": "92b2b95b",
+      "date": "2026-06-15",
+      "subject": "Fix CI: remove lint/typecheck/test scripts from scaffold pac"
+    },
+    {
+      "v": 95,
+      "sha": "e8dfab66",
+      "date": "2026-06-15",
+      "subject": "Add webhook auto-deploy: Python listener + systemd service"
+    },
+    {
+      "v": 94,
+      "sha": "78a97327",
+      "date": "2026-06-15",
+      "subject": "Separate dev gate from account system with login/logout in n"
+    },
+    {
+      "v": 93,
+      "sha": "98ae53b0",
+      "date": "2026-06-15",
+      "subject": "Move login/logout to nav account dropdown"
+    },
+    {
+      "v": 92,
+      "sha": "730a83af",
+      "date": "2026-06-10",
+      "subject": "Fix TOC highlight lock: use scroll-idle debounce instead of "
+    },
+    {
+      "v": 91,
+      "sha": "bb0c9c92",
+      "date": "2026-06-10",
+      "subject": "Fix TOC highlight desyncing on click"
+    },
+    {
+      "v": 90,
+      "sha": "f4f8b4be",
+      "date": "2026-06-10",
+      "subject": "Fix TOC first-click scroll offset caused by fade-in animatio"
+    },
+    {
+      "v": 89,
+      "sha": "dfb8e1ad",
+      "date": "2026-06-10",
+      "subject": "Fix anchor scroll offset on learn.html"
+    },
+    {
+      "v": 88,
+      "sha": "92462941",
+      "date": "2026-06-10",
+      "subject": "Extract shared CSS into common.css and add SEO meta tags"
+    },
+    {
+      "v": 87,
+      "sha": "18665edd",
+      "date": "2026-06-09",
+      "subject": "Add divination knowledge articles and fix anchor scroll offs"
+    },
+    {
+      "v": 86,
+      "sha": "b7694ef0",
+      "date": "2026-06-08",
+      "subject": "Add admin panel and notepad to learn.html"
+    },
+    {
+      "v": 85,
+      "sha": "09366f84",
+      "date": "2026-06-08",
+      "subject": "Make admin panel dynamically sync with actual page content"
+    },
+    {
+      "v": 84,
+      "sha": "6e85328a",
+      "date": "2026-06-08",
+      "subject": "Unify hex/learn section layout and fix anchor scroll offset"
+    },
+    {
+      "v": 83,
+      "sha": "0c0f8e8d",
+      "date": "2026-06-08",
+      "subject": "Make learn section full-page like hexagram grid"
+    },
+    {
+      "v": 82,
+      "sha": "c10dafed",
+      "date": "2026-06-08",
+      "subject": "Revert tab-switching, extract shared nav/footer into layout."
+    },
+    {
+      "v": 81,
+      "sha": "a9bd030b",
+      "date": "2026-06-08",
+      "subject": "Convert index.html from stacked layout to tab-switched views"
+    },
+    {
+      "v": 80,
+      "sha": "55e9b273",
+      "date": "2026-06-08",
+      "subject": "Add knowledge system: learn.html + knowledge.json + index ca"
+    },
+    {
+      "v": 79,
+      "sha": "930c2cd1",
+      "date": "2026-06-08",
+      "subject": "Add Zhu Xi divination rules to AI system prompt context"
+    },
+    {
+      "v": 78,
+      "sha": "05eba79d",
+      "date": "2026-06-07",
+      "subject": "Enhance AI system prompt with site overview + add slash comm"
+    },
+    {
+      "v": 77,
+      "sha": "8b23410c",
+      "date": "2026-06-07",
+      "subject": "Fix Chrome password manager: use visually hidden text input "
+    },
+    {
+      "v": 76,
+      "sha": "83b97c04",
+      "date": "2026-06-07",
+      "subject": "Add hidden username field for Chrome password manager labeli"
+    },
+    {
+      "v": 75,
+      "sha": "74ca308d",
+      "date": "2026-06-07",
+      "subject": "Name AI key input for Chrome password manager recognition"
+    },
+    {
+      "v": 74,
+      "sha": "f4845a4c",
+      "date": "2026-06-07",
+      "subject": "Add Agnes AI as built-in provider (default)"
+    },
+    {
+      "v": 73,
+      "sha": "84039b18",
+      "date": "2026-06-07",
+      "subject": "AI chat: auto-collapse config, typing indicator, image paste"
+    },
+    {
+      "v": 72,
+      "sha": "1b0fe57c",
+      "date": "2026-06-06",
+      "subject": "Fix dark mode flash: move CSS variables from body to :root"
+    },
+    {
+      "v": 71,
+      "sha": "a623d964",
+      "date": "2026-06-06",
+      "subject": "Eliminate white flash on page navigation"
+    },
+    {
+      "v": 70,
+      "sha": "8ea15d1b",
+      "date": "2026-06-06",
+      "subject": "Notepad position persistence + admin/glossary panels side by"
+    },
+    {
+      "v": 69,
+      "sha": "c0bfbb22",
+      "date": "2026-06-06",
+      "subject": "Fix 3 bugs: panel overlay, badge position, admin panel inter"
+    },
+    {
+      "v": 68,
+      "sha": "973b7619",
+      "date": "2026-06-06",
+      "subject": "UI improvements: Chinese localization, global section IDs, N"
+    },
+    {
+      "v": 67,
+      "sha": "b9d67052",
+      "date": "2026-06-06",
+      "subject": "Fix cache bust: add version params to script tags"
+    },
+    {
+      "v": 66,
+      "sha": "fc6362b1",
+      "date": "2026-06-06",
+      "subject": "Add AI chat panel, dynamic admin sections, fix Notepad init"
+    },
+    {
+      "v": 65,
+      "sha": "469c2be8",
+      "date": "2026-06-06",
+      "subject": "Refactor: split Notepad into draggable floating window, move"
+    },
+    {
+      "v": 64,
+      "sha": "4b7144a3",
+      "date": "2026-06-06",
+      "subject": "Fix admin panel UX: simplify dropdown, tile panels side by s"
+    },
+    {
+      "v": 63,
+      "sha": "31407fda",
+      "date": "2026-06-06",
+      "subject": "Add admin panel with section IDs, AI settings, and notepad"
+    },
+    {
+      "v": 62,
+      "sha": "bcb6d992",
+      "date": "2026-06-06",
+      "subject": "Fix cover bounce on 1080p: use fixed height + transform-base"
+    },
+    {
+      "v": 61,
+      "sha": "5889d71e",
+      "date": "2026-06-06",
+      "subject": "Fix cover layout overlap on 1080p screens; replace subtitle "
+    },
+    {
+      "v": 60,
+      "sha": "d8ea9b66",
+      "date": "2026-06-04",
+      "subject": "feat: replace hash-based todayId with twelve sovereign hexag"
+    },
+    {
+      "v": 59,
+      "sha": "93f2146e",
+      "date": "2026-06-04",
+      "subject": "fix: sync hero card with grid highlight using todayId"
+    },
+    {
+      "v": 58,
+      "sha": "03a123f0",
+      "date": "2026-06-04",
+      "subject": "fix: add vertical padding to SVG viewBox to prevent yao-name"
+    },
+    {
+      "v": 57,
+      "sha": "a2c3a3b6",
+      "date": "2026-06-04",
+      "subject": "fix: add cache-busting query param to JSON fetch requests"
+    },
+    {
+      "v": 56,
+      "sha": "3ab0a43c",
+      "date": "2026-06-04",
+      "subject": "fix: add tone marks to hexagram pinyin and widen SVG yao-nam"
+    },
+    {
+      "v": 55,
+      "sha": "3fb643d7",
+      "date": "2026-06-04",
+      "subject": "fix: widen SVG viewBox to prevent yao-name clipping on sideb"
+    },
+    {
+      "v": 54,
+      "sha": "963553f2",
+      "date": "2026-06-04",
+      "subject": "fix: add ruby pinyin inside glossary term-links and widen le"
+    },
+    {
+      "v": 53,
+      "sha": "7a9616d2",
+      "date": "2026-06-04",
+      "subject": "feat: add full pinyin annotation for all 1030 characters in "
+    },
+    {
+      "v": 52,
+      "sha": "2a25d138",
+      "date": "2026-06-04",
+      "subject": "merge: bring structured footer layout from claude into main"
+    },
+    {
+      "v": 51,
       "sha": "e5076bb2",
       "date": "2026-06-04",
       "subject": "fix: restructure mobile footer to match PC layout"
     },
     {
-      "v": 29,
+      "v": 50,
+      "sha": "8da911d8",
+      "date": "2026-06-04",
+      "subject": "fix: mobile prev/next nav stays horizontal, footer more comp"
+    },
+    {
+      "v": 49,
       "sha": "632165df",
       "date": "2026-06-04",
       "subject": "fix: mobile prev/next nav stays horizontal, footer more comp"
     },
     {
-      "v": 28,
+      "v": 48,
+      "sha": "9d1986b4",
+      "date": "2026-06-04",
+      "subject": "fix: set fixed width on random hexagram card to prevent cont"
+    },
+    {
+      "v": 47,
       "sha": "e3d55bb8",
       "date": "2026-06-04",
       "subject": "fix: set fixed width on random hexagram card to prevent cont"
     },
     {
-      "v": 27,
+      "v": 46,
+      "sha": "813cf7dd",
+      "date": "2026-06-04",
+      "subject": "fix: tighten bottom spacing — remove excess gaps between sec"
+    },
+    {
+      "v": 45,
       "sha": "e851dc46",
       "date": "2026-06-04",
       "subject": "fix: tighten bottom spacing — remove excess gaps between sec"
     },
     {
-      "v": 26,
+      "v": 44,
+      "sha": "900b8998",
+      "date": "2026-06-04",
+      "subject": "fix: reduce last yaoci bottom padding from 60vh to 40px on a"
+    },
+    {
+      "v": 43,
       "sha": "2dcf4d8e",
       "date": "2026-06-04",
       "subject": "fix: reduce last yaoci bottom padding from 60vh to 40px on a"
     },
     {
-      "v": 25,
+      "v": 42,
+      "sha": "e7b356f3",
+      "date": "2026-06-04",
+      "subject": "feat: unify nav bar and dark theme across home + detail page"
+    },
+    {
+      "v": 41,
       "sha": "0f58f2d6",
       "date": "2026-06-04",
       "subject": "feat: unify nav bar and dark theme across home + detail page"
     },
     {
-      "v": 24,
+      "v": 40,
+      "sha": "8aad2294",
+      "date": "2026-06-04",
+      "subject": "fix: boost dark theme contrast for readability"
+    },
+    {
+      "v": 39,
       "sha": "d81b443f",
       "date": "2026-06-04",
       "subject": "fix: boost dark theme contrast for readability"
     },
     {
-      "v": 23,
+      "v": 38,
+      "sha": "8c9b16cf",
+      "date": "2026-06-04",
+      "subject": "fix(ci): remove hardcoded pnpm version, read from package.js"
+    },
+    {
+      "v": 37,
       "sha": "81b8f6ee",
       "date": "2026-06-04",
       "subject": "fix(ci): remove hardcoded pnpm version, read from package.js"
     },
     {
-      "v": 22,
+      "v": 36,
+      "sha": "4f7dea00",
+      "date": "2026-06-04",
+      "subject": "feat: implement dark theme with CSS custom properties"
+    },
+    {
+      "v": 35,
       "sha": "a6ce30b3",
       "date": "2026-06-04",
       "subject": "feat: implement dark theme with CSS custom properties"
     },
     {
-      "v": 21,
+      "v": 34,
+      "sha": "6ae45eb1",
+      "date": "2026-06-04",
+      "subject": "feat: enhanced top nav — logo, theme toggle, account dropdow"
+    },
+    {
+      "v": 33,
       "sha": "dec1bcb4",
       "date": "2026-06-04",
       "subject": "feat: enhanced top nav — logo, theme toggle, account dropdow"
     },
     {
-      "v": 20,
+      "v": 32,
+      "sha": "8544a543",
+      "date": "2026-06-04",
+      "subject": "fix: nav/footer stay fixed, only main content shifts for sid"
+    },
+    {
+      "v": 31,
       "sha": "e92e0bab",
       "date": "2026-06-04",
       "subject": "fix: nav/footer stay fixed, only main content shifts for sid"
     },
     {
-      "v": 19,
+      "v": 30,
+      "sha": "7cac4d2f",
+      "date": "2026-06-04",
+      "subject": "fix: align yao scroll target with sidebar top + add bottom p"
+    },
+    {
+      "v": 29,
       "sha": "d35edea9",
       "date": "2026-06-04",
       "subject": "fix: align yao scroll target with sidebar top + add bottom p"
     },
     {
-      "v": 18,
+      "v": 28,
+      "sha": "d8cf1c68",
+      "date": "2026-06-04",
+      "subject": "fix: increase yao line gap to prevent label overlap + scroll"
+    },
+    {
+      "v": 27,
       "sha": "e3fd63fc",
       "date": "2026-06-04",
       "subject": "fix: increase yao line gap to prevent label overlap + scroll"
     },
     {
-      "v": 17,
+      "v": 26,
+      "sha": "91eadbd8",
+      "date": "2026-06-04",
+      "subject": "refine: remove sidebar nav list, make SVG yao labels clickab"
+    },
+    {
+      "v": 25,
       "sha": "15ff5e4f",
       "date": "2026-06-04",
       "subject": "refine: remove sidebar nav list, make SVG yao labels clickab"
     },
     {
-      "v": 16,
+      "v": 24,
+      "sha": "d364bc06",
+      "date": "2026-06-04",
+      "subject": "feat: add yao navigation list below hexagram in sidebar"
+    },
+    {
+      "v": 23,
       "sha": "10ef1eea",
       "date": "2026-06-04",
       "subject": "feat: add yao navigation list below hexagram in sidebar"
     },
     {
-      "v": 15,
+      "v": 22,
+      "sha": "615f6b9a",
+      "date": "2026-06-04",
+      "subject": "refine: simplify sidebar — large SVG hexagram with yao label"
+    },
+    {
+      "v": 21,
       "sha": "b539a039",
       "date": "2026-06-04",
       "subject": "refine: simplify sidebar — large SVG hexagram with yao label"
     },
     {
-      "v": 14,
+      "v": 20,
+      "sha": "1f66349c",
+      "date": "2026-06-04",
+      "subject": "fix: sidebar top-left sticky + push-aside panel layout"
+    },
+    {
+      "v": 19,
       "sha": "db5a18e9",
       "date": "2026-06-04",
       "subject": "fix: sidebar top-left sticky + push-aside panel layout"
     },
     {
-      "v": 13,
+      "v": 18,
+      "sha": "7cf2ed83",
+      "date": "2026-06-04",
+      "subject": "fix: center sidebar vertically, fix annotations parsing and "
+    },
+    {
+      "v": 17,
       "sha": "4f5d136e",
       "date": "2026-06-04",
       "subject": "fix: center sidebar vertically, fix annotations parsing and "
     },
     {
-      "v": 12,
+      "v": 16,
+      "sha": "b9f6848b",
+      "date": "2026-06-04",
+      "subject": "feat: redesign hexagram detail page with two-column layout"
+    },
+    {
+      "v": 15,
       "sha": "e1472f86",
       "date": "2026-06-04",
       "subject": "feat: redesign hexagram detail page with two-column layout"
     },
     {
-      "v": 11,
+      "v": 14,
+      "sha": "35c90233",
+      "date": "2026-06-04",
+      "subject": "fix: rewrite tuan translations from fan-jian conversion to r"
+    },
+    {
+      "v": 13,
       "sha": "be5bcc25",
       "date": "2026-06-04",
       "subject": "fix: rewrite tuan translations from fan-jian conversion to r"
     },
     {
-      "v": 10,
+      "v": 12,
+      "sha": "d537f11a",
+      "date": "2026-06-04",
+      "subject": "feat: add modern Chinese translations for all 64 hexagrams"
+    },
+    {
+      "v": 11,
       "sha": "bf55b998",
       "date": "2026-06-04",
       "subject": "feat: add modern Chinese translations for all 64 hexagrams"
+    },
+    {
+      "v": 10,
+      "sha": "4fdfe79d",
+      "date": "2026-06-04",
+      "subject": "feat: add hexagram detail page + data pipeline"
     },
     {
       "v": 9,

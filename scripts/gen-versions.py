@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                "..", "..", "skills", "github", "bin"))
 from ghapi import api  # noqa: E402
 
-OWNER, REPO, BRANCH = "Hypocrite65", "yaoguayi", "claude"
+OWNER, REPO, BRANCH = "Hypocrite65", "yaoguayi", "main"
 SKIP_PREFIX = "更新版本记录"
 
 def main():
