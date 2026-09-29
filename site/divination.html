@@ -12,7 +12,22 @@
 <meta property="og:title" content="起卦 · 爻卦易"/>
 <meta property="og:description" content="三枚铜钱，六次摇卦，得本卦、变卦与动爻。"/>
 <meta property="og:url" content="https://yaoguayi.com/divination.html"/>
+<link rel="canonical" href="https://yaoguayi.com/divination.html"/>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "金钱卦起卦 · 爻卦易",
+  "url": "https://yaoguayi.com/divination.html",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Web",
+  "inLanguage": "zh-Hans",
+  "description": "三枚铜钱，六次摇卦，得本卦、变卦与动爻。起卦记录仅保存在本地浏览器。",
+  "isPartOf": { "@type": "WebSite", "name": "爻卦易", "url": "https://yaoguayi.com/" },
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" }
+}
+</script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
@@ -50,6 +65,9 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 .nav-back{font-size:13px;letter-spacing:0.1em;color:var(--muted);text-decoration:none;
   display:flex;align-items:center;gap:6px;transition:color 0.2s;}
 .nav-back:hover{color:var(--vermilion);}
+.nav-link{font-size:13px;letter-spacing:0.1em;color:var(--muted);text-decoration:none;
+  transition:color 0.2s;}
+.nav-link:hover{color:var(--vermilion);}
 .nav-logo svg{width:28px;height:28px;display:block;}
 .nav-tools{display:flex;align-items:center;gap:4px;}
 .nav-btn{width:32px;height:32px;border:none;background:none;cursor:pointer;
@@ -255,6 +273,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 
 <nav class="top-nav">
   <a class="nav-back" href="/">← 六十四卦</a>
+  <a class="nav-link" href="/hexagrams.html">卦象索引</a>
   <a class="nav-logo" href="/" aria-label="爻卦易首页">
     <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
       <circle cx="100" cy="100" r="84" stroke="#5c3a30" stroke-width="5" fill="none"/>
@@ -315,8 +334,11 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 </main>
 
 <footer class="site-footer">
-  爻卦易 · yaoguayi.com · 开源 · 非盈利 ·
-  <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank">GitHub</a> ·
+  爻卦易 · yaoguayi.com ·
+  <a href="/hexagrams.html">卦象索引</a> ·
+  <a href="/sitemap.xml">站点地图</a> ·
+  开源 · 非盈利 ·
+  <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank" rel="noopener">GitHub</a> ·
   <span class="ver" id="site-ver" title="查看版本历史">版本 v–</span>
   <div class="ver-panel" id="ver-panel" hidden></div>
 </footer>

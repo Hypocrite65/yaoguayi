@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>六十四卦索引 · 爻卦易</title>
+<meta name="description" content="《周易》六十四卦索引：上经三十卦、下经三十四卦，卦名、卦辞一览，点击进入卦象详情阅读卦辞、爻辞、彖传、象传原文。"/>
+<meta name="keywords" content="易经,周易,六十四卦,上经,下经,卦辞,爻卦易"/>
+<meta name="theme-color" content="#faf8f1"/>
+<link rel="canonical" href="https://yaoguayi.com/hexagrams.html"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="爻卦易"/>
+<meta property="og:title" content="六十四卦索引 · 爻卦易"/>
+<meta property="og:description" content="《周易》六十四卦索引：上经三十卦、下经三十四卦，卦辞一览。"/>
+<meta property="og:url" content="https://yaoguayi.com/hexagrams.html"/>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "六十四卦索引 · 爻卦易",
+  "description": "《周易》六十四卦索引：上经三十卦、下经三十四卦。",
+  "url": "https://yaoguayi.com/hexagrams.html",
+  "inLanguage": "zh-Hans",
+  "isPartOf": { "@type": "WebSite", "name": "爻卦易", "url": "https://yaoguayi.com/" },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "首页", "item": "https://yaoguayi.com/" },
+      { "@type": "ListItem", "position": 2, "name": "六十四卦索引", "item": "https://yaoguayi.com/hexagrams.html" }
+    ]
+  }
+}
+</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+/* ===== 主题变量（与全站一致） ===== */
+body{
+  --bg:#faf8f1;--bg-alt:#f1ede2;--ink:#2c2420;--ink-light:#5a4e44;
+  --muted:#7a6e64;--faint:#a09080;--ghost:#d5c8b6;--whisper:#ded4c3;
+  --border:rgba(26,26,26,0.08);--border-strong:rgba(26,26,26,0.15);
+  --vermilion:#c0392b;--vermilion-faint:rgba(192,57,43,0.15);
+  --nav-bg:rgba(250,248,241,0.92);--card-bg:rgba(241,237,226,0.5);
+  --hover-bg:rgba(26,26,26,0.06);--shadow:rgba(26,26,26,0.08);
+}
+body.dark-theme{
+  --bg:#1c1a16;--bg-alt:#252320;--ink:#e8e0d4;--ink-light:#ccc4b8;
+  --muted:#a49c8c;--faint:#847c6c;--ghost:#5a5448;--whisper:#3e3830;
+  --border:rgba(232,224,212,0.10);--border-strong:rgba(232,224,212,0.18);
+  --vermilion:#e07060;--vermilion-faint:rgba(224,112,96,0.18);
+  --nav-bg:rgba(28,26,22,0.94);--card-bg:rgba(37,35,32,0.7);
+  --hover-bg:rgba(232,224,212,0.08);--shadow:rgba(0,0,0,0.3);
+}
+
+body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
+  color:var(--ink);background:var(--bg);min-height:100vh;
+  display:flex;flex-direction:column;transition:background 0.4s,color 0.4s;}
+
+/* ===== 顶部导航 ===== */
+.top-nav{position:sticky;top:0;z-index:100;
+  background:var(--nav-bg);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border-bottom:0.5px solid var(--border);padding:10px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.nav-left{display:flex;align-items:center;gap:16px;}
+.nav-back{font-size:13px;letter-spacing:0.1em;color:var(--muted);text-decoration:none;
+  display:flex;align-items:center;gap:6px;transition:color 0.2s;}
+.nav-back:hover{color:var(--vermilion);}
+.nav-back::before{content:'←';font-size:15px;}
+.nav-link{font-size:13px;letter-spacing:0.1em;color:var(--muted);text-decoration:none;
+  transition:color 0.2s;}
+.nav-link:hover{color:var(--vermilion);}
+.nav-tools{display:flex;align-items:center;gap:4px;}
+.nav-btn{width:32px;height:32px;border:none;background:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;border-radius:6px;
+  color:var(--muted);transition:background 0.2s,color 0.2s;}
+.nav-btn:hover{background:var(--hover-bg);color:var(--ink);}
+.nav-btn svg{width:18px;height:18px;}
+
+/* ===== 主体 ===== */
+.page{max-width:860px;margin:0 auto;padding:40px 28px 64px;flex:1;width:100%;}
+
+/* 面包屑 */
+.crumb{font-size:11px;letter-spacing:0.14em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:28px;}
+.crumb a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+.crumb a:hover{color:var(--vermilion);}
+.crumb .sep{margin:0 8px;color:var(--whisper);}
+.crumb .here{color:var(--ink);}
+
+.page-title{font-size:30px;letter-spacing:0.24em;font-weight:400;margin-bottom:12px;}
+.page-intro{font-size:13px;line-height:2;color:var(--muted);letter-spacing:0.06em;
+  margin-bottom:40px;max-width:640px;}
+
+/* 分组标题 */
+.group{margin-bottom:48px;}
+.group-title{display:flex;align-items:baseline;gap:12px;margin-bottom:6px;}
+.group-title h2{font-size:16px;letter-spacing:0.3em;font-weight:400;color:var(--ink);}
+.group-title .count{font-size:11px;color:var(--faint);letter-spacing:0.1em;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.group-desc{font-size:12px;color:var(--faint);letter-spacing:0.08em;margin-bottom:16px;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+
+/* 索引列表：语义化 ul/li/a，便于爬虫跟随 */
+.hex-index{list-style:none;border-top:0.5px solid var(--border-strong);}
+.hex-index li{border-bottom:0.5px solid var(--border);}
+.hex-index a{display:flex;align-items:center;gap:14px;padding:13px 8px;
+  text-decoration:none;color:inherit;border-radius:4px;
+  transition:background 0.2s,padding-left 0.25s;}
+.hex-index a:hover{background:var(--hover-bg);padding-left:14px;}
+.hex-sym{font-size:24px;line-height:1;color:var(--ink);opacity:0.7;width:34px;
+  text-align:center;flex:none;transition:opacity 0.2s,transform 0.25s;}
+.hex-index a:hover .hex-sym{opacity:1;transform:scale(1.12);color:var(--vermilion);}
+.hex-num{font-size:11px;color:var(--ghost);width:26px;flex:none;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.hex-name{font-size:17px;letter-spacing:0.14em;color:var(--ink);width:74px;flex:none;}
+.hex-pinyin{font-size:12px;color:var(--faint);width:64px;flex:none;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.hex-guaci{font-size:13px;color:var(--muted);letter-spacing:0.06em;flex:1;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hex-arrow{font-size:14px;color:var(--ghost);flex:none;transition:transform 0.25s,color 0.25s;}
+.hex-index a:hover .hex-arrow{transform:translateX(5px);color:var(--vermilion);}
+
+/* ===== 页脚 ===== */
+.site-footer{border-top:0.5px solid var(--border);padding:20px 24px;text-align:center;
+  font-size:10px;letter-spacing:0.12em;color:var(--ghost);
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-top:auto;}
+.site-footer a{color:var(--faint);text-decoration:none;transition:color 0.2s;}
+.site-footer a:hover{color:var(--vermilion);}
+.site-footer{position:relative;}
+.ver{color:var(--faint);cursor:pointer;transition:color 0.2s;}
+.ver:hover{color:var(--vermilion);}
+.ver-panel{position:absolute;bottom:calc(100% + 10px);right:16px;width:min(440px,92vw);
+  max-height:320px;overflow-y:auto;background:var(--bg);
+  border:1px solid var(--border-strong);border-radius:10px;
+  box-shadow:0 12px 32px var(--shadow);padding:8px;z-index:60;text-align:left;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.ver-panel[hidden]{display:none;}
+.ver-row{display:flex;gap:10px;align-items:baseline;padding:7px 10px;font-size:11px;
+  letter-spacing:0;border-radius:6px;}
+.ver-row:hover{background:var(--hover-bg);}
+.ver-n{color:var(--vermilion);font-weight:600;min-width:34px;flex:none;}
+.ver-sha{font-family:ui-monospace,SFMono-Regular,monospace;color:var(--muted);flex:none;}
+.ver-date{color:var(--faint);white-space:nowrap;flex:none;}
+.ver-sub{color:var(--ink-light);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+.loading{text-align:center;padding:80px 24px;font-size:13px;letter-spacing:0.12em;color:var(--faint);}
+
+@media(max-width:640px){
+  .page{padding:28px 16px 48px;}
+  .page-title{font-size:24px;}
+  .hex-pinyin{display:none;}
+  .hex-guaci{font-size:12px;}
+  .hex-name{width:60px;font-size:15px;}
+}
+</style>
+</head>
+<body>
+
+<nav class="top-nav" aria-label="主导航">
+  <div class="nav-left">
+    <a class="nav-back" href="/">首页</a>
+    <a class="nav-link" href="/divination.html">起卦</a>
+  </div>
+  <div class="nav-tools">
+    <button class="nav-btn" id="theme-toggle" title="切换深色 / 浅色" aria-label="切换深色 / 浅色" onclick="toggleTheme()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<main class="page">
+  <nav class="crumb" aria-label="面包屑">
+    <a href="/">首页</a><span class="sep">/</span><span class="here">六十四卦索引</span>
+  </nav>
+
+  <h1 class="page-title">六十四卦索引</h1>
+  <p class="page-intro">
+    《周易》六十四卦，传统上分为上经三十卦、下经三十四卦。
+    上经多言天地阴阳之道，下经多言人事伦常之理。点击任意一卦，阅读卦辞、爻辞与传文。
+  </p>
+
+  <section class="group" aria-labelledby="shangjing">
+    <div class="group-title">
+      <h2 id="shangjing">上经</h2>
+      <span class="count">第 1 – 30 卦</span>
+    </div>
+    <p class="group-desc">始于乾坤，终于坎离 — 天地、水火之道</p>
+    <ul class="hex-index" id="shangjing-list">
+    <li><a href="/hexagram.html?id=1" aria-label="第1卦 乾卦"><span class="hex-sym" aria-hidden="true">䷀</span><span class="hex-num">01</span><span class="hex-name">乾</span><span class="hex-pinyin">qian</span><span class="hex-guaci">元，亨，利，貞。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=2" aria-label="第2卦 坤卦"><span class="hex-sym" aria-hidden="true">䷁</span><span class="hex-num">02</span><span class="hex-name">坤</span><span class="hex-pinyin">kun</span><span class="hex-guaci">元，亨，利牝馬之貞。君子有攸</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=3" aria-label="第3卦 屯卦"><span class="hex-sym" aria-hidden="true">䷂</span><span class="hex-num">03</span><span class="hex-name">屯</span><span class="hex-pinyin">zhun</span><span class="hex-guaci">元，亨，利，貞，勿用有攸往，</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=4" aria-label="第4卦 蒙卦"><span class="hex-sym" aria-hidden="true">䷃</span><span class="hex-num">04</span><span class="hex-name">蒙</span><span class="hex-pinyin">meng</span><span class="hex-guaci">亨。匪我求童蒙，童蒙求我，初</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=5" aria-label="第5卦 需卦"><span class="hex-sym" aria-hidden="true">䷄</span><span class="hex-num">05</span><span class="hex-name">需</span><span class="hex-pinyin">xu</span><span class="hex-guaci">有孚，光亨，貞吉。利涉大川。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=6" aria-label="第6卦 訟卦"><span class="hex-sym" aria-hidden="true">䷅</span><span class="hex-num">06</span><span class="hex-name">訟</span><span class="hex-pinyin">song</span><span class="hex-guaci">有孚，窒惕，中吉，終凶。利見</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=7" aria-label="第7卦 師卦"><span class="hex-sym" aria-hidden="true">䷆</span><span class="hex-num">07</span><span class="hex-name">師</span><span class="hex-pinyin">shi</span><span class="hex-guaci">貞，丈人，吉，無咎。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=8" aria-label="第8卦 比卦"><span class="hex-sym" aria-hidden="true">䷇</span><span class="hex-num">08</span><span class="hex-name">比</span><span class="hex-pinyin">bi</span><span class="hex-guaci">吉，原筮，元永貞，無咎。不寧</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=9" aria-label="第9卦 小畜卦"><span class="hex-sym" aria-hidden="true">䷈</span><span class="hex-num">09</span><span class="hex-name">小畜</span><span class="hex-pinyin">xiao-xu</span><span class="hex-guaci">亨。密雲不雨，自我西郊。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=10" aria-label="第10卦 履卦"><span class="hex-sym" aria-hidden="true">䷉</span><span class="hex-num">10</span><span class="hex-name">履</span><span class="hex-pinyin">lv</span><span class="hex-guaci">履虎尾，不咥人，亨。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=11" aria-label="第11卦 泰卦"><span class="hex-sym" aria-hidden="true">䷊</span><span class="hex-num">11</span><span class="hex-name">泰</span><span class="hex-pinyin">tai</span><span class="hex-guaci">小往大來，吉，亨。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=12" aria-label="第12卦 否卦"><span class="hex-sym" aria-hidden="true">䷋</span><span class="hex-num">12</span><span class="hex-name">否</span><span class="hex-pinyin">pi</span><span class="hex-guaci">否之匪人，不利君子貞，大往小</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=13" aria-label="第13卦 同人卦"><span class="hex-sym" aria-hidden="true">䷌</span><span class="hex-num">13</span><span class="hex-name">同人</span><span class="hex-pinyin">tong-ren</span><span class="hex-guaci">同人于野，亨。利涉大川，利君</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=14" aria-label="第14卦 大有卦"><span class="hex-sym" aria-hidden="true">䷍</span><span class="hex-num">14</span><span class="hex-name">大有</span><span class="hex-pinyin">da-you</span><span class="hex-guaci">元亨。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=15" aria-label="第15卦 謙卦"><span class="hex-sym" aria-hidden="true">䷎</span><span class="hex-num">15</span><span class="hex-name">謙</span><span class="hex-pinyin">qian2</span><span class="hex-guaci">亨，君子有終。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=16" aria-label="第16卦 豫卦"><span class="hex-sym" aria-hidden="true">䷏</span><span class="hex-num">16</span><span class="hex-name">豫</span><span class="hex-pinyin">yu</span><span class="hex-guaci">利建侯行師。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=17" aria-label="第17卦 隨卦"><span class="hex-sym" aria-hidden="true">䷐</span><span class="hex-num">17</span><span class="hex-name">隨</span><span class="hex-pinyin">sui</span><span class="hex-guaci">元，亨，利，貞，無咎。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=18" aria-label="第18卦 蠱卦"><span class="hex-sym" aria-hidden="true">䷑</span><span class="hex-num">18</span><span class="hex-name">蠱</span><span class="hex-pinyin">gu</span><span class="hex-guaci">元亨，利涉大川，先甲三日，後</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=19" aria-label="第19卦 臨卦"><span class="hex-sym" aria-hidden="true">䷒</span><span class="hex-num">19</span><span class="hex-name">臨</span><span class="hex-pinyin">lin</span><span class="hex-guaci">元，亨，利，貞。至于八月有凶</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=20" aria-label="第20卦 觀卦"><span class="hex-sym" aria-hidden="true">䷓</span><span class="hex-num">20</span><span class="hex-name">觀</span><span class="hex-pinyin">guan</span><span class="hex-guaci">盥而不薦，有孚顒若。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=21" aria-label="第21卦 噬嗑卦"><span class="hex-sym" aria-hidden="true">䷔</span><span class="hex-num">21</span><span class="hex-name">噬嗑</span><span class="hex-pinyin">shi-ke</span><span class="hex-guaci">亨，利用獄。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=22" aria-label="第22卦 賁卦"><span class="hex-sym" aria-hidden="true">䷕</span><span class="hex-num">22</span><span class="hex-name">賁</span><span class="hex-pinyin">bi2</span><span class="hex-guaci">亨，小利有攸往。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=23" aria-label="第23卦 剝卦"><span class="hex-sym" aria-hidden="true">䷖</span><span class="hex-num">23</span><span class="hex-name">剝</span><span class="hex-pinyin">bo</span><span class="hex-guaci">不利有攸往。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=24" aria-label="第24卦 復卦"><span class="hex-sym" aria-hidden="true">䷗</span><span class="hex-num">24</span><span class="hex-name">復</span><span class="hex-pinyin">fu</span><span class="hex-guaci">亨。出入無疾，朋來無咎。反復</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=25" aria-label="第25卦 無妄卦"><span class="hex-sym" aria-hidden="true">䷘</span><span class="hex-num">25</span><span class="hex-name">無妄</span><span class="hex-pinyin">wu-wang</span><span class="hex-guaci">元，亨，利，貞。其匪正有眚，</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=26" aria-label="第26卦 大畜卦"><span class="hex-sym" aria-hidden="true">䷙</span><span class="hex-num">26</span><span class="hex-name">大畜</span><span class="hex-pinyin">da-xu</span><span class="hex-guaci">利貞，不家食，吉，利涉大川。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=27" aria-label="第27卦 頤卦"><span class="hex-sym" aria-hidden="true">䷚</span><span class="hex-num">27</span><span class="hex-name">頤</span><span class="hex-pinyin">yi</span><span class="hex-guaci">貞吉，觀頤，自求口實。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=28" aria-label="第28卦 大過卦"><span class="hex-sym" aria-hidden="true">䷛</span><span class="hex-num">28</span><span class="hex-name">大過</span><span class="hex-pinyin">da-guo</span><span class="hex-guaci">棟橈，利有攸往，亨。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=29" aria-label="第29卦 坎卦"><span class="hex-sym" aria-hidden="true">䷜</span><span class="hex-num">29</span><span class="hex-name">坎</span><span class="hex-pinyin">kan</span><span class="hex-guaci">習坎，有孚，維心亨，行有尚。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=30" aria-label="第30卦 離卦"><span class="hex-sym" aria-hidden="true">䷝</span><span class="hex-num">30</span><span class="hex-name">離</span><span class="hex-pinyin">li</span><span class="hex-guaci">利貞，亨。畜牝牛，吉。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    </ul>
+  </section>
+
+  <section class="group" aria-labelledby="xiajing">
+    <div class="group-title">
+      <h2 id="xiajing">下经</h2>
+      <span class="count">第 31 – 64 卦</span>
+    </div>
+    <p class="group-desc">始于咸恒，终于既济未济 — 人事之始终</p>
+    <ul class="hex-index" id="xiajing-list">
+    <li><a href="/hexagram.html?id=31" aria-label="第31卦 咸卦"><span class="hex-sym" aria-hidden="true">䷞</span><span class="hex-num">31</span><span class="hex-name">咸</span><span class="hex-pinyin">xian</span><span class="hex-guaci">亨，利貞，取女吉。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=32" aria-label="第32卦 恆卦"><span class="hex-sym" aria-hidden="true">䷟</span><span class="hex-num">32</span><span class="hex-name">恆</span><span class="hex-pinyin">heng</span><span class="hex-guaci">亨，無咎，利貞，利有攸往。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=33" aria-label="第33卦 遯卦"><span class="hex-sym" aria-hidden="true">䷠</span><span class="hex-num">33</span><span class="hex-name">遯</span><span class="hex-pinyin">dun</span><span class="hex-guaci">亨，小利貞。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=34" aria-label="第34卦 大壯卦"><span class="hex-sym" aria-hidden="true">䷡</span><span class="hex-num">34</span><span class="hex-name">大壯</span><span class="hex-pinyin">da-zhuang</span><span class="hex-guaci">利貞。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=35" aria-label="第35卦 晉卦"><span class="hex-sym" aria-hidden="true">䷢</span><span class="hex-num">35</span><span class="hex-name">晉</span><span class="hex-pinyin">jin</span><span class="hex-guaci">康侯用錫馬蕃庶，晝日三接。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=36" aria-label="第36卦 明夷卦"><span class="hex-sym" aria-hidden="true">䷣</span><span class="hex-num">36</span><span class="hex-name">明夷</span><span class="hex-pinyin">ming-yi</span><span class="hex-guaci">利艱貞。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=37" aria-label="第37卦 家人卦"><span class="hex-sym" aria-hidden="true">䷤</span><span class="hex-num">37</span><span class="hex-name">家人</span><span class="hex-pinyin">jia-ren</span><span class="hex-guaci">利女貞。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=38" aria-label="第38卦 睽卦"><span class="hex-sym" aria-hidden="true">䷥</span><span class="hex-num">38</span><span class="hex-name">睽</span><span class="hex-pinyin">kui</span><span class="hex-guaci">小事吉。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=39" aria-label="第39卦 蹇卦"><span class="hex-sym" aria-hidden="true">䷦</span><span class="hex-num">39</span><span class="hex-name">蹇</span><span class="hex-pinyin">jian</span><span class="hex-guaci">利西南，不利東北，利見大人，</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=40" aria-label="第40卦 解卦"><span class="hex-sym" aria-hidden="true">䷧</span><span class="hex-num">40</span><span class="hex-name">解</span><span class="hex-pinyin">jie</span><span class="hex-guaci">利西南，無所往，其來復吉，有</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=41" aria-label="第41卦 損卦"><span class="hex-sym" aria-hidden="true">䷨</span><span class="hex-num">41</span><span class="hex-name">損</span><span class="hex-pinyin">sun</span><span class="hex-guaci">有孚，元吉，無咎，可貞，利有</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=42" aria-label="第42卦 益卦"><span class="hex-sym" aria-hidden="true">䷩</span><span class="hex-num">42</span><span class="hex-name">益</span><span class="hex-pinyin">yi2</span><span class="hex-guaci">利有攸往，利涉大川。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=43" aria-label="第43卦 夬卦"><span class="hex-sym" aria-hidden="true">䷪</span><span class="hex-num">43</span><span class="hex-name">夬</span><span class="hex-pinyin">guai</span><span class="hex-guaci">揚于王庭，孚號有厲，告自邑，</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=44" aria-label="第44卦 姤卦"><span class="hex-sym" aria-hidden="true">䷫</span><span class="hex-num">44</span><span class="hex-name">姤</span><span class="hex-pinyin">gou</span><span class="hex-guaci">女壯，勿用取女。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=45" aria-label="第45卦 萃卦"><span class="hex-sym" aria-hidden="true">䷬</span><span class="hex-num">45</span><span class="hex-name">萃</span><span class="hex-pinyin">cui</span><span class="hex-guaci">亨，王假有廟，利見大人，亨，</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=46" aria-label="第46卦 升卦"><span class="hex-sym" aria-hidden="true">䷭</span><span class="hex-num">46</span><span class="hex-name">升</span><span class="hex-pinyin">sheng</span><span class="hex-guaci">元亨，用見大人，勿恤，南征吉</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=47" aria-label="第47卦 困卦"><span class="hex-sym" aria-hidden="true">䷮</span><span class="hex-num">47</span><span class="hex-name">困</span><span class="hex-pinyin">kun2</span><span class="hex-guaci">亨，貞，大人吉，無咎，有言不</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=48" aria-label="第48卦 井卦"><span class="hex-sym" aria-hidden="true">䷯</span><span class="hex-num">48</span><span class="hex-name">井</span><span class="hex-pinyin">jing</span><span class="hex-guaci">改邑不改井，無喪無得，往來井</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=49" aria-label="第49卦 革卦"><span class="hex-sym" aria-hidden="true">䷰</span><span class="hex-num">49</span><span class="hex-name">革</span><span class="hex-pinyin">ge</span><span class="hex-guaci">已日乃孚，元亨利貞，悔亡。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=50" aria-label="第50卦 鼎卦"><span class="hex-sym" aria-hidden="true">䷱</span><span class="hex-num">50</span><span class="hex-name">鼎</span><span class="hex-pinyin">ding</span><span class="hex-guaci">元吉，亨。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=51" aria-label="第51卦 震卦"><span class="hex-sym" aria-hidden="true">䷲</span><span class="hex-num">51</span><span class="hex-name">震</span><span class="hex-pinyin">zhen</span><span class="hex-guaci">亨。震來虩虩，笑言啞啞，震驚</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=52" aria-label="第52卦 艮卦"><span class="hex-sym" aria-hidden="true">䷳</span><span class="hex-num">52</span><span class="hex-name">艮</span><span class="hex-pinyin">gen</span><span class="hex-guaci">艮其背，不獲其身，行其庭，不</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=53" aria-label="第53卦 漸卦"><span class="hex-sym" aria-hidden="true">䷴</span><span class="hex-num">53</span><span class="hex-name">漸</span><span class="hex-pinyin">jian2</span><span class="hex-guaci">女歸吉，利貞。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=54" aria-label="第54卦 歸妹卦"><span class="hex-sym" aria-hidden="true">䷵</span><span class="hex-num">54</span><span class="hex-name">歸妹</span><span class="hex-pinyin">gui-mei</span><span class="hex-guaci">征凶，無攸利。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=55" aria-label="第55卦 豐卦"><span class="hex-sym" aria-hidden="true">䷶</span><span class="hex-num">55</span><span class="hex-name">豐</span><span class="hex-pinyin">feng</span><span class="hex-guaci">亨，王假之，勿憂，宜日中。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=56" aria-label="第56卦 旅卦"><span class="hex-sym" aria-hidden="true">䷷</span><span class="hex-num">56</span><span class="hex-name">旅</span><span class="hex-pinyin">lv2</span><span class="hex-guaci">小亨，旅貞吉。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=57" aria-label="第57卦 巽卦"><span class="hex-sym" aria-hidden="true">䷸</span><span class="hex-num">57</span><span class="hex-name">巽</span><span class="hex-pinyin">xun</span><span class="hex-guaci">小亨，利有攸往，利見大人。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=58" aria-label="第58卦 兌卦"><span class="hex-sym" aria-hidden="true">䷹</span><span class="hex-num">58</span><span class="hex-name">兌</span><span class="hex-pinyin">dui</span><span class="hex-guaci">亨，利貞。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=59" aria-label="第59卦 渙卦"><span class="hex-sym" aria-hidden="true">䷺</span><span class="hex-num">59</span><span class="hex-name">渙</span><span class="hex-pinyin">huan</span><span class="hex-guaci">亨，王假有廟，利涉大川，利貞</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=60" aria-label="第60卦 節卦"><span class="hex-sym" aria-hidden="true">䷻</span><span class="hex-num">60</span><span class="hex-name">節</span><span class="hex-pinyin">jie2</span><span class="hex-guaci">亨，苦節不可貞。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=61" aria-label="第61卦 中孚卦"><span class="hex-sym" aria-hidden="true">䷼</span><span class="hex-num">61</span><span class="hex-name">中孚</span><span class="hex-pinyin">zhong-fu</span><span class="hex-guaci">豚魚吉，利涉大川，利貞。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=62" aria-label="第62卦 小過卦"><span class="hex-sym" aria-hidden="true">䷽</span><span class="hex-num">62</span><span class="hex-name">小過</span><span class="hex-pinyin">xiao-guo</span><span class="hex-guaci">亨，利貞，可小事，不可大事，</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=63" aria-label="第63卦 既濟卦"><span class="hex-sym" aria-hidden="true">䷾</span><span class="hex-num">63</span><span class="hex-name">既濟</span><span class="hex-pinyin">ji-ji</span><span class="hex-guaci">亨，小利貞，初吉終亂。</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    <li><a href="/hexagram.html?id=64" aria-label="第64卦 未濟卦"><span class="hex-sym" aria-hidden="true">䷿</span><span class="hex-num">64</span><span class="hex-name">未濟</span><span class="hex-pinyin">wei-ji</span><span class="hex-guaci">亨，小狐汔濟，濡其尾，無攸利</span><span class="hex-arrow" aria-hidden="true">→</span></a></li>
+    </ul>
+  </section>
+
+  <div class="loading" id="loading">载入中…</div>
+</main>
+
+<footer class="site-footer">
+  爻卦易 · yaoguayi.com ·
+  <a href="/">首页</a> ·
+  <a href="/divination.html">起卦</a> ·
+  <a href="/sitemap.xml">站点地图</a> ·
+  <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank" rel="noopener">GitHub</a> ·
+  开源 · 非盈利 ·
+  <span class="ver" id="site-ver" title="查看版本历史">版本 v–</span>
+  <div class="ver-panel" id="ver-panel" hidden></div>
+</footer>
+
+<script src="/js/theme.js"></script>
+<script src="/js/version.js"></script>
+<script>
+/**
+ * hexagrams.html — 六十四卦索引页
+ *
+ * 设计说明：
+ * 使用语义化 ul/li/a 列表渲染 64 卦，便于搜索引擎与 AI 爬虫跟随链接。
+ * 按传统上经（1–30）/下经（31–64）分组。
+ * 渲染完成后动态注入 ItemList 结构化数据。
+ */
+// 渐进增强：64 卦列表已在 HTML 中静态输出（供无 JS 爬虫抓取），
+// 此处仅在列表缺失时兜底渲染，并注入 ItemList 结构化数据。
+document.getElementById('loading').style.display = 'none';
+fetch('/data/hexagrams.json')
+  .then(r => r.json())
+  .then(hexagrams => {
+    if (!document.querySelector('#shangjing-list li')) {
+      renderList('shangjing-list', hexagrams.filter(h => h.id <= 30));
+    }
+    if (!document.querySelector('#xiajing-list li')) {
+      renderList('xiajing-list', hexagrams.filter(h => h.id > 30));
+    }
+    injectItemListLD(hexagrams);
+  })
+  .catch(err => {
+    console.error('Failed to load hexagram data:', err);
+    document.getElementById('loading').textContent = '数据加载失败，请刷新重试';
+  });
+
+/**
+ * 渲染一组卦象列表
+ * @param {string} listId - 目标 ul 元素 id
+ * @param {Array} hexagrams - 卦象数据
+ */
+function renderList(listId, hexagrams) {
+  const ul = document.getElementById(listId);
+  hexagrams.forEach(hex => {
+    const sym = String.fromCodePoint(0x4DBF + hex.id);
+    const li = document.createElement('li');
+    // 卦辞取前 14 字作为摘要
+    const guaciShort = (hex.guaci || '').replace(/\s+/g, '').slice(0, 14);
+    li.innerHTML =
+      `<a href="/hexagram.html?id=${hex.id}" aria-label="第${hex.id}卦 ${hex.name}卦">` +
+      `<span class="hex-sym" aria-hidden="true">${sym}</span>` +
+      `<span class="hex-num">${String(hex.id).padStart(2, '0')}</span>` +
+      `<span class="hex-name">${hex.name}</span>` +
+      `<span class="hex-pinyin">${hex.pinyin || ''}</span>` +
+      `<span class="hex-guaci">${guaciShort}</span>` +
+      `<span class="hex-arrow" aria-hidden="true">→</span>` +
+      `</a>`;
+    ul.appendChild(li);
+  });
+}
+
+/**
+ * 动态注入 ItemList 结构化数据，帮助搜索引擎理解 64 卦集合
+ * @param {Array} hexagrams - 64 卦数据
+ */
+function injectItemListLD(hexagrams) {
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    'name': '六十四卦',
+    'description': '《周易》六十四卦索引',
+    'numberOfItems': 64,
+    'itemListElement': hexagrams.map((hex, i) => ({
+      '@type': 'ListItem',
+      'position': i + 1,
+      'url': `https://yaoguayi.com/hexagram.html?id=${hex.id}`,
+      'name': `第${hex.id}卦 ${hex.name}卦`
+    }))
+  };
+  const s = document.createElement('script');
+  s.type = 'application/ld+json';
+  s.textContent = JSON.stringify(ld);
+  document.head.appendChild(s);
+}
+</script>
+</body>
+</html>

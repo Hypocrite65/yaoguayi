@@ -216,6 +216,28 @@ ruby rt{font-size:10px;color:var(--faint);font-family:'Noto Sans SC',system-ui,s
 .panel-trigger:hover{background:var(--bg-alt);color:var(--vermilion);}
 .panel-trigger.hidden{opacity:0;pointer-events:none;}
 
+/* ===== 面包屑 ===== */
+.crumb{font-size:11px;letter-spacing:0.12em;color:var(--faint);margin-bottom:24px;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.crumb a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+.crumb a:hover{color:var(--vermilion);}
+.crumb .sep{margin:0 8px;color:var(--whisper);}
+.crumb .here{color:var(--ink);}
+
+/* ===== 相关卦象 ===== */
+.related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.related-card{display:flex;flex-direction:column;gap:8px;padding:20px 18px;
+  border:0.5px solid var(--border);border-radius:8px;text-decoration:none;
+  background:var(--card-bg);
+  transition:transform 0.25s,box-shadow 0.25s,border-color 0.25s;}
+.related-card:hover{transform:translateY(-3px);box-shadow:0 6px 18px var(--shadow);
+  border-color:var(--vermilion-faint);}
+.related-type{font-size:11px;letter-spacing:0.2em;color:var(--vermilion);
+  font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:600;}
+.related-name{font-size:18px;letter-spacing:0.12em;color:var(--ink);}
+.related-desc{font-size:12px;line-height:1.8;color:var(--muted);letter-spacing:0.04em;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+
 /* ===== Prev/Next Navigation ===== */
 .hex-nav{display:flex;justify-content:space-between;align-items:center;
   padding:24px 0 16px;margin-top:8px;border-top:0.5px solid var(--border-strong);}
@@ -281,6 +303,7 @@ ruby rt{font-size:10px;color:var(--faint);font-family:'Noto Sans SC',system-ui,s
 <nav class="top-nav">
   <div class="nav-left">
     <a class="nav-back" href="/">六十四卦</a>
+    <a class="nav-link" href="/hexagrams.html">卦象索引</a>
     <a class="nav-link" href="/divination.html">起卦</a>
   </div>
   <a class="nav-logo" href="/">
@@ -303,7 +326,6 @@ ruby rt{font-size:10px;color:var(--faint);font-family:'Noto Sans SC',system-ui,s
       </svg>
     </button>
     </div>
-  </div>
 </nav>
 
 <!-- ===== Main Content ===== -->
@@ -330,8 +352,11 @@ ruby rt{font-size:10px;color:var(--faint);font-family:'Noto Sans SC',system-ui,s
 <!-- ===== Footer ===== -->
 <footer class="site-footer">
   爻卦易 · yaoguayi.com ·
-  <a href="/">六十四卦</a> · 开源 · 非盈利 ·
-  <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank">GitHub</a> ·
+  <a href="/">六十四卦</a> ·
+  <a href="/hexagrams.html">卦象索引</a> ·
+  <a href="/sitemap.xml">站点地图</a> ·
+  开源 · 非盈利 ·
+  <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank" rel="noopener">GitHub</a> ·
   <span class="ver" id="site-ver" title="查看版本历史">版本 v–</span>
   <div class="ver-panel" id="ver-panel" hidden></div>
 </footer>
@@ -528,6 +553,12 @@ function renderHexagram(hex, all) {
   const prevHex = all.find(h => h.id === prevId);
   const nextHex = all.find(h => h.id === nextId);
 
+  // 计算相关卦象：综卦（上下反转）/ 错卦（阴阳尽反）/ 互卦（二三四爻与三四五爻）
+  const relatedHtml = buildRelatedHtml(hex, all);
+
+  // 注入 canonical、Open Graph 与结构化数据
+  injectHexagramSEO(hex);
+
   // 构建爻辞列表
   let yaociHtml = '';
   if (hex.yaoci && hex.yaoci.length > 0) {
@@ -559,6 +590,11 @@ function renderHexagram(hex, all) {
 
     <!-- 右侧经文内容 -->
     <div class="hex-content">
+      <!-- 面包屑 -->
+      <nav class="crumb fade-in d1" aria-label="面包屑">
+        <a href="/">首页</a><span class="sep">/</span><a href="/hexagrams.html">六十四卦索引</a><span class="sep">/</span><span class="here">第${hex.id}卦 ${hex.name}</span>
+      </nav>
+
       <!-- 卦辞 -->
       <div class="section fade-in d2">
         <div class="section-label">卦 辞</div>
@@ -587,6 +623,13 @@ function renderHexagram(hex, all) {
       <div class="section fade-in d5">
         <div class="section-label">爻 辞</div>
         <ul class="yaoci-list">${yaociHtml}</ul>
+      </div>` : ''}
+
+      <!-- 相关卦象：综卦 / 错卦 / 互卦 -->
+      ${relatedHtml ? `
+      <div class="section fade-in d6">
+        <div class="section-label">相 关 卦 象</div>
+        <div class="related-grid">${relatedHtml}</div>
       </div>` : ''}
 
       <!-- Prev/Next Navigation -->
@@ -662,6 +705,106 @@ function buildLinesSVG(lines, yaoci) {
   }
 
   return `<svg viewBox="0 0 ${svgW} ${totalH}" width="${svgW}" height="${totalH}" xmlns="http://www.w3.org/2000/svg">${svgContent}</svg>`;
+}
+
+/**
+ * 计算综卦、错卦、互卦并生成关联卡片 HTML
+ * 设计说明：
+ *   综卦 = 爻序上下反转（覆而观之）；
+ *   错卦 = 六爻阴阳尽反（对立相参）；
+ *   互卦 = 以二三四爻为下卦、三四五爻为上卦（观其内在发展）。
+ *   若某关联卦即本卦自身（如乾之综卦仍是乾），则不重复展示。
+ *
+ * @param {Object} hex - 当前卦象数据
+ * @param {Array} all - 全部 64 卦数组
+ * @returns {string} 关联卡片 HTML（无关联时返回空字符串）
+ */
+function buildRelatedHtml(hex, all) {
+  const keyToHex = {};
+  all.forEach(h => { if (h.lines) keyToHex[h.lines.join('')] = h; });
+
+  const L = hex.lines;
+  const candidates = [
+    { type: '综卦', desc: '将卦象上下颠倒，换个角度看同一件事。',
+      lines: [...L].reverse() },
+    { type: '错卦', desc: '六爻阴阳尽反，从对立面体察启示。',
+      lines: L.map(v => 1 - v) },
+    { type: '互卦', desc: '取二三四爻与三四五爻，观事物内在的发展脉络。',
+      lines: [L[1], L[2], L[3], L[2], L[3], L[4]] },
+  ];
+
+  return candidates
+    .map(c => ({ ...c, target: keyToHex[c.lines.join('')] }))
+    .filter(c => c.target && c.target.id !== hex.id)
+    .map(c => `
+      <a class="related-card" href="/hexagram.html?id=${c.target.id}"
+         aria-label="${c.type}：第${c.target.id}卦 ${c.target.name}卦">
+        <span class="related-type">${c.type}</span>
+        <span class="related-name">第${c.target.id}卦 · ${c.target.name}</span>
+        <span class="related-desc">${c.desc}</span>
+      </a>`)
+    .join('');
+}
+
+/**
+ * 设置 meta 标签（不存在则创建）
+ */
+function setMeta(attr, name, content) {
+  let el = document.querySelector(`meta[${attr}="${name}"]`);
+  if (!el) {
+    el = document.createElement('meta');
+    el.setAttribute(attr, name);
+    document.head.appendChild(el);
+  }
+  el.setAttribute('content', content);
+}
+
+/**
+ * 注入卦象详情页的 SEO 要素：canonical、OG 与 JSON-LD 结构化数据
+ * @param {Object} hex - 卦象数据对象
+ */
+function injectHexagramSEO(hex) {
+  const url = 'https://yaoguayi.com/hexagram.html?id=' + hex.id;
+  document.title = hex.name + '卦 · 爻卦易';
+
+  let canon = document.querySelector('link[rel="canonical"]');
+  if (!canon) {
+    canon = document.createElement('link');
+    canon.rel = 'canonical';
+    document.head.appendChild(canon);
+  }
+  canon.href = url;
+
+  setMeta('property', 'og:title', hex.name + '卦 · 爻卦易');
+  setMeta('property', 'og:description', (hex.guaci || '').replace(/\s+/g, '').slice(0, 80));
+  setMeta('property', 'og:url', url);
+  setMeta('name', 'description', `《周易》第${hex.id}卦${hex.name}卦：卦辞、爻辞、彖传、象传原文，注音与白话翻译。`);
+
+  const ld = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CreativeWork',
+        'name': `第${hex.id}卦 ${hex.name}卦`,
+        'inLanguage': 'zh-Hans',
+        'url': url,
+        'isPartOf': { '@type': 'WebSite', 'name': '爻卦易', 'url': 'https://yaoguayi.com/' },
+        'about': { '@type': 'Thing', 'name': '周易' }
+      },
+      {
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+          { '@type': 'ListItem', 'position': 1, 'name': '首页', 'item': 'https://yaoguayi.com/' },
+          { '@type': 'ListItem', 'position': 2, 'name': '六十四卦索引', 'item': 'https://yaoguayi.com/hexagrams.html' },
+          { '@type': 'ListItem', 'position': 3, 'name': `第${hex.id}卦 ${hex.name}`, 'item': url }
+        ]
+      }
+    ]
+  };
+  const s = document.createElement('script');
+  s.type = 'application/ld+json';
+  s.textContent = JSON.stringify(ld);
+  document.head.appendChild(s);
 }
 
 /**

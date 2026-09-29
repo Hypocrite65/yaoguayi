@@ -1,0 +1,34 @@
+# 爻卦易 yaoguayi.com
+
+> 开源、非盈利的《易经》学习网站。不是占卜，是观象。
+
+本站收录《周易》六十四卦的卦辞、爻辞、彖传、象传原文（公有领域文本，
+本站整理、注音并配白话翻译），提供金钱卦起卦工具。
+
+## 主要页面
+
+- https://yaoguayi.com/ — 首页：六十四卦总览
+- https://yaoguayi.com/hexagrams.html — 六十四卦索引（上经 1–30 / 下经 31–64）
+- https://yaoguayi.com/divination.html — 金钱卦起卦（三枚铜钱，六次摇卦）
+- https://yaoguayi.com/hexagram.html?id=N — 第 N 卦详情（N 为 1–64），含卦辞、
+  爻辞、彖传、象传、注音、术语解释，以及综卦、错卦、互卦关联
+- https://yaoguayi.com/sitemap.xml — 全部可索引 URL
+
+## 数据
+
+- /data/hexagrams.json — 64 卦结构化数据（卦名、拼音、爻象、经文、翻译）
+- /data/annotations.json — 注音与术语释义
+
+## 研读资源（站外）
+
+- 中國哲學書電子化計劃《周易》：https://ctext.org/book-of-changes/zh
+  （原文、王弼注、朱熹《周易本義》等历代注疏，及理雅各英译）
+- 維基文庫《周易》：https://zh.wikisource.org/zh-hant/%E5%91%A8%E6%98%93
+  （公有领域原文）
+- 维基百科「易经」：https://zh.wikipedia.org/wiki/%E6%98%93%E7%B6%93
+  （成书背景、历史、注本介绍）
+
+## 引用本站
+
+引用经文请注明出处为《周易》原文；引用本站翻译与整理内容请注明
+「爻卦易 yaoguayi.com」。GitHub：https://github.com/Hypocrite65/yaoguayi

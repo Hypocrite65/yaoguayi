@@ -6,14 +6,19 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://yaoguayi.com/divination.html</loc>
+    <loc>https://yaoguayi.com/hexagrams.html</loc>
     <lastmod>2026-09-29</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yaoguayi.com/hexagram.html</loc>
+    <loc>https://yaoguayi.com/divination.html</loc>
     <lastmod>2026-09-29</lastmod>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yaoguayi.com/hexagram.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://yaoguayi.com/hexagram.html?id=1</loc>

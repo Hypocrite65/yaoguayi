@@ -19,8 +19,9 @@ const today = new Date().toISOString().slice(0, 10);
 // 固定页面：[路径, 优先级]
 const staticPages = [
   ['/', '1.0'],
-  ['/divination.html', '0.9'],
-  ['/hexagram.html', '0.8'],
+  ['/hexagrams.html', '0.9'],
+  ['/divination.html', '0.8'],
+  ['/hexagram.html', '0.7'],
 ];
 
 const hexagrams = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));

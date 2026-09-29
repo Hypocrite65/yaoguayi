@@ -12,7 +12,19 @@
 <meta property="og:title" content="爻卦易 · 观象明理"/>
 <meta property="og:description" content="开源《易经》学习平台：六十四卦全览、金钱卦起卦、原典经文阅读。"/>
 <meta property="og:url" content="https://yaoguayi.com/"/>
+<link rel="canonical" href="https://yaoguayi.com/"/>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "爻卦易",
+  "alternateName": "yaoguayi",
+  "url": "https://yaoguayi.com/",
+  "inLanguage": "zh-Hans",
+  "description": "开源《易经》学习平台：六十四卦全览、金钱卦起卦、原典经文阅读。"
+}
+</script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
@@ -194,6 +206,14 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:500;}
 .hex-hint{font-size:10px;letter-spacing:0.12em;color:var(--ghost);}
 
+/* 无脚本兜底：64 卦静态链接（供无 JS 环境与爬虫） */
+.hex-grid-noscript{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;
+  max-width:720px;margin:0 auto;padding:0 32px 40px;text-align:center;}
+.hex-grid-noscript a{font-size:14px;letter-spacing:0.08em;color:var(--muted);
+  text-decoration:none;padding:8px 4px;border:0.5px solid var(--border);border-radius:3px;}
+.hex-grid-noscript a:hover{color:var(--vermilion);border-color:var(--vermilion-faint);}
+@media(max-width:768px){.hex-grid-noscript{grid-template-columns:repeat(4,1fr);padding:0 20px 32px;}}
+
 /* Grid */
 .hex-grid{
   max-width:960px;margin:0 auto;
@@ -202,6 +222,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 .hex-cell{
   display:flex;flex-direction:column;align-items:center;
   padding:12px 4px;cursor:pointer;border-radius:3px;
+  text-decoration:none;color:inherit;
   transition:background 0.2s,transform 0.2s,box-shadow 0.2s;
   /* Staggered entrance */
   opacity:0;transform:translateY(16px);
@@ -259,6 +280,52 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   .hex-section{padding:28px 16px 16px;}
 }
 
+/* ===== 研读路径 ===== */
+.guide-section{background:var(--bg);padding:72px 32px;transition:background 0.4s;}
+.guide-inner{max-width:960px;margin:0 auto;}
+.guide-title{font-size:13px;letter-spacing:0.4em;color:var(--faint);font-weight:400;
+  font-family:'Noto Sans SC',system-ui,sans-serif;text-align:center;margin-bottom:36px;}
+.guide-steps{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.guide-steps li{border:0.5px solid var(--border);border-radius:8px;padding:28px 24px;
+  background:var(--card-bg);transition:transform 0.25s,box-shadow 0.25s,border-color 0.25s;}
+.guide-steps li:hover{transform:translateY(-4px);box-shadow:0 8px 24px var(--shadow);
+  border-color:var(--vermilion-faint);}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;
+  border:0.5px solid var(--vermilion-faint);border-radius:50%;color:var(--vermilion);
+  font-size:15px;margin-bottom:16px;}
+.guide-steps h3{font-size:19px;letter-spacing:0.24em;font-weight:400;margin-bottom:10px;}
+.guide-steps p{font-size:13px;line-height:1.9;color:var(--muted);letter-spacing:0.05em;
+  margin-bottom:14px;font-family:'Noto Sans SC',system-ui,sans-serif;}
+.guide-steps a{font-size:12px;letter-spacing:0.12em;color:var(--vermilion);text-decoration:none;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.guide-steps a:hover{text-decoration:underline;}
+
+/* ===== 研读资源 ===== */
+.res-section{background:var(--bg-alt);padding:72px 32px;transition:background 0.4s;}
+.res-inner{max-width:960px;margin:0 auto;}
+.res-title{font-size:13px;letter-spacing:0.4em;color:var(--faint);font-weight:400;
+  font-family:'Noto Sans SC',system-ui,sans-serif;text-align:center;margin-bottom:12px;}
+.res-note{font-size:12px;color:var(--ghost);letter-spacing:0.1em;text-align:center;
+  margin-bottom:32px;font-family:'Noto Sans SC',system-ui,sans-serif;}
+.res-list{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.res-list a{display:flex;flex-direction:column;gap:10px;height:100%;
+  border:0.5px solid var(--border);border-radius:8px;padding:24px 22px;
+  background:var(--bg);text-decoration:none;
+  transition:transform 0.25s,box-shadow 0.25s,border-color 0.25s;}
+.res-list a:hover{transform:translateY(-4px);box-shadow:0 8px 24px var(--shadow);
+  border-color:var(--vermilion-faint);}
+.res-name{font-size:16px;letter-spacing:0.1em;color:var(--ink);}
+.res-name::after{content:' ↗';font-size:12px;color:var(--ghost);}
+.res-desc{font-size:12.5px;line-height:1.9;color:var(--muted);letter-spacing:0.04em;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.res-src{font-size:10px;color:var(--faint);letter-spacing:0.08em;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+
+@media(max-width:768px){
+  .guide-steps,.res-list{grid-template-columns:1fr;}
+  .guide-section,.res-section{padding:52px 20px;}
+}
+
 /* ===== 页脚版本号 ===== */
 .site-footer{position:relative;}
 .ver{color:var(--faint);cursor:pointer;transition:color 0.2s;}
@@ -284,6 +351,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 <nav class="top-nav" id="top-nav">
   <div class="nav-left">
     <a class="nav-home" href="#hexagrams">六十四卦</a>
+    <a class="nav-home" href="/hexagrams.html">卦象索引</a>
   </div>
   <a class="nav-logo" href="/">
     <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -329,6 +397,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 
     <nav class="cover-nav fade-in d4">
       <a href="#hexagrams">六十四卦</a>
+      <a href="/hexagrams.html">卦象索引</a>
       <a href="/divination.html">起卦</a>
     </nav>
 
@@ -352,7 +421,133 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
     <span class="hex-title">六十四卦</span>
     <span class="hex-hint">点击查看卦辞</span>
   </div>
-  <div class="hex-grid" id="hex-grid"></div>
+  <div class="hex-grid" id="hex-grid" role="list" aria-label="六十四卦列表"></div>
+  <noscript>
+    <nav class="hex-grid-noscript" aria-label="六十四卦（无脚本版）">
+      <a href="/hexagram.html?id=1">䷀ 乾</a>
+      <a href="/hexagram.html?id=2">䷁ 坤</a>
+      <a href="/hexagram.html?id=3">䷂ 屯</a>
+      <a href="/hexagram.html?id=4">䷃ 蒙</a>
+      <a href="/hexagram.html?id=5">䷄ 需</a>
+      <a href="/hexagram.html?id=6">䷅ 訟</a>
+      <a href="/hexagram.html?id=7">䷆ 師</a>
+      <a href="/hexagram.html?id=8">䷇ 比</a>
+      <a href="/hexagram.html?id=9">䷈ 小畜</a>
+      <a href="/hexagram.html?id=10">䷉ 履</a>
+      <a href="/hexagram.html?id=11">䷊ 泰</a>
+      <a href="/hexagram.html?id=12">䷋ 否</a>
+      <a href="/hexagram.html?id=13">䷌ 同人</a>
+      <a href="/hexagram.html?id=14">䷍ 大有</a>
+      <a href="/hexagram.html?id=15">䷎ 謙</a>
+      <a href="/hexagram.html?id=16">䷏ 豫</a>
+      <a href="/hexagram.html?id=17">䷐ 隨</a>
+      <a href="/hexagram.html?id=18">䷑ 蠱</a>
+      <a href="/hexagram.html?id=19">䷒ 臨</a>
+      <a href="/hexagram.html?id=20">䷓ 觀</a>
+      <a href="/hexagram.html?id=21">䷔ 噬嗑</a>
+      <a href="/hexagram.html?id=22">䷕ 賁</a>
+      <a href="/hexagram.html?id=23">䷖ 剝</a>
+      <a href="/hexagram.html?id=24">䷗ 復</a>
+      <a href="/hexagram.html?id=25">䷘ 無妄</a>
+      <a href="/hexagram.html?id=26">䷙ 大畜</a>
+      <a href="/hexagram.html?id=27">䷚ 頤</a>
+      <a href="/hexagram.html?id=28">䷛ 大過</a>
+      <a href="/hexagram.html?id=29">䷜ 坎</a>
+      <a href="/hexagram.html?id=30">䷝ 離</a>
+      <a href="/hexagram.html?id=31">䷞ 咸</a>
+      <a href="/hexagram.html?id=32">䷟ 恆</a>
+      <a href="/hexagram.html?id=33">䷠ 遯</a>
+      <a href="/hexagram.html?id=34">䷡ 大壯</a>
+      <a href="/hexagram.html?id=35">䷢ 晉</a>
+      <a href="/hexagram.html?id=36">䷣ 明夷</a>
+      <a href="/hexagram.html?id=37">䷤ 家人</a>
+      <a href="/hexagram.html?id=38">䷥ 睽</a>
+      <a href="/hexagram.html?id=39">䷦ 蹇</a>
+      <a href="/hexagram.html?id=40">䷧ 解</a>
+      <a href="/hexagram.html?id=41">䷨ 損</a>
+      <a href="/hexagram.html?id=42">䷩ 益</a>
+      <a href="/hexagram.html?id=43">䷪ 夬</a>
+      <a href="/hexagram.html?id=44">䷫ 姤</a>
+      <a href="/hexagram.html?id=45">䷬ 萃</a>
+      <a href="/hexagram.html?id=46">䷭ 升</a>
+      <a href="/hexagram.html?id=47">䷮ 困</a>
+      <a href="/hexagram.html?id=48">䷯ 井</a>
+      <a href="/hexagram.html?id=49">䷰ 革</a>
+      <a href="/hexagram.html?id=50">䷱ 鼎</a>
+      <a href="/hexagram.html?id=51">䷲ 震</a>
+      <a href="/hexagram.html?id=52">䷳ 艮</a>
+      <a href="/hexagram.html?id=53">䷴ 漸</a>
+      <a href="/hexagram.html?id=54">䷵ 歸妹</a>
+      <a href="/hexagram.html?id=55">䷶ 豐</a>
+      <a href="/hexagram.html?id=56">䷷ 旅</a>
+      <a href="/hexagram.html?id=57">䷸ 巽</a>
+      <a href="/hexagram.html?id=58">䷹ 兌</a>
+      <a href="/hexagram.html?id=59">䷺ 渙</a>
+      <a href="/hexagram.html?id=60">䷻ 節</a>
+      <a href="/hexagram.html?id=61">䷼ 中孚</a>
+      <a href="/hexagram.html?id=62">䷽ 小過</a>
+      <a href="/hexagram.html?id=63">䷾ 既濟</a>
+      <a href="/hexagram.html?id=64">䷿ 未濟</a>
+    </nav>
+  </noscript>
+</section>
+
+<!-- ===== 研读路径 ===== -->
+<section class="guide-section fade-in" id="guide" aria-labelledby="guide-title">
+  <div class="guide-inner">
+    <h2 class="guide-title" id="guide-title">研 读 路 径</h2>
+    <ol class="guide-steps">
+      <li>
+        <span class="step-num" aria-hidden="true">一</span>
+        <h3>起卦</h3>
+        <p>三枚铜钱，六次摇卦。心有所问，卦象自现。</p>
+        <a href="/divination.html">去起卦 →</a>
+      </li>
+      <li>
+        <span class="step-num" aria-hidden="true">二</span>
+        <h3>解卦</h3>
+        <p>观本卦之卦辞，察动爻之爻辞，参综卦错卦互卦之关联。</p>
+        <a href="/hexagrams.html">浏览六十四卦 →</a>
+      </li>
+      <li>
+        <span class="step-num" aria-hidden="true">三</span>
+        <h3>明理</h3>
+        <p>读彖传象传以明义理，对照历代注疏，化卦理为行事之鉴。</p>
+        <a href="#resources">研读资源 →</a>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===== 研读资源 ===== -->
+<section class="res-section fade-in" id="resources" aria-labelledby="res-title">
+  <div class="res-inner">
+    <h2 class="res-title" id="res-title">研 读 资 源</h2>
+    <p class="res-note">以下为站外权威资源，原文与注疏皆有出处</p>
+    <ul class="res-list">
+      <li>
+        <a href="https://ctext.org/book-of-changes/zh" target="_blank" rel="noopener">
+          <span class="res-name">中國哲學書電子化計劃 · 周易</span>
+          <span class="res-desc">《周易》原文、王弼注、朱熹《周易本義》等历代注疏，以及理雅各英译本，适合深度研读与版本对校。</span>
+          <span class="res-src">出处：ctext.org</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://zh.wikisource.org/zh-hant/%E5%91%A8%E6%98%93" target="_blank" rel="noopener">
+          <span class="res-name">維基文庫 · 周易</span>
+          <span class="res-desc">公有领域《周易》原文，含卦辞、爻辞与十翼传文，排版清晰，便于查阅对照。</span>
+          <span class="res-src">出处：zh.wikisource.org</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://zh.wikipedia.org/wiki/%E6%98%93%E7%B6%93" target="_blank" rel="noopener">
+          <span class="res-name">维基百科 · 易经</span>
+          <span class="res-desc">成书背景、马王堆帛书等近代考古发现、历代注本介绍，适合初学者建立整体认知。</span>
+          <span class="res-src">出处：zh.wikipedia.org</span>
+        </a>
+      </li>
+    </ul>
+  </div>
 </section>
 
 <!-- ===== Footer ===== -->
@@ -363,7 +558,11 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
       开源 <span class="footer-sep">·</span> 非盈利
     </div>
     <div class="footer-right">
-      <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank">GitHub</a>
+      <a href="/hexagrams.html">卦象索引</a>
+      <span class="footer-sep">·</span>
+      <a href="/sitemap.xml">站点地图</a>
+      <span class="footer-sep">·</span>
+      <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank" rel="noopener">GitHub</a>
       <span class="footer-sep">·</span>
       <span class="ver" id="site-ver" title="查看版本历史">版本 v–</span>
     </div>
@@ -464,6 +663,8 @@ function renderRandomCard(hexagrams) {
 
 /**
  * 渲染 64 卦网格
+ * 设计说明：使用语义化 <a> 链接而非 div+onclick，
+ * 便于搜索引擎与 AI 爬虫跟随链接发现全部卦象详情页。
  * @param {Array} hexagrams - 64 卦数据数组
  */
 function renderGrid(hexagrams) {
@@ -472,14 +673,40 @@ function renderGrid(hexagrams) {
   hexagrams.forEach((hex) => {
     const id = hex.id;
     const sym = String.fromCodePoint(0x4DBF + id);
-    const cell = document.createElement('div');
+    const cell = document.createElement('a');
     cell.className = 'hex-cell' + (id === todayId ? ' today' : '');
-    cell.innerHTML = `<span class="hex-sym">${sym}</span>
+    cell.href = '/hexagram.html?id=' + id;
+    cell.setAttribute('role', 'listitem');
+    cell.setAttribute('aria-label', '第' + id + '卦 ' + hex.name + '卦');
+    cell.innerHTML = `<span class="hex-sym" aria-hidden="true">${sym}</span>
       <span class="hex-name">${hex.name}</span>
       <span class="hex-num">${id}</span>`;
-    cell.onclick = () => { location.href = '/hexagram.html?id=' + id; };
     grid.appendChild(cell);
   });
+  injectItemListLD(hexagrams);
+}
+
+/**
+ * 动态注入 ItemList 结构化数据，帮助搜索引擎理解 64 卦集合
+ * @param {Array} hexagrams - 64 卦数据数组
+ */
+function injectItemListLD(hexagrams) {
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    'name': '六十四卦',
+    'numberOfItems': 64,
+    'itemListElement': hexagrams.map((hex, i) => ({
+      '@type': 'ListItem',
+      'position': i + 1,
+      'url': 'https://yaoguayi.com/hexagram.html?id=' + hex.id,
+      'name': '第' + hex.id + '卦 ' + hex.name + '卦'
+    }))
+  };
+  const s = document.createElement('script');
+  s.type = 'application/ld+json';
+  s.textContent = JSON.stringify(ld);
+  document.head.appendChild(s);
 }
 
 /**
@@ -497,12 +724,14 @@ function renderFallbackGrid() {
   names.forEach((name, i) => {
     const id = i + 1;
     const sym = String.fromCodePoint(0x4DBF + id);
-    const cell = document.createElement('div');
+    const cell = document.createElement('a');
     cell.className = 'hex-cell' + (id === todayId ? ' today' : '');
-    cell.innerHTML = `<span class="hex-sym">${sym}</span>
+    cell.href = '/hexagram.html?id=' + id;
+    cell.setAttribute('role', 'listitem');
+    cell.setAttribute('aria-label', '第' + id + '卦 ' + name + '卦');
+    cell.innerHTML = `<span class="hex-sym" aria-hidden="true">${sym}</span>
       <span class="hex-name">${name}</span>
       <span class="hex-num">${id}</span>`;
-    cell.onclick = () => { location.href = '/hexagram.html?id=' + id; };
     grid.appendChild(cell);
   });
 }
