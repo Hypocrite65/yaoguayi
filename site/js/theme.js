@@ -16,6 +16,9 @@ const MOON_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
 (function(){
   var st = document.createElement('style');
   st.textContent = '.no-transition,.no-transition *,.no-transition *::before,.no-transition *::after{transition:none !important;}'
+    // 切换瞬间：导航栏关掉毛玻璃、背景改不透明，避免合成器重算模糊时闪白
+    + '.no-transition .top-nav{-webkit-backdrop-filter:none !important;backdrop-filter:none !important;background:#faf8f1 !important;}'
+    + '.no-transition.dark-theme .top-nav{background:#1c1a16 !important;}'
     + 'html.dark-theme{'
     + '--bg:#1c1a16;--bg-alt:#252320;--ink:#e8e0d4;--ink-light:#ccc4b8;'
     + '--muted:#a49c8c;--faint:#847c6c;--ghost:#5a5448;--whisper:#3e3830;'
