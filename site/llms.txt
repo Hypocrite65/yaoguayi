@@ -9,6 +9,7 @@
 
 - https://yaoguayi.com/ — 首页：六十四卦总览
 - https://yaoguayi.com/hexagrams.html — 六十四卦索引（上经 1–30 / 下经 31–64）
+- https://yaoguayi.com/glossary.html — 易经术语表（33 个常见词大白话讲解）
 - https://yaoguayi.com/divination.html — 金钱卦起卦（三枚铜钱，六次摇卦）
 - https://yaoguayi.com/hexagram.html?id=N — 第 N 卦详情（N 为 1–64），含卦辞、
   爻辞、彖传、象传、注音、术语解释，以及综卦、错卦、互卦关联

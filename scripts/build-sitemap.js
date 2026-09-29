@@ -20,6 +20,7 @@ const today = new Date().toISOString().slice(0, 10);
 const staticPages = [
   ['/', '1.0'],
   ['/hexagrams.html', '0.9'],
+  ['/glossary.html', '0.8'],
   ['/divination.html', '0.8'],
   ['/hexagram.html', '0.7'],
 ];
