@@ -16,15 +16,15 @@ const MOON_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
 (function(){
   var st = document.createElement('style');
   st.textContent = '.no-transition,.no-transition *,.no-transition *::before,.no-transition *::after{transition:none !important;}'
-    // 切换瞬间：导航栏关掉毛玻璃、背景改不透明，避免合成器重算模糊时闪白
-    + '.no-transition .top-nav{-webkit-backdrop-filter:none !important;backdrop-filter:none !important;background:#faf8f1 !important;}'
+    // 切换瞬间：导航栏背景直接用最终值（与 --nav-bg 一致），去掉 no-transition 时数值无变化则不会触发过渡；毛玻璃全程保持，避免重新合成
+    + '.no-transition .top-nav{background:#faf8f1 !important;}'
     + '.no-transition.dark-theme .top-nav{background:#1c1a16 !important;}'
     + 'html.dark-theme{'
     + '--bg:#1c1a16;--bg-alt:#252320;--ink:#e8e0d4;--ink-light:#ccc4b8;'
     + '--muted:#a49c8c;--faint:#847c6c;--ghost:#5a5448;--whisper:#3e3830;'
     + '--border:rgba(232,224,212,0.10);--border-strong:rgba(232,224,212,0.18);'
     + '--vermilion:#e07060;--vermilion-faint:rgba(224,112,96,0.18);'
-    + '--nav-bg:rgba(28,26,22,0.94);--card-bg:rgba(37,35,32,0.7);'
+    + '--nav-bg:#1c1a16;--card-bg:rgba(37,35,32,0.7);'
     + '--hover-bg:rgba(232,224,212,0.08);--shadow:rgba(0,0,0,0.3);'
     + '--svg-fill:#e8e0d4;--svg-circle:#a07860;}'
     + 'html.dark-theme body{background:var(--bg);color:var(--ink);}'
