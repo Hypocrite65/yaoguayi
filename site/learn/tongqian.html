@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-<script>try{if(localStorage.getItem("yaoguayi_theme")==="dark"){document.documentElement.classList.add("dark-theme");var s=document.createElement("style");s.textContent='html.dark-theme{--bg:#1c1a16;--bg-alt:#252320;--ink:#e8e0d4;--ink-light:#ccc4b8;--muted:#a49c8c;--faint:#847c6c;--ghost:#5a5448;--whisper:#3e3830;--border:rgba(232,224,212,0.10);--border-strong:rgba(232,224,212,0.18);--vermilion:#e07060;--vermilion-faint:rgba(224,112,96,0.18);--nav-bg:rgba(28,26,22,0.94);--card-bg:rgba(37,35,32,0.7);--hover-bg:rgba(232,224,212,0.08);--shadow:rgba(0,0,0,0.3);--svg-fill:#e8e0d4;--svg-circle:#a07860;}html.dark-theme body{background:#1c1a16;color:#e8e0d4;}';document.head.appendChild(s);}}catch(e){}</script>
+<script>try{if(localStorage.getItem("yaoguayi_theme")==="dark"){document.documentElement.classList.add("dark-theme");var s=document.createElement("style");s.textContent='html.dark-theme{--bg:#1c1a16;--bg-alt:#252320;--ink:#e8e0d4;--ink-light:#ccc4b8;--muted:#a49c8c;--faint:#847c6c;--ghost:#5a5448;--whisper:#3e3830;--border:rgba(232,224,212,0.10);--border-strong:rgba(232,224,212,0.18);--vermilion:#e07060;--vermilion-faint:rgba(224,112,96,0.18);--nav-bg:rgba(28,26,22,0.94);--card-bg:rgba(37,35,32,0.7);--hover-bg:rgba(232,224,212,0.08);--shadow:rgba(0,0,0,0.3);--svg-fill:#e8e0d4;--svg-circle:#a07860;}html.dark-theme body{background:#1c1a16;color:#e8e0d4;}html{background:#faf8f1;}html.dark-theme{background:#1c1a16;}';document.head.appendChild(s);}}catch(e){}</script>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>铜钱起卦法 · 爻卦易</title>
@@ -66,9 +66,9 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 .top-nav{position:sticky;top:0;z-index:100;
   background:var(--nav-bg);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   border-bottom:0.5px solid var(--border);padding:10px 24px;
-  display:flex;align-items:center;justify-content:space-between;
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
   font-family:'Noto Sans SC',system-ui,sans-serif;}
-.nav-left{display:flex;align-items:center;gap:16px;}
+.nav-left{display:flex;align-items:center;gap:16px;justify-self:start;}
 .nav-back{font-size:13px;letter-spacing:0.1em;color:var(--muted);text-decoration:none;
   display:flex;align-items:center;gap:6px;transition:color 0.2s;}
 .nav-back:hover{color:var(--vermilion);}
@@ -77,7 +77,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   transition:color 0.2s;}
 .nav-link:hover{color:var(--vermilion);}
 .nav-logo svg{width:28px;height:28px;display:block;}
-.nav-tools{display:flex;align-items:center;gap:4px;}
+.nav-tools{display:flex;align-items:center;gap:4px;justify-self:end;}
 .nav-btn{width:32px;height:32px;border:none;background:none;cursor:pointer;
   display:flex;align-items:center;justify-content:center;border-radius:6px;
   color:var(--muted);transition:background 0.2s,color 0.2s;}

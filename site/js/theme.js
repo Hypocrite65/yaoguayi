@@ -24,7 +24,8 @@ const MOON_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
     + '--nav-bg:rgba(28,26,22,0.94);--card-bg:rgba(37,35,32,0.7);'
     + '--hover-bg:rgba(232,224,212,0.08);--shadow:rgba(0,0,0,0.3);'
     + '--svg-fill:#e8e0d4;--svg-circle:#a07860;}'
-    + 'html.dark-theme body{background:var(--bg);color:var(--ink);}';
+    + 'html.dark-theme body{background:var(--bg);color:var(--ink);}'
+    + 'html{background:#faf8f1;}html.dark-theme{background:#1c1a16;}';
   document.head.appendChild(st);
 })();
 
