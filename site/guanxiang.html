@@ -170,6 +170,16 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 .gx-toc a{padding:8px 16px;border:1px solid var(--border);border-radius:20px;
   font-size:13px;color:var(--muted);text-decoration:none;transition:all .2s;}
 .gx-toc a:hover{border-color:var(--vermilion);color:var(--vermilion);}
+/* 桌面端：侧边粘性目录 */
+@media(min-width:1024px){
+  .gx-layout{display:flex;gap:32px;align-items:flex-start;}
+  .gx-toc{flex-direction:column;flex-wrap:nowrap;position:sticky;top:80px;
+    flex:0 0 160px;margin:0;padding:16px 0;border-right:1px solid var(--border);}
+  .gx-toc a{border:none;border-radius:0;padding:8px 12px;border-left:2px solid transparent;}
+  .gx-toc a:hover{border-left-color:var(--vermilion);}
+  .gx-toc a.active{border-left-color:var(--vermilion);color:var(--vermilion);font-weight:600;}
+  .gx-content{flex:1;min-width:0;}
+}
 .gx-article{margin-bottom:48px;padding-bottom:32px;border-bottom:1px solid var(--border);}
 .gx-article:last-child{border-bottom:none;}
 .gx-article-title{font-size:22px;margin:0 0 8px;color:var(--ink);}
@@ -251,7 +261,8 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   <h1 class="page-title">观 象</h1>
   <p class="page-desc">从生活里看懂《易经》——方位、名字、时间、颜色、数字、节气、身体、家庭，八个角度，大白话讲易学常识。</p>
 
-  <nav class="gx-toc" aria-label="观象目录">
+  <div class="gx-layout">
+  <nav class="gx-toc" aria-label="观象目录" id="gx-toc">
   <a href="#fangwei">从方位说起</a>
   <a href="#mingzi">从名字说起</a>
   <a href="#shijian">从时间说起</a>
@@ -262,6 +273,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   <a href="#jiating">从家庭说起</a>
 </nav>
 
+  <div class="gx-content">
   <article class="gx-article" id="fangwei">
 
       <h2 class="gx-article-title">从方位说起</h2>
@@ -860,6 +872,8 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
       <a class="gx-deep" href="/learn/bagua.html">深入了解 · 八卦入门 →</a>
     
 </article>
+  </div><!-- /gx-content -->
+</div><!-- /gx-layout -->
 </main>
 
 <footer class="site-footer">
@@ -880,5 +894,31 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 <script src="/js/search.js"></script>
 <script src="/js/tool-window.js"></script>
 <script src="/js/version.js"></script>
+<script>
+// 观象页：侧边目录滚动高亮
+(function(){
+  var toc = document.getElementById('gx-toc');
+  if(!toc) return;
+  var links = Array.prototype.slice.call(toc.querySelectorAll('a'));
+  var map = {};
+  links.forEach(function(a){
+    var id = a.getAttribute('href').slice(1);
+    var el = document.getElementById(id);
+    if(el) map[id] = el;
+  });
+  var ids = Object.keys(map);
+  function onScroll(){
+    var cur = ids[0];
+    for(var i=0;i<ids.length;i++){
+      if(map[ids[i]].getBoundingClientRect().top < 120) cur = ids[i];
+    }
+    links.forEach(function(a){
+      a.classList.toggle('active', a.getAttribute('href') === '#'+cur);
+    });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
+</script>
 </body>
 </html>
