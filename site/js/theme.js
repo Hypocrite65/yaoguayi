@@ -59,6 +59,31 @@ function initTheme() {
 // 页面加载时初始化主题
 initTheme();
 
+
+/**
+ * toggleNavMenu — 移动端下拉菜单开关
+ * 点击箭头按钮展开/收起导航下拉面板；点击面板外部自动收起。
+ */
+function toggleNavMenu(e) {
+  if (e) e.stopPropagation();
+  var btn = document.getElementById('nav-menu-btn');
+  var dd = document.getElementById('nav-dropdown');
+  if (!btn || !dd) return;
+  var open = dd.classList.toggle('open');
+  btn.classList.toggle('open', open);
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+// 点击页面其他区域时收起下拉菜单
+document.addEventListener('click', function (e) {
+  var dd = document.getElementById('nav-dropdown');
+  var btn = document.getElementById('nav-menu-btn');
+  if (!dd || !dd.classList.contains('open')) return;
+  if (dd.contains(e.target)) return;   // 点面板内（选链接）不拦截
+  if (btn && btn.contains(e.target)) return;
+  dd.classList.remove('open');
+  if (btn) { btn.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
+});
+
 /**
  * goBack — 返回上一次位置
  * 有浏览历史则后退一页；直接打开本页（无历史）时去兜底页。
