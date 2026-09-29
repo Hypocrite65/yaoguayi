@@ -1,7 +1,13 @@
 {
-  "updated": "2026-09-29T07:11:07Z",
+  "updated": "2026-09-29T07:11:22Z",
   "branch": "main",
   "versions": [
+    {
+      "v": 159,
+      "sha": "25f491fc",
+      "date": "2026-09-29",
+      "subject": "触发 Pages 生产构建（构建输出已改为 site）"
+    },
     {
       "v": 158,
       "sha": "5c1f7c15",
