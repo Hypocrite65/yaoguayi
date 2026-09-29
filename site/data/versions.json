@@ -1,7 +1,13 @@
 {
-  "updated": "2026-09-29T14:12:53Z",
+  "updated": "2026-09-29T14:19:43Z",
   "branch": "main",
   "versions": [
+    {
+      "v": 182,
+      "sha": "06e7edde",
+      "date": "2026-09-29",
+      "subject": "head脚本加固：深色变量直接写到body，不依赖theme.js加载；SW缓存版本v3"
+    },
     {
       "v": 181,
       "sha": "fe78b0d3",
