@@ -1,7 +1,13 @@
 {
-  "updated": "2026-09-29T06:47:56Z",
+  "updated": "2026-09-29T06:55:07Z",
   "branch": "claude",
   "versions": [
+    {
+      "v": 33,
+      "sha": "26282e74",
+      "date": "2026-09-29",
+      "subject": "补回 build-sitemap.js（适配 site/ 目录），修复 Pages 构建"
+    },
     {
       "v": 32,
       "sha": "603e0ba9",
