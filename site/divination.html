@@ -211,6 +211,40 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 
 /* 结果操作 */
 .result-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+
+/* ===== AI 解读（旧版功能恢复） ===== */
+.qg-ai{display:none;margin-top:24px;border:1px solid var(--border);border-radius:12px;background:var(--card-bg);overflow:hidden;}
+.qg-ai.active{display:block;}
+.qg-ai-header{padding:16px 20px 0;text-align:center;}
+.qg-ai-title{font-size:13px;color:var(--muted);letter-spacing:.06em;margin-bottom:12px;}
+.qg-ai-input-area{padding:0 20px 16px;}
+.qg-ai-textarea{width:100%;min-height:60px;max-height:120px;padding:10px 12px;box-sizing:border-box;
+  border:1px solid var(--border);border-radius:8px;resize:vertical;
+  font-size:13px;line-height:1.6;color:var(--ink);background:var(--bg);
+  font-family:inherit;transition:border-color .2s;}
+.qg-ai-textarea:focus{outline:none;border-color:var(--vermilion);}
+.qg-ai-textarea::placeholder{color:var(--faint);}
+.qg-ai-actions{display:flex;gap:10px;justify-content:center;margin-top:12px;}
+.qg-ai-btn{padding:8px 24px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;
+  transition:opacity .2s;border:1px solid var(--vermilion);background:var(--vermilion);color:#fff;
+  font-family:inherit;letter-spacing:.04em;}
+.qg-ai-btn:hover{opacity:.85;}
+.qg-ai-btn-stop{background:transparent;color:var(--muted);border-color:var(--border);display:none;}
+.qg-ai-btn-stop:hover{color:var(--ink);border-color:var(--ink);}
+.qg-ai-output{display:none;padding:0 20px 20px;}
+.qg-ai-output.active{display:block;}
+.qg-ai-content{font-size:13px;color:var(--ink-light);line-height:2;text-align:left;white-space:pre-wrap;word-break:break-word;}
+.qg-ai-content strong{color:var(--ink);}
+.qg-ai-content code{font-size:12px;background:var(--hover-bg);padding:1px 4px;border-radius:3px;}
+.qg-ai-loading{padding:24px 20px;text-align:center;}
+.qg-ai-loading-text{font-size:12px;color:var(--muted);letter-spacing:.06em;margin-bottom:12px;}
+.qg-ai-loading-dots{display:flex;justify-content:center;gap:6px;}
+.qg-ai-loading-dots span{width:6px;height:6px;border-radius:50%;background:var(--vermilion);opacity:.3;animation:aiDotPulse 1.4s ease-in-out infinite;}
+.qg-ai-loading-dots span:nth-child(2){animation-delay:.2s;}
+.qg-ai-loading-dots span:nth-child(3){animation-delay:.4s;}
+@keyframes aiDotPulse{0%,80%,100%{opacity:.2;transform:scale(.8);}40%{opacity:1;transform:scale(1.2);}}
+.qg-ai-disclaimer{margin-top:16px;padding-top:12px;border-top:1px solid var(--border);
+  font-size:11px;color:var(--faint);line-height:1.8;text-align:center;}
 .btn{padding:11px 28px;border-radius:4px;cursor:pointer;
   font-family:'Noto Sans SC',system-ui,sans-serif;font-size:12px;letter-spacing:0.2em;
   text-decoration:none;transition:transform 0.2s,box-shadow 0.3s;display:inline-block;}
@@ -348,6 +382,28 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 
   <section class="result" id="result"></section>
 
+  <!-- AI 解读（旧版功能恢复） -->
+  <section class="qg-ai" id="qg-ai">
+    <div class="qg-ai-header">
+      <div class="qg-ai-title">AI 解读此卦</div>
+    </div>
+    <div class="qg-ai-input-area" id="qg-ai-input-area">
+      <textarea class="qg-ai-textarea" id="qg-ai-question"
+        placeholder="简述你的困惑或想问的事情（选填，留空则直接解读卦象）..."></textarea>
+      <div class="qg-ai-actions">
+        <button class="qg-ai-btn" id="qg-ai-submit" onclick="aiInterpret()">开始解读</button>
+        <button class="qg-ai-btn qg-ai-btn-stop" id="qg-ai-stop" onclick="aiStop()">停止</button>
+      </div>
+    </div>
+    <div class="qg-ai-output" id="qg-ai-output">
+      <div class="qg-ai-content" id="qg-ai-content"></div>
+      <div class="qg-ai-disclaimer">
+        以上解读仅供参考，不构成任何决策建议。<br>
+        《易》曰：「天行健，君子以自强不息」——最终的选择在你自己。
+      </div>
+    </div>
+  </section>
+
   <section class="history">
     <div class="history-title">起 卦 记 录</div>
     <div id="history-list"></div>
@@ -407,6 +463,7 @@ const HISTORY_KEY = 'yaoguayi_div_history';
 
 /* ===== 状态 ===== */
 let HEXAGAMS = null;      // id -> 卦数据
+let lastAIRec = null;       // 最近一次起卦结果（供 AI 解读）
 let lines = [];           // 已摇出的爻（由下至上）
 let round = 0;            // 当前第几爻（0-5）
 let busy = false;         // 摇卦动画中
@@ -629,10 +686,179 @@ function renderResult(rec) {
       <a class="btn btn-ghost" href="/hexagram.html?id=${hex.id}">查看本卦详解</a>
     </div>`;
   box.classList.add('show');
+  // 保存本次起卦结果，供 AI 解读使用；显示 AI 解读区
+  lastAIRec = rec;
+  const aiSec = document.getElementById('qg-ai');
+  if (aiSec) {
+    aiSec.classList.add('active');
+    // 重置为输入态
+    document.getElementById('qg-ai-input-area').style.display = '';
+    document.getElementById('qg-ai-output').classList.remove('active');
+    document.getElementById('qg-ai-content').innerHTML = '';
+    const ld = document.getElementById('qg-ai-loading');
+    if (ld) ld.style.display = 'none';
+    setAIStreaming(false);
+  }
 }
 
 function escapeHtml(s) {
   return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* ===== AI 解读（旧版功能恢复，走同源 /api/chat 代理） ===== */
+const YAO_NAMES_YANG = ['初九', '九二', '九三', '九四', '九五', '上九'];
+const YAO_NAMES_YIN = ['初六', '六二', '六三', '六四', '六五', '上六'];
+let aiStreaming = false;
+let aiAbort = null;
+
+function buildDivinationPrompt(userQuestion) {
+  const rec = lastAIRec;
+  if (!rec || !HEXAGAMS) return '';
+  const h = HEXAGAMS[rec.hexId];
+  const t = rec.changedId ? HEXAGAMS[rec.changedId] : null;
+  const ci = rec.lines.map((l, i) => l.changing ? i : -1).filter(i => i >= 0);
+  if (!h) return '';
+
+  let prompt = '你是精通《周易》的解读者，语气温和中肯，用现代中文回答。\n\n';
+  prompt += `【本卦】第${h.id}卦「${h.name}」（${h.pinyin}）\n`;
+  prompt += `上卦：${h.upperTrigram}，下卦：${h.lowerTrigram}\n`;
+  prompt += `卦辞：${h.guaci}\n`;
+  if (h.tuan) prompt += `彖传：${h.tuan}\n`;
+  if (h.xiang) prompt += `大象传：${h.xiang}\n`;
+  if (h.yaoci && h.yaoci.length > 0) {
+    prompt += '爻辞：\n';
+    h.yaoci.forEach(y => {
+      prompt += `  ${y.name}：${y.text}\n`;
+      if (y.xiang) prompt += `    小象传：${y.xiang}\n`;
+    });
+  }
+  if (t) {
+    prompt += `\n【变卦】第${t.id}卦「${t.name}」（${t.pinyin}）\n`;
+    prompt += `卦辞：${t.guaci}\n`;
+    if (t.xiang) prompt += `大象传：${t.xiang}\n`;
+  }
+  if (ci.length > 0) {
+    const names = ci.map(i => rec.lines[i].value === 1 ? YAO_NAMES_YANG[i] : YAO_NAMES_YIN[i]);
+    prompt += `\n动爻：${names.join('、')}\n`;
+  }
+  prompt += '\n【解读要求】\n';
+  prompt += '1. 先引用应参考的原文\n';
+  prompt += '2. 用现代白话解释卦象含义\n';
+  if (userQuestion) {
+    prompt += '3. 结合用户描述的情境，给出建设性参考建议\n';
+    prompt += '4. 语气温和中肯，300字以内\n';
+  } else {
+    prompt += '3. 给出这一卦的核心启示\n';
+    prompt += '4. 语气温和中肯，200字以内\n';
+  }
+  return prompt;
+}
+
+window.aiInterpret = async function () {
+  if (aiStreaming || !lastAIRec) return;
+  const question = (document.getElementById('qg-ai-question') || {}).value || '';
+  const systemPrompt = buildDivinationPrompt(question.trim());
+  if (!systemPrompt) return;
+  const userMsg = question.trim()
+    ? `我的问题是：${question.trim()}\n请结合卦象为我解读。`
+    : '请为我解读这一卦。';
+
+  document.getElementById('qg-ai-input-area').style.display = 'none';
+  const outputEl = document.getElementById('qg-ai-output');
+  const contentEl = document.getElementById('qg-ai-content');
+  outputEl.classList.add('active');
+  contentEl.innerHTML = '';
+  let loadingEl = document.getElementById('qg-ai-loading');
+  if (!loadingEl) {
+    loadingEl = document.createElement('div');
+    loadingEl.className = 'qg-ai-loading';
+    loadingEl.id = 'qg-ai-loading';
+    loadingEl.innerHTML = '<div class="qg-ai-loading-text">正在解读中，请稍候…</div>' +
+      '<div class="qg-ai-loading-dots"><span></span><span></span><span></span></div>';
+    outputEl.insertBefore(loadingEl, outputEl.firstChild);
+  }
+  loadingEl.style.display = '';
+  setAIStreaming(true);
+
+  try {
+    aiAbort = new AbortController();
+    const messages = [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userMsg }
+    ];
+    let outputText = '';
+    const onChunk = (text) => {
+      if (!outputText) {
+        const ld = document.getElementById('qg-ai-loading');
+        if (ld) ld.style.display = 'none';
+      }
+      outputText += text;
+      contentEl.innerHTML = escapeHtml(outputText)
+        .replace(/\n/g, '<br>')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>');
+    };
+    await aiStreamProxy(messages, onChunk);
+    if (!outputText) contentEl.textContent = '未收到回复，请稍后重试。';
+  } catch (err) {
+    const ld = document.getElementById('qg-ai-loading');
+    if (ld) ld.style.display = 'none';
+    if (err.name === 'AbortError') {
+      contentEl.innerHTML += '<br><span style="color:var(--faint);">[已停止]</span>';
+    } else {
+      contentEl.textContent = '解读失败：' + err.message;
+    }
+  } finally {
+    setAIStreaming(false);
+    aiAbort = null;
+  }
+};
+
+window.aiStop = function () {
+  if (aiAbort) aiAbort.abort();
+};
+
+function setAIStreaming(val) {
+  aiStreaming = val;
+  const submit = document.getElementById('qg-ai-submit');
+  const stop = document.getElementById('qg-ai-stop');
+  if (submit) submit.style.display = val ? 'none' : '';
+  if (stop) stop.style.display = val ? '' : 'none';
+}
+
+async function aiStreamProxy(messages, onChunk) {
+  const resp = await fetch('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ messages, stream: true }),
+    signal: aiAbort.signal
+  });
+  if (!resp.ok) throw new Error(`API ${resp.status}: ${await resp.text().catch(() => resp.statusText)}`);
+  await readSSE(resp, onChunk);
+}
+
+async function readSSE(resp, onChunk) {
+  const reader = resp.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split('\n');
+    buffer = lines.pop() || '';
+    for (const line of lines) {
+      const t = line.trim();
+      if (!t || !t.startsWith('data: ')) continue;
+      const data = t.slice(6);
+      if (data === '[DONE]') return;
+      try {
+        const j = JSON.parse(data);
+        const delta = j.choices && j.choices[0] && j.choices[0].delta && j.choices[0].delta.content;
+        if (delta) onChunk(delta);
+      } catch (e) { /* 忽略解析失败的分片 */ }
+    }
+  }
 }
 
 /* ===== 再占一卦 ===== */
@@ -643,6 +869,10 @@ function resetDivination() {
   buildYaoStack();
   document.getElementById('result').classList.remove('show');
   document.getElementById('result').innerHTML = '';
+  // 隐藏 AI 解读区
+  const aiSec = document.getElementById('qg-ai');
+  if (aiSec) aiSec.classList.remove('active');
+  lastAIRec = null;
   document.getElementById('toss-result').innerHTML =
     '<div class="toss-faces">　</div><div class="toss-name">点击下方按钮开始摇卦</div>' +
     '<div class="toss-hint">字为正面（3），花为反面（2）</div>';

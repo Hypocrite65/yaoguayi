@@ -744,14 +744,16 @@ function miniHexSVG(lines, size) {
  * @param {Array} hexagrams - 64 卦数据数组
  */
 function renderRandomCard(hexagrams) {
-  const randomId = Math.floor(Math.random() * 64) + 1;
+  // 每日一卦：按日期确定，全天不变（旧版功能恢复）
+  const randomId = todayId;
   const rHex = hexagrams[randomId - 1];
   const rSym = String.fromCodePoint(0x4DBF + randomId);
   const rCard = document.getElementById('random-card');
   if (!rCard) return;
+  const dateStr = d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日';
   rCard.innerHTML = `<span class="random-sym">${rSym}</span>
     <div class="random-info">
-      <span class="random-label">随机一卦</span>
+      <span class="random-label">每日一卦 · ${dateStr}</span>
       <span class="random-name">第${randomId}卦 · ${rHex.name}</span>
       <span class="random-guaci">${rHex.guaci}</span>
     </div>
