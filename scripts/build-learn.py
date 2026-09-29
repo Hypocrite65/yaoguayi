@@ -310,7 +310,7 @@ def article_page(art, prev_art, next_art, css, nav, footer):
     return head + nav + f"""
 <main class="page">
   <nav class="crumb" aria-label="面包屑">
-    <a href="/">首页</a><span class="sep">/</span><a href="/learn.html">知识</a><span class="sep">/</span><span class="here">{html.escape(art["title"])}</span>
+    <button type="button" class="back-btn" onclick="goBack('/learn.html')">‹ 返回</button><a href="/">首页</a><span class="sep">/</span><a href="/learn.html">知识</a><span class="sep">/</span><span class="here">{html.escape(art["title"])}</span>
   </nav>
 
   <article>
@@ -402,7 +402,7 @@ def index_page(articles, css, nav, footer):
     return head + nav + """
 <main class="page">
   <nav class="crumb" aria-label="面包屑">
-    <a href="/">首页</a><span class="sep">/</span><span class="here">知识</span>
+    <button type="button" class="back-btn" onclick="goBack('/')">‹ 返回</button><a href="/">首页</a><span class="sep">/</span><span class="here">知识</span>
   </nav>
 
   <h1 class="page-title">易经知识</h1>

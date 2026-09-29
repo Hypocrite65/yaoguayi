@@ -90,6 +90,12 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 .crumb a:hover{color:var(--vermilion);}
 .crumb .sep{margin:0 8px;color:var(--whisper);}
 .crumb .here{color:var(--ink);}
+/* 返回按钮：回到上一次位置 */
+.back-btn{background:none;border:0.5px solid var(--border);border-radius:20px;
+  padding:3px 12px;font-size:11px;letter-spacing:0.1em;color:var(--muted);cursor:pointer;
+  margin-right:10px;font-family:'Noto Sans SC',system-ui,sans-serif;
+  transition:color 0.2s,border-color 0.2s;}
+.back-btn:hover{color:var(--vermilion);border-color:var(--vermilion-faint);}
 
 .page-title{font-size:30px;letter-spacing:0.24em;font-weight:400;margin-bottom:12px;}
 .page-intro{font-size:13px;line-height:2;color:var(--muted);letter-spacing:0.06em;
@@ -164,6 +170,13 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 .term-card .t-py{font-size:13px;color:var(--faint);font-family:'Noto Sans SC',system-ui,sans-serif;}
 .term-card .t-def{font-size:14px;line-height:1.85;color:var(--ink-light);}
 @media(max-width:640px){.term-grid{grid-template-columns:1fr;}}
+
+/* 移动端导航横滑，避免链接挤出可视区 */
+@media(max-width:640px){
+  .top-nav .nav-left{overflow-x:auto;scrollbar-width:none;white-space:nowrap;max-width:76vw;}
+  .top-nav .nav-left::-webkit-scrollbar{display:none;}
+  .top-nav .nav-left a{flex:none;}
+}
 
 
 /* ===== 知识文章 ===== */
@@ -246,6 +259,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   <div class="nav-left">
     <a class="nav-back" href="/">首页</a>
     <a class="nav-link" href="/hexagrams.html">卦象索引</a>
+    <a class="nav-link" href="/learn.html">知识</a>
     <a class="nav-link" href="/divination.html">起卦</a>
   </div>
   <div class="nav-tools">
@@ -261,7 +275,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 </nav>
 <main class="page">
   <nav class="crumb" aria-label="面包屑">
-    <a href="/">首页</a><span class="sep">/</span><a href="/learn.html">知识</a><span class="sep">/</span><span class="here">铜钱起卦法</span>
+    <button type="button" class="back-btn" onclick="goBack('/learn.html')">‹ 返回</button><a href="/">首页</a><span class="sep">/</span><a href="/learn.html">知识</a><span class="sep">/</span><span class="here">铜钱起卦法</span>
   </nav>
 
   <article>
@@ -320,6 +334,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   爻卦易 · yaoguayi.com ·
   <a href="/">首页</a> ·
   <a href="/hexagrams.html">卦象索引</a> ·
+  <a href="/learn.html">知识</a> ·
   <a href="/learn.html">知识</a> ·
   <a href="/glossary.html">术语表</a> ·
   <a href="/divination.html">起卦</a> ·

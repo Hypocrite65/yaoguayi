@@ -281,6 +281,12 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 .crumb a:hover{color:var(--vermilion);}
 .crumb .sep{margin:0 8px;color:var(--whisper);}
 .crumb .here{color:var(--ink);}
+/* 返回按钮：回到上一次位置 */
+.back-btn{background:none;border:0.5px solid var(--border);border-radius:20px;
+  padding:3px 12px;font-size:11px;letter-spacing:0.1em;color:var(--muted);cursor:pointer;
+  margin-right:10px;font-family:'Noto Sans SC',system-ui,sans-serif;
+  transition:color 0.2s,border-color 0.2s;}
+.back-btn:hover{color:var(--vermilion);border-color:var(--vermilion-faint);}
 
 .page-title{font-size:30px;letter-spacing:0.24em;font-weight:400;margin-bottom:12px;}
 .page-intro{font-size:13px;line-height:2;color:var(--muted);letter-spacing:0.06em;
@@ -387,7 +393,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 
 <main class="page">
   <nav class="crumb" aria-label="面包屑">
-    <a href="/">首页</a><span class="sep">/</span><span class="here">术语表</span>
+    <button type="button" class="back-btn" onclick="goBack('/')">‹ 返回</button><a href="/">首页</a><span class="sep">/</span><span class="here">术语表</span>
   </nav>
 
   <h1 class="page-title">易经术语表</h1>

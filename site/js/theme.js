@@ -27,3 +27,15 @@ function initTheme() {
 
 // 页面加载时初始化主题
 initTheme();
+
+/**
+ * goBack — 返回上一次位置
+ * 有浏览历史则后退一页；直接打开本页（无历史）时去兜底页。
+ */
+function goBack(fallback) {
+  if (window.history.length > 1) {
+    window.history.back();
+  } else {
+    window.location.href = fallback || '/';
+  }
+}

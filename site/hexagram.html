@@ -223,6 +223,12 @@ ruby rt{font-size:10px;color:var(--faint);font-family:'Noto Sans SC',system-ui,s
 .crumb a:hover{color:var(--vermilion);}
 .crumb .sep{margin:0 8px;color:var(--whisper);}
 .crumb .here{color:var(--ink);}
+/* 返回按钮：回到上一次位置 */
+.back-btn{background:none;border:0.5px solid var(--border);border-radius:20px;
+  padding:3px 12px;font-size:11px;letter-spacing:0.1em;color:var(--muted);cursor:pointer;
+  margin-right:10px;font-family:'Noto Sans SC',system-ui,sans-serif;
+  transition:color 0.2s,border-color 0.2s;}
+.back-btn:hover{color:var(--vermilion);border-color:var(--vermilion-faint);}
 
 /* ===== 相关卦象 ===== */
 .related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
@@ -627,7 +633,7 @@ function renderHexagram(hex, all) {
     <div class="hex-content">
       <!-- 面包屑 -->
       <nav class="crumb fade-in d1" aria-label="面包屑">
-        <a href="/">首页</a><span class="sep">/</span><a href="/hexagrams.html">六十四卦索引</a><span class="sep">/</span><span class="here">第${hex.id}卦 ${hex.name}</span>
+        <button type="button" class="back-btn" onclick="goBack('/hexagrams.html')">‹ 返回</button><a href="/">首页</a><span class="sep">/</span><a href="/hexagrams.html">六十四卦索引</a><span class="sep">/</span><span class="here">第${hex.id}卦 ${hex.name}</span>
       </nav>
 
       <!-- 卦辞 -->

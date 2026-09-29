@@ -285,20 +285,48 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 .guide-inner{max-width:960px;margin:0 auto;}
 .guide-title{font-size:13px;letter-spacing:0.4em;color:var(--faint);font-weight:400;
   font-family:'Noto Sans SC',system-ui,sans-serif;text-align:center;margin-bottom:36px;}
-.guide-steps{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
-.guide-steps li{border:0.5px solid var(--border);border-radius:8px;padding:28px 24px;
-  background:var(--card-bg);transition:transform 0.25s,box-shadow 0.25s,border-color 0.25s;}
-.guide-steps li:hover{transform:translateY(-4px);box-shadow:0 8px 24px var(--shadow);
+.guide-steps{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;padding:0;}
+.guide-steps li{position:relative;list-style:none;}
+.guide-card{display:block;height:100%;box-sizing:border-box;border:0.5px solid var(--border);
+  border-radius:8px;padding:28px 24px;background:var(--card-bg);text-decoration:none;
+  transition:transform 0.25s,box-shadow 0.25s,border-color 0.25s;}
+.guide-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px var(--shadow);
   border-color:var(--vermilion-faint);}
 .step-num{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;
   border:0.5px solid var(--vermilion-faint);border-radius:50%;color:var(--vermilion);
   font-size:15px;margin-bottom:16px;}
-.guide-steps h3{font-size:19px;letter-spacing:0.24em;font-weight:400;margin-bottom:10px;}
-.guide-steps p{font-size:13px;line-height:1.9;color:var(--muted);letter-spacing:0.05em;
+.guide-card-title{display:block;font-size:19px;letter-spacing:0.24em;font-weight:400;
+  margin-bottom:10px;color:var(--ink);}
+.guide-card-desc{display:block;font-size:13px;line-height:1.9;color:var(--muted);letter-spacing:0.05em;
   margin-bottom:14px;font-family:'Noto Sans SC',system-ui,sans-serif;}
-.guide-steps a{font-size:12px;letter-spacing:0.12em;color:var(--vermilion);text-decoration:none;
+.guide-go{display:block;font-size:12px;letter-spacing:0.12em;color:var(--vermilion);
   font-family:'Noto Sans SC',system-ui,sans-serif;}
-.guide-steps a:hover{text-decoration:underline;}
+.guide-card:hover .guide-go{text-decoration:underline;}
+.guide-steps li.has-sub .guide-card{padding-bottom:56px;}
+.guide-sub{position:absolute;left:24px;bottom:22px;z-index:2;font-size:12px;letter-spacing:0.12em;
+  color:var(--vermilion);text-decoration:none;font-family:'Noto Sans SC',system-ui,sans-serif;}
+.guide-sub:hover{text-decoration:underline;}
+
+/* ===== 功能导览 ===== */
+.feat-section{background:var(--bg);border-top:0.5px solid var(--border);
+  border-bottom:0.5px solid var(--border);padding:60px 32px;transition:background 0.4s;}
+.feat-inner{max-width:960px;margin:0 auto;}
+.feat-title{font-size:13px;letter-spacing:0.4em;color:var(--faint);font-weight:400;
+  font-family:'Noto Sans SC',system-ui,sans-serif;text-align:center;margin-bottom:12px;}
+.feat-note{font-size:12px;color:var(--ghost);letter-spacing:0.1em;text-align:center;
+  margin-bottom:30px;font-family:'Noto Sans SC',system-ui,sans-serif;}
+.feat-list{list-style:none;display:grid;grid-template-columns:repeat(5,1fr);gap:16px;padding:0;}
+.feat-list li{list-style:none;}
+.feat-card{display:flex;flex-direction:column;gap:8px;height:100%;box-sizing:border-box;
+  border:0.5px solid var(--border);border-radius:8px;padding:20px 16px;
+  background:var(--card-bg);text-decoration:none;
+  transition:transform 0.25s,box-shadow 0.25s,border-color 0.25s;}
+.feat-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px var(--shadow);
+  border-color:var(--vermilion-faint);}
+.feat-icon{font-size:22px;line-height:1.2;}
+.feat-name{font-size:15px;letter-spacing:0.18em;color:var(--ink);font-weight:500;}
+.feat-desc{font-size:11.5px;line-height:1.8;color:var(--muted);letter-spacing:0.03em;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
 
 /* ===== 研读资源 ===== */
 .res-section{background:var(--bg-alt);padding:72px 32px;transition:background 0.4s;}
@@ -324,6 +352,9 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 @media(max-width:768px){
   .guide-steps,.res-list{grid-template-columns:1fr;}
   .guide-section,.res-section{padding:52px 20px;}
+  .feat-section{padding:48px 20px;}
+  .feat-list{grid-template-columns:repeat(2,1fr);}
+  .feat-list li:last-child{grid-column:1/-1;}
 }
 
 /* ===== 页脚版本号 ===== */
@@ -501,29 +532,80 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   </noscript>
 </section>
 
+<!-- ===== 功能导览 ===== -->
+<section class="feat-section fade-in" id="features" aria-labelledby="feat-title">
+  <div class="feat-inner">
+    <h2 class="feat-title" id="feat-title">功 能 导 览</h2>
+    <p class="feat-note">本站所有功能，一眼看全</p>
+    <ul class="feat-list">
+      <li>
+        <a class="feat-card" href="/divination.html">
+          <span class="feat-icon" aria-hidden="true">🪙</span>
+          <span class="feat-name">起卦</span>
+          <span class="feat-desc">三枚铜钱，六次摇卦，记录只保存在本机</span>
+        </a>
+      </li>
+      <li>
+        <a class="feat-card" href="/hexagrams.html">
+          <span class="feat-icon" aria-hidden="true">☰</span>
+          <span class="feat-name">六十四卦</span>
+          <span class="feat-desc">上经下经分组，卦辞爻辞注音全覆盖</span>
+        </a>
+      </li>
+      <li>
+        <a class="feat-card" href="/learn.html">
+          <span class="feat-icon" aria-hidden="true">📖</span>
+          <span class="feat-name">易经知识</span>
+          <span class="feat-desc">15 篇文章，从八卦基础到起卦方法</span>
+        </a>
+      </li>
+      <li>
+        <a class="feat-card" href="/glossary.html">
+          <span class="feat-icon" aria-hidden="true">📝</span>
+          <span class="feat-name">术语表</span>
+          <span class="feat-desc">33 条术语，大白话讲清楚</span>
+        </a>
+      </li>
+      <li>
+        <a class="feat-card" href="#resources">
+          <span class="feat-icon" aria-hidden="true">🔗</span>
+          <span class="feat-name">研读资源</span>
+          <span class="feat-desc">站外权威出处，原文注疏皆有来源</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>
+
 <!-- ===== 研读路径 ===== -->
 <section class="guide-section fade-in" id="guide" aria-labelledby="guide-title">
   <div class="guide-inner">
     <h2 class="guide-title" id="guide-title">研 读 路 径</h2>
     <ol class="guide-steps">
       <li>
-        <span class="step-num" aria-hidden="true">一</span>
-        <h3>起卦</h3>
-        <p>三枚铜钱，六次摇卦。心有所问，卦象自现。</p>
-        <a href="/divination.html">去起卦 →</a>
+        <a class="guide-card" href="/divination.html">
+          <span class="step-num" aria-hidden="true">一</span>
+          <span class="guide-card-title">起卦</span>
+          <span class="guide-card-desc">三枚铜钱，六次摇卦。心有所问，卦象自现。</span>
+          <span class="guide-go">去起卦 →</span>
+        </a>
       </li>
       <li>
-        <span class="step-num" aria-hidden="true">二</span>
-        <h3>解卦</h3>
-        <p>观本卦之卦辞，察动爻之爻辞，参综卦错卦互卦之关联。</p>
-        <a href="/hexagrams.html">浏览六十四卦 →</a>
+        <a class="guide-card" href="/hexagrams.html">
+          <span class="step-num" aria-hidden="true">二</span>
+          <span class="guide-card-title">解卦</span>
+          <span class="guide-card-desc">观本卦之卦辞，察动爻之爻辞，参综卦错卦互卦之关联。</span>
+          <span class="guide-go">浏览六十四卦 →</span>
+        </a>
       </li>
-      <li>
-        <span class="step-num" aria-hidden="true">三</span>
-        <h3>明理</h3>
-        <p>读彖传象传以明义理，对照历代注疏，化卦理为行事之鉴。</p>
-        <a href="/learn.html">易经知识 →</a><br/>
-        <a href="#resources">研读资源 →</a>
+      <li class="has-sub">
+        <a class="guide-card" href="/learn.html">
+          <span class="step-num" aria-hidden="true">三</span>
+          <span class="guide-card-title">明理</span>
+          <span class="guide-card-desc">读彖传象传以明义理，对照历代注疏，化卦理为行事之鉴。</span>
+          <span class="guide-go">易经知识 →</span>
+        </a>
+        <a class="guide-sub" href="#resources">研读资源 →</a>
       </li>
     </ol>
   </div>
