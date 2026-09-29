@@ -1,7 +1,13 @@
 {
-  "updated": "2026-09-29T11:49:24Z",
+  "updated": "2026-09-29T11:52:55Z",
   "branch": "main",
   "versions": [
+    {
+      "v": 171,
+      "sha": "1f077601",
+      "date": "2026-09-29",
+      "subject": "恢复旧版功能（三）：AI 助手+记事本悬浮窗（ToolWindow/Notepad/AIChat），右上角 AI 按钮"
+    },
     {
       "v": 170,
       "sha": "79ed03e2",
