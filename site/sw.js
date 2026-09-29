@@ -1,5 +1,5 @@
 /* 爻卦易 PWA Service Worker：离线可用 */
-const CACHE_NAME = 'yaoguayi-v2';
+const CACHE_NAME = 'yaoguayi-v3';
 
 const PRECACHE = [
   '/',
