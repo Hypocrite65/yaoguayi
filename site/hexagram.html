@@ -459,7 +459,8 @@ const SidePanel = {
  * 设计说明：
  *   1. 先将文本拆分为字符数组
  *   2. 优先匹配多字术语（glossary），添加可点击下划线
- *   3. 再对剩余字符匹配单字注音（pinyin），添加 ruby 标签
+ *   3. 再匹配多字注音短语（phrases），处理上下文相关读音
+ *   4. 最后对剩余字符匹配单字注音（pinyin），添加 ruby 标签
  *   避免在已标注的 HTML 标签内重复标注
  *
  * @param {string} text - 原始经文文本
@@ -494,7 +495,30 @@ function annotateText(text, addTermLinks) {
     }
   }
 
-  // 第二步：匹配单字注音
+  // 第二步：匹配多字注音短语（phrases），如 見龍→xiàn lóng
+  // 用于单字表无法表达的上下文相关读音（見龍之見讀 xiàn，說輻之說讀 tuō 等）
+  if (annotations.phrases) {
+    const phrases = Object.keys(annotations.phrases).sort((a, b) => b.length - a.length);
+    for (const phrase of phrases) {
+      const pys = annotations.phrases[phrase];
+      if (!pys || pys.length !== phrase.length) continue;
+      let idx = 0;
+      while ((idx = text.indexOf(phrase, idx)) !== -1) {
+        const end = idx + phrase.length;
+        const overlap = marks.some(m => !(end <= m.start || idx >= m.end));
+        if (!overlap) {
+          let html = '';
+          for (let k = 0; k < phrase.length; k++) {
+            html += `<ruby>${phrase[k]}<rp>(</rp><rt>${pys[k]}</rt><rp>)</rp></ruby>`;
+          }
+          marks.push({ start: idx, end: end, html });
+        }
+        idx = end;
+      }
+    }
+  }
+
+  // 第三步：匹配单字注音
   if (annotations.pinyin) {
     for (let i = 0; i < text.length; i++) {
       const ch = text[i];
