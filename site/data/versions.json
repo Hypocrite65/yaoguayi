@@ -1,7 +1,13 @@
 {
-  "updated": "2026-09-29T22:27:42Z",
+  "updated": "2026-09-29T22:38:43Z",
   "branch": "main",
   "versions": [
+    {
+      "v": 184,
+      "sha": "0c6c3d9b",
+      "date": "2026-09-29",
+      "subject": "移动端下拉菜单改纯CSS实现：checkbox+label开关，不依赖theme.js加载"
+    },
     {
       "v": 183,
       "sha": "f310ee70",
