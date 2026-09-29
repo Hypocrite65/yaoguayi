@@ -223,6 +223,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   transition:border-color 0.2s,background 0.2s;line-height:1.7;}
 .prev-next a:hover{border-color:var(--vermilion);background:var(--hover-bg);}
 .prev-next .pn-next{text-align:right;}
+.prev-next .pn-empty{flex:1;}
 .prev-next .pn-label{display:block;font-size:11px;letter-spacing:0.2em;color:var(--faint);
   font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:2px;}
 /* 知识卡片 */
@@ -324,7 +325,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
     </aside>
 
     <nav class="prev-next" aria-label="上下篇">
-      <a href="/learn/bianyao.html"><span class="pn-label">← 上一篇</span>变爻断卦法</a>
+      <a href="/learn/bianyao.html"><span class="pn-label">← 上一篇</span>变爻断卦法</a><span class="pn-empty" aria-hidden="true"></span>
     </nav>
   </article>
 </main>

@@ -5,7 +5,7 @@
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
     });
   }
-  fetch("data/versions.json")
+  fetch("/data/versions.json")
     .then(function (r) { return r.json(); })
     .then(function (d) {
       var vs = d.versions || [];

@@ -199,6 +199,7 @@ ARTICLE_CSS = """
   transition:border-color 0.2s,background 0.2s;line-height:1.7;}
 .prev-next a:hover{border-color:var(--vermilion);background:var(--hover-bg);}
 .prev-next .pn-next{text-align:right;}
+.prev-next .pn-empty{flex:1;}
 .prev-next .pn-label{display:block;font-size:11px;letter-spacing:0.2em;color:var(--faint);
   font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:2px;}
 /* 知识卡片 */
@@ -279,11 +280,13 @@ def article_page(art, prev_art, next_art, css, nav, footer):
             f'<a href="/learn/{prev_art["id"]}.html"><span class="pn-label">← 上一篇</span>'
             f'{html.escape(prev_art["title"])}</a>')
     else:
-        pn.append('<span></span>')
+        pn.append('<span class="pn-empty" aria-hidden="true"></span>')
     if next_art:
         pn.append(
             f'<a class="pn-next" href="/learn/{next_art["id"]}.html">'
             f'<span class="pn-label">下一篇 →</span>{html.escape(next_art["title"])}</a>')
+    else:
+        pn.append('<span class="pn-empty" aria-hidden="true"></span>')
 
     jsonld = json.dumps({
         "@context": "https://schema.org",
