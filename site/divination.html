@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>起卦 · 爻卦易</title>
+<meta name="description" content="爻卦易金钱卦起卦：三枚铜钱，六次摇卦，得本卦、变卦与动爻。开源、非盈利，结果仅存于本地。"/>
+<meta name="keywords" content="起卦,金钱卦,摇卦,易经占卜,本卦,变卦,动爻,爻卦易"/>
+<meta name="theme-color" content="#faf8f1"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="爻卦易"/>
+<meta property="og:title" content="起卦 · 爻卦易"/>
+<meta property="og:description" content="三枚铜钱，六次摇卦，得本卦、变卦与动爻。"/>
+<meta property="og:url" content="https://yaoguayi.com/divination.html"/>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+/* ===== 主题变量（与首页一致） ===== */
+body{
+  --bg:#faf8f1;--bg-alt:#f1ede2;--ink:#2c2420;--ink-light:#5a4e44;
+  --muted:#7a6e64;--faint:#a09080;--ghost:#d5c8b6;--whisper:#ded4c3;
+  --border:rgba(26,26,26,0.08);--border-strong:rgba(26,26,26,0.15);
+  --vermilion:#c0392b;--vermilion-faint:rgba(192,57,43,0.12);
+  --nav-bg:rgba(250,248,241,0.92);--card-bg:rgba(241,237,226,0.5);
+  --hover-bg:rgba(26,26,26,0.06);--shadow:rgba(26,26,26,0.08);
+  --coin:#c8a24a;--coin-dark:#8a6a28;--coin-face:#3a2c14;
+}
+body.dark-theme{
+  --bg:#1c1a16;--bg-alt:#252320;--ink:#e8e0d4;--ink-light:#ccc4b8;
+  --muted:#a49c8c;--faint:#847c6c;--ghost:#5a5448;--whisper:#3e3830;
+  --border:rgba(232,224,212,0.10);--border-strong:rgba(232,224,212,0.18);
+  --vermilion:#e07060;--vermilion-faint:rgba(224,112,96,0.16);
+  --nav-bg:rgba(28,26,22,0.94);--card-bg:rgba(37,35,32,0.7);
+  --hover-bg:rgba(232,224,212,0.08);--shadow:rgba(0,0,0,0.3);
+  --coin:#d4af5a;--coin-dark:#9a7830;--coin-face:#2c2210;
+}
+
+body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
+  color:var(--ink);background:var(--bg);
+  transition:background 0.4s,color 0.4s;min-height:100vh;}
+
+/* ===== 顶部导航 ===== */
+.top-nav{position:sticky;top:0;z-index:200;
+  background:var(--nav-bg);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border-bottom:0.5px solid var(--border);padding:10px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:'Noto Sans SC',system-ui,sans-serif;transition:background 0.4s;}
+.nav-back{font-size:13px;letter-spacing:0.1em;color:var(--muted);text-decoration:none;
+  display:flex;align-items:center;gap:6px;transition:color 0.2s;}
+.nav-back:hover{color:var(--vermilion);}
+.nav-logo svg{width:28px;height:28px;display:block;}
+.nav-tools{display:flex;align-items:center;gap:4px;}
+.nav-btn{width:32px;height:32px;border:none;background:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;border-radius:6px;
+  color:var(--muted);transition:background 0.2s,color 0.2s;}
+.nav-btn:hover{background:var(--hover-bg);color:var(--ink);}
+.nav-btn svg{width:18px;height:18px;}
+
+/* ===== 页面主体 ===== */
+.page{max-width:720px;margin:0 auto;padding:48px 24px 80px;}
+
+/* 标题区 */
+.hero{text-align:center;margin-bottom:40px;}
+.hero-title{font-size:30px;letter-spacing:0.3em;font-weight:400;margin-bottom:12px;
+  text-indent:0.3em;}
+.hero-sub{font-size:12px;letter-spacing:0.14em;color:var(--muted);line-height:2.2;}
+.hero-sub em{font-style:normal;color:var(--vermilion);}
+
+/* 问事输入 */
+.question-block{margin-bottom:36px;}
+.question-label{display:block;font-size:11px;letter-spacing:0.2em;color:var(--faint);
+  margin-bottom:10px;font-family:'Noto Sans SC',system-ui,sans-serif;}
+.question-input{width:100%;padding:12px 16px;resize:vertical;min-height:52px;
+  border:0.5px solid var(--border-strong);border-radius:4px;background:var(--card-bg);
+  font-family:'Noto Serif SC',serif;font-size:14px;letter-spacing:0.06em;line-height:1.8;
+  color:var(--ink);outline:none;transition:border-color 0.3s,box-shadow 0.3s;}
+.question-input:focus{border-color:var(--vermilion);box-shadow:0 0 0 3px var(--vermilion-faint);}
+.question-input::placeholder{color:var(--ghost);}
+.question-note{font-size:10px;color:var(--ghost);letter-spacing:0.08em;margin-top:8px;}
+
+/* 起卦台 */
+.stage{border:0.5px solid var(--border);border-radius:8px;background:var(--card-bg);
+  padding:36px 24px 32px;margin-bottom:24px;position:relative;overflow:hidden;}
+.stage-round{text-align:center;font-size:11px;letter-spacing:0.3em;color:var(--faint);
+  margin-bottom:24px;font-family:'Noto Sans SC',system-ui,sans-serif;}
+.stage-round b{color:var(--vermilion);font-weight:600;font-size:14px;}
+
+/* 铜钱 */
+.coins{display:flex;justify-content:center;gap:28px;margin-bottom:20px;min-height:96px;
+  align-items:center;}
+.coin{width:76px;height:76px;border-radius:50%;position:relative;
+  background:radial-gradient(circle at 35% 30%,var(--coin),var(--coin-dark));
+  box-shadow:inset 0 2px 4px rgba(255,255,255,0.35),inset 0 -3px 6px rgba(0,0,0,0.3),
+    0 4px 10px var(--shadow);
+  display:flex;align-items:center;justify-content:center;
+  font-size:34px;color:var(--coin-face);font-weight:600;
+  transition:transform 0.3s;}
+.coin::before{content:'';position:absolute;inset:7px;border-radius:50%;
+  border:1.5px solid rgba(0,0,0,0.18);}
+.coin.tossing{animation:coinFlip 0.14s linear infinite;}
+.coin.settle{animation:coinSettle 0.45s cubic-bezier(0.2,0.9,0.3,1.2);}
+@keyframes coinFlip{
+  0%{transform:translateY(0) rotateY(0);}
+  50%{transform:translateY(-26px) rotateY(90deg);}
+  100%{transform:translateY(0) rotateY(180deg);}
+}
+@keyframes coinSettle{
+  0%{transform:translateY(-18px) scale(1.05);}
+  60%{transform:translateY(2px) scale(0.98);}
+  100%{transform:translateY(0) scale(1);}
+}
+
+/* 本次结果 */
+.toss-result{text-align:center;min-height:56px;margin-bottom:8px;}
+.toss-faces{font-size:13px;letter-spacing:0.24em;color:var(--muted);margin-bottom:6px;}
+.toss-name{font-size:17px;letter-spacing:0.2em;color:var(--ink);}
+.toss-name .changing{color:var(--vermilion);font-weight:600;}
+.toss-hint{font-size:10px;letter-spacing:0.12em;color:var(--ghost);margin-top:6px;}
+
+/* 摇卦按钮 */
+.toss-btn{display:block;margin:16px auto 0;width:min(280px,80%);
+  padding:13px 0;border:none;border-radius:4px;cursor:pointer;
+  background:var(--vermilion);color:#fff8f2;
+  font-family:'Noto Sans SC',system-ui,sans-serif;
+  font-size:13px;letter-spacing:0.3em;text-indent:0.3em;font-weight:500;
+  transition:transform 0.2s,opacity 0.2s,box-shadow 0.3s;
+  box-shadow:0 4px 16px var(--vermilion-faint);}
+.toss-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 20px var(--vermilion-faint);}
+.toss-btn:disabled{opacity:0.45;cursor:wait;transform:none;}
+
+/* 爻位栈（由下至上） */
+.yao-stack{margin-top:32px;padding-top:24px;border-top:0.5px solid var(--border);}
+.yao-row{display:flex;align-items:center;gap:14px;padding:7px 8px;border-radius:4px;
+  opacity:0.28;transition:opacity 0.4s;}
+.yao-row.filled{opacity:1;animation:yaoIn 0.6s cubic-bezier(0.25,0.46,0.45,0.94);}
+@keyframes yaoIn{from{opacity:0;transform:translateX(-14px);}to{opacity:1;transform:none;}}
+.yao-pos{width:44px;font-size:11px;letter-spacing:0.14em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;flex-shrink:0;}
+.yao-bars{flex:1;display:flex;gap:8px;height:14px;align-items:center;}
+.yao-bar{height:9px;border-radius:2px;background:var(--ink);opacity:0.85;
+  transform-origin:left center;}
+.yao-row.filled .yao-bar{animation:barDraw 0.5s cubic-bezier(0.4,0,0.2,1) 0.15s backwards;}
+@keyframes barDraw{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+.yao-bar.yang{flex:1;}
+.yao-bar.yin{flex:1;}
+.yao-gap{width:14px;flex-shrink:0;}
+.yao-row.changing .yao-bar{background:var(--vermilion);}
+.yao-row.changing .yao-pos{color:var(--vermilion);}
+.yao-mark{width:28px;font-size:15px;color:var(--vermilion);text-align:right;flex-shrink:0;}
+.yao-desc{font-size:10px;color:var(--ghost);letter-spacing:0.1em;flex-shrink:0;}
+
+/* ===== 结果区 ===== */
+.result{display:none;margin-bottom:24px;}
+.result.show{display:block;animation:resultIn 0.8s cubic-bezier(0.25,0.46,0.45,0.94);}
+@keyframes resultIn{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:none;}}
+.result-title{text-align:center;font-size:12px;letter-spacing:0.3em;color:var(--faint);
+  margin:8px 0 20px;font-family:'Noto Sans SC',system-ui,sans-serif;}
+.result-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.result-card{border:0.5px solid var(--border);border-radius:8px;background:var(--card-bg);
+  padding:24px 16px;text-align:center;text-decoration:none;color:inherit;
+  transition:transform 0.25s,box-shadow 0.3s,border-color 0.3s;display:block;}
+.result-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px var(--shadow);
+  border-color:var(--vermilion-faint);}
+.result-card .card-label{font-size:10px;letter-spacing:0.24em;color:var(--vermilion);
+  font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:600;display:block;margin-bottom:12px;}
+.result-card .card-sym{font-size:52px;line-height:1.2;display:block;margin-bottom:10px;}
+.result-card .card-name{font-size:16px;letter-spacing:0.14em;display:block;margin-bottom:8px;}
+.result-card .card-guaci{font-size:11px;color:var(--muted);letter-spacing:0.06em;line-height:1.8;}
+.result-card.solo{grid-column:1/-1;}
+
+/* 断法提示 */
+.reading-tip{border-left:2px solid var(--vermilion);background:var(--vermilion-faint);
+  border-radius:0 6px 6px 0;padding:14px 18px;margin-bottom:16px;}
+.reading-tip .tip-label{font-size:10px;letter-spacing:0.24em;color:var(--vermilion);
+  font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:600;display:block;margin-bottom:8px;}
+.reading-tip p{font-size:13px;line-height:2;color:var(--ink-light);letter-spacing:0.04em;}
+
+/* 动爻列表 */
+.changing-list{margin-bottom:20px;}
+.changing-item{display:block;border:0.5px solid var(--border);border-radius:6px;
+  padding:14px 18px;margin-bottom:8px;text-decoration:none;color:inherit;
+  background:var(--card-bg);transition:border-color 0.25s,transform 0.2s;}
+.changing-item:hover{border-color:var(--vermilion-faint);transform:translateX(4px);}
+.changing-item .yao-name{font-size:12px;letter-spacing:0.2em;color:var(--vermilion);
+  font-weight:600;display:block;margin-bottom:6px;}
+.changing-item .yao-text{font-size:14px;letter-spacing:0.06em;line-height:1.9;color:var(--ink);}
+.changing-item .yao-go{font-size:10px;color:var(--ghost);letter-spacing:0.1em;margin-top:6px;display:block;}
+
+/* 结果操作 */
+.result-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn{padding:11px 28px;border-radius:4px;cursor:pointer;
+  font-family:'Noto Sans SC',system-ui,sans-serif;font-size:12px;letter-spacing:0.2em;
+  text-decoration:none;transition:transform 0.2s,box-shadow 0.3s;display:inline-block;}
+.btn-primary{background:var(--vermilion);color:#fff8f2;border:none;
+  box-shadow:0 4px 14px var(--vermilion-faint);}
+.btn-primary:hover{transform:translateY(-2px);}
+.btn-ghost{background:none;color:var(--muted);border:0.5px solid var(--border-strong);}
+.btn-ghost:hover{color:var(--vermilion);border-color:var(--vermilion-faint);}
+
+/* ===== 历史 ===== */
+.history{margin-top:48px;}
+.history-title{font-size:11px;letter-spacing:0.3em;color:var(--faint);text-align:center;
+  margin-bottom:16px;font-family:'Noto Sans SC',system-ui,sans-serif;}
+.history-empty{text-align:center;font-size:11px;color:var(--ghost);letter-spacing:0.1em;
+  padding:20px 0;}
+.history-item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;
+  border:0.5px solid var(--border);border-radius:6px;background:var(--card-bg);
+  padding:12px 16px;margin-bottom:8px;cursor:pointer;color:inherit;
+  font-family:'Noto Serif SC',serif;transition:border-color 0.25s,transform 0.2s;}
+.history-item:hover{border-color:var(--vermilion-faint);transform:translateX(4px);}
+.history-item .h-time{font-size:10px;color:var(--ghost);white-space:nowrap;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.history-item .h-q{flex:1;font-size:13px;letter-spacing:0.04em;color:var(--ink-light);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.history-item .h-gua{font-size:12px;color:var(--vermilion);letter-spacing:0.08em;white-space:nowrap;}
+
+/* 页脚 */
+.site-footer{border-top:0.5px solid var(--border);padding:20px 24px;text-align:center;
+  font-size:10px;letter-spacing:0.12em;color:var(--ghost);
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.site-footer a{color:var(--faint);text-decoration:none;}
+.site-footer a:hover{color:var(--vermilion);}
+
+@media(max-width:640px){
+  .page{padding:32px 16px 64px;}
+  .hero-title{font-size:24px;}
+  .coins{gap:16px;}
+  .coin{width:64px;height:64px;font-size:28px;}
+  .result-cards{grid-template-columns:1fr;}
+  .stage{padding:28px 16px 24px;}
+}
+
+/* ===== 页脚版本号 ===== */
+.site-footer{position:relative;}
+.ver{color:var(--faint);cursor:pointer;transition:color 0.2s;}
+.ver:hover{color:var(--vermilion);}
+.ver-panel{position:absolute;bottom:calc(100% + 10px);right:16px;width:min(440px,92vw);
+  max-height:320px;overflow-y:auto;background:var(--bg);
+  border:1px solid var(--border-strong);border-radius:10px;
+  box-shadow:0 12px 32px var(--shadow);padding:8px;z-index:60;text-align:left;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.ver-panel[hidden]{display:none;}
+.ver-row{display:flex;gap:10px;align-items:baseline;padding:7px 10px;font-size:11px;
+  letter-spacing:0;border-radius:6px;}
+.ver-row:hover{background:var(--hover-bg);}
+.ver-n{color:var(--vermilion);font-weight:600;min-width:34px;flex:none;}
+.ver-sha{font-family:ui-monospace,SFMono-Regular,monospace;color:var(--muted);flex:none;}
+.ver-date{color:var(--faint);white-space:nowrap;flex:none;}
+.ver-sub{color:var(--ink-light);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a class="nav-back" href="/">← 六十四卦</a>
+  <a class="nav-logo" href="/" aria-label="爻卦易首页">
+    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="84" stroke="#5c3a30" stroke-width="5" fill="none"/>
+      <line x1="100" y1="48" x2="100" y2="152" stroke="#2c2420" stroke-width="18" stroke-linecap="round"/>
+      <line x1="48" y1="48" x2="100" y2="100" stroke="#2c2420" stroke-width="18" stroke-linecap="round"/>
+      <line x1="152" y1="48" x2="152" y2="82" stroke="#c0392b" stroke-width="18" stroke-linecap="round"/>
+      <line x1="152" y1="118" x2="152" y2="152" stroke="#c0392b" stroke-width="18" stroke-linecap="round"/>
+    </svg>
+  </a>
+  <div class="nav-tools">
+    <button class="nav-btn" id="theme-toggle" title="切换深色 / 浅色" aria-label="切换深色 / 浅色" onclick="toggleTheme()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<main class="page">
+  <header class="hero">
+    <h1 class="hero-title">起 卦</h1>
+    <p class="hero-sub">三枚铜钱 · 六次摇卦<br>静心<em>默念</em>所问之事，诚心摇卦</p>
+  </header>
+
+  <div class="question-block">
+    <label class="question-label" for="question">所问之事</label>
+    <textarea class="question-input" id="question" rows="2"
+      placeholder="例如：这个项目是否值得投入？（可不填）"></textarea>
+    <div class="question-note">仅用于本次起卦记录，保存在本机，不上传任何服务器。</div>
+  </div>
+
+  <section class="stage" id="stage">
+    <div class="stage-round" id="stage-round">第 <b>一</b> 爻 · 初爻</div>
+    <div class="coins" id="coins">
+      <div class="coin" id="coin-0">字</div>
+      <div class="coin" id="coin-1">字</div>
+      <div class="coin" id="coin-2">字</div>
+    </div>
+    <div class="toss-result" id="toss-result">
+      <div class="toss-faces" id="toss-faces">　</div>
+      <div class="toss-name" id="toss-name">点击下方按钮开始摇卦</div>
+      <div class="toss-hint" id="toss-hint">字为正面（3），花为反面（2）</div>
+    </div>
+    <button class="toss-btn" id="toss-btn">摇 卦</button>
+
+    <div class="yao-stack" id="yao-stack"></div>
+  </section>
+
+  <section class="result" id="result"></section>
+
+  <section class="history">
+    <div class="history-title">起 卦 记 录</div>
+    <div id="history-list"></div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  爻卦易 · yaoguayi.com · 开源 · 非盈利 ·
+  <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank">GitHub</a> ·
+  <span class="ver" id="site-ver" title="查看版本历史">版本 v–</span>
+  <div class="ver-panel" id="ver-panel" hidden></div>
+</footer>
+
+<script src="/js/theme.js"></script>
+<script src="/js/version.js"></script>
+<script>
+/**
+ * divination.html — 金钱卦起卦逻辑
+ *
+ * 设计说明：
+ * 复刻 packages/iching-core 的金钱卦算法（纯前端实现，无需构建）：
+ *   字（正面）= 3，花（反面）= 2
+ *   6 = 老阴（动） / 7 = 少阳 / 8 = 少阴 / 9 = 老阳（动）
+ * 六十四卦索引与 lookup.ts 的 HEXAGRAM_INDEX 一致（爻序由下至上）。
+ * 起卦记录仅存 localStorage，不上传服务器。
+ */
+
+/* ===== 六十四卦索引（key：由下至上 6 位二进制，1=阳 0=阴） ===== */
+const HEXAGRAM_INDEX = {
+  '111111': 1, '000000': 2, '100010': 3, '010001': 4, '111010': 5,
+  '010111': 6, '010000': 7, '000010': 8, '111011': 9, '110111': 10,
+  '111000': 11, '000111': 12, '101111': 13, '111101': 14, '001000': 15,
+  '000100': 16, '100110': 17, '011001': 18, '110000': 19, '000011': 20,
+  '100101': 21, '101001': 22, '000001': 23, '100000': 24, '111001': 25,
+  '100111': 26, '100001': 27, '011110': 28, '010010': 29, '101101': 30,
+  '001110': 31, '011100': 32, '001111': 33, '111100': 34, '000101': 35,
+  '101000': 36, '101011': 37, '110101': 38, '001010': 39, '010100': 40,
+  '110001': 41, '100011': 42, '111110': 43, '011111': 44, '000110': 45,
+  '011000': 46, '010110': 47, '011010': 48, '101110': 49, '011101': 50,
+  '100100': 51, '001001': 52, '001011': 53, '110100': 54, '101100': 55,
+  '001101': 56, '011011': 57, '110110': 58, '010011': 59, '110010': 60,
+  '110011': 61, '001100': 62, '101010': 63, '010101': 64,
+};
+
+const YAO_POS = ['初爻', '二爻', '三爻', '四爻', '五爻', '上爻'];
+const YAO_NUM = ['一', '二', '三', '四', '五', '六'];
+const HISTORY_KEY = 'yaoguayi_div_history';
+
+/* ===== 状态 ===== */
+let HEXAGAMS = null;      // id -> 卦数据
+let lines = [];           // 已摇出的爻（由下至上）
+let round = 0;            // 当前第几爻（0-5）
+let busy = false;         // 摇卦动画中
+
+/* ===== 初始化 ===== */
+fetch('/data/hexagrams.json')
+  .then(r => r.json())
+  .then(data => {
+    HEXAGAMS = {};
+    data.forEach(h => { HEXAGAMS[h.id] = h; });
+    renderHistory();
+  })
+  .catch(err => {
+    console.error('Failed to load hexagram data:', err);
+    document.getElementById('toss-name').textContent = '卦象数据加载失败，请刷新重试';
+    document.getElementById('toss-btn').disabled = true;
+  });
+
+buildYaoStack();
+document.getElementById('toss-btn').addEventListener('click', onToss);
+
+/* ===== 构建六爻空位（由上至下渲染，上爻在最上） ===== */
+function buildYaoStack() {
+  const stack = document.getElementById('yao-stack');
+  stack.innerHTML = '';
+  for (let i = 5; i >= 0; i--) {
+    const row = document.createElement('div');
+    row.className = 'yao-row';
+    row.id = 'yao-row-' + i;
+    row.innerHTML = `<span class="yao-pos">${YAO_POS[i]}</span>
+      <span class="yao-bars"><span class="yao-gap" style="flex:1"></span></span>
+      <span class="yao-mark"></span><span class="yao-desc"></span>`;
+    stack.appendChild(row);
+  }
+}
+
+/* ===== 金钱卦算法 ===== */
+function tossThreeCoins() {
+  const faces = [];
+  let sum = 0;
+  for (let i = 0; i < 3; i++) {
+    const heads = Math.random() < 0.5; // 字=true，花=false
+    faces.push(heads);
+    sum += heads ? 3 : 2;
+  }
+  return { faces, sum };
+}
+
+function sumToLine(sum) {
+  // 6=老阴(动), 7=少阳, 8=少阴, 9=老阳(动)
+  return {
+    value: (sum === 9 || sum === 7) ? 1 : 0,
+    changing: sum === 9 || sum === 6,
+    raw: sum,
+  };
+}
+
+const SUM_META = {
+  6: { name: '老阴', desc: '阴爻 · 动', faces: '花 花 花' },
+  7: { name: '少阳', desc: '阳爻', faces: '字 花 花' },
+  8: { name: '少阴', desc: '阴爻', faces: '字 字 花' },
+  9: { name: '老阳', desc: '阳爻 · 动', faces: '字 字 字' },
+};
+
+/* ===== 摇卦 ===== */
+function onToss() {
+  if (busy || round >= 6) return;
+  busy = true;
+  const btn = document.getElementById('toss-btn');
+  btn.disabled = true;
+
+  const { faces, sum } = tossThreeCoins();
+  const coins = [0, 1, 2].map(i => document.getElementById('coin-' + i));
+
+  // 动画：快速翻转 + 字花闪烁
+  coins.forEach((c, i) => {
+    c.classList.remove('settle');
+    c.classList.add('tossing');
+  });
+  const flicker = setInterval(() => {
+    coins.forEach(c => { c.textContent = Math.random() < 0.5 ? '字' : '花'; });
+  }, 90);
+
+  setTimeout(() => {
+    clearInterval(flicker);
+    const meta = SUM_META[sum];
+    coins.forEach((c, i) => {
+      c.classList.remove('tossing');
+      c.classList.add('settle');
+      // 交错落定，更有节奏感
+      setTimeout(() => { c.textContent = faces[i] ? '字' : '花'; }, i * 120);
+    });
+
+    setTimeout(() => {
+      // 显示本次结果
+      document.getElementById('toss-faces').textContent = meta.faces;
+      const nameEl = document.getElementById('toss-name');
+      nameEl.innerHTML = meta.name + ' <span class="' + (meta.desc.includes('动') ? 'changing' : '') + '">· ' + meta.desc + '</span>';
+      document.getElementById('toss-hint').textContent =
+        meta.desc.includes('动') ? '动爻！此爻将变为相反之爻' : '静爻';
+
+      // 记入爻栈（由下至上）
+      const line = sumToLine(sum);
+      lines.push(line);
+      fillYaoRow(round, line);
+      round++;
+
+      if (round >= 6) {
+        finishDivination();
+      } else {
+        document.getElementById('stage-round').innerHTML =
+          `第 <b>${YAO_NUM[round]}</b> 爻 · ${YAO_POS[round]}`;
+        btn.disabled = false;
+        btn.textContent = '再 摇 一 爻';
+        busy = false;
+      }
+    }, 500);
+  }, 950);
+}
+
+/* ===== 填充爻位 ===== */
+function fillYaoRow(idx, line) {
+  const row = document.getElementById('yao-row-' + idx);
+  const bars = row.querySelector('.yao-bars');
+  const isYang = line.value === 1;
+  const barHtml = isYang
+    ? '<span class="yao-bar yang"></span>'
+    : '<span class="yao-bar yin"></span><span class="yao-gap"></span><span class="yao-bar yin"></span>';
+  bars.innerHTML = barHtml;
+  row.classList.add('filled');
+  if (line.changing) {
+    row.classList.add('changing');
+    row.querySelector('.yao-mark').textContent = isYang ? '●' : '○';
+  }
+  row.querySelector('.yao-desc').textContent = SUM_META[line.raw].name;
+}
+
+/* ===== 完成：推导本卦 / 变卦并展示 ===== */
+function finishDivination() {
+  const btn = document.getElementById('toss-btn');
+  btn.disabled = true;
+  btn.textContent = '卦 成';
+  document.getElementById('stage-round').innerHTML = '六爻已成';
+
+  const hexKey = lines.map(l => l.value).join('');
+  const hexId = HEXAGRAM_INDEX[hexKey];
+  const changingIdx = lines.map((l, i) => l.changing ? i : -1).filter(i => i >= 0);
+  let changedId = null;
+  if (changingIdx.length > 0) {
+    const changedKey = lines.map(l => l.changing ? 1 - l.value : l.value).join('');
+    changedId = HEXAGRAM_INDEX[changedKey];
+  }
+
+  const question = document.getElementById('question').value.trim();
+  saveHistory({ t: Date.now(), q: question, lines: lines.map(l => ({...l})), hexId, changedId });
+  renderResult({ q: question, lines: lines.map(l => ({...l})), hexId, changedId });
+  renderHistory();
+
+  setTimeout(() => {
+    document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 400);
+}
+
+/* ===== 渲染结果 ===== */
+function renderResult(rec) {
+  const box = document.getElementById('result');
+  const hex = HEXAGAMS[rec.hexId];
+  const changed = rec.changedId ? HEXAGAMS[rec.changedId] : null;
+  const changingIdx = rec.lines.map((l, i) => l.changing ? i : -1).filter(i => i >= 0);
+
+  const cardHtml = (h, label, solo) =>
+    `<a class="result-card${solo ? ' solo' : ''}" href="/hexagram.html?id=${h.id}">
+      <span class="card-label">${label}</span>
+      <span class="card-sym">${h.symbol}</span>
+      <span class="card-name">第${h.id}卦 · ${h.name}</span>
+      <span class="card-guaci">${h.guaci}</span>
+    </a>`;
+
+  let tipHtml = '';
+  if (changingIdx.length === 0) {
+    tipHtml = `<div class="reading-tip"><span class="tip-label">断 法</span>
+      <p>六爻安静，无动爻。观本卦卦辞，以卦象大势为断。</p></div>`;
+  } else {
+    // 传统断法（朱熹《易学启蒙》体例的简化版）
+    const n = changingIdx.length;
+    let rule = '';
+    if (n === 1) rule = '一爻动，以动爻爻辞为断。';
+    else if (n === 2) rule = '二爻动，以上位动爻（位置较高者）爻辞为断。';
+    else if (n === 3) rule = '三爻动，参看本卦与之卦卦辞。';
+    else if (n === 4) rule = '四爻动，以之卦静爻中下位者为断。';
+    else if (n === 5) rule = '五爻动，以之卦唯一静爻为断。';
+    else rule = '六爻皆动：乾观用九、坤观用六；余卦观之卦卦辞。';
+    tipHtml = `<div class="reading-tip"><span class="tip-label">断 法</span><p>${rule}</p></div>`;
+  }
+
+  let changingHtml = '';
+  if (changingIdx.length > 0) {
+    const items = changingIdx.map(i => {
+      const yao = hex.yaoci[i]; // yaoci 按 position 1-6 排列
+      return `<a class="changing-item" href="/hexagram.html?id=${hex.id}#yao-${yao.position}">
+        <span class="yao-name">${yao.name} · ${YAO_POS[i]}（动）</span>
+        <span class="yao-text">${yao.text}</span>
+        <span class="yao-go">查看详解 →</span>
+      </a>`;
+    }).join('');
+    changingHtml = `<div class="changing-list">${items}</div>`;
+  }
+
+  box.innerHTML = `
+    <div class="result-title">— 卦 成 —</div>
+    ${rec.q ? `<div class="result-title" style="margin-top:-12px">所问：${escapeHtml(rec.q)}</div>` : ''}
+    <div class="result-cards">
+      ${cardHtml(hex, '本 卦', !changed)}
+      ${changed ? cardHtml(changed, '之 卦', false) : ''}
+    </div>
+    ${tipHtml}
+    ${changingHtml}
+    <div class="result-actions">
+      <button class="btn btn-primary" onclick="resetDivination()">再占一卦</button>
+      <a class="btn btn-ghost" href="/hexagram.html?id=${hex.id}">查看本卦详解</a>
+    </div>`;
+  box.classList.add('show');
+}
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* ===== 再占一卦 ===== */
+function resetDivination() {
+  lines = [];
+  round = 0;
+  busy = false;
+  buildYaoStack();
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('result').innerHTML = '';
+  document.getElementById('toss-result').innerHTML =
+    '<div class="toss-faces">　</div><div class="toss-name">点击下方按钮开始摇卦</div>' +
+    '<div class="toss-hint">字为正面（3），花为反面（2）</div>';
+  document.getElementById('stage-round').innerHTML = '第 <b>一</b> 爻 · 初爻';
+  const btn = document.getElementById('toss-btn');
+  btn.disabled = false;
+  btn.textContent = '摇 卦';
+  // 注意：保留所问之事，方便连续占问同一主题
+  document.getElementById('stage').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ===== 历史记录（localStorage） ===== */
+function loadHistory() {
+  try {
+    return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+  } catch (e) { return []; }
+}
+
+function saveHistory(rec) {
+  const h = loadHistory();
+  h.unshift(rec);
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(h.slice(0, 12)));
+}
+
+function renderHistory() {
+  const list = document.getElementById('history-list');
+  const h = loadHistory();
+  if (!h.length || !HEXAGAMS) {
+    list.innerHTML = '<div class="history-empty">暂无记录 · 摇出的卦会保存在本机</div>';
+    return;
+  }
+  list.innerHTML = '';
+  h.forEach((rec, idx) => {
+    const hex = HEXAGAMS[rec.hexId];
+    const changed = rec.changedId ? HEXAGAMS[rec.changedId] : null;
+    if (!hex) return;
+    const d = new Date(rec.t);
+    const time = `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+    const btn = document.createElement('button');
+    btn.className = 'history-item';
+    btn.innerHTML = `<span class="h-time">${time}</span>
+      <span class="h-q">${rec.q ? escapeHtml(rec.q) : '（未留问事）'}</span>
+      <span class="h-gua">${hex.name}${changed ? ' → ' + changed.name : ''}</span>`;
+    btn.addEventListener('click', () => {
+      renderResult(rec);
+      document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    list.appendChild(btn);
+  });
+}
+</script>
+</body>
+</html>

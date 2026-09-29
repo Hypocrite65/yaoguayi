@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>卦象详情 · 爻卦易</title>
+<meta name="description" content="爻卦易《易经》卦象详情：卦辞、爻辞、彖传、象传原文，注音与词义解释。开源、非盈利。"/>
+<meta name="theme-color" content="#faf8f1"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="爻卦易"/>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+/* ===== 主题变量 — 日间模式（暖宣纸色调） ===== */
+body{
+  --bg:              #faf8f1;
+  --bg-alt:          #f1ede2;
+  --ink:             #2c2420;
+  --ink-light:       #5a4e44;
+  --muted:           #7a6e64;
+  --faint:           #a09080;
+  --ghost:           #d5c8b6;
+  --whisper:         #ded4c3;
+  --border:          rgba(26,26,26,0.08);
+  --border-strong:   rgba(26,26,26,0.15);
+  --vermilion:       #c0392b;
+  --vermilion-faint: rgba(192,57,43,0.15);
+  --nav-bg:          rgba(250,248,241,0.92);
+  --card-bg:         rgba(241,237,226,0.5);
+  --hover-bg:        rgba(26,26,26,0.06);
+  --shadow:          rgba(26,26,26,0.08);
+  --svg-fill:        #2c2420;
+  --svg-circle:      #5c3a30;
+}
+
+/* ===== 主题变量 — 夜间模式（温暖的深色阅读调） ===== */
+body.dark-theme{
+  --bg:              #1c1a16;
+  --bg-alt:          #252320;
+  --ink:             #e8e0d4;
+  --ink-light:       #ccc4b8;
+  --muted:           #a49c8c;
+  --faint:           #847c6c;
+  --ghost:           #5a5448;
+  --whisper:         #3e3830;
+  --border:          rgba(232,224,212,0.10);
+  --border-strong:   rgba(232,224,212,0.18);
+  --vermilion:       #e07060;
+  --vermilion-faint: rgba(224,112,96,0.18);
+  --nav-bg:          rgba(28,26,22,0.94);
+  --card-bg:         rgba(37,35,32,0.7);
+  --hover-bg:        rgba(232,224,212,0.08);
+  --shadow:          rgba(0,0,0,0.3);
+  --svg-fill:        #e8e0d4;
+  --svg-circle:      #a07860;
+}
+
+body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
+  color:var(--ink);background:var(--bg);overflow-x:hidden;
+  min-height:100vh;display:flex;flex-direction:column;
+  transition:background 0.4s,color 0.4s;}
+
+/* ===== Fade-in ===== */
+.fade-in{opacity:0;transform:translateY(20px);
+  transition:opacity 0.7s cubic-bezier(0.25,0.46,0.45,0.94),transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+.fade-in.d1{transition-delay:0.1s;}.fade-in.d2{transition-delay:0.2s;}
+.fade-in.d3{transition-delay:0.3s;}.fade-in.d4{transition-delay:0.4s;}
+.fade-in.d5{transition-delay:0.5s;}.fade-in.d6{transition-delay:0.6s;}
+
+/* ===== Top Navigation ===== */
+.top-nav{position:sticky;top:0;z-index:100;
+  background:var(--nav-bg);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border-bottom:0.5px solid var(--border);padding:10px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:'Noto Sans SC',system-ui,sans-serif;transition:background 0.4s;}
+.nav-left{display:flex;align-items:center;gap:16px;}
+.nav-back{font-size:13px;letter-spacing:0.1em;color:var(--muted);text-decoration:none;
+  display:flex;align-items:center;gap:6px;transition:color 0.2s;}
+.nav-back:hover{color:var(--vermilion);}
+.nav-back::before{content:'←';font-size:15px;}
+.nav-link{font-size:13px;letter-spacing:0.1em;color:var(--muted);text-decoration:none;
+  transition:color 0.2s;}
+.nav-link:hover{color:var(--vermilion);}
+.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;}
+.nav-logo svg{width:28px;height:28px;}
+.nav-logo-text{font-size:10px;letter-spacing:0.25em;color:var(--faint);font-weight:500;}
+/* 右侧工具栏 */
+.nav-tools{display:flex;align-items:center;gap:4px;}
+.nav-btn{width:32px;height:32px;border:none;background:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;border-radius:6px;
+  color:var(--muted);transition:background 0.2s,color 0.2s;}
+.nav-btn:hover{background:var(--hover-bg);color:var(--ink);}
+.nav-btn svg{width:18px;height:18px;}
+/* 主题切换动画 */
+.nav-btn .icon-sun,.nav-btn .icon-moon{transition:opacity 0.3s,transform 0.3s;}
+/* 账户下拉菜单 */
+
+/* ===== Two-Column Layout ===== */
+.hex-detail{max-width:1000px;margin:0 auto;padding:32px 28px;flex:1;
+  display:flex;gap:40px;align-items:flex-start;
+  transition:max-width 0.35s cubic-bezier(0.4,0,0.2,1),
+             margin-right 0.35s cubic-bezier(0.4,0,0.2,1);}
+/* 面板展开时，主内容让位 */
+body.panel-open .hex-detail{margin-right:320px;}
+
+/* 左侧 sticky 卦象面板 — 固定左上角 */
+.hex-sidebar{width:220px;flex-shrink:0;position:sticky;top:68px;
+  text-align:center;padding:20px 0;}
+.sidebar-title{display:flex;align-items:baseline;justify-content:center;gap:8px;margin-bottom:4px;}
+.sidebar-name{font-size:28px;letter-spacing:0.1em;color:var(--ink);}
+.sidebar-pinyin{font-size:14px;color:var(--faint);font-family:'Noto Sans SC',system-ui,sans-serif;}
+.sidebar-id{font-size:12px;color:var(--ghost);letter-spacing:0.1em;
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:16px;}
+/* 大爻图（含爻名链接） */
+.sidebar-lines{margin:0 auto 12px;display:flex;justify-content:center;color:var(--ink);}
+.sidebar-lines svg a text{transition:fill 0.2s;}
+.sidebar-lines svg a:hover text{fill:var(--vermilion);}
+/* 上下卦信息 */
+.sidebar-trigrams{display:flex;justify-content:center;gap:20px;
+  font-size:12px;letter-spacing:0.1em;color:var(--muted);
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.sidebar-trigrams span{display:flex;align-items:center;gap:4px;}
+.trigram-label{color:var(--faint);font-size:10px;}
+/* 左侧分隔线 */
+.sidebar-divider{width:60%;margin:16px auto;height:0.5px;background:var(--border);}
+
+/* 右侧主内容 */
+.hex-content{flex:1;min-width:0;}
+
+/* ===== Content Sections ===== */
+.section{margin-bottom:32px;padding-bottom:32px;
+  border-bottom:0.5px solid var(--border);}
+.section:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.section-label{font-size:12px;letter-spacing:0.3em;color:var(--vermilion);margin-bottom:16px;
+  font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:600;}
+.section-text{font-size:18px;line-height:2;letter-spacing:0.06em;color:var(--ink);}
+.section-trans{font-size:15px;line-height:1.9;letter-spacing:0.04em;color:var(--muted);
+  margin-top:12px;padding-left:16px;border-left:2px solid var(--vermilion-faint);}
+
+/* ===== Yaoci ===== */
+.yaoci-list{list-style:none;}
+.yaoci-item{margin-bottom:28px;padding-bottom:28px;
+  border-bottom:0.5px solid var(--border);}
+.yaoci-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.yaoci-item[id]{scroll-margin-top:68px;}
+.yaoci-name{font-size:14px;letter-spacing:0.18em;color:var(--vermilion);margin-bottom:8px;
+  font-weight:600;font-family:'Noto Sans SC',system-ui,sans-serif;}
+.yaoci-text{font-size:17px;line-height:1.9;letter-spacing:0.06em;color:var(--ink);margin-bottom:8px;}
+.yaoci-trans{font-size:14px;line-height:1.8;letter-spacing:0.04em;color:var(--muted);
+  margin-bottom:8px;padding-left:16px;border-left:2px solid var(--vermilion-faint);}
+.yaoci-xiang{font-size:14px;line-height:1.8;letter-spacing:0.06em;color:var(--muted);
+  padding-left:16px;border-left:1.5px solid var(--border-strong);}
+.yaoci-xiang-label{font-size:11px;color:var(--faint);letter-spacing:0.12em;
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:2px;}
+
+/* ===== Ruby 注音 ===== */
+ruby{ruby-position:over;}
+ruby rt{font-size:10px;color:var(--faint);font-family:'Noto Sans SC',system-ui,sans-serif;
+  font-weight:400;letter-spacing:0;}
+
+/* ===== 术语下划线 ===== */
+.term-link{text-decoration:none;border-bottom:1.5px dashed var(--vermilion-faint);
+  cursor:pointer;transition:border-color 0.2s,color 0.2s;color:inherit;}
+.term-link:hover{border-bottom-color:var(--vermilion);color:var(--vermilion);}
+
+/* ===== 角标 ===== */
+.fn-ref{font-size:10px;color:var(--vermilion);cursor:pointer;vertical-align:super;
+  font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:600;
+  margin-left:1px;transition:opacity 0.2s;}
+.fn-ref:hover{opacity:0.7;}
+
+/* ===== 右侧推挤面板 ===== */
+.side-panel{position:fixed;top:52px;right:0;bottom:0;width:320px;
+  background:var(--bg);border-left:0.5px solid var(--border-strong);
+  transform:translateX(100%);
+  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  z-index:90;display:flex;flex-direction:column;overflow:hidden;}
+.side-panel.open{transform:translateX(0);}
+/* 面板头部 */
+.panel-header{display:flex;align-items:center;justify-content:space-between;
+  padding:16px 20px;border-bottom:0.5px solid var(--border);flex-shrink:0;}
+.panel-title{font-size:13px;letter-spacing:0.12em;color:var(--ink);
+  font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:600;}
+.panel-close{width:28px;height:28px;border:none;background:none;cursor:pointer;
+  font-size:18px;color:var(--faint);display:flex;align-items:center;justify-content:center;
+  border-radius:4px;transition:background 0.2s,color 0.2s;}
+.panel-close:hover{background:var(--hover-bg);color:var(--ink);}
+/* 选项卡 */
+.panel-tabs{display:flex;border-bottom:0.5px solid var(--border);flex-shrink:0;}
+.panel-tab{flex:1;padding:10px 0;text-align:center;font-size:11px;letter-spacing:0.14em;
+  color:var(--faint);cursor:pointer;border-bottom:2px solid transparent;
+  font-family:'Noto Sans SC',system-ui,sans-serif;transition:color 0.2s,border-color 0.2s;}
+.panel-tab:hover{color:var(--muted);}
+.panel-tab.active{color:var(--vermilion);border-bottom-color:var(--vermilion);}
+.panel-tab.disabled{color:var(--whisper);cursor:default;}
+/* 面板内容 */
+.panel-body{flex:1;overflow-y:auto;padding:20px;}
+.panel-term{font-size:20px;letter-spacing:0.1em;color:var(--ink);margin-bottom:4px;}
+.panel-pinyin{font-size:13px;color:var(--faint);margin-bottom:16px;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.panel-meaning{font-size:14px;line-height:1.9;color:var(--ink-light);letter-spacing:0.04em;}
+.panel-placeholder{text-align:center;padding:40px 20px;color:var(--ghost);
+  font-size:12px;letter-spacing:0.1em;font-family:'Noto Sans SC',system-ui,sans-serif;}
+/* 面板触发标签（收起状态时显示） */
+.panel-trigger{position:fixed;right:0;top:50%;transform:translateY(-50%);
+  width:28px;padding:12px 4px;background:var(--card-bg);
+  border:0.5px solid var(--border);border-right:none;
+  border-radius:4px 0 0 4px;cursor:pointer;
+  font-size:11px;color:var(--muted);writing-mode:vertical-rl;letter-spacing:0.2em;
+  font-family:'Noto Sans SC',system-ui,sans-serif;
+  transition:background 0.2s,color 0.2s;z-index:89;
+  box-shadow:-2px 0 8px var(--shadow);}
+.panel-trigger:hover{background:var(--bg-alt);color:var(--vermilion);}
+.panel-trigger.hidden{opacity:0;pointer-events:none;}
+
+/* ===== Prev/Next Navigation ===== */
+.hex-nav{display:flex;justify-content:space-between;align-items:center;
+  padding:24px 0 16px;margin-top:8px;border-top:0.5px solid var(--border-strong);}
+.hex-nav a{font-size:12px;letter-spacing:0.1em;color:var(--muted);text-decoration:none;
+  display:flex;align-items:center;gap:8px;font-family:'Noto Sans SC',system-ui,sans-serif;
+  transition:color 0.2s;padding:8px 0;}
+.hex-nav a:hover{color:var(--vermilion);}
+.hex-nav .prev::before{content:'←';}
+.hex-nav .next::after{content:'→';}
+.hex-nav .nav-hex-name{font-family:'Noto Serif SC',serif;font-size:14px;}
+
+/* ===== Footer ===== */
+.site-footer{text-align:center;padding:16px 20px;font-size:9px;letter-spacing:0.1em;
+  color:var(--ghost);border-top:0.5px solid var(--border);
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-top:auto;
+  transition:background 0.4s,color 0.4s;}
+.site-footer a{color:var(--faint);text-decoration:none;transition:color 0.2s;}
+.site-footer a:hover{color:var(--vermilion);}
+
+/* ===== Loading & Error ===== */
+.loading{text-align:center;padding:120px 24px;font-size:13px;letter-spacing:0.12em;color:var(--faint);}
+.error-msg{text-align:center;padding:120px 24px;}
+.error-msg h2{font-size:24px;color:var(--ink);margin-bottom:16px;}
+.error-msg p{font-size:14px;color:var(--muted);margin-bottom:24px;}
+.error-msg a{color:var(--vermilion);text-decoration:none;font-size:13px;letter-spacing:0.1em;}
+
+/* ===== Responsive ===== */
+@media(max-width:768px){
+  .hex-detail{flex-direction:column;gap:24px;padding:24px 16px;}
+  .hex-sidebar{width:100%;position:static;padding:16px 0;
+    border-bottom:0.5px solid var(--border);padding-bottom:24px;}
+  .section-text{font-size:16px;}
+  .yaoci-text{font-size:15px;}
+  .hex-nav{gap:8px;}
+  .hex-nav a{font-size:11px;}
+  .side-panel{width:100%;top:52px;}
+  .panel-trigger{display:none;}
+  body.panel-open .hex-detail{margin-right:0;}
+}
+
+/* ===== 页脚版本号 ===== */
+.site-footer{position:relative;}
+.ver{color:var(--faint);cursor:pointer;transition:color 0.2s;}
+.ver:hover{color:var(--vermilion);}
+.ver-panel{position:absolute;bottom:calc(100% + 10px);right:16px;width:min(440px,92vw);
+  max-height:320px;overflow-y:auto;background:var(--bg);
+  border:1px solid var(--border-strong);border-radius:10px;
+  box-shadow:0 12px 32px var(--shadow);padding:8px;z-index:60;text-align:left;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.ver-panel[hidden]{display:none;}
+.ver-row{display:flex;gap:10px;align-items:baseline;padding:7px 10px;font-size:11px;
+  letter-spacing:0;border-radius:6px;}
+.ver-row:hover{background:var(--hover-bg);}
+.ver-n{color:var(--vermilion);font-weight:600;min-width:34px;flex:none;}
+.ver-sha{font-family:ui-monospace,SFMono-Regular,monospace;color:var(--muted);flex:none;}
+.ver-date{color:var(--faint);white-space:nowrap;flex:none;}
+.ver-sub{color:var(--ink-light);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+</style>
+</head>
+<body>
+
+<!-- ===== Top Navigation ===== -->
+<nav class="top-nav">
+  <div class="nav-left">
+    <a class="nav-back" href="/">六十四卦</a>
+    <a class="nav-link" href="/divination.html">起卦</a>
+  </div>
+  <a class="nav-logo" href="/">
+    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="84" stroke="#5c3a30" stroke-width="5" fill="none"/>
+      <line x1="100" y1="48" x2="100" y2="152" stroke="#2c2420" stroke-width="18" stroke-linecap="round"/>
+      <line x1="48" y1="48" x2="100" y2="100" stroke="#2c2420" stroke-width="18" stroke-linecap="round"/>
+      <line x1="152" y1="48" x2="152" y2="82" stroke="#c0392b" stroke-width="18" stroke-linecap="round"/>
+      <line x1="152" y1="118" x2="152" y2="152" stroke="#c0392b" stroke-width="18" stroke-linecap="round"/>
+    </svg>
+  </a>
+  <div class="nav-tools">
+    <!-- 主题切换 -->
+    <button class="nav-btn" id="theme-toggle" title="切换深色 / 浅色" aria-label="切换深色 / 浅色" onclick="toggleTheme()">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== Main Content ===== -->
+<main class="hex-detail" id="hex-detail">
+  <div class="loading" id="loading">载入中...</div>
+</main>
+
+<!-- ===== Right Side Panel ===== -->
+<div class="panel-trigger" id="panel-trigger" onclick="SidePanel.toggle()">释</div>
+<div class="side-panel" id="side-panel">
+  <div class="panel-header">
+    <span class="panel-title" id="panel-title">词义解释</span>
+    <button class="panel-close" onclick="SidePanel.close()">×</button>
+  </div>
+  <div class="panel-tabs">
+    <div class="panel-tab active" data-tab="meaning" onclick="SidePanel.switchTab('meaning')">词义</div>
+    <div class="panel-tab disabled" data-tab="ai" onclick="return false;">AI 解读（即将推出）</div>
+  </div>
+  <div class="panel-body" id="panel-body">
+    <div class="panel-placeholder">点击经文中带下划线的词语<br>查看详细释义</div>
+  </div>
+</div>
+
+<!-- ===== Footer ===== -->
+<footer class="site-footer">
+  爻卦易 · yaoguayi.com ·
+  <a href="/">六十四卦</a> · 开源 · 非盈利 ·
+  <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank">GitHub</a> ·
+  <span class="ver" id="site-ver" title="查看版本历史">版本 v–</span>
+  <div class="ver-panel" id="ver-panel" hidden></div>
+</footer>
+
+<script src="/js/theme.js"></script>
+<script src="/js/version.js"></script>
+<script>
+/**
+ * hexagram.html — 卦象详情页主逻辑
+ *
+ * 设计说明：
+ * 双栏布局：左侧 sticky 卦象面板 + 右侧经文内容。
+ * 自动为生僻字添加 ruby 注音，术语添加可点击下划线。
+ * 右侧弹出面板显示词义解释，预留 AI 解读选项卡。
+ */
+
+/* ===== 全局状态 ===== */
+let annotations = null;  // 注音和术语数据
+let footnoteCounter = 0; // 全局角标计数器
+
+/* ===== 入场动画：直接触发 ===== */
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+});
+
+/* ===== 加载数据 ===== */
+const params = new URLSearchParams(window.location.search);
+const hexId = parseInt(params.get('id'), 10);
+
+if (!hexId || hexId < 1 || hexId > 64) {
+  showError('未找到该卦象', '请从六十四卦列表中选择');
+} else {
+  Promise.all([
+    fetch('/data/hexagrams.json').then(r => r.json()),
+    fetch('/data/annotations.json').then(r => r.json()).catch(() => null)
+  ]).then(([hexagrams, annot]) => {
+    annotations = annot;
+    const hex = hexagrams.find(h => h.id === hexId);
+    if (!hex) {
+      showError('未找到第' + hexId + '卦', '数据可能尚未录入');
+      return;
+    }
+    renderHexagram(hex, hexagrams);
+  }).catch(err => {
+    console.error(err);
+    showError('数据加载失败', '请检查网络连接后重试');
+  });
+}
+
+/**
+ * 右侧面板模块
+ * 设计说明：管理右侧弹出面板的展开/收起/内容切换
+ */
+const SidePanel = {
+  el: document.getElementById('side-panel'),
+  body: document.getElementById('panel-body'),
+  trigger: document.getElementById('panel-trigger'),
+  isOpen: false,
+
+  open(term, data) {
+    this.body.innerHTML = `
+      <div class="panel-term">${data.term || term}</div>
+      ${data.pinyin ? `<div class="panel-pinyin">${data.pinyin}</div>` : ''}
+      <div class="panel-meaning">${data.meaning || '暂无释义'}</div>`;
+    this.el.classList.add('open');
+    this.trigger.classList.add('hidden');
+    document.body.classList.add('panel-open');
+    this.isOpen = true;
+  },
+
+  close() {
+    this.el.classList.remove('open');
+    this.trigger.classList.remove('hidden');
+    document.body.classList.remove('panel-open');
+    this.isOpen = false;
+  },
+
+  toggle() {
+    if (this.isOpen) this.close();
+    else {
+      this.body.innerHTML = '<div class="panel-placeholder">点击经文中带下划线的词语<br>查看详细释义</div>';
+      this.el.classList.add('open');
+      this.trigger.classList.add('hidden');
+      document.body.classList.add('panel-open');
+      this.isOpen = true;
+    }
+  },
+
+  switchTab(tab) {
+    document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
+    const el = document.querySelector(`.panel-tab[data-tab="${tab}"]`);
+    if (el && !el.classList.contains('disabled')) el.classList.add('active');
+  }
+};
+
+/**
+ * 为文本添加注音和术语标注
+ * 设计说明：
+ *   1. 先将文本拆分为字符数组
+ *   2. 优先匹配多字术语（glossary），添加可点击下划线
+ *   3. 再对剩余字符匹配单字注音（pinyin），添加 ruby 标签
+ *   避免在已标注的 HTML 标签内重复标注
+ *
+ * @param {string} text - 原始经文文本
+ * @param {boolean} addTermLinks - 是否添加术语下划线链接
+ * @returns {string} 带注音和标注的 HTML
+ */
+function annotateText(text, addTermLinks) {
+  if (!annotations || !text) return text || '';
+
+  // 收集所有需要标注的区间，避免重叠
+  const marks = []; // {start, end, html}
+
+  // 第一步：匹配术语（多字词优先）
+  if (addTermLinks && annotations.glossary) {
+    const terms = Object.keys(annotations.glossary).sort((a, b) => b.length - a.length);
+    for (const term of terms) {
+      let idx = 0;
+      while ((idx = text.indexOf(term, idx)) !== -1) {
+        // 检查是否与已有标记重叠
+        const end = idx + term.length;
+        const overlap = marks.some(m => !(end <= m.start || idx >= m.end));
+        if (!overlap) {
+          const g = annotations.glossary[term];
+          const dataAttr = encodeURIComponent(JSON.stringify(g));
+          marks.push({
+            start: idx, end: end,
+            html: `<span class="term-link" data-gloss="${dataAttr}" onclick="showGloss(this)">${term}</span>`
+          });
+        }
+        idx = end;
+      }
+    }
+  }
+
+  // 第二步：匹配单字注音
+  if (annotations.pinyin) {
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      const py = annotations.pinyin[ch];
+      if (!py) continue;
+      // 检查是否与已有标记重叠
+      const overlap = marks.some(m => !(i + 1 <= m.start || i >= m.end));
+      if (!overlap) {
+        marks.push({
+          start: i, end: i + 1,
+          html: `<ruby>${ch}<rp>(</rp><rt>${py}</rt><rp>)</rp></ruby>`
+        });
+      }
+    }
+  }
+
+  // 按位置排序，拼接结果
+  marks.sort((a, b) => a.start - b.start);
+  let result = '';
+  let cursor = 0;
+  for (const m of marks) {
+    if (m.start > cursor) result += text.substring(cursor, m.start);
+    result += m.html;
+    cursor = m.end;
+  }
+  if (cursor < text.length) result += text.substring(cursor);
+
+  return result;
+}
+
+/**
+ * 显示术语释义（由 term-link 点击触发）
+ * @param {HTMLElement} el - 被点击的术语元素
+ */
+function showGloss(el) {
+  try {
+    const data = JSON.parse(decodeURIComponent(el.dataset.gloss));
+    SidePanel.open(data.term || el.textContent, data);
+  } catch (e) {
+    console.error('Failed to parse glossary data', e);
+  }
+}
+
+/**
+ * 渲染卦象详情到页面
+ * @param {Object} hex - 卦象数据对象
+ * @param {Array} all - 全部 64 卦数组
+ */
+function renderHexagram(hex, all) {
+  document.title = hex.name + '卦 · 爻卦易';
+  footnoteCounter = 0;
+
+  const container = document.getElementById('hex-detail');
+  const sym = String.fromCodePoint(0x4DBF + hex.id);
+
+  const prevId = hex.id === 1 ? 64 : hex.id - 1;
+  const nextId = hex.id === 64 ? 1 : hex.id + 1;
+  const prevHex = all.find(h => h.id === prevId);
+  const nextHex = all.find(h => h.id === nextId);
+
+  // 构建爻辞列表
+  let yaociHtml = '';
+  if (hex.yaoci && hex.yaoci.length > 0) {
+    yaociHtml = hex.yaoci.map(y => `
+      <li class="yaoci-item" id="yao-${y.position}" data-position="${y.position}">
+        <div class="yaoci-name">${y.name}</div>
+        <div class="yaoci-text">${annotateText(y.text, true)}</div>
+        ${y.text_trans ? `<div class="yaoci-trans">${y.text_trans}</div>` : ''}
+        ${y.xiang ? `<div class="yaoci-xiang-label">小象传</div><div class="yaoci-xiang">${annotateText(y.xiang, false)}</div>` : ''}
+        ${y.xiang_trans ? `<div class="yaoci-trans">${y.xiang_trans}</div>` : ''}
+      </li>
+    `).join('');
+  }
+
+  container.innerHTML = `
+    <!-- 左侧 sticky 卦象面板 -->
+    <aside class="hex-sidebar fade-in d1">
+      <div class="sidebar-title">
+        <span class="sidebar-name">${hex.name}</span>
+        <span class="sidebar-pinyin">${hex.pinyin}</span>
+      </div>
+      <div class="sidebar-id">第${hex.id}卦</div>
+      <div class="sidebar-lines">${buildLinesSVG(hex.lines, hex.yaoci)}</div>
+      <div class="sidebar-trigrams">
+        <span><span class="trigram-label">上卦</span>${hex.upperTrigram}</span>
+        <span><span class="trigram-label">下卦</span>${hex.lowerTrigram}</span>
+      </div>
+    </aside>
+
+    <!-- 右侧经文内容 -->
+    <div class="hex-content">
+      <!-- 卦辞 -->
+      <div class="section fade-in d2">
+        <div class="section-label">卦 辞</div>
+        <div class="section-text">${annotateText(hex.guaci, true)}</div>
+        ${hex.guaci_trans ? `<div class="section-trans">${hex.guaci_trans}</div>` : ''}
+      </div>
+
+      <!-- 彖传 -->
+      ${hex.tuan ? `
+      <div class="section fade-in d3">
+        <div class="section-label">彖 传</div>
+        <div class="section-text">${annotateText(hex.tuan, true)}</div>
+        ${hex.tuan_trans ? `<div class="section-trans">${hex.tuan_trans}</div>` : ''}
+      </div>` : ''}
+
+      <!-- 大象传 -->
+      ${hex.xiang ? `
+      <div class="section fade-in d4">
+        <div class="section-label">大 象 传</div>
+        <div class="section-text">${annotateText(hex.xiang, true)}</div>
+        ${hex.xiang_trans ? `<div class="section-trans">${hex.xiang_trans}</div>` : ''}
+      </div>` : ''}
+
+      <!-- 爻辞 -->
+      ${yaociHtml ? `
+      <div class="section fade-in d5">
+        <div class="section-label">爻 辞</div>
+        <ul class="yaoci-list">${yaociHtml}</ul>
+      </div>` : ''}
+
+      <!-- Prev/Next Navigation -->
+      <div class="hex-nav fade-in d6">
+        <a class="prev" href="/hexagram.html?id=${prevId}">
+          <span class="nav-hex-name">${prevHex ? prevHex.name : ''}卦</span>
+        </a>
+        <a href="/" style="font-size:11px;letter-spacing:0.2em;color:#a09080;">六十四卦</a>
+        <a class="next" href="/hexagram.html?id=${nextId}">
+          <span class="nav-hex-name">${nextHex ? nextHex.name : ''}卦</span>
+        </a>
+      </div>
+    </div>
+  `;
+
+  // 触发入场动画
+  requestAnimationFrame(() => {
+    container.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+  });
+
+}
+
+/**
+ * 生成带爻名标注的 SVG 六爻图
+ * 设计说明：
+ *   左侧绘制爻线，右侧标注对应爻名（初九、六二等）
+ *   阳爻(1) = 实线，阴爻(0) = 断线
+ *   由下至上排列（lines[0] 在底部）
+ *
+ * @param {number[]} lines - 六爻数组
+ * @param {Array} yaoci - 爻辞数组（取 name 字段）
+ * @returns {string} SVG HTML
+ */
+function buildLinesSVG(lines, yaoci) {
+  /**
+   * 生成大号 SVG 六爻图（含爻名标注）
+   * 设计说明：
+   *   左侧绘制爻线，右侧标注爻名（初九、六二等）
+   *   尺寸放大以作为左侧面板的核心视觉元素
+   */
+  const lineW = 100;        // 爻线宽度
+  const lineH = 8;          // 爻线高度
+  const gap = 18;           // 爻间距（加大避免爻名文字重叠）
+  const breakGap = 14;      // 阴爻断口宽度
+  const textOffset = 12;    // 爻线右侧到文字的距离
+  const totalH = 6 * lineH + 5 * gap;
+  const x0 = 0;
+  const svgW = lineW + textOffset + 36;
+
+  let svgContent = '';
+  for (let i = 0; i < 6; i++) {
+    const lineIdx = 5 - i;
+    const y = i * (lineH + gap);
+    const val = lines[lineIdx];
+    const yCenter = y + lineH / 2;
+
+    if (val === 1) {
+      svgContent += `<rect x="${x0}" y="${y}" width="${lineW}" height="${lineH}" rx="1.5" fill="currentColor"/>`;
+    } else {
+      const segW = (lineW - breakGap) / 2;
+      svgContent += `<rect x="${x0}" y="${y}" width="${segW}" height="${lineH}" rx="1.5" fill="currentColor"/>`;
+      svgContent += `<rect x="${x0 + segW + breakGap}" y="${y}" width="${segW}" height="${lineH}" rx="1.5" fill="currentColor"/>`;
+    }
+
+    const pos = lineIdx + 1;
+    const yao = yaoci ? yaoci.find(y => y.position === pos) : null;
+    const label = yao ? yao.name : '';
+    if (label && pos <= 6) {
+      svgContent += `<a href="#yao-${pos}"><text x="${lineW + textOffset}" y="${yCenter + 4}" font-size="12" fill="#a09080" font-family="'Noto Sans SC',system-ui,sans-serif" style="cursor:pointer"><title>${label}</title>${label}</text></a>`;
+    } else if (label) {
+      svgContent += `<text x="${lineW + textOffset}" y="${yCenter + 4}" font-size="12" fill="#a09080" font-family="'Noto Sans SC',system-ui,sans-serif">${label}</text>`;
+    }
+  }
+
+  return `<svg viewBox="0 0 ${svgW} ${totalH}" width="${svgW}" height="${totalH}" xmlns="http://www.w3.org/2000/svg">${svgContent}</svg>`;
+}
+
+/**
+ * 显示错误页面
+ */
+function showError(title, desc) {
+  const container = document.getElementById('hex-detail');
+  container.innerHTML = `
+    <div class="error-msg">
+      <h2>${title}</h2>
+      <p>${desc}</p>
+      <a href="/">← 返回六十四卦</a>
+    </div>`;
+}
+</script>
+</body>
+</html>

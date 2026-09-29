@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <!--
+    Yao Gua Yi Logo — Scheme B refined v2
+    Circle thicker + warmer to balance ink and vermilion
+  -->
+
+  <!-- Outer circle: thicker, warm reddish-brown to bridge ink↔vermilion -->
+  <circle cx="100" cy="100" r="84" stroke="#5c3a30" stroke-width="5" fill="none"/>
+
+  <!-- Modified Y: ink color -->
+  <line x1="100" y1="48" x2="100" y2="152" stroke="#2c2420" stroke-width="18" stroke-linecap="round"/>
+  <line x1="48" y1="48" x2="100" y2="100" stroke="#2c2420" stroke-width="18" stroke-linecap="round"/>
+
+  <!-- Letter i: vermilion, wide gap -->
+  <line x1="152" y1="48" x2="152" y2="82" stroke="#c0392b" stroke-width="18" stroke-linecap="round"/>
+  <line x1="152" y1="118" x2="152" y2="152" stroke="#c0392b" stroke-width="18" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>爻卦易 · 观象明理</title>
+<meta name="description" content="爻卦易 — 开源《易经》学习平台：六十四卦全览、金钱卦起卦、原典经文阅读。在 AI 加速的时代，用三千年的智慧定一定位。不是占卜，是观象。"/>
+<meta name="keywords" content="易经,周易,六十四卦,起卦,金钱卦,卦辞,爻辞,彖传,象传,爻卦易"/>
+<meta name="theme-color" content="#faf8f1"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="爻卦易"/>
+<meta property="og:title" content="爻卦易 · 观象明理"/>
+<meta property="og:description" content="开源《易经》学习平台：六十四卦全览、金钱卦起卦、原典经文阅读。"/>
+<meta property="og:url" content="https://yaoguayi.com/"/>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+/* ===== 主题变量 ===== */
+body{
+  --bg:#faf8f1;--bg-alt:#f1ede2;--ink:#2c2420;--ink-light:#5a4e44;
+  --muted:#7a6e64;--faint:#a09080;--ghost:#d5c8b6;--whisper:#ded4c3;
+  --border:rgba(26,26,26,0.08);--border-strong:rgba(26,26,26,0.15);
+  --vermilion:#c0392b;--vermilion-faint:rgba(192,57,43,0.15);
+  --nav-bg:rgba(250,248,241,0.92);--card-bg:rgba(241,237,226,0.5);
+  --hover-bg:rgba(26,26,26,0.06);--shadow:rgba(26,26,26,0.08);
+  --svg-fill:#2c2420;--svg-circle:#5c3a30;
+}
+body.dark-theme{
+  --bg:#1c1a16;--bg-alt:#252320;--ink:#e8e0d4;--ink-light:#ccc4b8;
+  --muted:#a49c8c;--faint:#847c6c;--ghost:#5a5448;--whisper:#3e3830;
+  --border:rgba(232,224,212,0.10);--border-strong:rgba(232,224,212,0.18);
+  --vermilion:#e07060;--vermilion-faint:rgba(224,112,96,0.18);
+  --nav-bg:rgba(28,26,22,0.94);--card-bg:rgba(37,35,32,0.7);
+  --hover-bg:rgba(232,224,212,0.08);--shadow:rgba(0,0,0,0.3);
+  --svg-fill:#e8e0d4;--svg-circle:#a07860;
+}
+
+body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
+  color:var(--ink);background:var(--bg);overflow-x:hidden;
+  transition:background 0.4s,color 0.4s;}
+
+/* ===== 顶部导航栏 ===== */
+.top-nav{position:fixed;top:0;left:0;right:0;z-index:200;
+  background:var(--nav-bg);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border-bottom:0.5px solid var(--border);padding:10px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:'Noto Sans SC',system-ui,sans-serif;transition:background 0.4s;
+  opacity:0;transform:translateY(-100%);pointer-events:none;}
+.top-nav.visible{opacity:1;transform:translateY(0);pointer-events:auto;
+  transition:opacity 0.3s,transform 0.3s,background 0.4s;}
+.nav-left{display:flex;align-items:center;gap:16px;}
+.nav-home{font-size:13px;letter-spacing:0.1em;color:var(--muted);text-decoration:none;
+  display:flex;align-items:center;gap:6px;transition:color 0.2s;}
+.nav-home:hover{color:var(--vermilion);}
+.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;}
+.nav-logo svg{width:28px;height:28px;}
+.nav-logo svg circle{stroke:var(--svg-circle);}
+.nav-logo svg line{stroke:var(--svg-fill);}
+.nav-logo svg line:nth-child(4),.nav-logo svg line:nth-child(5){stroke:var(--vermilion);}
+.nav-tools{display:flex;align-items:center;gap:4px;}
+.nav-btn{width:32px;height:32px;border:none;background:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;border-radius:6px;
+  color:var(--muted);transition:background 0.2s,color 0.2s;}
+.nav-btn:hover{background:var(--hover-bg);color:var(--ink);}
+.nav-btn svg{width:18px;height:18px;}
+
+/* ===== Scroll-triggered fade-in ===== */
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.8s cubic-bezier(0.25,0.46,0.45,0.94),transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94);}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+/* Stagger delays for cover elements */
+.fade-in.d1{transition-delay:0.1s;}
+.fade-in.d2{transition-delay:0.25s;}
+.fade-in.d3{transition-delay:0.4s;}
+.fade-in.d4{transition-delay:0.55s;}
+.fade-in.d5{transition-delay:0.7s;}
+
+/* ===== Cover: full viewport ===== */
+.cover{
+  width:100%;height:100vh;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  position:relative;
+  background:var(--bg);
+}
+
+/* Cover parallax: content fades out + drifts up on scroll */
+.cover-inner{
+  display:flex;flex-direction:column;align-items:center;
+  transition:opacity 0.1s,transform 0.1s;
+  will-change:opacity,transform;
+}
+
+/* Logo */
+.cover-logo{margin-bottom:48px;display:flex;flex-direction:column;align-items:center;gap:16px;}
+.cover-logo svg{width:72px;height:72px;}
+.cover-brand{font-size:12px;letter-spacing:0.4em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:500;}
+/* Logo circle draw animation */
+.logo-circle{stroke-dasharray:530;stroke-dashoffset:530;
+  animation:drawCircle 1.6s cubic-bezier(0.4,0,0.2,1) 0.2s forwards;}
+.logo-line{opacity:0;animation:fadeInLine 0.6s cubic-bezier(0.4,0,0.2,1) forwards;}
+.logo-l1{animation-delay:0.6s;}
+.logo-l2{animation-delay:0.8s;}
+.logo-l3{animation-delay:1.0s;}
+.logo-l4{animation-delay:1.2s;}
+@keyframes drawCircle{to{stroke-dashoffset:0;}}
+@keyframes fadeInLine{from{opacity:0;transform:translateY(3px);}to{opacity:1;transform:translateY(0);}}
+
+/* Title */
+.cover-title{font-size:48px;letter-spacing:0.2em;color:var(--ink);
+  font-weight:400;margin-bottom:20px;text-align:center;}
+.cover-sub{font-size:13px;letter-spacing:0.12em;color:var(--muted);
+  line-height:2.2;text-align:center;margin-bottom:44px;}
+
+/* Navigation row */
+.cover-nav{display:flex;gap:32px;margin-bottom:56px;}
+.cover-nav a{font-size:11px;letter-spacing:0.18em;color:var(--muted);
+  text-decoration:none;
+  font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:500;
+  padding-bottom:2px;border-bottom:0.5px solid transparent;
+  transition:color 0.3s,border-color 0.3s,transform 0.2s;}
+.cover-nav a:hover{color:var(--vermilion);border-bottom-color:var(--vermilion);transform:translateY(-1px);}
+
+/* Quote at bottom */
+.cover-quote{position:absolute;bottom:80px;
+  font-size:11px;letter-spacing:0.16em;color:var(--ghost);
+  text-align:center;line-height:2.2;}
+.cover-quote em{font-style:normal;font-size:10px;color:var(--whisper);}
+
+/* Random hexagram card */
+.random-card{
+  display:flex;align-items:center;gap:20px;
+  padding:14px 24px;margin-bottom:48px;
+  width:min(400px, 85vw);
+  border:0.5px solid var(--border);border-radius:4px;
+  cursor:pointer;text-decoration:none;color:inherit;
+  background:var(--card-bg);
+  transition:background 0.35s,border-color 0.35s,box-shadow 0.35s,transform 0.25s;
+}
+.random-card:hover{
+  background:var(--bg-alt);border-color:var(--vermilion-faint);
+  box-shadow:0 2px 12px var(--shadow);transform:translateY(-2px);
+}
+.random-sym{font-size:36px;line-height:1;color:var(--ink);opacity:0.75;
+  transition:opacity 0.3s,transform 0.3s;}
+.random-card:hover .random-sym{opacity:1;transform:scale(1.08);}
+.random-info{display:flex;flex-direction:column;gap:3px;}
+.random-label{font-size:9px;letter-spacing:0.2em;color:var(--vermilion);
+  font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:600;}
+.random-name{font-size:16px;letter-spacing:0.12em;color:var(--ink);}
+.random-guaci{font-size:10px;color:var(--muted);letter-spacing:0.06em;line-height:1.6;}
+.random-arrow{margin-left:auto;font-size:14px;color:var(--ghost);
+  transition:transform 0.3s,color 0.3s;}
+.random-card:hover .random-arrow{transform:translateX(6px);color:var(--vermilion);}
+
+/* Scroll hint */
+.scroll-hint{position:absolute;bottom:32px;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  color:var(--ghost);font-size:9px;letter-spacing:0.2em;
+  animation:hintPulse 2.5s ease-in-out infinite;
+  transition:opacity 0.4s;}
+.scroll-hint.hidden{opacity:0;pointer-events:none;}
+.scroll-hint::after{content:'';width:1px;height:20px;background:var(--ghost);
+  animation:hintLine 2.5s ease-in-out infinite;}
+@keyframes hintPulse{0%,100%{opacity:0.4;}50%{opacity:0.8;}}
+@keyframes hintLine{0%,100%{height:16px;opacity:0.3;}50%{height:24px;opacity:0.7;}}
+
+/* ===== Divider ===== */
+.section-divider{
+  width:100%;padding:20px 20%;
+  display:flex;align-items:center;gap:20px;
+  background:linear-gradient(to bottom,var(--bg),var(--bg-alt));
+}
+.section-divider::before,.section-divider::after{
+  content:'';flex:1;height:0.5px;background:var(--border);
+}
+.section-divider span{font-size:10px;letter-spacing:0.3em;color:var(--ghost);
+  white-space:nowrap;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+
+/* ===== Hexagram Section ===== */
+.hex-section{
+  background:var(--bg-alt);
+  padding:40px 32px 24px;
+  min-height:100vh;transition:background 0.4s;
+}
+.hex-header{
+  max-width:960px;margin:0 auto 20px;
+  display:flex;align-items:baseline;justify-content:space-between;
+}
+.hex-title{font-size:11px;letter-spacing:0.22em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:500;}
+.hex-hint{font-size:10px;letter-spacing:0.12em;color:var(--ghost);}
+
+/* Grid */
+.hex-grid{
+  max-width:960px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(8,1fr);gap:2px;
+}
+.hex-cell{
+  display:flex;flex-direction:column;align-items:center;
+  padding:12px 4px;cursor:pointer;border-radius:3px;
+  transition:background 0.2s,transform 0.2s,box-shadow 0.2s;
+  /* Staggered entrance */
+  opacity:0;transform:translateY(16px);
+}
+.hex-cell.show{opacity:1;transform:translateY(0);
+  transition:opacity 0.5s cubic-bezier(0.25,0.46,0.45,0.94),
+    transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94),
+    background 0.2s,box-shadow 0.2s;}
+.hex-cell:hover{background:var(--hover-bg);transform:scale(1.06);
+  box-shadow:0 2px 8px var(--shadow);}
+.hex-cell.today{background:var(--vermilion-faint);}
+.hex-sym{font-size:22px;line-height:1;color:var(--ink);opacity:0.65;margin-bottom:5px;
+  transition:opacity 0.2s,transform 0.3s;}
+.hex-cell:hover .hex-sym{opacity:0.9;transform:scale(1.1);}
+.hex-cell.today .hex-sym{color:var(--vermilion);opacity:0.9;}
+.hex-name{font-size:11px;letter-spacing:0.08em;color:var(--ink-light);
+  transition:color 0.2s;}
+.hex-cell:hover .hex-name{color:var(--ink);}
+.hex-cell.today .hex-name{color:var(--vermilion);}
+.hex-num{font-size:8px;color:var(--ghost);margin-top:3px;}
+
+/* Footer */
+.site-footer{
+  background:var(--bg-alt);padding:16px 32px;
+  border-top:0.5px solid var(--border);
+  font-size:9px;letter-spacing:0.1em;color:var(--ghost);
+  font-family:'Noto Sans SC',system-ui,sans-serif;transition:background 0.4s;
+}
+.footer-row{display:flex;justify-content:space-between;align-items:center;
+  max-width:960px;margin:0 auto;gap:12px;flex-wrap:wrap;}
+.footer-left{display:flex;align-items:center;gap:6px;}
+.footer-right{display:flex;align-items:center;gap:6px;}
+.footer-sep{color:var(--whisper);}
+.site-footer a{color:var(--faint);text-decoration:none;transition:color 0.2s;}
+.site-footer a:hover{color:var(--vermilion);}
+@media(max-width:768px){
+  .footer-row{flex-direction:column;align-items:center;text-align:center;gap:6px;}
+  .footer-left,.footer-right{justify-content:center;flex-wrap:wrap;}
+}
+
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(26,26,26,0.1);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:rgba(26,26,26,0.2);}
+
+
+/* ===== Responsive ===== */
+@media(max-width:768px){
+  .cover-title{font-size:32px;}
+  .cover-nav{gap:20px;flex-wrap:wrap;justify-content:center;}
+  .cover-quote{position:static;margin-top:40px;}
+  .scroll-hint{position:static;margin-top:24px;}
+  .hex-grid{grid-template-columns:repeat(4,1fr);}
+  .hex-section{padding:28px 16px 16px;}
+}
+
+/* ===== 页脚版本号 ===== */
+.site-footer{position:relative;}
+.ver{color:var(--faint);cursor:pointer;transition:color 0.2s;}
+.ver:hover{color:var(--vermilion);}
+.ver-panel{position:absolute;bottom:calc(100% + 10px);right:16px;width:min(440px,92vw);
+  max-height:320px;overflow-y:auto;background:var(--bg);
+  border:1px solid var(--border-strong);border-radius:10px;
+  box-shadow:0 12px 32px var(--shadow);padding:8px;z-index:60;text-align:left;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.ver-panel[hidden]{display:none;}
+.ver-row{display:flex;gap:10px;align-items:baseline;padding:7px 10px;font-size:11px;
+  letter-spacing:0;border-radius:6px;}
+.ver-row:hover{background:var(--hover-bg);}
+.ver-n{color:var(--vermilion);font-weight:600;min-width:34px;flex:none;}
+.ver-sha{font-family:ui-monospace,SFMono-Regular,monospace;color:var(--muted);flex:none;}
+.ver-date{color:var(--faint);white-space:nowrap;flex:none;}
+.ver-sub{color:var(--ink-light);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+</style>
+</head>
+<body>
+
+<!-- ===== Top Nav (appears on scroll) ===== -->
+<nav class="top-nav" id="top-nav">
+  <div class="nav-left">
+    <a class="nav-home" href="#hexagrams">六十四卦</a>
+  </div>
+  <a class="nav-logo" href="/">
+    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="84" stroke="#5c3a30" stroke-width="5" fill="none"/>
+      <line x1="100" y1="48" x2="100" y2="152" stroke="#2c2420" stroke-width="18" stroke-linecap="round"/>
+      <line x1="48" y1="48" x2="100" y2="100" stroke="#2c2420" stroke-width="18" stroke-linecap="round"/>
+      <line x1="152" y1="48" x2="152" y2="82" stroke="#c0392b" stroke-width="18" stroke-linecap="round"/>
+      <line x1="152" y1="118" x2="152" y2="152" stroke="#c0392b" stroke-width="18" stroke-linecap="round"/>
+    </svg>
+  </a>
+  <div class="nav-tools">
+    <button class="nav-btn" id="theme-toggle" title="切换深色 / 浅色" aria-label="切换深色 / 浅色" onclick="toggleTheme()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ===== First Screen: Cover ===== -->
+<section class="cover">
+  <div class="cover-inner">
+    <!-- Logo with draw animation -->
+    <div class="cover-logo fade-in d1">
+      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle class="logo-circle" cx="100" cy="100" r="84" stroke="#5c3a30" stroke-width="5" fill="none"/>
+        <line class="logo-line logo-l1" x1="100" y1="48" x2="100" y2="152" stroke="#2c2420" stroke-width="18" stroke-linecap="round"/>
+        <line class="logo-line logo-l2" x1="48" y1="48" x2="100" y2="100" stroke="#2c2420" stroke-width="18" stroke-linecap="round"/>
+        <line class="logo-line logo-l3" x1="152" y1="48" x2="152" y2="82" stroke="#c0392b" stroke-width="18" stroke-linecap="round"/>
+        <line class="logo-line logo-l4" x1="152" y1="118" x2="152" y2="152" stroke="#c0392b" stroke-width="18" stroke-linecap="round"/>
+      </svg>
+      <span class="cover-brand">爻 卦 易</span>
+    </div>
+
+    <h1 class="cover-title fade-in d2">观 象 明 理</h1>
+    <p class="cover-sub fade-in d3">
+      在 AI 加速的时代，用三千年的智慧定一定位。<br>
+      不是占卜，是观象。
+    </p>
+
+    <nav class="cover-nav fade-in d4">
+      <a href="#hexagrams">六十四卦</a>
+      <a href="/divination.html">起卦</a>
+    </nav>
+
+    <a class="random-card fade-in d5" id="random-card" href="#hexagrams"></a>
+  </div>
+
+  <div class="cover-quote fade-in d5">
+    仰则观象于天，俯则观法于地<br>
+    <em>——《周易 · 系辞传》</em>
+  </div>
+
+  <div class="scroll-hint" id="scroll-hint">向下</div>
+</section>
+
+<!-- ===== Divider ===== -->
+<div class="section-divider fade-in"><span>六十四卦</span></div>
+
+<!-- ===== Second Screen: Hexagram Grid ===== -->
+<section class="hex-section" id="hexagrams">
+  <div class="hex-header fade-in">
+    <span class="hex-title">六十四卦</span>
+    <span class="hex-hint">点击查看卦辞</span>
+  </div>
+  <div class="hex-grid" id="hex-grid"></div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer class="site-footer fade-in">
+  <div class="footer-row">
+    <div class="footer-left">
+      爻卦易 <span class="footer-sep">·</span> yaoguayi.com <span class="footer-sep">·</span>
+      开源 <span class="footer-sep">·</span> 非盈利
+    </div>
+    <div class="footer-right">
+      <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank">GitHub</a>
+      <span class="footer-sep">·</span>
+      <span class="ver" id="site-ver" title="查看版本历史">版本 v–</span>
+    </div>
+  </div>
+  <div class="ver-panel" id="ver-panel" hidden></div>
+</footer>
+
+<script src="/js/theme.js"></script>
+<script src="/js/version.js"></script>
+<script>
+/**
+ * index.html — 首页主逻辑
+ *
+ * 设计说明：
+ * 从 hexagrams.json 加载完整卦象数据，渲染随机卦卡片和 64 卦网格。
+ * 点击卦象跳转到详情页 hexagram.html?id=N。
+ */
+
+/* 封面入场动画：页面加载后直接触发 */
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.cover .fade-in').forEach(el => el.classList.add('visible'));
+});
+
+/* 计算今日卦 */
+const d = new Date();
+const todayId = ((d.getFullYear() * 366 + d.getMonth() * 31 + d.getDate()) % 64) + 1;
+
+/* 加载卦象数据并渲染页面 */
+fetch('/data/hexagrams.json')
+  .then(r => r.json())
+  .then(hexagrams => {
+    renderRandomCard(hexagrams);
+    renderGrid(hexagrams);
+    initScrollAnimations();
+  })
+  .catch(err => {
+    console.error('Failed to load hexagram data:', err);
+    /* 降级：使用 Unicode 符号和卦名渲染基础网格 */
+    renderFallbackGrid();
+    initScrollAnimations();
+  });
+
+/**
+ * 生成小型 SVG 卦象图标（替代 Unicode 字符，跨平台一致）
+ * 设计说明：
+ *   阳爻(1)=实线，阴爻(0)=断线，由下至上排列。
+ *   用 currentColor 跟随主题颜色。
+ * @param {number[]} lines - 六爻数组
+ * @param {number} size - 图标尺寸(px)
+ * @returns {string} SVG HTML
+ */
+function miniHexSVG(lines, size) {
+  if (!lines || lines.length < 6) return '';
+  const s = size || 28;
+  const lw = s * 0.8;       // 爻线宽度
+  const lh = s * 0.07;      // 爻线高度
+  const gap = s * 0.1;      // 爻间距
+  const bg = s * 0.16;      // 阴爻断口
+  const th = 6 * lh + 5 * gap;
+  const x0 = (s - lw) / 2;
+  let svg = '';
+  for (let i = 0; i < 6; i++) {
+    const li = 5 - i;
+    const y = i * (lh + gap);
+    if (lines[li] === 1) {
+      svg += `<rect x="${x0}" y="${y}" width="${lw}" height="${lh}" rx="0.5" fill="currentColor"/>`;
+    } else {
+      const sw = (lw - bg) / 2;
+      svg += `<rect x="${x0}" y="${y}" width="${sw}" height="${lh}" rx="0.5" fill="currentColor"/>`;
+      svg += `<rect x="${x0 + sw + bg}" y="${y}" width="${sw}" height="${lh}" rx="0.5" fill="currentColor"/>`;
+    }
+  }
+  return `<svg viewBox="0 0 ${s} ${th}" width="${s}" height="${th}" style="display:block" xmlns="http://www.w3.org/2000/svg">${svg}</svg>`;
+}
+
+/**
+ * 渲染随机卦卡片
+ * @param {Array} hexagrams - 64 卦数据数组
+ */
+function renderRandomCard(hexagrams) {
+  const randomId = Math.floor(Math.random() * 64) + 1;
+  const rHex = hexagrams[randomId - 1];
+  const rSym = String.fromCodePoint(0x4DBF + randomId);
+  const rCard = document.getElementById('random-card');
+  if (!rCard) return;
+  rCard.innerHTML = `<span class="random-sym">${rSym}</span>
+    <div class="random-info">
+      <span class="random-label">随机一卦</span>
+      <span class="random-name">第${randomId}卦 · ${rHex.name}</span>
+      <span class="random-guaci">${rHex.guaci}</span>
+    </div>
+    <span class="random-arrow">→</span>`;
+  rCard.onclick = (e) => {
+    e.preventDefault();
+    location.href = '/hexagram.html?id=' + randomId;
+  };
+}
+
+/**
+ * 渲染 64 卦网格
+ * @param {Array} hexagrams - 64 卦数据数组
+ */
+function renderGrid(hexagrams) {
+  const grid = document.getElementById('hex-grid');
+  if (!grid) return;
+  hexagrams.forEach((hex) => {
+    const id = hex.id;
+    const sym = String.fromCodePoint(0x4DBF + id);
+    const cell = document.createElement('div');
+    cell.className = 'hex-cell' + (id === todayId ? ' today' : '');
+    cell.innerHTML = `<span class="hex-sym">${sym}</span>
+      <span class="hex-name">${hex.name}</span>
+      <span class="hex-num">${id}</span>`;
+    cell.onclick = () => { location.href = '/hexagram.html?id=' + id; };
+    grid.appendChild(cell);
+  });
+}
+
+/**
+ * 降级网格：数据加载失败时使用卦名常量渲染
+ */
+function renderFallbackGrid() {
+  const names = ['乾','坤','屯','蒙','需','讼','师','比','小畜','履','泰','否',
+    '同人','大有','谦','豫','随','蛊','临','观','噬嗑','贲','剥','复',
+    '无妄','大畜','颐','大过','坎','离','咸','恒','遁','大壮','晋','明夷',
+    '家人','睽','蹇','解','损','益','夬','姤','萃','升','困','井',
+    '革','鼎','震','艮','渐','归妹','丰','旅','巽','兑','涣','节',
+    '中孚','小过','既济','未济'];
+  const grid = document.getElementById('hex-grid');
+  if (!grid) return;
+  names.forEach((name, i) => {
+    const id = i + 1;
+    const sym = String.fromCodePoint(0x4DBF + id);
+    const cell = document.createElement('div');
+    cell.className = 'hex-cell' + (id === todayId ? ' today' : '');
+    cell.innerHTML = `<span class="hex-sym">${sym}</span>
+      <span class="hex-name">${name}</span>
+      <span class="hex-num">${id}</span>`;
+    cell.onclick = () => { location.href = '/hexagram.html?id=' + id; };
+    grid.appendChild(cell);
+  });
+}
+
+/**
+ * 初始化滚动触发动画和封面视差效果
+ */
+function initScrollAnimations() {
+  const grid = document.getElementById('hex-grid');
+
+  /* IntersectionObserver: 滚动触发淡入 */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        if (entry.target.classList.contains('hex-cell') && grid) {
+          const idx = Array.from(grid.children).indexOf(entry.target);
+          const row = Math.floor(idx / 8);
+          const col = idx % 8;
+          entry.target.style.transitionDelay = (row * 0.04 + col * 0.02) + 's';
+          entry.target.classList.add('show');
+        } else {
+          entry.target.classList.add('visible');
+        }
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  document.querySelectorAll('.hex-cell').forEach(el => observer.observe(el));
+
+  /* 封面视差：滚动时淡出上移 + 导航栏显示控制 */
+  const coverInner = document.querySelector('.cover-inner');
+  const scrollHint = document.getElementById('scroll-hint');
+  const topNav = document.getElementById('top-nav');
+
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    const vh = window.innerHeight;
+    const progress = Math.min(scrollY / (vh * 0.5), 1);
+    if (coverInner) {
+      coverInner.style.opacity = 1 - progress;
+      coverInner.style.transform = 'translateY(' + (-scrollY * 0.3) + 'px)';
+    }
+    if (scrollHint) {
+      if (scrollY > 20) scrollHint.classList.add('hidden');
+      else scrollHint.classList.remove('hidden');
+    }
+    /* 滚过封面后显示顶部导航栏 */
+    if (topNav) {
+      if (scrollY > vh * 0.7) topNav.classList.add('visible');
+      else topNav.classList.remove('visible');
+    }
+  }, { passive: true });
+}
+</script>
+</body>
+</html>
