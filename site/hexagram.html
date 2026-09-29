@@ -295,6 +295,13 @@ ruby rt{font-size:10px;color:var(--faint);font-family:'Noto Sans SC',system-ui,s
 .ver-sha{font-family:ui-monospace,SFMono-Regular,monospace;color:var(--muted);flex:none;}
 .ver-date{color:var(--faint);white-space:nowrap;flex:none;}
 .ver-sub{color:var(--ink-light);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+/* 移动端导航横滑，避免链接挤出可视区 */
+@media(max-width:640px){
+  .top-nav .nav-left{overflow-x:auto;scrollbar-width:none;white-space:nowrap;max-width:76vw;}
+  .top-nav .nav-left::-webkit-scrollbar{display:none;}
+  .top-nav .nav-left a{flex:none;}
+}
 </style>
 </head>
 <body>
@@ -304,6 +311,7 @@ ruby rt{font-size:10px;color:var(--faint);font-family:'Noto Sans SC',system-ui,s
   <div class="nav-left">
     <a class="nav-back" href="/">六十四卦</a>
     <a class="nav-link" href="/hexagrams.html">卦象索引</a>
+    <a class="nav-link" href="/learn.html">知识</a>
     <a class="nav-link" href="/divination.html">起卦</a>
     <a class="nav-link" href="/glossary.html">术语表</a>
   </div>
@@ -355,6 +363,7 @@ ruby rt{font-size:10px;color:var(--faint);font-family:'Noto Sans SC',system-ui,s
   爻卦易 · yaoguayi.com ·
   <a href="/">六十四卦</a> ·
   <a href="/hexagrams.html">卦象索引</a> ·
+  <a href="/learn.html">知识</a> ·
   <a href="/glossary.html">术语表</a> ·
   <a href="/sitemap.xml">站点地图</a> ·
   开源 · 非盈利 ·

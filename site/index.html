@@ -343,6 +343,13 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 .ver-sha{font-family:ui-monospace,SFMono-Regular,monospace;color:var(--muted);flex:none;}
 .ver-date{color:var(--faint);white-space:nowrap;flex:none;}
 .ver-sub{color:var(--ink-light);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+/* 移动端导航横滑，避免链接挤出可视区 */
+@media(max-width:640px){
+  .top-nav .nav-left{overflow-x:auto;scrollbar-width:none;white-space:nowrap;max-width:76vw;}
+  .top-nav .nav-left::-webkit-scrollbar{display:none;}
+  .top-nav .nav-left a{flex:none;}
+}
 </style>
 </head>
 <body>
@@ -352,6 +359,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   <div class="nav-left">
     <a class="nav-home" href="#hexagrams">六十四卦</a>
     <a class="nav-home" href="/hexagrams.html">卦象索引</a>
+    <a class="nav-home" href="/learn.html">知识</a>
     <a class="nav-home" href="/glossary.html">术语表</a>
   </div>
   <a class="nav-logo" href="/">
@@ -514,6 +522,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
         <span class="step-num" aria-hidden="true">三</span>
         <h3>明理</h3>
         <p>读彖传象传以明义理，对照历代注疏，化卦理为行事之鉴。</p>
+        <a href="/learn.html">易经知识 →</a><br/>
         <a href="#resources">研读资源 →</a>
       </li>
     </ol>
@@ -560,6 +569,8 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
     </div>
     <div class="footer-right">
       <a href="/hexagrams.html">卦象索引</a>
+      <span class="footer-sep">·</span>
+      <a href="/learn.html">知识</a>
       <span class="footer-sep">·</span>
       <a href="/glossary.html">术语表</a>
       <span class="footer-sep">·</span>

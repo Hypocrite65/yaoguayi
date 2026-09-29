@@ -355,6 +355,13 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 .term-card .t-py{font-size:13px;color:var(--faint);font-family:'Noto Sans SC',system-ui,sans-serif;}
 .term-card .t-def{font-size:14px;line-height:1.85;color:var(--ink-light);}
 @media(max-width:640px){.term-grid{grid-template-columns:1fr;}}
+
+/* 移动端导航横滑，避免链接挤出可视区 */
+@media(max-width:640px){
+  .top-nav .nav-left{overflow-x:auto;scrollbar-width:none;white-space:nowrap;max-width:76vw;}
+  .top-nav .nav-left::-webkit-scrollbar{display:none;}
+  .top-nav .nav-left a{flex:none;}
+}
 </style>
 </head>
 <body>
@@ -363,6 +370,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   <div class="nav-left">
     <a class="nav-back" href="/">首页</a>
     <a class="nav-link" href="/hexagrams.html">卦象索引</a>
+    <a class="nav-link" href="/learn.html">知识</a>
     <a class="nav-link" href="/divination.html">起卦</a>
   </div>
   <div class="nav-tools">
@@ -522,6 +530,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   爻卦易 · yaoguayi.com ·
   <a href="/">首页</a> ·
   <a href="/hexagrams.html">卦象索引</a> ·
+  <a href="/learn.html">知识</a> ·
   <a href="/glossary.html">术语表</a> ·
   <a href="/divination.html">起卦</a> ·
   <a href="/sitemap.xml">站点地图</a> ·

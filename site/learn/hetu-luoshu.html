@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>河图与洛书 · 爻卦易</title>
+<meta name="description" content="河图洛书是中国最古老的数理图式，传说伏羲据河图画八卦，大禹依洛书定九畴。它们是易学数理的源头，也是先天八卦和后天八卦的数学基础。"/>
+<meta name="theme-color" content="#faf8f1"/>
+<link rel="canonical" href="https://yaoguayi.com/learn/hetu-luoshu.html"/>
+<meta property="og:type" content="article"/>
+<meta property="og:site_name" content="爻卦易"/>
+<meta property="og:title" content="河图与洛书 · 爻卦易"/>
+<meta property="og:description" content="河图洛书是中国最古老的数理图式，传说伏羲据河图画八卦，大禹依洛书定九畴。它们是易学数理的源头，也是先天八卦和后天八卦的数学基础。"/>
+<meta property="og:url" content="https://yaoguayi.com/learn/hetu-luoshu.html"/>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "河图与洛书",
+  "description": "河图洛书是中国最古老的数理图式，传说伏羲据河图画八卦，大禹依洛书定九畴。它们是易学数理的源头，也是先天八卦和后天八卦的数学基础。",
+  "inLanguage": "zh-Hans",
+  "author": {
+    "@type": "Organization",
+    "name": "爻卦易",
+    "url": "https://yaoguayi.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "爻卦易",
+    "url": "https://yaoguayi.com"
+  },
+  "mainEntityOfPage": "https://yaoguayi.com/learn/hetu-luoshu.html"
+}
+</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+/* ===== 主题变量（与全站一致） ===== */
+body{
+  --bg:#faf8f1;--bg-alt:#f1ede2;--ink:#2c2420;--ink-light:#5a4e44;
+  --muted:#7a6e64;--faint:#a09080;--ghost:#d5c8b6;--whisper:#ded4c3;
+  --border:rgba(26,26,26,0.08);--border-strong:rgba(26,26,26,0.15);
+  --vermilion:#c0392b;--vermilion-faint:rgba(192,57,43,0.15);
+  --nav-bg:rgba(250,248,241,0.92);--card-bg:rgba(241,237,226,0.5);
+  --hover-bg:rgba(26,26,26,0.06);--shadow:rgba(26,26,26,0.08);
+}
+body.dark-theme{
+  --bg:#1c1a16;--bg-alt:#252320;--ink:#e8e0d4;--ink-light:#ccc4b8;
+  --muted:#a49c8c;--faint:#847c6c;--ghost:#5a5448;--whisper:#3e3830;
+  --border:rgba(232,224,212,0.10);--border-strong:rgba(232,224,212,0.18);
+  --vermilion:#e07060;--vermilion-faint:rgba(224,112,96,0.18);
+  --nav-bg:rgba(28,26,22,0.94);--card-bg:rgba(37,35,32,0.7);
+  --hover-bg:rgba(232,224,212,0.08);--shadow:rgba(0,0,0,0.3);
+}
+
+body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
+  color:var(--ink);background:var(--bg);min-height:100vh;
+  display:flex;flex-direction:column;transition:background 0.4s,color 0.4s;}
+
+/* ===== 顶部导航 ===== */
+.top-nav{position:sticky;top:0;z-index:100;
+  background:var(--nav-bg);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border-bottom:0.5px solid var(--border);padding:10px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.nav-left{display:flex;align-items:center;gap:16px;}
+.nav-back{font-size:13px;letter-spacing:0.1em;color:var(--muted);text-decoration:none;
+  display:flex;align-items:center;gap:6px;transition:color 0.2s;}
+.nav-back:hover{color:var(--vermilion);}
+.nav-back::before{content:'←';font-size:15px;}
+.nav-link{font-size:13px;letter-spacing:0.1em;color:var(--muted);text-decoration:none;
+  transition:color 0.2s;}
+.nav-link:hover{color:var(--vermilion);}
+.nav-tools{display:flex;align-items:center;gap:4px;}
+.nav-btn{width:32px;height:32px;border:none;background:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;border-radius:6px;
+  color:var(--muted);transition:background 0.2s,color 0.2s;}
+.nav-btn:hover{background:var(--hover-bg);color:var(--ink);}
+.nav-btn svg{width:18px;height:18px;}
+
+/* ===== 主体 ===== */
+.page{max-width:860px;margin:0 auto;padding:40px 28px 64px;flex:1;width:100%;}
+
+/* 面包屑 */
+.crumb{font-size:11px;letter-spacing:0.14em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:28px;}
+.crumb a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+.crumb a:hover{color:var(--vermilion);}
+.crumb .sep{margin:0 8px;color:var(--whisper);}
+.crumb .here{color:var(--ink);}
+
+.page-title{font-size:30px;letter-spacing:0.24em;font-weight:400;margin-bottom:12px;}
+.page-intro{font-size:13px;line-height:2;color:var(--muted);letter-spacing:0.06em;
+  margin-bottom:40px;max-width:640px;}
+
+/* 分组标题 */
+.group{margin-bottom:48px;}
+.group-title{display:flex;align-items:baseline;gap:12px;margin-bottom:6px;}
+.group-title h2{font-size:16px;letter-spacing:0.3em;font-weight:400;color:var(--ink);}
+.group-title .count{font-size:11px;color:var(--faint);letter-spacing:0.1em;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.group-desc{font-size:12px;color:var(--faint);letter-spacing:0.08em;margin-bottom:16px;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+
+/* 索引列表：语义化 ul/li/a，便于爬虫跟随 */
+.hex-index{list-style:none;border-top:0.5px solid var(--border-strong);}
+.hex-index li{border-bottom:0.5px solid var(--border);}
+.hex-index a{display:flex;align-items:center;gap:14px;padding:13px 8px;
+  text-decoration:none;color:inherit;border-radius:4px;
+  transition:background 0.2s,padding-left 0.25s;}
+.hex-index a:hover{background:var(--hover-bg);padding-left:14px;}
+.hex-sym{font-size:24px;line-height:1;color:var(--ink);opacity:0.7;width:34px;
+  text-align:center;flex:none;transition:opacity 0.2s,transform 0.25s;}
+.hex-index a:hover .hex-sym{opacity:1;transform:scale(1.12);color:var(--vermilion);}
+.hex-num{font-size:11px;color:var(--ghost);width:26px;flex:none;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.hex-name{font-size:17px;letter-spacing:0.14em;color:var(--ink);width:74px;flex:none;}
+.hex-pinyin{font-size:12px;color:var(--faint);width:64px;flex:none;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.hex-guaci{font-size:13px;color:var(--muted);letter-spacing:0.06em;flex:1;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hex-arrow{font-size:14px;color:var(--ghost);flex:none;transition:transform 0.25s,color 0.25s;}
+.hex-index a:hover .hex-arrow{transform:translateX(5px);color:var(--vermilion);}
+
+/* ===== 页脚 ===== */
+.site-footer{border-top:0.5px solid var(--border);padding:20px 24px;text-align:center;
+  font-size:10px;letter-spacing:0.12em;color:var(--ghost);
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-top:auto;}
+.site-footer a{color:var(--faint);text-decoration:none;transition:color 0.2s;}
+.site-footer a:hover{color:var(--vermilion);}
+.site-footer{position:relative;}
+.ver{color:var(--faint);cursor:pointer;transition:color 0.2s;}
+.ver:hover{color:var(--vermilion);}
+.ver-panel{position:absolute;bottom:calc(100% + 10px);right:16px;width:min(440px,92vw);
+  max-height:320px;overflow-y:auto;background:var(--bg);
+  border:1px solid var(--border-strong);border-radius:10px;
+  box-shadow:0 12px 32px var(--shadow);padding:8px;z-index:60;text-align:left;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.ver-panel[hidden]{display:none;}
+.ver-row{display:flex;gap:10px;align-items:baseline;padding:7px 10px;font-size:11px;
+  letter-spacing:0;border-radius:6px;}
+.ver-row:hover{background:var(--hover-bg);}
+.ver-n{color:var(--vermilion);font-weight:600;min-width:34px;flex:none;}
+.ver-sha{font-family:ui-monospace,SFMono-Regular,monospace;color:var(--muted);flex:none;}
+.ver-date{color:var(--faint);white-space:nowrap;flex:none;}
+.ver-sub{color:var(--ink-light);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+.loading{text-align:center;padding:80px 24px;font-size:13px;letter-spacing:0.12em;color:var(--faint);}
+
+@media(max-width:640px){
+  .page{padding:28px 16px 48px;}
+  .page-title{font-size:24px;}
+  .hex-pinyin{display:none;}
+  .hex-guaci{font-size:12px;}
+  .hex-name{width:60px;font-size:15px;}
+}
+
+.term-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin:14px 0 8px;}
+.term-card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:14px 16px;}
+.term-card .t-head{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;}
+.term-card .t-name{font-size:21px;font-weight:700;color:var(--ink);letter-spacing:0.05em;}
+.term-card .t-py{font-size:13px;color:var(--faint);font-family:'Noto Sans SC',system-ui,sans-serif;}
+.term-card .t-def{font-size:14px;line-height:1.85;color:var(--ink-light);}
+@media(max-width:640px){.term-grid{grid-template-columns:1fr;}}
+
+
+/* ===== 知识文章 ===== */
+.article-head{display:flex;gap:18px;align-items:flex-start;margin-bottom:10px;}
+.article-icon{font-size:44px;line-height:1.2;flex:none;}
+.article-kicker{font-size:11px;letter-spacing:0.3em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:8px;}
+.article-title{font-size:28px;letter-spacing:0.18em;font-weight:400;margin-bottom:8px;}
+.article-sub{font-size:14px;color:var(--muted);letter-spacing:0.08em;}
+.article-summary{font-size:14px;line-height:2;color:var(--ink-light);
+  background:var(--card-bg);border:1px solid var(--border);border-radius:12px;
+  padding:16px 20px;margin:24px 0 8px;}
+.toc{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;
+  padding:16px 20px;margin:24px 0 8px;}
+.toc-title{font-size:12px;letter-spacing:0.3em;color:var(--faint);margin-bottom:10px;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.toc ol{margin:0;padding-left:1.4em;font-size:14px;line-height:2;}
+.toc a{color:var(--ink-light);text-decoration:none;transition:color 0.2s;}
+.toc a:hover{color:var(--vermilion);}
+.article-body{font-size:15px;line-height:2.05;color:var(--ink-light);margin-top:8px;}
+.article-body h2{font-size:19px;letter-spacing:0.18em;color:var(--ink);font-weight:400;
+  margin:44px 0 16px;padding-top:12px;border-top:0.5px solid var(--border);}
+.article-body h2:first-child{margin-top:24px;}
+.article-body p{margin:0 0 16px;}
+.article-body strong{color:var(--ink);}
+.article-body ul,.article-body ol{margin:0 0 16px;padding-left:1.5em;}
+.article-body li{margin-bottom:8px;}
+.article-body table{width:100%;border-collapse:collapse;margin:8px 0 24px;font-size:14px;line-height:1.8;}
+.article-body th,.article-body td{border:1px solid var(--border-strong);padding:9px 12px;text-align:left;}
+.article-body th{background:var(--card-bg);color:var(--ink);font-weight:600;white-space:nowrap;}
+.article-body .diagram-wrap{margin:20px 0 28px;text-align:center;overflow-x:auto;}
+.term-link{text-decoration:none;border-bottom:1.5px dashed var(--vermilion-faint);
+  cursor:pointer;transition:border-color 0.2s,color 0.2s;color:inherit;}
+.term-link:hover{border-bottom-color:var(--vermilion);color:var(--vermilion);}
+.source-box{margin-top:44px;padding:14px 18px;border-left:3px solid var(--vermilion);
+  background:var(--card-bg);border-radius:0 8px 8px 0;font-size:13px;line-height:1.9;
+  color:var(--muted);}
+.source-box .src-label{font-size:11px;letter-spacing:0.3em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;display:block;margin-bottom:4px;}
+.prev-next{display:flex;justify-content:space-between;gap:12px;margin-top:36px;
+  border-top:0.5px solid var(--border);padding-top:20px;}
+.prev-next a{flex:1;text-decoration:none;color:var(--ink-light);font-size:14px;
+  padding:12px 16px;border:1px solid var(--border);border-radius:10px;
+  transition:border-color 0.2s,background 0.2s;line-height:1.7;}
+.prev-next a:hover{border-color:var(--vermilion);background:var(--hover-bg);}
+.prev-next .pn-next{text-align:right;}
+.prev-next .pn-label{display:block;font-size:11px;letter-spacing:0.2em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:2px;}
+/* 知识卡片 */
+.learn-card{display:flex;gap:16px;align-items:flex-start;padding:16px;
+  border:1px solid var(--border);border-radius:12px;background:var(--card-bg);
+  text-decoration:none;color:inherit;transition:border-color 0.2s,transform 0.2s;}
+.learn-card:hover{border-color:var(--vermilion);transform:translateY(-2px);}
+.learn-icon{font-size:32px;line-height:1.3;flex:none;}
+.learn-card h3{font-size:17px;letter-spacing:0.1em;font-weight:400;margin-bottom:4px;color:var(--ink);}
+.learn-card .l-sub{font-size:12px;color:var(--faint);letter-spacing:0.06em;margin-bottom:8px;}
+.learn-card .l-sum{font-size:13px;line-height:1.9;color:var(--muted);}
+.learn-card .l-meta{font-size:11px;color:var(--ghost);margin-top:8px;letter-spacing:0.1em;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.learn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+@media(max-width:640px){
+  .learn-grid{grid-template-columns:1fr;}
+  .article-title{font-size:23px;}
+  .article-head{gap:12px;}
+  .article-icon{font-size:34px;}
+  .prev-next{flex-direction:column;}
+  .prev-next .pn-next{text-align:left;}
+}
+/* 移动端导航横滑，避免链接挤出 */
+@media(max-width:640px){
+  .top-nav .nav-left{overflow-x:auto;scrollbar-width:none;white-space:nowrap;max-width:78vw;}
+  .top-nav .nav-left::-webkit-scrollbar{display:none;}
+  .top-nav .nav-left a{flex:none;}
+}
+
+</style>
+</head>
+<body>
+<nav class="top-nav" aria-label="主导航">
+  <div class="nav-left">
+    <a class="nav-back" href="/">首页</a>
+    <a class="nav-link" href="/hexagrams.html">卦象索引</a>
+    <a class="nav-link" href="/divination.html">起卦</a>
+  </div>
+  <div class="nav-tools">
+    <button class="nav-btn" id="theme-toggle" title="切换深色 / 浅色" aria-label="切换深色 / 浅色" onclick="toggleTheme()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+<main class="page">
+  <nav class="crumb" aria-label="面包屑">
+    <a href="/">首页</a><span class="sep">/</span><a href="/learn.html">知识</a><span class="sep">/</span><span class="here">河图与洛书</span>
+  </nav>
+
+  <article>
+    <div class="article-head">
+      <span class="article-icon" aria-hidden="true">◇</span>
+      <div>
+        <div class="article-kicker">易经知识 · 基础</div>
+        <h1 class="article-title">河图与洛书</h1>
+        <div class="article-sub">龙马负图出河，神龟献书洛水</div>
+      </div>
+    </div>
+
+    <p class="article-summary">河图洛书是中国最古老的数理图式，传说伏羲据河图画八卦，大禹依洛书定九畴。它们是易学数理的源头，也是先天八卦和后天八卦的数学基础。</p>
+
+    <nav class="toc" aria-label="本篇目录">
+      <div class="toc-title">本篇目录</div>
+      <ol><li><a href="#sec-1">传说起源</a></li><li><a href="#sec-2">河图的数字结构</a></li><li><a href="#sec-3">洛书的数字结构</a></li><li><a href="#sec-4">河图洛书与八卦的关系</a></li><li><a href="#sec-5">历史考证</a></li></ol>
+    </nav>
+
+    <div class="article-body">
+<h2 id="sec-1">传说起源</h2>
+<p><strong>河图之传说：</strong>
+上古伏羲时代，黄河中浮出一匹龙马，背上负有神奇的图案。伏羲观察这些图案的规律，从中领悟天地之理，始画八卦。这幅图案就是「河图」。</p>
+<p><strong>洛书之传说：</strong>
+大禹治水时，洛水中浮出一只神龟，龟背上刻有排列有序的数点。大禹观察其中的数理规律，据此划定九州、制定治国大法——《洪范》九畴。这就是「洛书」。</p>
+<p>《周易·系辞上传》记载：<strong>「河出图，洛出书，圣人则之。」</strong></p>
+<p>这一传说将数学、哲学与神话融为一体，体现了古人对宇宙秩序的深刻直觉。</p><h2 id="sec-2">河图的数字结构</h2>
+<p style='line-height:1.9;color:var(--ink-light);margin-bottom:16px;'>河图以1至10的数字构成，分为五组阴阳相配的数对。奇数为<strong style='color:var(--ink);'>阳（天数）</strong>，偶数为<strong style='color:var(--ink);'>阴（地数）</strong>。每组内外之数相差5，分布于东南西北中五个方位。</p><div class='diagram-wrap'><svg viewBox='0 0 520 540' xmlns='http://www.w3.org/2000/svg' style='max-width:520px;width:100%;height:auto;'>
+<style>
+  .ht-yang { fill: var(--ink); }
+  .ht-yin { fill: none; stroke: var(--ink); stroke-width: 1.5; }
+  .ht-label { font-family: 'Noto Sans SC', system-ui, sans-serif; fill: var(--muted); text-anchor: middle; font-size: 11px; dominant-baseline: central; }
+  .ht-wx { font-family: 'Noto Sans SC', system-ui, sans-serif; fill: var(--vermilion); text-anchor: middle; font-size: 12px; font-weight: 600; dominant-baseline: central; }
+  .ht-dir { font-family: 'Noto Sans SC', system-ui, sans-serif; fill: var(--ghost); text-anchor: middle; font-size: 11px; dominant-baseline: central; }
+  .ht-legend { font-family: 'Noto Sans SC', system-ui, sans-serif; fill: var(--muted); font-size: 11px; dominant-baseline: central; }
+</style>
+<circle cx='260.0' cy='260.0' r='220' fill='none' stroke='var(--border)' stroke-width='1' stroke-dasharray='4,4'/>
+<circle cx='252.0' cy='150.0' r='6' class='ht-yin'/>
+<circle cx='268.0' cy='150.0' r='6' class='ht-yin'/>
+<circle cx='244.0' cy='79.0' r='6' class='ht-yang'/>
+<circle cx='260.0' cy='79.0' r='6' class='ht-yang'/>
+<circle cx='276.0' cy='79.0' r='6' class='ht-yang'/>
+<circle cx='260.0' cy='95.0' r='6' class='ht-yang'/>
+<circle cx='244.0' cy='111.0' r='6' class='ht-yang'/>
+<circle cx='260.0' cy='111.0' r='6' class='ht-yang'/>
+<circle cx='276.0' cy='111.0' r='6' class='ht-yang'/>
+<circle cx='260.0' cy='370.0' r='6' class='ht-yang'/>
+<circle cx='244.0' cy='417.0' r='6' class='ht-yin'/>
+<circle cx='260.0' cy='417.0' r='6' class='ht-yin'/>
+<circle cx='276.0' cy='417.0' r='6' class='ht-yin'/>
+<circle cx='244.0' cy='433.0' r='6' class='ht-yin'/>
+<circle cx='260.0' cy='433.0' r='6' class='ht-yin'/>
+<circle cx='276.0' cy='433.0' r='6' class='ht-yin'/>
+<circle cx='150.0' cy='244.0' r='6' class='ht-yang'/>
+<circle cx='150.0' cy='260.0' r='6' class='ht-yang'/>
+<circle cx='150.0' cy='276.0' r='6' class='ht-yang'/>
+<circle cx='74.0' cy='244.0' r='6' class='ht-yin'/>
+<circle cx='74.0' cy='260.0' r='6' class='ht-yin'/>
+<circle cx='74.0' cy='276.0' r='6' class='ht-yin'/>
+<circle cx='90.0' cy='252.0' r='6' class='ht-yin'/>
+<circle cx='90.0' cy='268.0' r='6' class='ht-yin'/>
+<circle cx='106.0' cy='244.0' r='6' class='ht-yin'/>
+<circle cx='106.0' cy='260.0' r='6' class='ht-yin'/>
+<circle cx='106.0' cy='276.0' r='6' class='ht-yin'/>
+<circle cx='362.0' cy='252.0' r='6' class='ht-yin'/>
+<circle cx='378.0' cy='252.0' r='6' class='ht-yin'/>
+<circle cx='362.0' cy='268.0' r='6' class='ht-yin'/>
+<circle cx='378.0' cy='268.0' r='6' class='ht-yin'/>
+<circle cx='414.0' cy='244.0' r='6' class='ht-yang'/>
+<circle cx='430.0' cy='244.0' r='6' class='ht-yang'/>
+<circle cx='446.0' cy='244.0' r='6' class='ht-yang'/>
+<circle cx='414.0' cy='260.0' r='6' class='ht-yang'/>
+<circle cx='430.0' cy='260.0' r='6' class='ht-yang'/>
+<circle cx='446.0' cy='260.0' r='6' class='ht-yang'/>
+<circle cx='414.0' cy='276.0' r='6' class='ht-yang'/>
+<circle cx='430.0' cy='276.0' r='6' class='ht-yang'/>
+<circle cx='446.0' cy='276.0' r='6' class='ht-yang'/>
+<circle cx='244.0' cy='230.0' r='6' class='ht-yang'/>
+<circle cx='276.0' cy='230.0' r='6' class='ht-yang'/>
+<circle cx='260.0' cy='238.0' r='6' class='ht-yang'/>
+<circle cx='244.0' cy='246.0' r='6' class='ht-yang'/>
+<circle cx='276.0' cy='246.0' r='6' class='ht-yang'/>
+<circle cx='236.0' cy='269.0' r='6' class='ht-yin'/>
+<circle cx='252.0' cy='269.0' r='6' class='ht-yin'/>
+<circle cx='268.0' cy='269.0' r='6' class='ht-yin'/>
+<circle cx='284.0' cy='269.0' r='6' class='ht-yin'/>
+<circle cx='252.0' cy='285.0' r='6' class='ht-yin'/>
+<circle cx='268.0' cy='285.0' r='6' class='ht-yin'/>
+<circle cx='236.0' cy='301.0' r='6' class='ht-yin'/>
+<circle cx='252.0' cy='301.0' r='6' class='ht-yin'/>
+<circle cx='268.0' cy='301.0' r='6' class='ht-yin'/>
+<circle cx='284.0' cy='301.0' r='6' class='ht-yin'/>
+<text x='260.0' y='18' class='ht-dir'>南</text>
+<text x='260.0' y='490.0' class='ht-dir'>北</text>
+<text x='14' y='260.0' class='ht-dir'>东</text>
+<text x='506' y='260.0' class='ht-dir'>西</text>
+<text x='260.0' y='60.0' class='ht-wx'>火</text>
+<text x='260.0' y='465.0' class='ht-wx'>水</text>
+<text x='50.0' y='260.0' class='ht-wx'>木</text>
+<text x='470.0' y='260.0' class='ht-wx'>金</text>
+<text x='315.0' y='262.0' class='ht-wx'>土</text>
+<text x='302.0' y='125.0' class='ht-label'>二·七</text>
+<text x='302.0' y='400.0' class='ht-label'>一·六</text>
+<text x='120.0' y='302.0' class='ht-label'>三·八</text>
+<text x='400.0' y='302.0' class='ht-label'>四·九</text>
+<text x='315.0' y='282.0' class='ht-label'>五·十</text>
+<circle cx='100' cy='518' r='6' class='ht-yang'/>
+<text x='112' y='518' class='ht-legend' text-anchor='start'>阳数（天数）</text>
+<circle cx='280' cy='518' r='6' class='ht-yin'/>
+<text x='292' y='518' class='ht-legend' text-anchor='start'>阴数（地数）</text>
+</svg><div class='diagram-caption'>河图数字结构 — 实心为阳数（天数），空心为阴数（地数）</div></div><p style='line-height:1.9;color:var(--ink-light);margin-top:20px;'><strong style='color:var(--ink);'>核心规律：</strong></p><p style='line-height:1.9;color:var(--ink-light);'>· 天数（1+3+5+7+9）= 25，地数（2+4+6+8+10）= 30，合计 55<br>· 天地之数 55 即「大衍之数五十」的来源<br>· 每组数差均为 5：1+5=6，2+5=7，3+5=8，4+5=9</p><p style='line-height:1.9;color:var(--ink-light);margin-top:12px;'><strong style='color:var(--ink);'>口诀：</strong><br><strong style='color:var(--ink);'>天一生水，地六成之；地二生火，天七成之；天三生木，地八成之；地四生金，天九成之；天五生土，地十成之。</strong></p><p style='line-height:1.9;color:var(--ink-light);margin-top:12px;'>河图体现的是五行的<strong style='color:var(--ink);'>生成关系</strong>——万物如何从无到有。</p><h2 id="sec-3">洛书的数字结构</h2>
+<p style='line-height:1.9;color:var(--ink-light);margin-bottom:16px;'>洛书是一个<strong style='color:var(--ink);'>三阶幻方</strong>（魔方阵），用1至9排列。每行、每列、每条对角线之和均为 <strong style='color:var(--vermilion);'>15</strong>。</p><div class='diagram-wrap'><svg viewBox='0 0 420 470' xmlns='http://www.w3.org/2000/svg' style='max-width:420px;width:100%;height:auto;'>
+<style>
+  .ls-yang { fill: var(--ink); }
+  .ls-yin { fill: none; stroke: var(--ink); stroke-width: 1.5; }
+  .ls-num { font-family: 'Noto Sans SC', system-ui, sans-serif; fill: var(--ghost); text-anchor: middle; font-size: 11px; }
+  .ls-sum { font-family: 'Noto Sans SC', system-ui, sans-serif; fill: var(--vermilion); text-anchor: middle; font-size: 11px; font-weight: 600; }
+  .ls-dir { font-family: 'Noto Sans SC', system-ui, sans-serif; fill: var(--ghost); text-anchor: middle; font-size: 10px; }
+  .ls-legend { font-family: 'Noto Sans SC', system-ui, sans-serif; fill: var(--ghost); font-size: 11px; }
+</style>
+<rect x='45.0' y='30' width='110' height='110' fill='var(--card-bg)' stroke='var(--border)' stroke-width='0.5' rx='4'/>
+<circle cx='92.0' cy='73.0' r='5' class='ls-yin'/>
+<circle cx='108.0' cy='73.0' r='5' class='ls-yin'/>
+<circle cx='92.0' cy='89.0' r='5' class='ls-yin'/>
+<circle cx='108.0' cy='89.0' r='5' class='ls-yin'/>
+<text x='100.0' y='130' class='ls-num'>4</text>
+<rect x='155.0' y='30' width='110' height='110' fill='var(--card-bg)' stroke='var(--border)' stroke-width='0.5' rx='4'/>
+<circle cx='200.0' cy='69.0' r='5' class='ls-yang'/>
+<circle cx='210.0' cy='69.0' r='5' class='ls-yang'/>
+<circle cx='220.0' cy='69.0' r='5' class='ls-yang'/>
+<circle cx='200.0' cy='81.0' r='5' class='ls-yang'/>
+<circle cx='210.0' cy='81.0' r='5' class='ls-yang'/>
+<circle cx='220.0' cy='81.0' r='5' class='ls-yang'/>
+<circle cx='200.0' cy='93.0' r='5' class='ls-yang'/>
+<circle cx='210.0' cy='93.0' r='5' class='ls-yang'/>
+<circle cx='220.0' cy='93.0' r='5' class='ls-yang'/>
+<text x='210.0' y='130' class='ls-num'>9</text>
+<rect x='265.0' y='30' width='110' height='110' fill='var(--card-bg)' stroke='var(--border)' stroke-width='0.5' rx='4'/>
+<circle cx='312.0' cy='73.0' r='5' class='ls-yin'/>
+<circle cx='328.0' cy='89.0' r='5' class='ls-yin'/>
+<text x='320.0' y='130' class='ls-num'>2</text>
+<rect x='45.0' y='140' width='110' height='110' fill='var(--card-bg)' stroke='var(--border)' stroke-width='0.5' rx='4'/>
+<circle cx='90.0' cy='181.0' r='5' class='ls-yang'/>
+<circle cx='100.0' cy='191.0' r='5' class='ls-yang'/>
+<circle cx='110.0' cy='201.0' r='5' class='ls-yang'/>
+<text x='100.0' y='240' class='ls-num'>3</text>
+<rect x='155.0' y='140' width='110' height='110' fill='var(--card-bg)' stroke='var(--border)' stroke-width='0.5' rx='4'/>
+<circle cx='200.0' cy='181.0' r='5' class='ls-yang'/>
+<circle cx='220.0' cy='181.0' r='5' class='ls-yang'/>
+<circle cx='210.0' cy='191.0' r='5' class='ls-yang'/>
+<circle cx='200.0' cy='201.0' r='5' class='ls-yang'/>
+<circle cx='220.0' cy='201.0' r='5' class='ls-yang'/>
+<text x='210.0' y='240' class='ls-num'>5</text>
+<rect x='265.0' y='140' width='110' height='110' fill='var(--card-bg)' stroke='var(--border)' stroke-width='0.5' rx='4'/>
+<circle cx='310.0' cy='179.0' r='5' class='ls-yang'/>
+<circle cx='330.0' cy='179.0' r='5' class='ls-yang'/>
+<circle cx='310.0' cy='191.0' r='5' class='ls-yang'/>
+<circle cx='320.0' cy='191.0' r='5' class='ls-yang'/>
+<circle cx='330.0' cy='191.0' r='5' class='ls-yang'/>
+<circle cx='310.0' cy='203.0' r='5' class='ls-yang'/>
+<circle cx='330.0' cy='203.0' r='5' class='ls-yang'/>
+<text x='320.0' y='240' class='ls-num'>7</text>
+<rect x='45.0' y='250' width='110' height='110' fill='var(--card-bg)' stroke='var(--border)' stroke-width='0.5' rx='4'/>
+<circle cx='90.0' cy='289.0' r='5' class='ls-yin'/>
+<circle cx='100.0' cy='289.0' r='5' class='ls-yin'/>
+<circle cx='110.0' cy='289.0' r='5' class='ls-yin'/>
+<circle cx='90.0' cy='301.0' r='5' class='ls-yin'/>
+<circle cx='110.0' cy='301.0' r='5' class='ls-yin'/>
+<circle cx='90.0' cy='313.0' r='5' class='ls-yin'/>
+<circle cx='100.0' cy='313.0' r='5' class='ls-yin'/>
+<circle cx='110.0' cy='313.0' r='5' class='ls-yin'/>
+<text x='100.0' y='350' class='ls-num'>8</text>
+<rect x='155.0' y='250' width='110' height='110' fill='var(--card-bg)' stroke='var(--border)' stroke-width='0.5' rx='4'/>
+<circle cx='210.0' cy='301.0' r='5' class='ls-yang'/>
+<text x='210.0' y='350' class='ls-num'>1</text>
+<rect x='265.0' y='250' width='110' height='110' fill='var(--card-bg)' stroke='var(--border)' stroke-width='0.5' rx='4'/>
+<circle cx='312.0' cy='289.0' r='5' class='ls-yin'/>
+<circle cx='328.0' cy='289.0' r='5' class='ls-yin'/>
+<circle cx='312.0' cy='301.0' r='5' class='ls-yin'/>
+<circle cx='328.0' cy='301.0' r='5' class='ls-yin'/>
+<circle cx='312.0' cy='313.0' r='5' class='ls-yin'/>
+<circle cx='328.0' cy='313.0' r='5' class='ls-yin'/>
+<text x='320.0' y='350' class='ls-num'>6</text>
+<text x='407.0' y='85.0' class='ls-sum'>= 15</text>
+<text x='407.0' y='195.0' class='ls-sum'>= 15</text>
+<text x='407.0' y='305.0' class='ls-sum'>= 15</text>
+<text x='100.0' y='376' class='ls-sum'>= 15</text>
+<text x='210.0' y='376' class='ls-sum'>= 15</text>
+<text x='320.0' y='376' class='ls-sum'>= 15</text>
+<line x1='45.0' y1='30' x2='375.0' y2='360' stroke='var(--vermilion-faint)' stroke-width='1' stroke-dasharray='4,4'/>
+<line x1='375.0' y1='30' x2='45.0' y2='360' stroke='var(--vermilion-faint)' stroke-width='1' stroke-dasharray='4,4'/>
+<text x='210.0' y='18' class='ls-dir'>南 ↑</text>
+<text x='210.0' y='462' class='ls-dir'>北 ↓</text>
+<text x='12' y='195.0' class='ls-dir'>东</text>
+<text x='408' y='195.0' class='ls-dir'>西</text>
+<circle cx='65' cy='440' r='5' class='ls-yang'/>
+<text x='77' y='440' class='ls-legend' text-anchor='start'>阳数</text>
+<circle cx='155' cy='440' r='5' class='ls-yin'/>
+<text x='167' y='440' class='ls-legend' text-anchor='start'>阴数</text>
+<text x='280' y='440' class='ls-sum'>↗↘ 对角线 = 15</text>
+</svg><div class='diagram-caption'>洛书幻方 — 每行、列、对角线之和均为15</div></div><p style='line-height:1.9;color:var(--ink-light);margin-top:20px;'><strong style='color:var(--ink);'>核心规律：</strong></p><p style='line-height:1.9;color:var(--ink-light);'>· 中心数为 <strong style='color:var(--ink);'>5</strong>（居中调和万物）<br>· 奇数（1、3、5、7、9）占据正位（上下左右中）<br>· 偶数（2、4、6、8）占据四隅</p><p style='line-height:1.9;color:var(--ink-light);margin-top:12px;'><strong style='color:var(--ink);'>口诀：戴九履一，左三右七，二四为肩，六八为足，五居中央。</strong></p><p style='line-height:1.9;color:var(--ink-light);margin-top:12px;'>洛书体现的是五行的<strong style='color:var(--ink);'>运行关系</strong>——万物如何相互制约、循环往复。洛书九宫对应后天八卦：坎1（北）、坤2（西南）、震3（东）、巽4（东南）、中宫5、乾6（西北）、兑7（西）、艮8（东北）、离9（南）。</p><h2 id="sec-4">河图洛书与八卦的关系</h2>
+<p><strong>河图 → 先天八卦</strong>
+河图体现阴阳对待、五行生成的静态结构，与先天八卦的「天地定位、阴阳对峙」原则一致。先天八卦数（乾1兑2离3震4巽5坎6艮7坤8）与河图的生成数有内在关联。</p>
+<p><strong>洛书 → 后天八卦</strong>
+洛书体现五行流转、万物运行的动态过程，与后天八卦的「帝出乎震」循环流转完全吻合。后天八卦的方位直接对应洛书九宫的数字。</p>
+<p>简言之：
+- <strong>河图</strong>是先天的「设计蓝图」，描述万物如何生成
+- <strong>洛书</strong>是后天的「运行地图」，描述万物如何运转</p>
+<p>两者共同构成了中国易学的数理基础，也是古人对宇宙秩序最精炼的数学表达。</p><h2 id="sec-5">历史考证</h2>
+<p>河图洛书的图像并非自古就有。在宋代以前，河图洛书仅作为文字概念存在于经典中。</p>
+<p><strong>宋代定型：</strong>
+五代道士<strong>陈抟</strong>（陈希夷）自华山传出「龙图易」，首次将河图洛书绘制为图像。北宋<strong>刘牧</strong>在《易数钩隐图》中正式命名。南宋<strong>朱熹</strong>在《周易本义》中确立了今天通行的河图洛书图式。</p>
+<p><strong>图书之争：</strong>
+宋代以来，学者对于哪个是「河图」、哪个是「洛书」存在长期争论。刘牧认为十数图为洛书、九数图为河图；朱熹则相反。今天通行的是朱熹的说法（十数图为河图、九数图为洛书）。</p>
+<p><strong>清代质疑：</strong>
+黄宗羲、胡渭等学者考证认为，河图洛书可能并非传说中的天授之物，而是古人对天文星象的观察记录经后世演绎而成。</p>
+<p>无论其起源如何，河图洛书所蕴含的对称性、守恒性、循环性等数理特征，至今仍是数学和哲学的研究对象。</p>
+    </div>
+
+    <aside class="source-box">
+      <span class="src-label">参考资料</span>
+      参考维基百科「河图洛书」条目、《周易·系辞上传》、朱熹《周易本义》
+    </aside>
+
+    <nav class="prev-next" aria-label="上下篇">
+      <a href="/learn/wuxing.html"><span class="pn-label">← 上一篇</span>五行与八卦</a><a class="pn-next" href="/learn/bagua-yanhua.html"><span class="pn-label">下一篇 →</span>八卦演化图解</a>
+    </nav>
+  </article>
+</main>
+<footer class="site-footer">
+  爻卦易 · yaoguayi.com ·
+  <a href="/">首页</a> ·
+  <a href="/hexagrams.html">卦象索引</a> ·
+  <a href="/learn.html">知识</a> ·
+  <a href="/glossary.html">术语表</a> ·
+  <a href="/divination.html">起卦</a> ·
+  <a href="/sitemap.xml">站点地图</a> ·
+  <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank" rel="noopener">GitHub</a> ·
+  开源 · 非盈利 ·
+  <span class="ver" id="site-ver" title="查看版本历史">版本 v–</span>
+  <div class="ver-panel" id="ver-panel" hidden></div>
+</footer>
+<script src="/js/theme.js"></script>
+<script src="/js/version.js"></script>
+</body>
+</html>

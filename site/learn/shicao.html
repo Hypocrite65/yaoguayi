@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>蓍草揲卦法 · 爻卦易</title>
+<meta name="description" content="《周易》原始的占筮方法，以五十根蓍草经三变成一爻、十八变成一卦，过程严谨而富有仪式感，是最正统的起卦之法。"/>
+<meta name="theme-color" content="#faf8f1"/>
+<link rel="canonical" href="https://yaoguayi.com/learn/shicao.html"/>
+<meta property="og:type" content="article"/>
+<meta property="og:site_name" content="爻卦易"/>
+<meta property="og:title" content="蓍草揲卦法 · 爻卦易"/>
+<meta property="og:description" content="《周易》原始的占筮方法，以五十根蓍草经三变成一爻、十八变成一卦，过程严谨而富有仪式感，是最正统的起卦之法。"/>
+<meta property="og:url" content="https://yaoguayi.com/learn/shicao.html"/>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "蓍草揲卦法",
+  "description": "《周易》原始的占筮方法，以五十根蓍草经三变成一爻、十八变成一卦，过程严谨而富有仪式感，是最正统的起卦之法。",
+  "inLanguage": "zh-Hans",
+  "author": {
+    "@type": "Organization",
+    "name": "爻卦易",
+    "url": "https://yaoguayi.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "爻卦易",
+    "url": "https://yaoguayi.com"
+  },
+  "mainEntityOfPage": "https://yaoguayi.com/learn/shicao.html"
+}
+</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+/* ===== 主题变量（与全站一致） ===== */
+body{
+  --bg:#faf8f1;--bg-alt:#f1ede2;--ink:#2c2420;--ink-light:#5a4e44;
+  --muted:#7a6e64;--faint:#a09080;--ghost:#d5c8b6;--whisper:#ded4c3;
+  --border:rgba(26,26,26,0.08);--border-strong:rgba(26,26,26,0.15);
+  --vermilion:#c0392b;--vermilion-faint:rgba(192,57,43,0.15);
+  --nav-bg:rgba(250,248,241,0.92);--card-bg:rgba(241,237,226,0.5);
+  --hover-bg:rgba(26,26,26,0.06);--shadow:rgba(26,26,26,0.08);
+}
+body.dark-theme{
+  --bg:#1c1a16;--bg-alt:#252320;--ink:#e8e0d4;--ink-light:#ccc4b8;
+  --muted:#a49c8c;--faint:#847c6c;--ghost:#5a5448;--whisper:#3e3830;
+  --border:rgba(232,224,212,0.10);--border-strong:rgba(232,224,212,0.18);
+  --vermilion:#e07060;--vermilion-faint:rgba(224,112,96,0.18);
+  --nav-bg:rgba(28,26,22,0.94);--card-bg:rgba(37,35,32,0.7);
+  --hover-bg:rgba(232,224,212,0.08);--shadow:rgba(0,0,0,0.3);
+}
+
+body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
+  color:var(--ink);background:var(--bg);min-height:100vh;
+  display:flex;flex-direction:column;transition:background 0.4s,color 0.4s;}
+
+/* ===== 顶部导航 ===== */
+.top-nav{position:sticky;top:0;z-index:100;
+  background:var(--nav-bg);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border-bottom:0.5px solid var(--border);padding:10px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.nav-left{display:flex;align-items:center;gap:16px;}
+.nav-back{font-size:13px;letter-spacing:0.1em;color:var(--muted);text-decoration:none;
+  display:flex;align-items:center;gap:6px;transition:color 0.2s;}
+.nav-back:hover{color:var(--vermilion);}
+.nav-back::before{content:'←';font-size:15px;}
+.nav-link{font-size:13px;letter-spacing:0.1em;color:var(--muted);text-decoration:none;
+  transition:color 0.2s;}
+.nav-link:hover{color:var(--vermilion);}
+.nav-tools{display:flex;align-items:center;gap:4px;}
+.nav-btn{width:32px;height:32px;border:none;background:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;border-radius:6px;
+  color:var(--muted);transition:background 0.2s,color 0.2s;}
+.nav-btn:hover{background:var(--hover-bg);color:var(--ink);}
+.nav-btn svg{width:18px;height:18px;}
+
+/* ===== 主体 ===== */
+.page{max-width:860px;margin:0 auto;padding:40px 28px 64px;flex:1;width:100%;}
+
+/* 面包屑 */
+.crumb{font-size:11px;letter-spacing:0.14em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:28px;}
+.crumb a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+.crumb a:hover{color:var(--vermilion);}
+.crumb .sep{margin:0 8px;color:var(--whisper);}
+.crumb .here{color:var(--ink);}
+
+.page-title{font-size:30px;letter-spacing:0.24em;font-weight:400;margin-bottom:12px;}
+.page-intro{font-size:13px;line-height:2;color:var(--muted);letter-spacing:0.06em;
+  margin-bottom:40px;max-width:640px;}
+
+/* 分组标题 */
+.group{margin-bottom:48px;}
+.group-title{display:flex;align-items:baseline;gap:12px;margin-bottom:6px;}
+.group-title h2{font-size:16px;letter-spacing:0.3em;font-weight:400;color:var(--ink);}
+.group-title .count{font-size:11px;color:var(--faint);letter-spacing:0.1em;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.group-desc{font-size:12px;color:var(--faint);letter-spacing:0.08em;margin-bottom:16px;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+
+/* 索引列表：语义化 ul/li/a，便于爬虫跟随 */
+.hex-index{list-style:none;border-top:0.5px solid var(--border-strong);}
+.hex-index li{border-bottom:0.5px solid var(--border);}
+.hex-index a{display:flex;align-items:center;gap:14px;padding:13px 8px;
+  text-decoration:none;color:inherit;border-radius:4px;
+  transition:background 0.2s,padding-left 0.25s;}
+.hex-index a:hover{background:var(--hover-bg);padding-left:14px;}
+.hex-sym{font-size:24px;line-height:1;color:var(--ink);opacity:0.7;width:34px;
+  text-align:center;flex:none;transition:opacity 0.2s,transform 0.25s;}
+.hex-index a:hover .hex-sym{opacity:1;transform:scale(1.12);color:var(--vermilion);}
+.hex-num{font-size:11px;color:var(--ghost);width:26px;flex:none;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.hex-name{font-size:17px;letter-spacing:0.14em;color:var(--ink);width:74px;flex:none;}
+.hex-pinyin{font-size:12px;color:var(--faint);width:64px;flex:none;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.hex-guaci{font-size:13px;color:var(--muted);letter-spacing:0.06em;flex:1;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hex-arrow{font-size:14px;color:var(--ghost);flex:none;transition:transform 0.25s,color 0.25s;}
+.hex-index a:hover .hex-arrow{transform:translateX(5px);color:var(--vermilion);}
+
+/* ===== 页脚 ===== */
+.site-footer{border-top:0.5px solid var(--border);padding:20px 24px;text-align:center;
+  font-size:10px;letter-spacing:0.12em;color:var(--ghost);
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-top:auto;}
+.site-footer a{color:var(--faint);text-decoration:none;transition:color 0.2s;}
+.site-footer a:hover{color:var(--vermilion);}
+.site-footer{position:relative;}
+.ver{color:var(--faint);cursor:pointer;transition:color 0.2s;}
+.ver:hover{color:var(--vermilion);}
+.ver-panel{position:absolute;bottom:calc(100% + 10px);right:16px;width:min(440px,92vw);
+  max-height:320px;overflow-y:auto;background:var(--bg);
+  border:1px solid var(--border-strong);border-radius:10px;
+  box-shadow:0 12px 32px var(--shadow);padding:8px;z-index:60;text-align:left;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.ver-panel[hidden]{display:none;}
+.ver-row{display:flex;gap:10px;align-items:baseline;padding:7px 10px;font-size:11px;
+  letter-spacing:0;border-radius:6px;}
+.ver-row:hover{background:var(--hover-bg);}
+.ver-n{color:var(--vermilion);font-weight:600;min-width:34px;flex:none;}
+.ver-sha{font-family:ui-monospace,SFMono-Regular,monospace;color:var(--muted);flex:none;}
+.ver-date{color:var(--faint);white-space:nowrap;flex:none;}
+.ver-sub{color:var(--ink-light);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+.loading{text-align:center;padding:80px 24px;font-size:13px;letter-spacing:0.12em;color:var(--faint);}
+
+@media(max-width:640px){
+  .page{padding:28px 16px 48px;}
+  .page-title{font-size:24px;}
+  .hex-pinyin{display:none;}
+  .hex-guaci{font-size:12px;}
+  .hex-name{width:60px;font-size:15px;}
+}
+
+.term-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin:14px 0 8px;}
+.term-card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:14px 16px;}
+.term-card .t-head{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;}
+.term-card .t-name{font-size:21px;font-weight:700;color:var(--ink);letter-spacing:0.05em;}
+.term-card .t-py{font-size:13px;color:var(--faint);font-family:'Noto Sans SC',system-ui,sans-serif;}
+.term-card .t-def{font-size:14px;line-height:1.85;color:var(--ink-light);}
+@media(max-width:640px){.term-grid{grid-template-columns:1fr;}}
+
+
+/* ===== 知识文章 ===== */
+.article-head{display:flex;gap:18px;align-items:flex-start;margin-bottom:10px;}
+.article-icon{font-size:44px;line-height:1.2;flex:none;}
+.article-kicker{font-size:11px;letter-spacing:0.3em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:8px;}
+.article-title{font-size:28px;letter-spacing:0.18em;font-weight:400;margin-bottom:8px;}
+.article-sub{font-size:14px;color:var(--muted);letter-spacing:0.08em;}
+.article-summary{font-size:14px;line-height:2;color:var(--ink-light);
+  background:var(--card-bg);border:1px solid var(--border);border-radius:12px;
+  padding:16px 20px;margin:24px 0 8px;}
+.toc{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;
+  padding:16px 20px;margin:24px 0 8px;}
+.toc-title{font-size:12px;letter-spacing:0.3em;color:var(--faint);margin-bottom:10px;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.toc ol{margin:0;padding-left:1.4em;font-size:14px;line-height:2;}
+.toc a{color:var(--ink-light);text-decoration:none;transition:color 0.2s;}
+.toc a:hover{color:var(--vermilion);}
+.article-body{font-size:15px;line-height:2.05;color:var(--ink-light);margin-top:8px;}
+.article-body h2{font-size:19px;letter-spacing:0.18em;color:var(--ink);font-weight:400;
+  margin:44px 0 16px;padding-top:12px;border-top:0.5px solid var(--border);}
+.article-body h2:first-child{margin-top:24px;}
+.article-body p{margin:0 0 16px;}
+.article-body strong{color:var(--ink);}
+.article-body ul,.article-body ol{margin:0 0 16px;padding-left:1.5em;}
+.article-body li{margin-bottom:8px;}
+.article-body table{width:100%;border-collapse:collapse;margin:8px 0 24px;font-size:14px;line-height:1.8;}
+.article-body th,.article-body td{border:1px solid var(--border-strong);padding:9px 12px;text-align:left;}
+.article-body th{background:var(--card-bg);color:var(--ink);font-weight:600;white-space:nowrap;}
+.article-body .diagram-wrap{margin:20px 0 28px;text-align:center;overflow-x:auto;}
+.term-link{text-decoration:none;border-bottom:1.5px dashed var(--vermilion-faint);
+  cursor:pointer;transition:border-color 0.2s,color 0.2s;color:inherit;}
+.term-link:hover{border-bottom-color:var(--vermilion);color:var(--vermilion);}
+.source-box{margin-top:44px;padding:14px 18px;border-left:3px solid var(--vermilion);
+  background:var(--card-bg);border-radius:0 8px 8px 0;font-size:13px;line-height:1.9;
+  color:var(--muted);}
+.source-box .src-label{font-size:11px;letter-spacing:0.3em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;display:block;margin-bottom:4px;}
+.prev-next{display:flex;justify-content:space-between;gap:12px;margin-top:36px;
+  border-top:0.5px solid var(--border);padding-top:20px;}
+.prev-next a{flex:1;text-decoration:none;color:var(--ink-light);font-size:14px;
+  padding:12px 16px;border:1px solid var(--border);border-radius:10px;
+  transition:border-color 0.2s,background 0.2s;line-height:1.7;}
+.prev-next a:hover{border-color:var(--vermilion);background:var(--hover-bg);}
+.prev-next .pn-next{text-align:right;}
+.prev-next .pn-label{display:block;font-size:11px;letter-spacing:0.2em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:2px;}
+/* 知识卡片 */
+.learn-card{display:flex;gap:16px;align-items:flex-start;padding:16px;
+  border:1px solid var(--border);border-radius:12px;background:var(--card-bg);
+  text-decoration:none;color:inherit;transition:border-color 0.2s,transform 0.2s;}
+.learn-card:hover{border-color:var(--vermilion);transform:translateY(-2px);}
+.learn-icon{font-size:32px;line-height:1.3;flex:none;}
+.learn-card h3{font-size:17px;letter-spacing:0.1em;font-weight:400;margin-bottom:4px;color:var(--ink);}
+.learn-card .l-sub{font-size:12px;color:var(--faint);letter-spacing:0.06em;margin-bottom:8px;}
+.learn-card .l-sum{font-size:13px;line-height:1.9;color:var(--muted);}
+.learn-card .l-meta{font-size:11px;color:var(--ghost);margin-top:8px;letter-spacing:0.1em;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.learn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+@media(max-width:640px){
+  .learn-grid{grid-template-columns:1fr;}
+  .article-title{font-size:23px;}
+  .article-head{gap:12px;}
+  .article-icon{font-size:34px;}
+  .prev-next{flex-direction:column;}
+  .prev-next .pn-next{text-align:left;}
+}
+/* 移动端导航横滑，避免链接挤出 */
+@media(max-width:640px){
+  .top-nav .nav-left{overflow-x:auto;scrollbar-width:none;white-space:nowrap;max-width:78vw;}
+  .top-nav .nav-left::-webkit-scrollbar{display:none;}
+  .top-nav .nav-left a{flex:none;}
+}
+
+</style>
+</head>
+<body>
+<nav class="top-nav" aria-label="主导航">
+  <div class="nav-left">
+    <a class="nav-back" href="/">首页</a>
+    <a class="nav-link" href="/hexagrams.html">卦象索引</a>
+    <a class="nav-link" href="/divination.html">起卦</a>
+  </div>
+  <div class="nav-tools">
+    <button class="nav-btn" id="theme-toggle" title="切换深色 / 浅色" aria-label="切换深色 / 浅色" onclick="toggleTheme()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+<main class="page">
+  <nav class="crumb" aria-label="面包屑">
+    <a href="/">首页</a><span class="sep">/</span><a href="/learn.html">知识</a><span class="sep">/</span><span class="here">蓍草揲卦法</span>
+  </nav>
+
+  <article>
+    <div class="article-head">
+      <span class="article-icon" aria-hidden="true">𝌆</span>
+      <div>
+        <div class="article-kicker">易经知识 · 起卦</div>
+        <h1 class="article-title">蓍草揲卦法</h1>
+        <div class="article-sub">大衍之数五十，其用四十有九</div>
+      </div>
+    </div>
+
+    <p class="article-summary">《周易》原始的占筮方法，以五十根蓍草经三变成一爻、十八变成一卦，过程严谨而富有仪式感，是最正统的起卦之法。</p>
+
+    <nav class="toc" aria-label="本篇目录">
+      <div class="toc-title">本篇目录</div>
+      <ol><li><a href="#sec-1">蓍草法的地位</a></li><li><a href="#sec-2">准备工作</a></li><li><a href="#sec-3">三变成一爻</a></li><li><a href="#sec-4">判定爻象</a></li><li><a href="#sec-5">与铜钱法的区别</a></li></ol>
+    </nav>
+
+    <div class="article-body">
+<h2 id="sec-1">蓍草法的地位</h2>
+<p>蓍草揲卦法记载于《周易·系辞上传》：</p>
+<p><strong>「大衍之数五十，其用四十有九。分而为二以象两，挂一以象三，揲之以四以象四时，归奇于扐以象闰。五岁再闰，故再扐而后挂。」</strong></p>
+<p>这是《周易》中唯一明确记载的占筮方法。相比铜钱法，蓍草法更古老、更正统，且阴阳概率分布更接近《周易》的本意：老阳概率 1/16，老阴概率 3/16，少阳概率 5/16，少阴概率 7/16——阳爻变化少而珍贵，阴爻变化多而寻常。</p><h2 id="sec-2">准备工作</h2>
+<p>取蓍草五十根（可用竹签、筷子等代替），抽出一根放在一旁不用，实际操作四十九根。</p>
+<p>传统上需焚香净手、面南而坐，心中默念所问之事。</p>
+<p><strong>工具：</strong> 49根蓍草（或替代物）
+<strong>场地：</strong> 安静整洁的桌面
+<strong>心态：</strong> 诚敬专注，一事一问</p><h2 id="sec-3">三变成一爻</h2>
+<p>每一爻需要经过「三变」才能得出，具体步骤：</p>
+<p><strong>第一变：</strong>
+1. 将49根蓍草随机分成左右两堆（分二以象两）
+2. 从右堆取出1根，夹在左手小指间（挂一以象三）
+3. 左手拿左堆，每4根一数地数完（揲之以四以象四时）
+4. 将余数（1—4根）夹在左手无名指间（归奇于扐）
+5. 同样对右堆每4根一数，余数夹在中指间（再扐而后挂）
+6. 第一变所夹之数必为 5 或 9</p>
+<p><strong>第二变：</strong>
+将夹出的蓍草放在一旁，剩余蓍草（44 或 40 根）重复上述分二、挂一、揲四、归奇的过程。第二变所夹之数为 4 或 8。</p>
+<p><strong>第三变：</strong>
+再将夹出的放在一旁，剩余蓍草重复一次。第三变所夹之数也为 4 或 8。</p>
+<p>三变后，将剩余蓍草除以4，得到的数字决定爻的性质。</p><h2 id="sec-4">判定爻象</h2>
+<p>三变后剩余的蓍草数只有四种可能：</p>
+<table><thead><tr><th>剩余数</th><th>除以4</th><th>爻象</th><th>性质</th></tr></thead><tbody><tr><td>36</td><td>9</td><td>老阳 ⚌</td><td>阳爻，<a class="term-link" href="/glossary.html#term-變爻">变爻</a></td></tr><tr><td>32</td><td>8</td><td>少阴 ⚎</td><td>阴爻，不变</td></tr><tr><td>28</td><td>7</td><td>少阳 ⚍</td><td>阳爻，不变</td></tr><tr><td>24</td><td>6</td><td>老阴 ⚏</td><td>阴爻，<a class="term-link" href="/glossary.html#term-變爻">变爻</a></td></tr></tbody></table>
+<p>从初爻（最下）到上爻（最上），重复六次「三变」，共十八变，即可得到完整的六爻卦。</p><h2 id="sec-5">与铜钱法的区别</h2>
+<p><strong>概率差异：</strong>
+蓍草法中，四种结果的概率并不均等：
+- 老阳（9）：1/16 = 6.25%
+- 少阴（8）：7/16 = 43.75%
+- 少阳（7）：5/16 = 31.25%
+- 老阴（6）：3/16 = 18.75%</p>
+<p>铜钱法中，概率分布为：
+- 老阳（9）：1/8 = 12.5%
+- 少阴（8）：3/8 = 37.5%
+- 少阳（7）：3/8 = 37.5%
+- 老阴（6）：1/8 = 12.5%</p>
+<p>蓍草法的阳爻概率（少阳+老阳 = 37.5%）低于阴爻（62.5%），而铜钱法阴阳各半。这意味着蓍草法中阳爻更「珍贵」，<a class="term-link" href="/glossary.html#term-變爻">变爻</a>出现的概率更低——与《周易》强调阳动阴静的哲学更一致。</p>
+<p><strong>仪式感：</strong>
+蓍草法过程庄重缓慢（约需二十分钟），本身就是一种静心冥想的过程。铜钱法则简便快捷，适合日常使用。</p>
+    </div>
+
+    <aside class="source-box">
+      <span class="src-label">参考资料</span>
+      参考维基百科「I Ching divination」条目、《周易·系辞上传》
+    </aside>
+
+    <nav class="prev-next" aria-label="上下篇">
+      <a href="/learn/tongqian.html"><span class="pn-label">← 上一篇</span>铜钱起卦法</a><a class="pn-next" href="/learn/meihua.html"><span class="pn-label">下一篇 →</span>梅花易数</a>
+    </nav>
+  </article>
+</main>
+<footer class="site-footer">
+  爻卦易 · yaoguayi.com ·
+  <a href="/">首页</a> ·
+  <a href="/hexagrams.html">卦象索引</a> ·
+  <a href="/learn.html">知识</a> ·
+  <a href="/glossary.html">术语表</a> ·
+  <a href="/divination.html">起卦</a> ·
+  <a href="/sitemap.xml">站点地图</a> ·
+  <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank" rel="noopener">GitHub</a> ·
+  开源 · 非盈利 ·
+  <span class="ver" id="site-ver" title="查看版本历史">版本 v–</span>
+  <div class="ver-panel" id="ver-panel" hidden></div>
+</footer>
+<script src="/js/theme.js"></script>
+<script src="/js/version.js"></script>
+</body>
+</html>

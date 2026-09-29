@@ -26,6 +26,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://yaoguayi.com/learn.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://yaoguayi.com/hexagram.html?id=1</loc>
     <lastmod>2026-09-29</lastmod>
     <priority>0.6</priority>
@@ -344,5 +349,80 @@
     <loc>https://yaoguayi.com/hexagram.html?id=64</loc>
     <lastmod>2026-09-29</lastmod>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://yaoguayi.com/learn/zhouyi.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yaoguayi.com/learn/bagua.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yaoguayi.com/learn/xiantian-houtian.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yaoguayi.com/learn/wuxing.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yaoguayi.com/learn/hetu-luoshu.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yaoguayi.com/learn/bagua-yanhua.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yaoguayi.com/learn/bagua-xiangzheng.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yaoguayi.com/learn/shier-xiaoxi.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yaoguayi.com/learn/tiangan-dizhi.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yaoguayi.com/learn/liushisi-guaxu.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yaoguayi.com/learn/tongqian.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yaoguayi.com/learn/shicao.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yaoguayi.com/learn/meihua.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yaoguayi.com/learn/bianyao.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yaoguayi.com/learn/cuo-zong-hu.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <priority>0.7</priority>
   </url>
 </urlset>

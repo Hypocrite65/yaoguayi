@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>八卦演化图解 · 爻卦易</title>
+<meta name="description" content="以图解方式展示八卦的演化过程：从太极到两仪、四象、八卦的完整推演，以及先天八卦与后天八卦的方位排列。"/>
+<meta name="theme-color" content="#faf8f1"/>
+<link rel="canonical" href="https://yaoguayi.com/learn/bagua-yanhua.html"/>
+<meta property="og:type" content="article"/>
+<meta property="og:site_name" content="爻卦易"/>
+<meta property="og:title" content="八卦演化图解 · 爻卦易"/>
+<meta property="og:description" content="以图解方式展示八卦的演化过程：从太极到两仪、四象、八卦的完整推演，以及先天八卦与后天八卦的方位排列。"/>
+<meta property="og:url" content="https://yaoguayi.com/learn/bagua-yanhua.html"/>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "八卦演化图解",
+  "description": "以图解方式展示八卦的演化过程：从太极到两仪、四象、八卦的完整推演，以及先天八卦与后天八卦的方位排列。",
+  "inLanguage": "zh-Hans",
+  "author": {
+    "@type": "Organization",
+    "name": "爻卦易",
+    "url": "https://yaoguayi.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "爻卦易",
+    "url": "https://yaoguayi.com"
+  },
+  "mainEntityOfPage": "https://yaoguayi.com/learn/bagua-yanhua.html"
+}
+</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+/* ===== 主题变量（与全站一致） ===== */
+body{
+  --bg:#faf8f1;--bg-alt:#f1ede2;--ink:#2c2420;--ink-light:#5a4e44;
+  --muted:#7a6e64;--faint:#a09080;--ghost:#d5c8b6;--whisper:#ded4c3;
+  --border:rgba(26,26,26,0.08);--border-strong:rgba(26,26,26,0.15);
+  --vermilion:#c0392b;--vermilion-faint:rgba(192,57,43,0.15);
+  --nav-bg:rgba(250,248,241,0.92);--card-bg:rgba(241,237,226,0.5);
+  --hover-bg:rgba(26,26,26,0.06);--shadow:rgba(26,26,26,0.08);
+}
+body.dark-theme{
+  --bg:#1c1a16;--bg-alt:#252320;--ink:#e8e0d4;--ink-light:#ccc4b8;
+  --muted:#a49c8c;--faint:#847c6c;--ghost:#5a5448;--whisper:#3e3830;
+  --border:rgba(232,224,212,0.10);--border-strong:rgba(232,224,212,0.18);
+  --vermilion:#e07060;--vermilion-faint:rgba(224,112,96,0.18);
+  --nav-bg:rgba(28,26,22,0.94);--card-bg:rgba(37,35,32,0.7);
+  --hover-bg:rgba(232,224,212,0.08);--shadow:rgba(0,0,0,0.3);
+}
+
+body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
+  color:var(--ink);background:var(--bg);min-height:100vh;
+  display:flex;flex-direction:column;transition:background 0.4s,color 0.4s;}
+
+/* ===== 顶部导航 ===== */
+.top-nav{position:sticky;top:0;z-index:100;
+  background:var(--nav-bg);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border-bottom:0.5px solid var(--border);padding:10px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.nav-left{display:flex;align-items:center;gap:16px;}
+.nav-back{font-size:13px;letter-spacing:0.1em;color:var(--muted);text-decoration:none;
+  display:flex;align-items:center;gap:6px;transition:color 0.2s;}
+.nav-back:hover{color:var(--vermilion);}
+.nav-back::before{content:'←';font-size:15px;}
+.nav-link{font-size:13px;letter-spacing:0.1em;color:var(--muted);text-decoration:none;
+  transition:color 0.2s;}
+.nav-link:hover{color:var(--vermilion);}
+.nav-tools{display:flex;align-items:center;gap:4px;}
+.nav-btn{width:32px;height:32px;border:none;background:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;border-radius:6px;
+  color:var(--muted);transition:background 0.2s,color 0.2s;}
+.nav-btn:hover{background:var(--hover-bg);color:var(--ink);}
+.nav-btn svg{width:18px;height:18px;}
+
+/* ===== 主体 ===== */
+.page{max-width:860px;margin:0 auto;padding:40px 28px 64px;flex:1;width:100%;}
+
+/* 面包屑 */
+.crumb{font-size:11px;letter-spacing:0.14em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:28px;}
+.crumb a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+.crumb a:hover{color:var(--vermilion);}
+.crumb .sep{margin:0 8px;color:var(--whisper);}
+.crumb .here{color:var(--ink);}
+
+.page-title{font-size:30px;letter-spacing:0.24em;font-weight:400;margin-bottom:12px;}
+.page-intro{font-size:13px;line-height:2;color:var(--muted);letter-spacing:0.06em;
+  margin-bottom:40px;max-width:640px;}
+
+/* 分组标题 */
+.group{margin-bottom:48px;}
+.group-title{display:flex;align-items:baseline;gap:12px;margin-bottom:6px;}
+.group-title h2{font-size:16px;letter-spacing:0.3em;font-weight:400;color:var(--ink);}
+.group-title .count{font-size:11px;color:var(--faint);letter-spacing:0.1em;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.group-desc{font-size:12px;color:var(--faint);letter-spacing:0.08em;margin-bottom:16px;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+
+/* 索引列表：语义化 ul/li/a，便于爬虫跟随 */
+.hex-index{list-style:none;border-top:0.5px solid var(--border-strong);}
+.hex-index li{border-bottom:0.5px solid var(--border);}
+.hex-index a{display:flex;align-items:center;gap:14px;padding:13px 8px;
+  text-decoration:none;color:inherit;border-radius:4px;
+  transition:background 0.2s,padding-left 0.25s;}
+.hex-index a:hover{background:var(--hover-bg);padding-left:14px;}
+.hex-sym{font-size:24px;line-height:1;color:var(--ink);opacity:0.7;width:34px;
+  text-align:center;flex:none;transition:opacity 0.2s,transform 0.25s;}
+.hex-index a:hover .hex-sym{opacity:1;transform:scale(1.12);color:var(--vermilion);}
+.hex-num{font-size:11px;color:var(--ghost);width:26px;flex:none;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.hex-name{font-size:17px;letter-spacing:0.14em;color:var(--ink);width:74px;flex:none;}
+.hex-pinyin{font-size:12px;color:var(--faint);width:64px;flex:none;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.hex-guaci{font-size:13px;color:var(--muted);letter-spacing:0.06em;flex:1;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hex-arrow{font-size:14px;color:var(--ghost);flex:none;transition:transform 0.25s,color 0.25s;}
+.hex-index a:hover .hex-arrow{transform:translateX(5px);color:var(--vermilion);}
+
+/* ===== 页脚 ===== */
+.site-footer{border-top:0.5px solid var(--border);padding:20px 24px;text-align:center;
+  font-size:10px;letter-spacing:0.12em;color:var(--ghost);
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-top:auto;}
+.site-footer a{color:var(--faint);text-decoration:none;transition:color 0.2s;}
+.site-footer a:hover{color:var(--vermilion);}
+.site-footer{position:relative;}
+.ver{color:var(--faint);cursor:pointer;transition:color 0.2s;}
+.ver:hover{color:var(--vermilion);}
+.ver-panel{position:absolute;bottom:calc(100% + 10px);right:16px;width:min(440px,92vw);
+  max-height:320px;overflow-y:auto;background:var(--bg);
+  border:1px solid var(--border-strong);border-radius:10px;
+  box-shadow:0 12px 32px var(--shadow);padding:8px;z-index:60;text-align:left;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.ver-panel[hidden]{display:none;}
+.ver-row{display:flex;gap:10px;align-items:baseline;padding:7px 10px;font-size:11px;
+  letter-spacing:0;border-radius:6px;}
+.ver-row:hover{background:var(--hover-bg);}
+.ver-n{color:var(--vermilion);font-weight:600;min-width:34px;flex:none;}
+.ver-sha{font-family:ui-monospace,SFMono-Regular,monospace;color:var(--muted);flex:none;}
+.ver-date{color:var(--faint);white-space:nowrap;flex:none;}
+.ver-sub{color:var(--ink-light);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+.loading{text-align:center;padding:80px 24px;font-size:13px;letter-spacing:0.12em;color:var(--faint);}
+
+@media(max-width:640px){
+  .page{padding:28px 16px 48px;}
+  .page-title{font-size:24px;}
+  .hex-pinyin{display:none;}
+  .hex-guaci{font-size:12px;}
+  .hex-name{width:60px;font-size:15px;}
+}
+
+.term-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin:14px 0 8px;}
+.term-card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:14px 16px;}
+.term-card .t-head{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;}
+.term-card .t-name{font-size:21px;font-weight:700;color:var(--ink);letter-spacing:0.05em;}
+.term-card .t-py{font-size:13px;color:var(--faint);font-family:'Noto Sans SC',system-ui,sans-serif;}
+.term-card .t-def{font-size:14px;line-height:1.85;color:var(--ink-light);}
+@media(max-width:640px){.term-grid{grid-template-columns:1fr;}}
+
+
+/* ===== 知识文章 ===== */
+.article-head{display:flex;gap:18px;align-items:flex-start;margin-bottom:10px;}
+.article-icon{font-size:44px;line-height:1.2;flex:none;}
+.article-kicker{font-size:11px;letter-spacing:0.3em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:8px;}
+.article-title{font-size:28px;letter-spacing:0.18em;font-weight:400;margin-bottom:8px;}
+.article-sub{font-size:14px;color:var(--muted);letter-spacing:0.08em;}
+.article-summary{font-size:14px;line-height:2;color:var(--ink-light);
+  background:var(--card-bg);border:1px solid var(--border);border-radius:12px;
+  padding:16px 20px;margin:24px 0 8px;}
+.toc{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;
+  padding:16px 20px;margin:24px 0 8px;}
+.toc-title{font-size:12px;letter-spacing:0.3em;color:var(--faint);margin-bottom:10px;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.toc ol{margin:0;padding-left:1.4em;font-size:14px;line-height:2;}
+.toc a{color:var(--ink-light);text-decoration:none;transition:color 0.2s;}
+.toc a:hover{color:var(--vermilion);}
+.article-body{font-size:15px;line-height:2.05;color:var(--ink-light);margin-top:8px;}
+.article-body h2{font-size:19px;letter-spacing:0.18em;color:var(--ink);font-weight:400;
+  margin:44px 0 16px;padding-top:12px;border-top:0.5px solid var(--border);}
+.article-body h2:first-child{margin-top:24px;}
+.article-body p{margin:0 0 16px;}
+.article-body strong{color:var(--ink);}
+.article-body ul,.article-body ol{margin:0 0 16px;padding-left:1.5em;}
+.article-body li{margin-bottom:8px;}
+.article-body table{width:100%;border-collapse:collapse;margin:8px 0 24px;font-size:14px;line-height:1.8;}
+.article-body th,.article-body td{border:1px solid var(--border-strong);padding:9px 12px;text-align:left;}
+.article-body th{background:var(--card-bg);color:var(--ink);font-weight:600;white-space:nowrap;}
+.article-body .diagram-wrap{margin:20px 0 28px;text-align:center;overflow-x:auto;}
+.term-link{text-decoration:none;border-bottom:1.5px dashed var(--vermilion-faint);
+  cursor:pointer;transition:border-color 0.2s,color 0.2s;color:inherit;}
+.term-link:hover{border-bottom-color:var(--vermilion);color:var(--vermilion);}
+.source-box{margin-top:44px;padding:14px 18px;border-left:3px solid var(--vermilion);
+  background:var(--card-bg);border-radius:0 8px 8px 0;font-size:13px;line-height:1.9;
+  color:var(--muted);}
+.source-box .src-label{font-size:11px;letter-spacing:0.3em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;display:block;margin-bottom:4px;}
+.prev-next{display:flex;justify-content:space-between;gap:12px;margin-top:36px;
+  border-top:0.5px solid var(--border);padding-top:20px;}
+.prev-next a{flex:1;text-decoration:none;color:var(--ink-light);font-size:14px;
+  padding:12px 16px;border:1px solid var(--border);border-radius:10px;
+  transition:border-color 0.2s,background 0.2s;line-height:1.7;}
+.prev-next a:hover{border-color:var(--vermilion);background:var(--hover-bg);}
+.prev-next .pn-next{text-align:right;}
+.prev-next .pn-label{display:block;font-size:11px;letter-spacing:0.2em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:2px;}
+/* 知识卡片 */
+.learn-card{display:flex;gap:16px;align-items:flex-start;padding:16px;
+  border:1px solid var(--border);border-radius:12px;background:var(--card-bg);
+  text-decoration:none;color:inherit;transition:border-color 0.2s,transform 0.2s;}
+.learn-card:hover{border-color:var(--vermilion);transform:translateY(-2px);}
+.learn-icon{font-size:32px;line-height:1.3;flex:none;}
+.learn-card h3{font-size:17px;letter-spacing:0.1em;font-weight:400;margin-bottom:4px;color:var(--ink);}
+.learn-card .l-sub{font-size:12px;color:var(--faint);letter-spacing:0.06em;margin-bottom:8px;}
+.learn-card .l-sum{font-size:13px;line-height:1.9;color:var(--muted);}
+.learn-card .l-meta{font-size:11px;color:var(--ghost);margin-top:8px;letter-spacing:0.1em;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.learn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+@media(max-width:640px){
+  .learn-grid{grid-template-columns:1fr;}
+  .article-title{font-size:23px;}
+  .article-head{gap:12px;}
+  .article-icon{font-size:34px;}
+  .prev-next{flex-direction:column;}
+  .prev-next .pn-next{text-align:left;}
+}
+/* 移动端导航横滑，避免链接挤出 */
+@media(max-width:640px){
+  .top-nav .nav-left{overflow-x:auto;scrollbar-width:none;white-space:nowrap;max-width:78vw;}
+  .top-nav .nav-left::-webkit-scrollbar{display:none;}
+  .top-nav .nav-left a{flex:none;}
+}
+
+</style>
+</head>
+<body>
+<nav class="top-nav" aria-label="主导航">
+  <div class="nav-left">
+    <a class="nav-back" href="/">首页</a>
+    <a class="nav-link" href="/hexagrams.html">卦象索引</a>
+    <a class="nav-link" href="/divination.html">起卦</a>
+  </div>
+  <div class="nav-tools">
+    <button class="nav-btn" id="theme-toggle" title="切换深色 / 浅色" aria-label="切换深色 / 浅色" onclick="toggleTheme()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+<main class="page">
+  <nav class="crumb" aria-label="面包屑">
+    <a href="/">首页</a><span class="sep">/</span><a href="/learn.html">知识</a><span class="sep">/</span><span class="here">八卦演化图解</span>
+  </nav>
+
+  <article>
+    <div class="article-head">
+      <span class="article-icon" aria-hidden="true">☯</span>
+      <div>
+        <div class="article-kicker">易经知识 · 基础</div>
+        <h1 class="article-title">八卦演化图解</h1>
+        <div class="article-sub">太极生两仪，两仪生四象，四象生八卦</div>
+      </div>
+    </div>
+
+    <p class="article-summary">以图解方式展示八卦的演化过程：从太极到两仪、四象、八卦的完整推演，以及先天八卦与后天八卦的方位排列。</p>
+
+    <nav class="toc" aria-label="本篇目录">
+      <div class="toc-title">本篇目录</div>
+      <ol><li><a href="#sec-1">太极 → 两仪 → 四象 → 八卦</a></li><li><a href="#sec-2">先天八卦方位（伏羲八卦）</a></li><li><a href="#sec-3">后天八卦方位（文王八卦）</a></li></ol>
+    </nav>
+
+    <div class="article-body">
+<h2 id="sec-1">太极 → 两仪 → 四象 → 八卦</h2>
+<p style='line-height:1.9;color:var(--ink-light);margin-bottom:16px;'>《系辞上传》曰：<strong style='color:var(--ink);'>「易有太极，是生两仪，两仪生四象，四象生八卦。」</strong></p><p style='line-height:1.9;color:var(--ink-light);margin-bottom:20px;'>太极为万物本源，一分为二生阴阳两仪；阴阳各自再分，生出太阳、少阴、少阳、太阴四象；四象各加一爻，演为乾、兑、离、震、巽、坎、艮、坤八卦。</p><div class='diagram-wrap'><svg viewBox='0 0 700 520' xmlns='http://www.w3.org/2000/svg' style='max-width:700px;width:100%;height:auto;'>
+<style>
+  .evo-label { font-family: 'Noto Serif SC', serif; fill: var(--ink); text-anchor: middle; }
+  .evo-small { font-family: 'Noto Sans SC', system-ui, sans-serif; fill: var(--muted); text-anchor: middle; font-size: 11px; }
+  .evo-line { stroke: var(--border-strong); stroke-width: 1.5; fill: none; }
+  .evo-accent { fill: var(--vermilion); }
+</style>
+<circle cx='350.0' cy='40' r='28' fill='none' stroke='var(--ink)' stroke-width='2'/>
+<path d='M 350.0 12 A 14 14 0 0 1 350.0 40 A 14 14 0 0 0 350.0 68 A 28 28 0 0 1 350.0 12' fill='var(--ink)'/>
+<circle cx='350.0' cy='26' r='4' fill='var(--bg)'/>
+<circle cx='350.0' cy='54' r='4' fill='var(--ink)'/>
+<text x='350.0' y='90' class='evo-label' font-size='14'>太极</text>
+<line x1='350.0' y1='70' x2='200.0' y2='125' class='evo-line'/>
+<rect x='175.0' y='146' width='50' height='8' fill='var(--ink)' rx='1'/>
+<text x='200.0' y='178' class='evo-label' font-size='14'>阳</text>
+<line x1='350.0' y1='70' x2='500.0' y2='125' class='evo-line'/>
+<rect x='475.0' y='146' width='21' height='8' fill='var(--ink)' rx='1'/>
+<rect x='504.0' y='146' width='21' height='8' fill='var(--ink)' rx='1'/>
+<text x='500.0' y='178' class='evo-label' font-size='14'>阴</text>
+<line x1='200.0' y1='182' x2='110.0' y2='250' class='evo-line'/>
+<rect x='90.0' y='270' width='40' height='7' fill='var(--ink)' rx='1'/>
+<rect x='90.0' y='284' width='40' height='7' fill='var(--ink)' rx='1'/>
+<text x='110.0' y='310' class='evo-label' font-size='13'>太阳</text>
+<line x1='200.0' y1='182' x2='270.0' y2='250' class='evo-line'/>
+<rect x='250.0' y='270' width='40' height='7' fill='var(--ink)' rx='1'/>
+<rect x='250.0' y='284' width='16' height='7' fill='var(--ink)' rx='1'/>
+<rect x='274.0' y='284' width='16' height='7' fill='var(--ink)' rx='1'/>
+<text x='270.0' y='310' class='evo-label' font-size='13'>少阴</text>
+<line x1='500.0' y1='182' x2='430.0' y2='250' class='evo-line'/>
+<rect x='410.0' y='270' width='16' height='7' fill='var(--ink)' rx='1'/>
+<rect x='434.0' y='270' width='16' height='7' fill='var(--ink)' rx='1'/>
+<rect x='410.0' y='284' width='40' height='7' fill='var(--ink)' rx='1'/>
+<text x='430.0' y='310' class='evo-label' font-size='13'>少阳</text>
+<line x1='500.0' y1='182' x2='590.0' y2='250' class='evo-line'/>
+<rect x='570.0' y='270' width='16' height='7' fill='var(--ink)' rx='1'/>
+<rect x='594.0' y='270' width='16' height='7' fill='var(--ink)' rx='1'/>
+<rect x='570.0' y='284' width='16' height='7' fill='var(--ink)' rx='1'/>
+<rect x='594.0' y='284' width='16' height='7' fill='var(--ink)' rx='1'/>
+<text x='590.0' y='310' class='evo-label' font-size='13'>太阴</text>
+<line x1='110.0' y1='315' x2='77.77777777777777' y2='390' class='evo-line'/>
+<rect x='59.77777777777777' y='400' width='36' height='6' fill='var(--ink)' rx='1'/>
+<rect x='59.77777777777777' y='412' width='36' height='6' fill='var(--ink)' rx='1'/>
+<rect x='59.77777777777777' y='424' width='36' height='6' fill='var(--ink)' rx='1'/>
+<text x='77.77777777777777' y='450' class='evo-label evo-accent' font-size='15' font-weight='600'>乾</text>
+<text x='77.77777777777777' y='468' class='evo-small'>天</text>
+<line x1='110.0' y1='315' x2='155.55555555555554' y2='390' class='evo-line'/>
+<rect x='137.55555555555554' y='400' width='36' height='6' fill='var(--ink)' rx='1'/>
+<rect x='137.55555555555554' y='412' width='36' height='6' fill='var(--ink)' rx='1'/>
+<rect x='137.55555555555554' y='424' width='14' height='6' fill='var(--ink)' rx='1'/>
+<rect x='159.55555555555554' y='424' width='14' height='6' fill='var(--ink)' rx='1'/>
+<text x='155.55555555555554' y='450' class='evo-label evo-accent' font-size='15' font-weight='600'>兑</text>
+<text x='155.55555555555554' y='468' class='evo-small'>泽</text>
+<line x1='270.0' y1='315' x2='233.33333333333331' y2='390' class='evo-line'/>
+<rect x='215.33333333333331' y='400' width='36' height='6' fill='var(--ink)' rx='1'/>
+<rect x='215.33333333333331' y='412' width='14' height='6' fill='var(--ink)' rx='1'/>
+<rect x='237.33333333333331' y='412' width='14' height='6' fill='var(--ink)' rx='1'/>
+<rect x='215.33333333333331' y='424' width='36' height='6' fill='var(--ink)' rx='1'/>
+<text x='233.33333333333331' y='450' class='evo-label evo-accent' font-size='15' font-weight='600'>离</text>
+<text x='233.33333333333331' y='468' class='evo-small'>火</text>
+<line x1='270.0' y1='315' x2='311.1111111111111' y2='390' class='evo-line'/>
+<rect x='293.1111111111111' y='400' width='36' height='6' fill='var(--ink)' rx='1'/>
+<rect x='293.1111111111111' y='412' width='14' height='6' fill='var(--ink)' rx='1'/>
+<rect x='315.1111111111111' y='412' width='14' height='6' fill='var(--ink)' rx='1'/>
+<rect x='293.1111111111111' y='424' width='14' height='6' fill='var(--ink)' rx='1'/>
+<rect x='315.1111111111111' y='424' width='14' height='6' fill='var(--ink)' rx='1'/>
+<text x='311.1111111111111' y='450' class='evo-label evo-accent' font-size='15' font-weight='600'>震</text>
+<text x='311.1111111111111' y='468' class='evo-small'>雷</text>
+<line x1='430.0' y1='315' x2='388.88888888888886' y2='390' class='evo-line'/>
+<rect x='370.88888888888886' y='400' width='14' height='6' fill='var(--ink)' rx='1'/>
+<rect x='392.88888888888886' y='400' width='14' height='6' fill='var(--ink)' rx='1'/>
+<rect x='370.88888888888886' y='412' width='36' height='6' fill='var(--ink)' rx='1'/>
+<rect x='370.88888888888886' y='424' width='36' height='6' fill='var(--ink)' rx='1'/>
+<text x='388.88888888888886' y='450' class='evo-label evo-accent' font-size='15' font-weight='600'>巽</text>
+<text x='388.88888888888886' y='468' class='evo-small'>风</text>
+<line x1='430.0' y1='315' x2='466.66666666666663' y2='390' class='evo-line'/>
+<rect x='448.66666666666663' y='400' width='14' height='6' fill='var(--ink)' rx='1'/>
+<rect x='470.66666666666663' y='400' width='14' height='6' fill='var(--ink)' rx='1'/>
+<rect x='448.66666666666663' y='412' width='36' height='6' fill='var(--ink)' rx='1'/>
+<rect x='448.66666666666663' y='424' width='14' height='6' fill='var(--ink)' rx='1'/>
+<rect x='470.66666666666663' y='424' width='14' height='6' fill='var(--ink)' rx='1'/>
+<text x='466.66666666666663' y='450' class='evo-label evo-accent' font-size='15' font-weight='600'>坎</text>
+<text x='466.66666666666663' y='468' class='evo-small'>水</text>
+<line x1='590.0' y1='315' x2='544.4444444444443' y2='390' class='evo-line'/>
+<rect x='526.4444444444443' y='400' width='14' height='6' fill='var(--ink)' rx='1'/>
+<rect x='548.4444444444443' y='400' width='14' height='6' fill='var(--ink)' rx='1'/>
+<rect x='526.4444444444443' y='412' width='14' height='6' fill='var(--ink)' rx='1'/>
+<rect x='548.4444444444443' y='412' width='14' height='6' fill='var(--ink)' rx='1'/>
+<rect x='526.4444444444443' y='424' width='36' height='6' fill='var(--ink)' rx='1'/>
+<text x='544.4444444444443' y='450' class='evo-label evo-accent' font-size='15' font-weight='600'>艮</text>
+<text x='544.4444444444443' y='468' class='evo-small'>山</text>
+<line x1='590.0' y1='315' x2='622.2222222222222' y2='390' class='evo-line'/>
+<rect x='604.2222222222222' y='400' width='14' height='6' fill='var(--ink)' rx='1'/>
+<rect x='626.2222222222222' y='400' width='14' height='6' fill='var(--ink)' rx='1'/>
+<rect x='604.2222222222222' y='412' width='14' height='6' fill='var(--ink)' rx='1'/>
+<rect x='626.2222222222222' y='412' width='14' height='6' fill='var(--ink)' rx='1'/>
+<rect x='604.2222222222222' y='424' width='14' height='6' fill='var(--ink)' rx='1'/>
+<rect x='626.2222222222222' y='424' width='14' height='6' fill='var(--ink)' rx='1'/>
+<text x='622.2222222222222' y='450' class='evo-label evo-accent' font-size='15' font-weight='600'>坤</text>
+<text x='622.2222222222222' y='468' class='evo-small'>地</text>
+<text x='690' y='45' class='evo-small' text-anchor='end' font-size='10'>太极</text>
+<text x='690' y='155' class='evo-small' text-anchor='end' font-size='10'>两仪</text>
+<text x='690' y='285' class='evo-small' text-anchor='end' font-size='10'>四象</text>
+<text x='690' y='435' class='evo-small' text-anchor='end' font-size='10'>八卦</text>
+</svg><div class='diagram-caption'>八卦演化树形图 — 从太极到八个基本卦象</div></div><h2 id="sec-2">先天八卦方位（伏羲八卦）</h2>
+<p style='line-height:1.9;color:var(--ink-light);margin-bottom:16px;'>先天八卦相传为伏羲所创，按<strong style='color:var(--ink);'>阴阳对峙</strong>原则排列。对面两卦互为反面——乾坤、离坎、震巽、兑艮——体现天地初开时的对称秩序。</p><p style='line-height:1.9;color:var(--ink-light);margin-bottom:4px;'>核心特征：<strong style='color:var(--ink);'>乾南坤北，离东坎西</strong>（上南下北）。</p><p style='line-height:1.9;color:var(--muted);margin-bottom:20px;font-size:13px;'>先天数序：乾一、兑二、离三、震四、巽五、坎六、艮七、坤八</p><div class='diagram-wrap'><svg viewBox='-25 -25 510 510' xmlns='http://www.w3.org/2000/svg' style='max-width:510px;width:100%;height:auto;'>
+<style>
+  .xt-label { font-family: 'Noto Serif SC', serif; fill: var(--ink); text-anchor: middle; dominant-baseline: central; }
+  .xt-dir { font-family: 'Noto Sans SC', system-ui, sans-serif; fill: var(--ghost); text-anchor: middle; dominant-baseline: central; font-size: 11px; }
+  .xt-nature { font-family: 'Noto Sans SC', system-ui, sans-serif; fill: var(--muted); text-anchor: middle; dominant-baseline: central; font-size: 11px; }
+</style>
+<circle cx='230.0' cy='230.0' r='200' fill='none' stroke='var(--border)' stroke-width='1' stroke-dasharray='4,4'/>
+<circle cx='230.0' cy='230.0' r='35' fill='none' stroke='var(--border)' stroke-width='1'/>
+<text x='230.0' y='230.0' class='xt-label' font-size='13'>先天</text>
+<rect x='216.0' y='392.0' width='28' height='4' fill='var(--ink)' rx='1'/>
+<rect x='216.0' y='399.0' width='28' height='4' fill='var(--ink)' rx='1'/>
+<rect x='216.0' y='406.0' width='28' height='4' fill='var(--ink)' rx='1'/>
+<text x='230.0' y='455.0' class='xt-label' font-size='16' font-weight='600'>乾</text>
+<text x='230.0' y='475.0' class='xt-nature'>天</text>
+<text x='230.0' y='365.0' class='xt-dir'>南</text>
+<rect x='95.8' y='342.2' width='28' height='4' fill='var(--ink)' rx='1'/>
+<rect x='95.8' y='349.2' width='28' height='4' fill='var(--ink)' rx='1'/>
+<rect x='95.8' y='356.2' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='111.3' y='356.2' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<text x='70.9' y='389.1' class='xt-label' font-size='16' font-weight='600'>兑</text>
+<text x='56.8' y='403.2' class='xt-nature'>泽</text>
+<text x='134.5' y='325.5' class='xt-dir'>东南</text>
+<rect x='46.0' y='222.0' width='28' height='4' fill='var(--ink)' rx='1'/>
+<rect x='46.0' y='229.0' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='61.5' y='229.0' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='46.0' y='236.0' width='28' height='4' fill='var(--ink)' rx='1'/>
+<text x='5.0' y='230.0' class='xt-label' font-size='16' font-weight='600'>离</text>
+<text x='-15.0' y='230.0' class='xt-nature'>火</text>
+<text x='95.0' y='230.0' class='xt-dir'>东</text>
+<rect x='95.8' y='101.8' width='28' height='4' fill='var(--ink)' rx='1'/>
+<rect x='95.8' y='108.8' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='111.3' y='108.8' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='95.8' y='115.8' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='111.3' y='115.8' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<text x='70.9' y='70.9' class='xt-label' font-size='16' font-weight='600'>震</text>
+<text x='56.8' y='56.8' class='xt-nature'>雷</text>
+<text x='134.5' y='134.5' class='xt-dir'>东北</text>
+<rect x='216.0' y='52.0' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='231.5' y='52.0' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='216.0' y='59.0' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='231.5' y='59.0' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='216.0' y='66.0' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='231.5' y='66.0' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<text x='230.0' y='5.0' class='xt-label' font-size='16' font-weight='600'>坤</text>
+<text x='230.0' y='-15.0' class='xt-nature'>地</text>
+<text x='230.0' y='95.0' class='xt-dir'>北</text>
+<rect x='336.2' y='101.8' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='351.7' y='101.8' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='336.2' y='108.8' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='351.7' y='108.8' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='336.2' y='115.8' width='28' height='4' fill='var(--ink)' rx='1'/>
+<text x='389.1' y='70.9' class='xt-label' font-size='16' font-weight='600'>艮</text>
+<text x='403.2' y='56.8' class='xt-nature'>山</text>
+<text x='325.5' y='134.5' class='xt-dir'>西北</text>
+<rect x='386.0' y='222.0' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='401.5' y='222.0' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='386.0' y='229.0' width='28' height='4' fill='var(--ink)' rx='1'/>
+<rect x='386.0' y='236.0' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='401.5' y='236.0' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<text x='455.0' y='230.0' class='xt-label' font-size='16' font-weight='600'>坎</text>
+<text x='475.0' y='230.0' class='xt-nature'>水</text>
+<text x='365.0' y='230.0' class='xt-dir'>西</text>
+<rect x='336.2' y='342.2' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='351.7' y='342.2' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='336.2' y='349.2' width='28' height='4' fill='var(--ink)' rx='1'/>
+<rect x='336.2' y='356.2' width='28' height='4' fill='var(--ink)' rx='1'/>
+<text x='389.1' y='389.1' class='xt-label' font-size='16' font-weight='600'>巽</text>
+<text x='403.2' y='403.2' class='xt-nature'>风</text>
+<text x='325.5' y='325.5' class='xt-dir'>西南</text>
+<line x1='230.0' y1='280.0' x2='230.0' y2='180.0' stroke='var(--vermilion-faint)' stroke-width='1' stroke-dasharray='3,3'/>
+<line x1='194.6' y1='265.4' x2='265.4' y2='194.6' stroke='var(--vermilion-faint)' stroke-width='1' stroke-dasharray='3,3'/>
+<line x1='180.0' y1='230.0' x2='280.0' y2='230.0' stroke='var(--vermilion-faint)' stroke-width='1' stroke-dasharray='3,3'/>
+<line x1='194.6' y1='194.6' x2='265.4' y2='265.4' stroke='var(--vermilion-faint)' stroke-width='1' stroke-dasharray='3,3'/>
+</svg><div class='diagram-caption'>先天八卦方位图 — 阴阳对峙，虚线连接互为反面的卦对</div></div><h2 id="sec-3">后天八卦方位（文王八卦）</h2>
+<p style='line-height:1.9;color:var(--ink-light);margin-bottom:16px;'>后天八卦相传为周文王所作，按<strong style='color:var(--ink);'>万物流转</strong>规律排列。体现四季更替、万物生长的循环秩序，是风水、占卜实践中最常用的方位系统。</p><p style='line-height:1.9;color:var(--ink-light);margin-bottom:4px;'>核心特征：<strong style='color:var(--ink);'>离南坎北，震东兑西</strong>（上南下北）。</p><p style='line-height:1.9;color:var(--muted);margin-bottom:20px;font-size:13px;'>后天数序（洛书数）：坎一、坤二、震三、巽四、中五、乾六、兑七、艮八、离九</p><div class='diagram-wrap'><svg viewBox='-25 -25 510 510' xmlns='http://www.w3.org/2000/svg' style='max-width:510px;width:100%;height:auto;'>
+<style>
+  .ht-label { font-family: 'Noto Serif SC', serif; fill: var(--ink); text-anchor: middle; dominant-baseline: central; }
+  .ht-dir { font-family: 'Noto Sans SC', system-ui, sans-serif; fill: var(--ghost); text-anchor: middle; dominant-baseline: central; font-size: 11px; }
+  .ht-nature { font-family: 'Noto Sans SC', system-ui, sans-serif; fill: var(--muted); text-anchor: middle; dominant-baseline: central; font-size: 11px; }
+</style>
+<circle cx='230.0' cy='230.0' r='200' fill='none' stroke='var(--border)' stroke-width='1' stroke-dasharray='4,4'/>
+<circle cx='230.0' cy='230.0' r='35' fill='none' stroke='var(--border)' stroke-width='1'/>
+<text x='230.0' y='230.0' class='ht-label' font-size='13'>后天</text>
+<rect x='216.0' y='392.0' width='28' height='4' fill='var(--ink)' rx='1'/>
+<rect x='216.0' y='399.0' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='231.5' y='399.0' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='216.0' y='406.0' width='28' height='4' fill='var(--ink)' rx='1'/>
+<text x='230.0' y='455.0' class='ht-label' font-size='16' font-weight='600'>离</text>
+<text x='230.0' y='475.0' class='ht-nature'>火</text>
+<text x='230.0' y='365.0' class='ht-dir'>南</text>
+<rect x='95.8' y='342.2' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='111.3' y='342.2' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='95.8' y='349.2' width='28' height='4' fill='var(--ink)' rx='1'/>
+<rect x='95.8' y='356.2' width='28' height='4' fill='var(--ink)' rx='1'/>
+<text x='70.9' y='389.1' class='ht-label' font-size='16' font-weight='600'>巽</text>
+<text x='56.8' y='403.2' class='ht-nature'>风</text>
+<text x='134.5' y='325.5' class='ht-dir'>东南</text>
+<rect x='46.0' y='222.0' width='28' height='4' fill='var(--ink)' rx='1'/>
+<rect x='46.0' y='229.0' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='61.5' y='229.0' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='46.0' y='236.0' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='61.5' y='236.0' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<text x='5.0' y='230.0' class='ht-label' font-size='16' font-weight='600'>震</text>
+<text x='-15.0' y='230.0' class='ht-nature'>雷</text>
+<text x='95.0' y='230.0' class='ht-dir'>东</text>
+<rect x='95.8' y='101.8' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='111.3' y='101.8' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='95.8' y='108.8' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='111.3' y='108.8' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='95.8' y='115.8' width='28' height='4' fill='var(--ink)' rx='1'/>
+<text x='70.9' y='70.9' class='ht-label' font-size='16' font-weight='600'>艮</text>
+<text x='56.8' y='56.8' class='ht-nature'>山</text>
+<text x='134.5' y='134.5' class='ht-dir'>东北</text>
+<rect x='216.0' y='52.0' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='231.5' y='52.0' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='216.0' y='59.0' width='28' height='4' fill='var(--ink)' rx='1'/>
+<rect x='216.0' y='66.0' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='231.5' y='66.0' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<text x='230.0' y='5.0' class='ht-label' font-size='16' font-weight='600'>坎</text>
+<text x='230.0' y='-15.0' class='ht-nature'>水</text>
+<text x='230.0' y='95.0' class='ht-dir'>北</text>
+<rect x='336.2' y='101.8' width='28' height='4' fill='var(--ink)' rx='1'/>
+<rect x='336.2' y='108.8' width='28' height='4' fill='var(--ink)' rx='1'/>
+<rect x='336.2' y='115.8' width='28' height='4' fill='var(--ink)' rx='1'/>
+<text x='389.1' y='70.9' class='ht-label' font-size='16' font-weight='600'>乾</text>
+<text x='403.2' y='56.8' class='ht-nature'>天</text>
+<text x='325.5' y='134.5' class='ht-dir'>西北</text>
+<rect x='386.0' y='222.0' width='28' height='4' fill='var(--ink)' rx='1'/>
+<rect x='386.0' y='229.0' width='28' height='4' fill='var(--ink)' rx='1'/>
+<rect x='386.0' y='236.0' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='401.5' y='236.0' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<text x='455.0' y='230.0' class='ht-label' font-size='16' font-weight='600'>兑</text>
+<text x='475.0' y='230.0' class='ht-nature'>泽</text>
+<text x='365.0' y='230.0' class='ht-dir'>西</text>
+<rect x='336.2' y='342.2' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='351.7' y='342.2' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='336.2' y='349.2' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='351.7' y='349.2' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='336.2' y='356.2' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<rect x='351.7' y='356.2' width='12.5' height='4' fill='var(--ink)' rx='1'/>
+<text x='389.1' y='389.1' class='ht-label' font-size='16' font-weight='600'>坤</text>
+<text x='403.2' y='403.2' class='ht-nature'>地</text>
+<text x='325.5' y='325.5' class='ht-dir'>西南</text>
+<path d='M 340.0,218.0 A 110 110 0 1 0 340.0,242.0' fill='none' stroke='var(--vermilion-faint)' stroke-width='1.5' marker-end='url(#arrow-ht)'/>
+<defs><marker id='arrow-ht' markerWidth='8' markerHeight='6' refX='8' refY='3' orient='auto'><path d='M0,0 L8,3 L0,6' fill='var(--vermilion-faint)'/></marker></defs>
+</svg><div class='diagram-caption'>后天八卦方位图 — 万物流转，从震（东/春）始顺时针循环</div></div>
+    </div>
+
+    <aside class="source-box">
+      <span class="src-label">参考资料</span>
+      参考维基百科「八卦」「先天八卦」「后天八卦」条目、《周易·系辞上传》、《周易·说卦传》
+    </aside>
+
+    <nav class="prev-next" aria-label="上下篇">
+      <a href="/learn/hetu-luoshu.html"><span class="pn-label">← 上一篇</span>河图与洛书</a><a class="pn-next" href="/learn/bagua-xiangzheng.html"><span class="pn-label">下一篇 →</span>八卦象征总览</a>
+    </nav>
+  </article>
+</main>
+<footer class="site-footer">
+  爻卦易 · yaoguayi.com ·
+  <a href="/">首页</a> ·
+  <a href="/hexagrams.html">卦象索引</a> ·
+  <a href="/learn.html">知识</a> ·
+  <a href="/glossary.html">术语表</a> ·
+  <a href="/divination.html">起卦</a> ·
+  <a href="/sitemap.xml">站点地图</a> ·
+  <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank" rel="noopener">GitHub</a> ·
+  开源 · 非盈利 ·
+  <span class="ver" id="site-ver" title="查看版本历史">版本 v–</span>
+  <div class="ver-panel" id="ver-panel" hidden></div>
+</footer>
+<script src="/js/theme.js"></script>
+<script src="/js/version.js"></script>
+</body>
+</html>

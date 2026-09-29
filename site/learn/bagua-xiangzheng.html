@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>八卦象征总览 · 爻卦易</title>
+<meta name="description" content="八卦不仅是抽象符号，更映射了自然万象、家庭伦理、方位五行等完整的对应体系。掌握这些对应关系是理解卦象的基础。"/>
+<meta name="theme-color" content="#faf8f1"/>
+<link rel="canonical" href="https://yaoguayi.com/learn/bagua-xiangzheng.html"/>
+<meta property="og:type" content="article"/>
+<meta property="og:site_name" content="爻卦易"/>
+<meta property="og:title" content="八卦象征总览 · 爻卦易"/>
+<meta property="og:description" content="八卦不仅是抽象符号，更映射了自然万象、家庭伦理、方位五行等完整的对应体系。掌握这些对应关系是理解卦象的基础。"/>
+<meta property="og:url" content="https://yaoguayi.com/learn/bagua-xiangzheng.html"/>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "八卦象征总览",
+  "description": "八卦不仅是抽象符号，更映射了自然万象、家庭伦理、方位五行等完整的对应体系。掌握这些对应关系是理解卦象的基础。",
+  "inLanguage": "zh-Hans",
+  "author": {
+    "@type": "Organization",
+    "name": "爻卦易",
+    "url": "https://yaoguayi.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "爻卦易",
+    "url": "https://yaoguayi.com"
+  },
+  "mainEntityOfPage": "https://yaoguayi.com/learn/bagua-xiangzheng.html"
+}
+</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+/* ===== 主题变量（与全站一致） ===== */
+body{
+  --bg:#faf8f1;--bg-alt:#f1ede2;--ink:#2c2420;--ink-light:#5a4e44;
+  --muted:#7a6e64;--faint:#a09080;--ghost:#d5c8b6;--whisper:#ded4c3;
+  --border:rgba(26,26,26,0.08);--border-strong:rgba(26,26,26,0.15);
+  --vermilion:#c0392b;--vermilion-faint:rgba(192,57,43,0.15);
+  --nav-bg:rgba(250,248,241,0.92);--card-bg:rgba(241,237,226,0.5);
+  --hover-bg:rgba(26,26,26,0.06);--shadow:rgba(26,26,26,0.08);
+}
+body.dark-theme{
+  --bg:#1c1a16;--bg-alt:#252320;--ink:#e8e0d4;--ink-light:#ccc4b8;
+  --muted:#a49c8c;--faint:#847c6c;--ghost:#5a5448;--whisper:#3e3830;
+  --border:rgba(232,224,212,0.10);--border-strong:rgba(232,224,212,0.18);
+  --vermilion:#e07060;--vermilion-faint:rgba(224,112,96,0.18);
+  --nav-bg:rgba(28,26,22,0.94);--card-bg:rgba(37,35,32,0.7);
+  --hover-bg:rgba(232,224,212,0.08);--shadow:rgba(0,0,0,0.3);
+}
+
+body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
+  color:var(--ink);background:var(--bg);min-height:100vh;
+  display:flex;flex-direction:column;transition:background 0.4s,color 0.4s;}
+
+/* ===== 顶部导航 ===== */
+.top-nav{position:sticky;top:0;z-index:100;
+  background:var(--nav-bg);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border-bottom:0.5px solid var(--border);padding:10px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.nav-left{display:flex;align-items:center;gap:16px;}
+.nav-back{font-size:13px;letter-spacing:0.1em;color:var(--muted);text-decoration:none;
+  display:flex;align-items:center;gap:6px;transition:color 0.2s;}
+.nav-back:hover{color:var(--vermilion);}
+.nav-back::before{content:'←';font-size:15px;}
+.nav-link{font-size:13px;letter-spacing:0.1em;color:var(--muted);text-decoration:none;
+  transition:color 0.2s;}
+.nav-link:hover{color:var(--vermilion);}
+.nav-tools{display:flex;align-items:center;gap:4px;}
+.nav-btn{width:32px;height:32px;border:none;background:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;border-radius:6px;
+  color:var(--muted);transition:background 0.2s,color 0.2s;}
+.nav-btn:hover{background:var(--hover-bg);color:var(--ink);}
+.nav-btn svg{width:18px;height:18px;}
+
+/* ===== 主体 ===== */
+.page{max-width:860px;margin:0 auto;padding:40px 28px 64px;flex:1;width:100%;}
+
+/* 面包屑 */
+.crumb{font-size:11px;letter-spacing:0.14em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:28px;}
+.crumb a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+.crumb a:hover{color:var(--vermilion);}
+.crumb .sep{margin:0 8px;color:var(--whisper);}
+.crumb .here{color:var(--ink);}
+
+.page-title{font-size:30px;letter-spacing:0.24em;font-weight:400;margin-bottom:12px;}
+.page-intro{font-size:13px;line-height:2;color:var(--muted);letter-spacing:0.06em;
+  margin-bottom:40px;max-width:640px;}
+
+/* 分组标题 */
+.group{margin-bottom:48px;}
+.group-title{display:flex;align-items:baseline;gap:12px;margin-bottom:6px;}
+.group-title h2{font-size:16px;letter-spacing:0.3em;font-weight:400;color:var(--ink);}
+.group-title .count{font-size:11px;color:var(--faint);letter-spacing:0.1em;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.group-desc{font-size:12px;color:var(--faint);letter-spacing:0.08em;margin-bottom:16px;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+
+/* 索引列表：语义化 ul/li/a，便于爬虫跟随 */
+.hex-index{list-style:none;border-top:0.5px solid var(--border-strong);}
+.hex-index li{border-bottom:0.5px solid var(--border);}
+.hex-index a{display:flex;align-items:center;gap:14px;padding:13px 8px;
+  text-decoration:none;color:inherit;border-radius:4px;
+  transition:background 0.2s,padding-left 0.25s;}
+.hex-index a:hover{background:var(--hover-bg);padding-left:14px;}
+.hex-sym{font-size:24px;line-height:1;color:var(--ink);opacity:0.7;width:34px;
+  text-align:center;flex:none;transition:opacity 0.2s,transform 0.25s;}
+.hex-index a:hover .hex-sym{opacity:1;transform:scale(1.12);color:var(--vermilion);}
+.hex-num{font-size:11px;color:var(--ghost);width:26px;flex:none;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.hex-name{font-size:17px;letter-spacing:0.14em;color:var(--ink);width:74px;flex:none;}
+.hex-pinyin{font-size:12px;color:var(--faint);width:64px;flex:none;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.hex-guaci{font-size:13px;color:var(--muted);letter-spacing:0.06em;flex:1;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hex-arrow{font-size:14px;color:var(--ghost);flex:none;transition:transform 0.25s,color 0.25s;}
+.hex-index a:hover .hex-arrow{transform:translateX(5px);color:var(--vermilion);}
+
+/* ===== 页脚 ===== */
+.site-footer{border-top:0.5px solid var(--border);padding:20px 24px;text-align:center;
+  font-size:10px;letter-spacing:0.12em;color:var(--ghost);
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-top:auto;}
+.site-footer a{color:var(--faint);text-decoration:none;transition:color 0.2s;}
+.site-footer a:hover{color:var(--vermilion);}
+.site-footer{position:relative;}
+.ver{color:var(--faint);cursor:pointer;transition:color 0.2s;}
+.ver:hover{color:var(--vermilion);}
+.ver-panel{position:absolute;bottom:calc(100% + 10px);right:16px;width:min(440px,92vw);
+  max-height:320px;overflow-y:auto;background:var(--bg);
+  border:1px solid var(--border-strong);border-radius:10px;
+  box-shadow:0 12px 32px var(--shadow);padding:8px;z-index:60;text-align:left;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.ver-panel[hidden]{display:none;}
+.ver-row{display:flex;gap:10px;align-items:baseline;padding:7px 10px;font-size:11px;
+  letter-spacing:0;border-radius:6px;}
+.ver-row:hover{background:var(--hover-bg);}
+.ver-n{color:var(--vermilion);font-weight:600;min-width:34px;flex:none;}
+.ver-sha{font-family:ui-monospace,SFMono-Regular,monospace;color:var(--muted);flex:none;}
+.ver-date{color:var(--faint);white-space:nowrap;flex:none;}
+.ver-sub{color:var(--ink-light);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+.loading{text-align:center;padding:80px 24px;font-size:13px;letter-spacing:0.12em;color:var(--faint);}
+
+@media(max-width:640px){
+  .page{padding:28px 16px 48px;}
+  .page-title{font-size:24px;}
+  .hex-pinyin{display:none;}
+  .hex-guaci{font-size:12px;}
+  .hex-name{width:60px;font-size:15px;}
+}
+
+.term-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin:14px 0 8px;}
+.term-card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:14px 16px;}
+.term-card .t-head{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;}
+.term-card .t-name{font-size:21px;font-weight:700;color:var(--ink);letter-spacing:0.05em;}
+.term-card .t-py{font-size:13px;color:var(--faint);font-family:'Noto Sans SC',system-ui,sans-serif;}
+.term-card .t-def{font-size:14px;line-height:1.85;color:var(--ink-light);}
+@media(max-width:640px){.term-grid{grid-template-columns:1fr;}}
+
+
+/* ===== 知识文章 ===== */
+.article-head{display:flex;gap:18px;align-items:flex-start;margin-bottom:10px;}
+.article-icon{font-size:44px;line-height:1.2;flex:none;}
+.article-kicker{font-size:11px;letter-spacing:0.3em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:8px;}
+.article-title{font-size:28px;letter-spacing:0.18em;font-weight:400;margin-bottom:8px;}
+.article-sub{font-size:14px;color:var(--muted);letter-spacing:0.08em;}
+.article-summary{font-size:14px;line-height:2;color:var(--ink-light);
+  background:var(--card-bg);border:1px solid var(--border);border-radius:12px;
+  padding:16px 20px;margin:24px 0 8px;}
+.toc{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;
+  padding:16px 20px;margin:24px 0 8px;}
+.toc-title{font-size:12px;letter-spacing:0.3em;color:var(--faint);margin-bottom:10px;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.toc ol{margin:0;padding-left:1.4em;font-size:14px;line-height:2;}
+.toc a{color:var(--ink-light);text-decoration:none;transition:color 0.2s;}
+.toc a:hover{color:var(--vermilion);}
+.article-body{font-size:15px;line-height:2.05;color:var(--ink-light);margin-top:8px;}
+.article-body h2{font-size:19px;letter-spacing:0.18em;color:var(--ink);font-weight:400;
+  margin:44px 0 16px;padding-top:12px;border-top:0.5px solid var(--border);}
+.article-body h2:first-child{margin-top:24px;}
+.article-body p{margin:0 0 16px;}
+.article-body strong{color:var(--ink);}
+.article-body ul,.article-body ol{margin:0 0 16px;padding-left:1.5em;}
+.article-body li{margin-bottom:8px;}
+.article-body table{width:100%;border-collapse:collapse;margin:8px 0 24px;font-size:14px;line-height:1.8;}
+.article-body th,.article-body td{border:1px solid var(--border-strong);padding:9px 12px;text-align:left;}
+.article-body th{background:var(--card-bg);color:var(--ink);font-weight:600;white-space:nowrap;}
+.article-body .diagram-wrap{margin:20px 0 28px;text-align:center;overflow-x:auto;}
+.term-link{text-decoration:none;border-bottom:1.5px dashed var(--vermilion-faint);
+  cursor:pointer;transition:border-color 0.2s,color 0.2s;color:inherit;}
+.term-link:hover{border-bottom-color:var(--vermilion);color:var(--vermilion);}
+.source-box{margin-top:44px;padding:14px 18px;border-left:3px solid var(--vermilion);
+  background:var(--card-bg);border-radius:0 8px 8px 0;font-size:13px;line-height:1.9;
+  color:var(--muted);}
+.source-box .src-label{font-size:11px;letter-spacing:0.3em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;display:block;margin-bottom:4px;}
+.prev-next{display:flex;justify-content:space-between;gap:12px;margin-top:36px;
+  border-top:0.5px solid var(--border);padding-top:20px;}
+.prev-next a{flex:1;text-decoration:none;color:var(--ink-light);font-size:14px;
+  padding:12px 16px;border:1px solid var(--border);border-radius:10px;
+  transition:border-color 0.2s,background 0.2s;line-height:1.7;}
+.prev-next a:hover{border-color:var(--vermilion);background:var(--hover-bg);}
+.prev-next .pn-next{text-align:right;}
+.prev-next .pn-label{display:block;font-size:11px;letter-spacing:0.2em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:2px;}
+/* 知识卡片 */
+.learn-card{display:flex;gap:16px;align-items:flex-start;padding:16px;
+  border:1px solid var(--border);border-radius:12px;background:var(--card-bg);
+  text-decoration:none;color:inherit;transition:border-color 0.2s,transform 0.2s;}
+.learn-card:hover{border-color:var(--vermilion);transform:translateY(-2px);}
+.learn-icon{font-size:32px;line-height:1.3;flex:none;}
+.learn-card h3{font-size:17px;letter-spacing:0.1em;font-weight:400;margin-bottom:4px;color:var(--ink);}
+.learn-card .l-sub{font-size:12px;color:var(--faint);letter-spacing:0.06em;margin-bottom:8px;}
+.learn-card .l-sum{font-size:13px;line-height:1.9;color:var(--muted);}
+.learn-card .l-meta{font-size:11px;color:var(--ghost);margin-top:8px;letter-spacing:0.1em;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.learn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+@media(max-width:640px){
+  .learn-grid{grid-template-columns:1fr;}
+  .article-title{font-size:23px;}
+  .article-head{gap:12px;}
+  .article-icon{font-size:34px;}
+  .prev-next{flex-direction:column;}
+  .prev-next .pn-next{text-align:left;}
+}
+/* 移动端导航横滑，避免链接挤出 */
+@media(max-width:640px){
+  .top-nav .nav-left{overflow-x:auto;scrollbar-width:none;white-space:nowrap;max-width:78vw;}
+  .top-nav .nav-left::-webkit-scrollbar{display:none;}
+  .top-nav .nav-left a{flex:none;}
+}
+
+</style>
+</head>
+<body>
+<nav class="top-nav" aria-label="主导航">
+  <div class="nav-left">
+    <a class="nav-back" href="/">首页</a>
+    <a class="nav-link" href="/hexagrams.html">卦象索引</a>
+    <a class="nav-link" href="/divination.html">起卦</a>
+  </div>
+  <div class="nav-tools">
+    <button class="nav-btn" id="theme-toggle" title="切换深色 / 浅色" aria-label="切换深色 / 浅色" onclick="toggleTheme()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+<main class="page">
+  <nav class="crumb" aria-label="面包屑">
+    <a href="/">首页</a><span class="sep">/</span><a href="/learn.html">知识</a><span class="sep">/</span><span class="here">八卦象征总览</span>
+  </nav>
+
+  <article>
+    <div class="article-head">
+      <span class="article-icon" aria-hidden="true">☰</span>
+      <div>
+        <div class="article-kicker">易经知识 · 基础</div>
+        <h1 class="article-title">八卦象征总览</h1>
+        <div class="article-sub">自然、家庭、方位、五行的对应体系</div>
+      </div>
+    </div>
+
+    <p class="article-summary">八卦不仅是抽象符号，更映射了自然万象、家庭伦理、方位五行等完整的对应体系。掌握这些对应关系是理解卦象的基础。</p>
+
+    <nav class="toc" aria-label="本篇目录">
+      <div class="toc-title">本篇目录</div>
+      <ol><li><a href="#sec-1">爻的基础</a></li><li><a href="#sec-2">八卦属性一览</a></li><li><a href="#sec-3">家庭成员对应</a></li><li><a href="#sec-4">后天八卦与房屋布局</a></li></ol>
+    </nav>
+
+    <div class="article-body">
+<h2 id="sec-1">爻的基础</h2>
+<p style='line-height:1.9;color:var(--ink-light);margin-bottom:16px;'>爻（yáo）是构成卦的基本单位。一条横线代表<strong style='color:var(--ink);'>阳爻</strong>，一条断开的横线代表<strong style='color:var(--ink);'>阴爻</strong>。三条爻组成三画卦（八卦），六条爻组成六画卦（六十四卦）。</p><div class='diagram-wrap'><svg viewBox='0 0 500 200' xmlns='http://www.w3.org/2000/svg' style='max-width:500px;width:100%;height:auto;'>
+<style>
+  .yao-text { font-family: 'Noto Serif SC', serif; fill: var(--ink); dominant-baseline: central; }
+  .yao-sub { font-family: 'Noto Sans SC', system-ui, sans-serif; fill: var(--muted); dominant-baseline: central; font-size: 12px; }
+</style>
+<rect x='60' y='45' width='120' height='10' fill='var(--ink)' rx='2'/>
+<text x='220' y='50' class='yao-text' font-size='16'>阳爻（—）</text>
+<text x='220' y='72' class='yao-sub'>代表阳、刚、动、奇数</text>
+<rect x='60' y='125' width='52' height='10' fill='var(--ink)' rx='2'/>
+<rect x='128' y='125' width='52' height='10' fill='var(--ink)' rx='2'/>
+<text x='220' y='130' class='yao-text' font-size='16'>阴爻（– –）</text>
+<text x='220' y='152' class='yao-sub'>代表阴、柔、静、偶数</text>
+</svg></div><p style='line-height:1.9;color:var(--ink-light);margin:20px 0 16px;'>六爻卦中，爻位从下到上依次为：<strong style='color:var(--ink);'>初、二、三、四、五、上</strong>。下三爻构成下卦（内卦），上三爻构成上卦（外卦）。</p><div class='diagram-wrap'><svg viewBox='0 0 400 320' xmlns='http://www.w3.org/2000/svg' style='max-width:400px;width:100%;height:auto;'>
+<style>
+  .yw-text { font-family: 'Noto Serif SC', serif; fill: var(--ink); text-anchor: start; dominant-baseline: central; }
+  .yw-pos { font-family: 'Noto Sans SC', system-ui, sans-serif; fill: var(--muted); text-anchor: end; dominant-baseline: central; font-size: 12px; }
+  .yw-bracket { font-family: 'Noto Sans SC', system-ui, sans-serif; fill: var(--vermilion); font-size: 11px; }
+</style>
+<rect x='100' y='280' width='100' height='10' fill='var(--ink)' rx='2'/>
+<text x='88' y='285' class='yw-pos'>初</text>
+<text x='216' y='285' class='yw-text' font-size='13'>第初爻</text>
+<rect x='100' y='236' width='100' height='10' fill='var(--ink)' rx='2'/>
+<text x='88' y='241' class='yw-pos'>二</text>
+<text x='216' y='241' class='yw-text' font-size='13'>第二爻</text>
+<rect x='100' y='192' width='100' height='10' fill='var(--ink)' rx='2'/>
+<text x='88' y='197' class='yw-pos'>三</text>
+<text x='216' y='197' class='yw-text' font-size='13'>第三爻</text>
+<rect x='100' y='148' width='100' height='10' fill='var(--ink)' rx='2'/>
+<text x='88' y='153' class='yw-pos'>四</text>
+<text x='216' y='153' class='yw-text' font-size='13'>第四爻</text>
+<rect x='100' y='104' width='100' height='10' fill='var(--ink)' rx='2'/>
+<text x='88' y='109' class='yw-pos'>五</text>
+<text x='216' y='109' class='yw-text' font-size='13'>第五爻</text>
+<rect x='100' y='60' width='100' height='10' fill='var(--ink)' rx='2'/>
+<text x='88' y='65' class='yw-pos'>上</text>
+<text x='216' y='65' class='yw-text' font-size='13'>第上爻</text>
+<line x1='310' y1='280' x2='310' y2='200' stroke='var(--vermilion)' stroke-width='1.5'/>
+<text x='320' y='240' class='yw-bracket' dominant-baseline='central'>下卦</text>
+<line x1='310' y1='148' x2='310' y2='68' stroke='var(--vermilion)' stroke-width='1.5'/>
+<text x='320' y='108' class='yw-bracket' dominant-baseline='central'>上卦</text>
+</svg><div class='diagram-caption'>六爻卦的爻位结构 — 从下往上排列</div></div><h2 id="sec-2">八卦属性一览</h2>
+<p style='line-height:1.9;color:var(--ink-light);margin-bottom:16px;'>八卦各有丰富的象征意义，涵盖自然、性质、五行、方位（后天）、家庭角色和身体部位。这些对应关系源自《说卦传》，是占卜取象的基础。</p><table style='width:100%;border-collapse:collapse;font-size:13px;line-height:1.6;margin:12px 0;'><tr><th style='padding:6px 8px;text-align:left;border:0.5px solid var(--border);background:var(--bg-alt);font-size:12px;color:var(--ink);'>卦名</th><th style='padding:6px 8px;text-align:center;border:0.5px solid var(--border);background:var(--bg-alt);font-size:12px;color:var(--ink);'>卦象</th><th style='padding:6px 8px;text-align:left;border:0.5px solid var(--border);background:var(--bg-alt);font-size:12px;color:var(--ink);'>自然</th><th style='padding:6px 8px;text-align:left;border:0.5px solid var(--border);background:var(--bg-alt);font-size:12px;color:var(--ink);'>性质</th><th style='padding:6px 8px;text-align:left;border:0.5px solid var(--border);background:var(--bg-alt);font-size:12px;color:var(--ink);'>五行</th><th style='padding:6px 8px;text-align:left;border:0.5px solid var(--border);background:var(--bg-alt);font-size:12px;color:var(--ink);'>方位</th><th style='padding:6px 8px;text-align:left;border:0.5px solid var(--border);background:var(--bg-alt);font-size:12px;color:var(--ink);'>家庭</th><th style='padding:6px 8px;text-align:left;border:0.5px solid var(--border);background:var(--bg-alt);font-size:12px;color:var(--ink);'>身体</th></tr><tr><td style='font-weight:600;color:var(--vermilion);font-size:15px;'>乾 ☰</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'><svg viewBox='0 0 36 26' width='36' height='26' style='vertical-align:middle;'><rect x='0' y='0' width='36' height='5' fill='var(--ink)' rx='1'/><rect x='0' y='9' width='36' height='5' fill='var(--ink)' rx='1'/><rect x='0' y='18' width='36' height='5' fill='var(--ink)' rx='1'/></svg></td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>天</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>刚健</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>金</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>西北</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>父</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>头</td></tr><tr><td style='font-weight:600;color:var(--vermilion);font-size:15px;'>坤 ☷</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'><svg viewBox='0 0 36 26' width='36' height='26' style='vertical-align:middle;'><rect x='0' y='0' width='14' height='5' fill='var(--ink)' rx='1'/><rect x='22' y='0' width='14' height='5' fill='var(--ink)' rx='1'/><rect x='0' y='9' width='14' height='5' fill='var(--ink)' rx='1'/><rect x='22' y='9' width='14' height='5' fill='var(--ink)' rx='1'/><rect x='0' y='18' width='14' height='5' fill='var(--ink)' rx='1'/><rect x='22' y='18' width='14' height='5' fill='var(--ink)' rx='1'/></svg></td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>地</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>柔顺</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>土</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>西南</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>母</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>腹</td></tr><tr><td style='font-weight:600;color:var(--vermilion);font-size:15px;'>震 ☳</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'><svg viewBox='0 0 36 26' width='36' height='26' style='vertical-align:middle;'><rect x='0' y='0' width='36' height='5' fill='var(--ink)' rx='1'/><rect x='0' y='9' width='14' height='5' fill='var(--ink)' rx='1'/><rect x='22' y='9' width='14' height='5' fill='var(--ink)' rx='1'/><rect x='0' y='18' width='14' height='5' fill='var(--ink)' rx='1'/><rect x='22' y='18' width='14' height='5' fill='var(--ink)' rx='1'/></svg></td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>雷</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>动</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>木</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>东</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>长男</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>足</td></tr><tr><td style='font-weight:600;color:var(--vermilion);font-size:15px;'>巽 ☴</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'><svg viewBox='0 0 36 26' width='36' height='26' style='vertical-align:middle;'><rect x='0' y='0' width='14' height='5' fill='var(--ink)' rx='1'/><rect x='22' y='0' width='14' height='5' fill='var(--ink)' rx='1'/><rect x='0' y='9' width='36' height='5' fill='var(--ink)' rx='1'/><rect x='0' y='18' width='36' height='5' fill='var(--ink)' rx='1'/></svg></td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>风</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>入</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>木</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>东南</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>长女</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>股</td></tr><tr><td style='font-weight:600;color:var(--vermilion);font-size:15px;'>坎 ☵</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'><svg viewBox='0 0 36 26' width='36' height='26' style='vertical-align:middle;'><rect x='0' y='0' width='14' height='5' fill='var(--ink)' rx='1'/><rect x='22' y='0' width='14' height='5' fill='var(--ink)' rx='1'/><rect x='0' y='9' width='36' height='5' fill='var(--ink)' rx='1'/><rect x='0' y='18' width='14' height='5' fill='var(--ink)' rx='1'/><rect x='22' y='18' width='14' height='5' fill='var(--ink)' rx='1'/></svg></td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>水</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>陷</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>水</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>北</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>中男</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>耳</td></tr><tr><td style='font-weight:600;color:var(--vermilion);font-size:15px;'>离 ☲</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'><svg viewBox='0 0 36 26' width='36' height='26' style='vertical-align:middle;'><rect x='0' y='0' width='36' height='5' fill='var(--ink)' rx='1'/><rect x='0' y='9' width='14' height='5' fill='var(--ink)' rx='1'/><rect x='22' y='9' width='14' height='5' fill='var(--ink)' rx='1'/><rect x='0' y='18' width='36' height='5' fill='var(--ink)' rx='1'/></svg></td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>火</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>丽</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>火</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>南</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>中女</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>目</td></tr><tr><td style='font-weight:600;color:var(--vermilion);font-size:15px;'>艮 ☶</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'><svg viewBox='0 0 36 26' width='36' height='26' style='vertical-align:middle;'><rect x='0' y='0' width='14' height='5' fill='var(--ink)' rx='1'/><rect x='22' y='0' width='14' height='5' fill='var(--ink)' rx='1'/><rect x='0' y='9' width='14' height='5' fill='var(--ink)' rx='1'/><rect x='22' y='9' width='14' height='5' fill='var(--ink)' rx='1'/><rect x='0' y='18' width='36' height='5' fill='var(--ink)' rx='1'/></svg></td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>山</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>止</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>土</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>东北</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>少男</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>手</td></tr><tr><td style='font-weight:600;color:var(--vermilion);font-size:15px;'>兑 ☱</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'><svg viewBox='0 0 36 26' width='36' height='26' style='vertical-align:middle;'><rect x='0' y='0' width='36' height='5' fill='var(--ink)' rx='1'/><rect x='0' y='9' width='36' height='5' fill='var(--ink)' rx='1'/><rect x='0' y='18' width='14' height='5' fill='var(--ink)' rx='1'/><rect x='22' y='18' width='14' height='5' fill='var(--ink)' rx='1'/></svg></td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>泽</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>悦</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>金</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>西</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>少女</td><td style='padding:6px 8px;border:0.5px solid var(--border);color:var(--ink-light);'>口</td></tr></table><h2 id="sec-3">家庭成员对应</h2>
+<p style='line-height:1.9;color:var(--ink-light);margin-bottom:16px;'>八卦与家庭成员的对应源自阴阳爻的位置：<strong style='color:var(--ink);'>乾为父、坤为母</strong>，其余六卦按长中少排列。规律在于——一个阳爻在三个阴爻中的位置决定了是长男、中男还是少男；反之亦然。</p><div class='diagram-wrap'><svg viewBox='0 0 500 410' xmlns='http://www.w3.org/2000/svg' style='max-width:500px;width:100%;height:auto;'>
+<style>
+  .fam-name { font-family: 'Noto Serif SC', serif; fill: var(--ink); text-anchor: middle; font-size: 15px; font-weight: 600; }
+  .fam-role { font-family: 'Noto Sans SC', system-ui, sans-serif; fill: var(--muted); text-anchor: middle; font-size: 11px; }
+  .fam-gua { font-family: 'Noto Serif SC', serif; fill: var(--vermilion); text-anchor: middle; font-size: 13px; }
+  .fam-line { stroke: var(--border-strong); stroke-width: 1; }
+</style>
+<circle cx='160' cy='50' r='30' fill='var(--card-bg)' stroke='var(--border-strong)' stroke-width='1'/>
+<text x='160' y='46' class='fam-gua'>乾 ☰</text>
+<text x='160' y='66' class='fam-role'>父</text>
+<circle cx='340' cy='50' r='30' fill='var(--card-bg)' stroke='var(--border-strong)' stroke-width='1'/>
+<text x='340' y='46' class='fam-gua'>坤 ☷</text>
+<text x='340' y='66' class='fam-role'>母</text>
+<line x1='160' y1='80' x2='70' y2='150' class='fam-line'/>
+<circle cx='70' cy='180' r='26' fill='var(--card-bg)' stroke='var(--border-strong)' stroke-width='1'/>
+<text x='70' y='176' class='fam-gua' font-size='12'>震 ☳</text>
+<text x='70' y='194' class='fam-role'>长男</text>
+<line x1='160' y1='80' x2='70' y2='240' class='fam-line'/>
+<circle cx='70' cy='270' r='26' fill='var(--card-bg)' stroke='var(--border-strong)' stroke-width='1'/>
+<text x='70' y='266' class='fam-gua' font-size='12'>坎 ☵</text>
+<text x='70' y='284' class='fam-role'>中男</text>
+<line x1='160' y1='80' x2='70' y2='330' class='fam-line'/>
+<circle cx='70' cy='360' r='26' fill='var(--card-bg)' stroke='var(--border-strong)' stroke-width='1'/>
+<text x='70' y='356' class='fam-gua' font-size='12'>艮 ☶</text>
+<text x='70' y='374' class='fam-role'>少男</text>
+<line x1='340' y1='80' x2='430' y2='150' class='fam-line'/>
+<circle cx='430' cy='180' r='26' fill='var(--card-bg)' stroke='var(--border-strong)' stroke-width='1'/>
+<text x='430' y='176' class='fam-gua' font-size='12'>巽 ☴</text>
+<text x='430' y='194' class='fam-role'>长女</text>
+<line x1='340' y1='80' x2='430' y2='240' class='fam-line'/>
+<circle cx='430' cy='270' r='26' fill='var(--card-bg)' stroke='var(--border-strong)' stroke-width='1'/>
+<text x='430' y='266' class='fam-gua' font-size='12'>离 ☲</text>
+<text x='430' y='284' class='fam-role'>中女</text>
+<line x1='340' y1='80' x2='430' y2='330' class='fam-line'/>
+<circle cx='430' cy='360' r='26' fill='var(--card-bg)' stroke='var(--border-strong)' stroke-width='1'/>
+<text x='430' y='356' class='fam-gua' font-size='12'>兑 ☱</text>
+<text x='430' y='374' class='fam-role'>少女</text>
+<text x='160' y='16' class='fam-role' style='font-size:10px;fill:var(--ghost);'>父系</text>
+<text x='340' y='16' class='fam-role' style='font-size:10px;fill:var(--ghost);'>母系</text>
+</svg><div class='diagram-caption'>八卦家庭对应关系 — 左为父系（阳），右为母系（阴）</div></div><p style='line-height:1.9;color:var(--ink-light);margin-top:16px;font-size:13px;'><strong style='color:var(--ink);'>推导规律：</strong>震（☳）初爻为阳→长男，坎（☵）中爻为阳→中男，艮（☶）上爻为阳→少男；巽（☴）初爻为阴→长女，离（☲）中爻为阴→中女，兑（☱）上爻为阴→少女。</p><h2 id="sec-4">后天八卦与房屋布局</h2>
+<p style='line-height:1.9;color:var(--ink-light);margin-bottom:16px;'>在风水学中，以后天八卦配九宫格来分析房屋布局。每个方位对应一个卦象、五行属性和家庭成员，据此判断各区域的宜忌。</p><div class='diagram-wrap'><svg viewBox='0 0 480 480' xmlns='http://www.w3.org/2000/svg' style='max-width:480px;width:100%;height:auto;'>
+<style>
+  .house-gua { font-family: 'Noto Serif SC', serif; fill: var(--vermilion); text-anchor: middle; font-size: 16px; font-weight: 600; }
+  .house-nature { font-family: 'Noto Sans SC', system-ui, sans-serif; fill: var(--ink); text-anchor: middle; font-size: 12px; }
+  .house-info { font-family: 'Noto Sans SC', system-ui, sans-serif; fill: var(--muted); text-anchor: middle; font-size: 10px; }
+  .house-dir { font-family: 'Noto Sans SC', system-ui, sans-serif; fill: var(--ghost); text-anchor: middle; font-size: 10px; }
+</style>
+<rect x='30' y='30' width='140' height='140' fill='var(--card-bg)' stroke='var(--border)' stroke-width='0.5' rx='4'/>
+<text x='100.0' y='80.0' class='house-gua'>巽</text>
+<text x='100.0' y='100.0' class='house-nature'>风 · 木</text>
+<text x='100.0' y='116.0' class='house-info'>长女</text>
+<text x='100.0' y='132.0' class='house-dir'>东南</text>
+<rect x='170' y='30' width='140' height='140' fill='var(--card-bg)' stroke='var(--border)' stroke-width='0.5' rx='4'/>
+<text x='240.0' y='80.0' class='house-gua'>离</text>
+<text x='240.0' y='100.0' class='house-nature'>火 · 火</text>
+<text x='240.0' y='116.0' class='house-info'>中女</text>
+<text x='240.0' y='132.0' class='house-dir'>南</text>
+<rect x='310' y='30' width='140' height='140' fill='var(--card-bg)' stroke='var(--border)' stroke-width='0.5' rx='4'/>
+<text x='380.0' y='80.0' class='house-gua'>坤</text>
+<text x='380.0' y='100.0' class='house-nature'>地 · 土</text>
+<text x='380.0' y='116.0' class='house-info'>母</text>
+<text x='380.0' y='132.0' class='house-dir'>西南</text>
+<rect x='30' y='170' width='140' height='140' fill='var(--card-bg)' stroke='var(--border)' stroke-width='0.5' rx='4'/>
+<text x='100.0' y='220.0' class='house-gua'>震</text>
+<text x='100.0' y='240.0' class='house-nature'>雷 · 木</text>
+<text x='100.0' y='256.0' class='house-info'>长男</text>
+<text x='100.0' y='272.0' class='house-dir'>东</text>
+<rect x='170' y='170' width='140' height='140' fill='var(--vermilion-faint)' stroke='var(--border)' stroke-width='0.5' rx='4'/>
+<text x='240.0' y='240.0' class='house-gua' font-size='18'>中宫</text>
+<text x='240.0' y='260.0' class='house-info'>五 · 土</text>
+<rect x='310' y='170' width='140' height='140' fill='var(--card-bg)' stroke='var(--border)' stroke-width='0.5' rx='4'/>
+<text x='380.0' y='220.0' class='house-gua'>兑</text>
+<text x='380.0' y='240.0' class='house-nature'>泽 · 金</text>
+<text x='380.0' y='256.0' class='house-info'>少女</text>
+<text x='380.0' y='272.0' class='house-dir'>西</text>
+<rect x='30' y='310' width='140' height='140' fill='var(--card-bg)' stroke='var(--border)' stroke-width='0.5' rx='4'/>
+<text x='100.0' y='360.0' class='house-gua'>艮</text>
+<text x='100.0' y='380.0' class='house-nature'>山 · 土</text>
+<text x='100.0' y='396.0' class='house-info'>少男</text>
+<text x='100.0' y='412.0' class='house-dir'>东北</text>
+<rect x='170' y='310' width='140' height='140' fill='var(--card-bg)' stroke='var(--border)' stroke-width='0.5' rx='4'/>
+<text x='240.0' y='360.0' class='house-gua'>坎</text>
+<text x='240.0' y='380.0' class='house-nature'>水 · 水</text>
+<text x='240.0' y='396.0' class='house-info'>中男</text>
+<text x='240.0' y='412.0' class='house-dir'>北</text>
+<rect x='310' y='310' width='140' height='140' fill='var(--card-bg)' stroke='var(--border)' stroke-width='0.5' rx='4'/>
+<text x='380.0' y='360.0' class='house-gua'>乾</text>
+<text x='380.0' y='380.0' class='house-nature'>天 · 金</text>
+<text x='380.0' y='396.0' class='house-info'>父</text>
+<text x='380.0' y='412.0' class='house-dir'>西北</text>
+<text x='240.0' y='18' class='house-dir' font-size='12'>南 ↑</text>
+<text x='240.0' y='474' class='house-dir' font-size='12'>北 ↓</text>
+<text x='12' y='240.0' class='house-dir' font-size='12' text-anchor='start'>东</text>
+<text x='468' y='240.0' class='house-dir' font-size='12' text-anchor='end'>西</text>
+</svg><div class='diagram-caption'>后天八卦九宫格 — 上南下北，左东右西（传统方位）</div></div><p style='line-height:1.9;color:var(--ink-light);margin-top:16px;font-size:13px;'><strong style='color:var(--ink);'>应用举例：</strong>正北为坎卦（水），对应中男，五行属水，在家居布局中主事业运。正南为离卦（火），对应中女，五行属火，主声名与前途。东方为震卦（雷），对应长男，五行属木，主健康与成长。</p>
+    </div>
+
+    <aside class="source-box">
+      <span class="src-label">参考资料</span>
+      参考维基百科「八卦」「说卦传」条目、《周易·说卦传》
+    </aside>
+
+    <nav class="prev-next" aria-label="上下篇">
+      <a href="/learn/bagua-yanhua.html"><span class="pn-label">← 上一篇</span>八卦演化图解</a><a class="pn-next" href="/learn/shier-xiaoxi.html"><span class="pn-label">下一篇 →</span>十二消息卦</a>
+    </nav>
+  </article>
+</main>
+<footer class="site-footer">
+  爻卦易 · yaoguayi.com ·
+  <a href="/">首页</a> ·
+  <a href="/hexagrams.html">卦象索引</a> ·
+  <a href="/learn.html">知识</a> ·
+  <a href="/glossary.html">术语表</a> ·
+  <a href="/divination.html">起卦</a> ·
+  <a href="/sitemap.xml">站点地图</a> ·
+  <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank" rel="noopener">GitHub</a> ·
+  开源 · 非盈利 ·
+  <span class="ver" id="site-ver" title="查看版本历史">版本 v–</span>
+  <div class="ver-panel" id="ver-panel" hidden></div>
+</footer>
+<script src="/js/theme.js"></script>
+<script src="/js/version.js"></script>
+</body>
+</html>

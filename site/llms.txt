@@ -11,6 +11,8 @@
 - https://yaoguayi.com/hexagrams.html — 六十四卦索引（上经 1–30 / 下经 31–64）
 - https://yaoguayi.com/glossary.html — 易经术语表（33 个常见词大白话讲解）
 - https://yaoguayi.com/divination.html — 金钱卦起卦（三枚铜钱，六次摇卦）
+- https://yaoguayi.com/learn.html — 易经知识（15 篇文章：基础概念、起卦方法、
+  断卦技巧，含图解；单篇如 https://yaoguayi.com/learn/zhouyi.html）
 - https://yaoguayi.com/hexagram.html?id=N — 第 N 卦详情（N 为 1–64），含卦辞、
   爻辞、彖传、象传、注音、术语解释，以及综卦、错卦、互卦关联
 - https://yaoguayi.com/sitemap.xml — 全部可索引 URL
@@ -19,6 +21,8 @@
 
 - /data/hexagrams.json — 64 卦结构化数据（卦名、拼音、爻象、经文、翻译）
 - /data/annotations.json — 注音与术语释义
+- /data/knowledge.json — 15 篇知识文章结构化数据（标题、摘要、章节、参考资料、
+  含内联 SVG 图解）；已渲染为 /learn.html 与 /learn/*.html 静态页
 
 ## 研读资源（站外）
 

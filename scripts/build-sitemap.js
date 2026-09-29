@@ -23,13 +23,18 @@ const staticPages = [
   ['/glossary.html', '0.8'],
   ['/divination.html', '0.8'],
   ['/hexagram.html', '0.7'],
+  ['/learn.html', '0.8'],
 ];
 
 const hexagrams = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
 
+const KNOWLEDGE_FILE = path.join(__dirname, '..', 'site', 'data', 'knowledge.json');
+const knowledge = JSON.parse(fs.readFileSync(KNOWLEDGE_FILE, 'utf-8'));
+
 const urls = [
   ...staticPages.map(([p, priority]) => ({ loc: SITE + p, priority })),
   ...hexagrams.map(h => ({ loc: `${SITE}/hexagram.html?id=${h.id}`, priority: '0.6' })),
+  ...knowledge.map(a => ({ loc: `${SITE}/learn/${a.id}.html`, priority: '0.7' })),
 ];
 
 const xml = [

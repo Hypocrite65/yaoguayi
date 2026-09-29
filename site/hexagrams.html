@@ -155,6 +155,13 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   .hex-guaci{font-size:12px;}
   .hex-name{width:60px;font-size:15px;}
 }
+
+/* 移动端导航横滑，避免链接挤出可视区 */
+@media(max-width:640px){
+  .top-nav .nav-left{overflow-x:auto;scrollbar-width:none;white-space:nowrap;max-width:76vw;}
+  .top-nav .nav-left::-webkit-scrollbar{display:none;}
+  .top-nav .nav-left a{flex:none;}
+}
 </style>
 </head>
 <body>
@@ -162,6 +169,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 <nav class="top-nav" aria-label="主导航">
   <div class="nav-left">
     <a class="nav-back" href="/">首页</a>
+    <a class="nav-link" href="/learn.html">知识</a>
     <a class="nav-link" href="/divination.html">起卦</a>
     <a class="nav-link" href="/glossary.html">术语表</a>
   </div>
@@ -279,6 +287,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   爻卦易 · yaoguayi.com ·
   <a href="/">首页</a> ·
   <a href="/divination.html">起卦</a> ·
+  <a href="/learn.html">知识</a> ·
   <a href="/glossary.html">术语表</a> ·
   <a href="/sitemap.xml">站点地图</a> ·
   <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank" rel="noopener">GitHub</a> ·

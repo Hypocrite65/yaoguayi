@@ -267,6 +267,13 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 .ver-sha{font-family:ui-monospace,SFMono-Regular,monospace;color:var(--muted);flex:none;}
 .ver-date{color:var(--faint);white-space:nowrap;flex:none;}
 .ver-sub{color:var(--ink-light);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+/* 移动端导航横滑，避免链接挤出可视区 */
+@media(max-width:640px){
+  .top-nav{overflow-x:auto;scrollbar-width:none;white-space:nowrap;}
+  .top-nav::-webkit-scrollbar{display:none;}
+  .top-nav>a{flex:none;}
+}
 </style>
 </head>
 <body>
@@ -274,6 +281,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 <nav class="top-nav">
   <a class="nav-back" href="/">← 六十四卦</a>
   <a class="nav-link" href="/hexagrams.html">卦象索引</a>
+  <a class="nav-link" href="/learn.html">知识</a>
   <a class="nav-link" href="/glossary.html">术语表</a>
   <a class="nav-logo" href="/" aria-label="爻卦易首页">
     <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -337,6 +345,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 <footer class="site-footer">
   爻卦易 · yaoguayi.com ·
   <a href="/hexagrams.html">卦象索引</a> ·
+  <a href="/learn.html">知识</a> ·
   <a href="/glossary.html">术语表</a> ·
   <a href="/sitemap.xml">站点地图</a> ·
   开源 · 非盈利 ·
