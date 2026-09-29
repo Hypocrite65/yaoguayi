@@ -10,6 +10,7 @@
 <meta property="og:site_name" content="爻卦易"/>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
 <link rel="manifest" href="/manifest.json"/>
+<link rel="stylesheet" href="/css/tool-window.css"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
@@ -336,6 +337,9 @@ ruby rt{font-size:10px;color:var(--faint);font-family:'Noto Sans SC',system-ui,s
     <button class="nav-btn" id="search-btn" title="搜索 (Ctrl+K)" aria-label="搜索" onclick="typeof SiteSearch!=='undefined'&&SiteSearch.toggle()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     </button>
+    <button class="nav-btn" id="ai-chat-toggle" title="AI 助手 / 记事本" aria-label="AI 助手" onclick="typeof ToolWindow!=='undefined'&&ToolWindow.toggleWindow()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 10h.01"/><path d="M12 10h.01"/><path d="M16 10h.01"/></svg>
+    </button>
     <button class="nav-btn" id="theme-toggle" title="切换深色 / 浅色" aria-label="切换深色 / 浅色" onclick="toggleTheme()">
       <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
@@ -385,6 +389,7 @@ ruby rt{font-size:10px;color:var(--faint);font-family:'Noto Sans SC',system-ui,s
 
 <script src="/js/theme.js"></script>
 <script src="/js/search.js"></script>
+<script src="/js/tool-window.js"></script>
 <script src="/js/version.js"></script>
 <script>
 /**
