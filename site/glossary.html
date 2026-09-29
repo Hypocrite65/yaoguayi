@@ -392,6 +392,9 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
     </svg>
   </a>
   <div class="nav-tools">
+    <button class="nav-btn" id="search-btn" title="搜索 (Ctrl+K)" aria-label="搜索" onclick="typeof SiteSearch!=='undefined'&&SiteSearch.toggle()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
     <button class="nav-btn" id="theme-toggle" title="切换深色 / 浅色" aria-label="切换深色 / 浅色" onclick="toggleTheme()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
@@ -559,6 +562,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 </footer>
 
 <script src="/js/theme.js"></script>
+<script src="/js/search.js"></script>
 <script src="/js/version.js"></script>
 </body>
 </html>
