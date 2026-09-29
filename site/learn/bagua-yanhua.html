@@ -253,15 +253,15 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 }
 
 
-/* 移动端菜单按钮与下拉面板（桌面端隐藏） */
-.nav-menu-btn{display:none;}
+/* 移动端菜单按钮与下拉面板（纯 CSS 开关，不依赖 JS） */
+.nav-menu-check{display:none;}
+.nav-menu-btn{display:none;cursor:pointer;}
 .nav-menu-btn svg{transition:transform 0.2s;}
-.nav-menu-btn.open svg{transform:rotate(180deg);}
+.nav-menu-backdrop{display:none;}
 .nav-dropdown{display:none;position:absolute;top:calc(100% + 6px);left:12px;z-index:300;
   min-width:140px;padding:6px;border-radius:12px;
   background:var(--bg-alt,#fff);border:1px solid var(--border,rgba(0,0,0,0.08));
   box-shadow:var(--shadow,0 8px 24px rgba(0,0,0,0.12));}
-.nav-dropdown.open{display:block;}
 .nav-dropdown a{display:block;padding:10px 14px;font-size:15px;color:var(--ink,#2c2420);
   text-decoration:none;border-radius:8px;white-space:nowrap;}
 .nav-dropdown a:hover{background:var(--hover-bg,rgba(0,0,0,0.05));}
@@ -272,6 +272,10 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   .top-nav .nav-logo{display:none;}
   .nav-menu-btn{display:flex;justify-self:start;}
   .top-nav .nav-tools{justify-self:end;}
+  /* checkbox 选中时：箭头旋转 + 显示下拉面板 + 显示点击关闭层 */
+  .nav-menu-check:checked + .nav-menu-btn svg{transform:rotate(180deg);}
+  .nav-menu-check:checked ~ .nav-dropdown{display:block;}
+  .nav-menu-check:checked ~ .nav-menu-backdrop{display:block;position:fixed;inset:0;z-index:290;background:transparent;}
 }
 </style>
 </head>
@@ -285,9 +289,10 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
     <a class="nav-link" href="/learn.html">知识</a>
     <a class="nav-link" href="/glossary.html">术语表</a>
   </div>
-  <button class="nav-btn nav-menu-btn" id="nav-menu-btn" aria-label="展开菜单" aria-expanded="false" onclick="toggleNavMenu(event)">
+  <input type="checkbox" id="nav-menu-toggle" class="nav-menu-check" aria-label="展开菜单">
+  <label for="nav-menu-toggle" class="nav-btn nav-menu-btn" aria-label="展开菜单">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-  </button>
+  </label>
   <div class="nav-dropdown" id="nav-dropdown">
     <a href="/">首页</a>
     <a href="/divination.html">起卦</a>
@@ -296,6 +301,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
     <a href="/learn.html">知识</a>
     <a href="/glossary.html">术语表</a>
   </div>
+  <label for="nav-menu-toggle" class="nav-menu-backdrop" aria-hidden="true"></label>
   <a class="nav-logo" href="/" aria-label="爻卦易首页">
     <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
       <circle cx="100" cy="100" r="84" stroke="#5c3a30" stroke-width="5" fill="none"/>
