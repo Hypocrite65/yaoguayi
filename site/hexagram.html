@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>卦象详情 · 爻卦易</title>
 <meta name="description" content="爻卦易《易经》卦象详情：卦辞、爻辞、彖传、象传原文，注音与词义解释。开源、非盈利。"/>
-<meta name="theme-color" content="#f5f0e8"/>
+<meta name="theme-color" content="#faf8f1"/>
 <meta property="og:type" content="website"/>
 <meta property="og:site_name" content="爻卦易"/>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
@@ -15,20 +15,20 @@ html{scroll-behavior:smooth;}
 
 /* ===== 主题变量 — 日间模式（暖宣纸色调） ===== */
 body{
-  --bg:              #f5f0e8;
-  --bg-alt:          #ede8dc;
+  --bg:              #faf8f1;
+  --bg-alt:          #f1ede2;
   --ink:             #2c2420;
   --ink-light:       #5a4e44;
   --muted:           #7a6e64;
   --faint:           #a09080;
-  --ghost:           #c8b8a4;
-  --whisper:         #d4c8b8;
+  --ghost:           #d5c8b6;
+  --whisper:         #ded4c3;
   --border:          rgba(26,26,26,0.08);
   --border-strong:   rgba(26,26,26,0.15);
   --vermilion:       #c0392b;
   --vermilion-faint: rgba(192,57,43,0.15);
-  --nav-bg:          rgba(245,240,232,0.92);
-  --card-bg:         rgba(237,232,220,0.5);
+  --nav-bg:          rgba(250,248,241,0.92);
+  --card-bg:         rgba(241,237,226,0.5);
   --hover-bg:        rgba(26,26,26,0.06);
   --shadow:          rgba(26,26,26,0.08);
   --svg-fill:        #2c2420;
@@ -255,6 +255,24 @@ ruby rt{font-size:10px;color:var(--faint);font-family:'Noto Sans SC',system-ui,s
   .panel-trigger{display:none;}
   body.panel-open .hex-detail{margin-right:0;}
 }
+
+/* ===== 页脚版本号 ===== */
+.site-footer{position:relative;}
+.ver{color:var(--faint);cursor:pointer;transition:color 0.2s;}
+.ver:hover{color:var(--vermilion);}
+.ver-panel{position:absolute;bottom:calc(100% + 10px);right:16px;width:min(440px,92vw);
+  max-height:320px;overflow-y:auto;background:var(--bg);
+  border:1px solid var(--border-strong);border-radius:10px;
+  box-shadow:0 12px 32px var(--shadow);padding:8px;z-index:60;text-align:left;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.ver-panel[hidden]{display:none;}
+.ver-row{display:flex;gap:10px;align-items:baseline;padding:7px 10px;font-size:11px;
+  letter-spacing:0;border-radius:6px;}
+.ver-row:hover{background:var(--hover-bg);}
+.ver-n{color:var(--vermilion);font-weight:600;min-width:34px;flex:none;}
+.ver-sha{font-family:ui-monospace,SFMono-Regular,monospace;color:var(--muted);flex:none;}
+.ver-date{color:var(--faint);white-space:nowrap;flex:none;}
+.ver-sub{color:var(--ink-light);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 </style>
 </head>
 <body>
@@ -313,10 +331,13 @@ ruby rt{font-size:10px;color:var(--faint);font-family:'Noto Sans SC',system-ui,s
 <footer class="site-footer">
   爻卦易 · yaoguayi.com ·
   <a href="/">六十四卦</a> · 开源 · 非盈利 ·
-  <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank">GitHub</a>
+  <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank">GitHub</a> ·
+  <span class="ver" id="site-ver" title="查看版本历史">版本 v–</span>
+  <div class="ver-panel" id="ver-panel" hidden></div>
 </footer>
 
 <script src="/js/theme.js"></script>
+<script src="/js/version.js"></script>
 <script>
 /**
  * hexagram.html — 卦象详情页主逻辑

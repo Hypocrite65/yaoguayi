@@ -1,0 +1,192 @@
+{
+  "updated": "2026-09-29T06:47:24Z",
+  "branch": "claude",
+  "versions": [
+    {
+      "v": 31,
+      "sha": "34f6f833",
+      "date": "2026-09-29",
+      "subject": "移除纸密码门与死亡菜单，修复死链；新增可交互金钱卦起卦页"
+    },
+    {
+      "v": 30,
+      "sha": "e5076bb2",
+      "date": "2026-06-04",
+      "subject": "fix: restructure mobile footer to match PC layout"
+    },
+    {
+      "v": 29,
+      "sha": "632165df",
+      "date": "2026-06-04",
+      "subject": "fix: mobile prev/next nav stays horizontal, footer more comp"
+    },
+    {
+      "v": 28,
+      "sha": "e3d55bb8",
+      "date": "2026-06-04",
+      "subject": "fix: set fixed width on random hexagram card to prevent cont"
+    },
+    {
+      "v": 27,
+      "sha": "e851dc46",
+      "date": "2026-06-04",
+      "subject": "fix: tighten bottom spacing — remove excess gaps between sec"
+    },
+    {
+      "v": 26,
+      "sha": "2dcf4d8e",
+      "date": "2026-06-04",
+      "subject": "fix: reduce last yaoci bottom padding from 60vh to 40px on a"
+    },
+    {
+      "v": 25,
+      "sha": "0f58f2d6",
+      "date": "2026-06-04",
+      "subject": "feat: unify nav bar and dark theme across home + detail page"
+    },
+    {
+      "v": 24,
+      "sha": "d81b443f",
+      "date": "2026-06-04",
+      "subject": "fix: boost dark theme contrast for readability"
+    },
+    {
+      "v": 23,
+      "sha": "81b8f6ee",
+      "date": "2026-06-04",
+      "subject": "fix(ci): remove hardcoded pnpm version, read from package.js"
+    },
+    {
+      "v": 22,
+      "sha": "a6ce30b3",
+      "date": "2026-06-04",
+      "subject": "feat: implement dark theme with CSS custom properties"
+    },
+    {
+      "v": 21,
+      "sha": "dec1bcb4",
+      "date": "2026-06-04",
+      "subject": "feat: enhanced top nav — logo, theme toggle, account dropdow"
+    },
+    {
+      "v": 20,
+      "sha": "e92e0bab",
+      "date": "2026-06-04",
+      "subject": "fix: nav/footer stay fixed, only main content shifts for sid"
+    },
+    {
+      "v": 19,
+      "sha": "d35edea9",
+      "date": "2026-06-04",
+      "subject": "fix: align yao scroll target with sidebar top + add bottom p"
+    },
+    {
+      "v": 18,
+      "sha": "e3fd63fc",
+      "date": "2026-06-04",
+      "subject": "fix: increase yao line gap to prevent label overlap + scroll"
+    },
+    {
+      "v": 17,
+      "sha": "15ff5e4f",
+      "date": "2026-06-04",
+      "subject": "refine: remove sidebar nav list, make SVG yao labels clickab"
+    },
+    {
+      "v": 16,
+      "sha": "10ef1eea",
+      "date": "2026-06-04",
+      "subject": "feat: add yao navigation list below hexagram in sidebar"
+    },
+    {
+      "v": 15,
+      "sha": "b539a039",
+      "date": "2026-06-04",
+      "subject": "refine: simplify sidebar — large SVG hexagram with yao label"
+    },
+    {
+      "v": 14,
+      "sha": "db5a18e9",
+      "date": "2026-06-04",
+      "subject": "fix: sidebar top-left sticky + push-aside panel layout"
+    },
+    {
+      "v": 13,
+      "sha": "4f5d136e",
+      "date": "2026-06-04",
+      "subject": "fix: center sidebar vertically, fix annotations parsing and "
+    },
+    {
+      "v": 12,
+      "sha": "e1472f86",
+      "date": "2026-06-04",
+      "subject": "feat: redesign hexagram detail page with two-column layout"
+    },
+    {
+      "v": 11,
+      "sha": "be5bcc25",
+      "date": "2026-06-04",
+      "subject": "fix: rewrite tuan translations from fan-jian conversion to r"
+    },
+    {
+      "v": 10,
+      "sha": "bf55b998",
+      "date": "2026-06-04",
+      "subject": "feat: add modern Chinese translations for all 64 hexagrams"
+    },
+    {
+      "v": 9,
+      "sha": "6f2a1839",
+      "date": "2026-06-04",
+      "subject": "feat: add hexagram detail page + data pipeline"
+    },
+    {
+      "v": 8,
+      "sha": "cf228670",
+      "date": "2026-06-03",
+      "subject": "remove app/web/src"
+    },
+    {
+      "v": 7,
+      "sha": "a210caf7",
+      "date": "2026-06-03",
+      "subject": "Update README.md"
+    },
+    {
+      "v": 6,
+      "sha": "7f1a141e",
+      "date": "2026-06-03",
+      "subject": "feat: add site deployment structure + update README"
+    },
+    {
+      "v": 5,
+      "sha": "3d511350",
+      "date": "2026-06-03",
+      "subject": "@"
+    },
+    {
+      "v": 4,
+      "sha": "d815ff60",
+      "date": "2026-06-03",
+      "subject": "[1]backup"
+    },
+    {
+      "v": 3,
+      "sha": "a0b3ea4f",
+      "date": "2026-06-03",
+      "subject": "backup"
+    },
+    {
+      "v": 2,
+      "sha": "f4f099de",
+      "date": "2026-05-29",
+      "subject": "feat: project scaffold + 64 hexagram data"
+    },
+    {
+      "v": 1,
+      "sha": "026ef312",
+      "date": "2026-05-29",
+      "subject": "feat(web): implement premium cyber-zen landing page and glow"
+    }
+  ]
+}
