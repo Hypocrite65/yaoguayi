@@ -324,30 +324,9 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 .feat-desc{font-size:11.5px;line-height:1.8;color:var(--muted);letter-spacing:0.03em;
   font-family:'Noto Sans SC',system-ui,sans-serif;}
 
-/* ===== 研读资源 ===== */
-.res-section{background:var(--bg-alt);padding:72px 32px;transition:background 0.4s;}
-.res-inner{max-width:960px;margin:0 auto;}
-.res-title{font-size:13px;letter-spacing:0.4em;color:var(--faint);font-weight:400;
-  font-family:'Noto Sans SC',system-ui,sans-serif;text-align:center;margin-bottom:12px;}
-.res-note{font-size:12px;color:var(--ghost);letter-spacing:0.1em;text-align:center;
-  margin-bottom:32px;font-family:'Noto Sans SC',system-ui,sans-serif;}
-.res-list{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
-.res-list a{display:flex;flex-direction:column;gap:10px;height:100%;
-  border:0.5px solid var(--border);border-radius:8px;padding:24px 22px;
-  background:var(--bg);text-decoration:none;
-  transition:transform 0.25s,box-shadow 0.25s,border-color 0.25s;}
-.res-list a:hover{transform:translateY(-4px);box-shadow:0 8px 24px var(--shadow);
-  border-color:var(--vermilion-faint);}
-.res-name{font-size:16px;letter-spacing:0.1em;color:var(--ink);}
-.res-name::after{content:' ↗';font-size:12px;color:var(--ghost);}
-.res-desc{font-size:12.5px;line-height:1.9;color:var(--muted);letter-spacing:0.04em;
-  font-family:'Noto Sans SC',system-ui,sans-serif;}
-.res-src{font-size:10px;color:var(--faint);letter-spacing:0.08em;
-  font-family:'Noto Sans SC',system-ui,sans-serif;}
-
 @media(max-width:768px){
-  .guide-steps,.res-list{grid-template-columns:1fr;}
-  .guide-section,.res-section{padding:52px 20px;}
+  .guide-steps{grid-template-columns:1fr;}
+  .guide-section{padding:52px 20px;}
   .feat-section{padding:48px 20px;}
   .feat-list{grid-template-columns:repeat(2,1fr);}
   .feat-list li:last-child{grid-column:1/-1;}
@@ -570,13 +549,6 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
           <span class="feat-desc">33 条术语，大白话讲清楚</span>
         </a>
       </li>
-      <li>
-        <a class="feat-card" href="#resources">
-          <span class="feat-icon" aria-hidden="true">🔗</span>
-          <span class="feat-name">研读资源</span>
-          <span class="feat-desc">站外权威出处，原文注疏皆有来源</span>
-        </a>
-      </li>
     </ul>
   </div>
 </section>
@@ -608,37 +580,6 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
         </a>
       </li>
     </ol>
-  </div>
-</section>
-
-<!-- ===== 研读资源 ===== -->
-<section class="res-section fade-in" id="resources" aria-labelledby="res-title">
-  <div class="res-inner">
-    <h2 class="res-title" id="res-title">研 读 资 源</h2>
-    <p class="res-note">以下为站外权威资源，原文与注疏皆有出处</p>
-    <ul class="res-list">
-      <li>
-        <a href="https://ctext.org/book-of-changes/zh" target="_blank" rel="noopener">
-          <span class="res-name">中國哲學書電子化計劃 · 周易</span>
-          <span class="res-desc">《周易》原文、王弼注、朱熹《周易本義》等历代注疏，以及理雅各英译本，适合深度研读与版本对校。</span>
-          <span class="res-src">出处：ctext.org</span>
-        </a>
-      </li>
-      <li>
-        <a href="https://zh.wikisource.org/zh-hant/%E5%91%A8%E6%98%93" target="_blank" rel="noopener">
-          <span class="res-name">維基文庫 · 周易</span>
-          <span class="res-desc">公有领域《周易》原文，含卦辞、爻辞与十翼传文，排版清晰，便于查阅对照。</span>
-          <span class="res-src">出处：zh.wikisource.org</span>
-        </a>
-      </li>
-      <li>
-        <a href="https://zh.wikipedia.org/wiki/%E6%98%93%E7%B6%93" target="_blank" rel="noopener">
-          <span class="res-name">维基百科 · 易经</span>
-          <span class="res-desc">成书背景、马王堆帛书等近代考古发现、历代注本介绍，适合初学者建立整体认知。</span>
-          <span class="res-src">出处：zh.wikipedia.org</span>
-        </a>
-      </li>
-    </ul>
   </div>
 </section>
 
