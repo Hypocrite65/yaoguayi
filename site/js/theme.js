@@ -25,19 +25,5 @@ function initTheme() {
   }
 }
 
-function toggleAccountMenu() {
-  document.getElementById('account-dropdown').classList.toggle('show');
-}
-
-function closeAccountMenu() {
-  const d = document.getElementById('account-dropdown');
-  if (d) d.classList.remove('show');
-}
-
-document.addEventListener('click', (e) => {
-  const a = document.querySelector('.nav-account');
-  if (a && !a.contains(e.target)) closeAccountMenu();
-});
-
 // 页面加载时初始化主题
 initTheme();
