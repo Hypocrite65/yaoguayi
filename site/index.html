@@ -297,11 +297,9 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   font-size:15px;margin-bottom:16px;}
 .guide-card-title{display:block;font-size:19px;letter-spacing:0.24em;font-weight:400;
   margin-bottom:10px;color:var(--ink);}
+.guide-card-title::after{content:' ↗';font-size:13px;color:var(--ghost);letter-spacing:0;}
 .guide-card-desc{display:block;font-size:13px;line-height:1.9;color:var(--muted);letter-spacing:0.05em;
-  margin-bottom:14px;font-family:'Noto Sans SC',system-ui,sans-serif;}
-.guide-go{display:block;font-size:12px;letter-spacing:0.12em;color:var(--vermilion);
   font-family:'Noto Sans SC',system-ui,sans-serif;}
-.guide-card:hover .guide-go{text-decoration:underline;}
 .guide-steps li.has-sub .guide-card{padding-bottom:56px;}
 .guide-sub{position:absolute;left:24px;bottom:22px;z-index:2;font-size:12px;letter-spacing:0.12em;
   color:var(--vermilion);text-decoration:none;font-family:'Noto Sans SC',system-ui,sans-serif;}
@@ -587,7 +585,6 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
           <span class="step-num" aria-hidden="true">一</span>
           <span class="guide-card-title">起卦</span>
           <span class="guide-card-desc">三枚铜钱，六次摇卦。心有所问，卦象自现。</span>
-          <span class="guide-go">去起卦 →</span>
         </a>
       </li>
       <li>
@@ -595,7 +592,6 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
           <span class="step-num" aria-hidden="true">二</span>
           <span class="guide-card-title">解卦</span>
           <span class="guide-card-desc">观本卦之卦辞，察动爻之爻辞，参综卦错卦互卦之关联。</span>
-          <span class="guide-go">浏览六十四卦 →</span>
         </a>
       </li>
       <li class="has-sub">
@@ -603,7 +599,6 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
           <span class="step-num" aria-hidden="true">三</span>
           <span class="guide-card-title">明理</span>
           <span class="guide-card-desc">读彖传象传以明义理，对照历代注疏，化卦理为行事之鉴。</span>
-          <span class="guide-go">易经知识 →</span>
         </a>
         <a class="guide-sub" href="#resources">研读资源 →</a>
       </li>
