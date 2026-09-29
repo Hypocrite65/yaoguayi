@@ -305,10 +305,8 @@ def article_page(art, prev_art, next_art, css, nav, footer):
     head = HEAD_TMPL.format(
         title=html.escape(art["title"]), desc=html.escape(desc),
         canonical=url, jsonld=jsonld, css=css, article_css=ARTICLE_CSS)
-    # 页脚加上知识入口（放在卦象索引之后）
-    footer2 = footer.replace(
-        '<a href="/hexagrams.html">卦象索引</a> ·',
-        '<a href="/hexagrams.html">卦象索引</a> ·\n  <a href="/learn.html">知识</a> ·')
+    # 术语表页脚已是标准顺序（含知识），直接沿用
+    footer2 = footer
 
     return head + nav + f"""
 <main class="page">
@@ -398,9 +396,7 @@ def index_page(articles, css, nav, footer):
     head = HEAD_TMPL.format(
         title="易经知识", desc=desc, canonical=f"{BASE}/learn.html",
         jsonld=jsonld, css=css, article_css=ARTICLE_CSS)
-    footer2 = footer.replace(
-        '<a href="/hexagrams.html">卦象索引</a> ·',
-        '<a href="/hexagrams.html">卦象索引</a> ·\n  <a href="/learn.html">知识</a> ·')
+    footer2 = footer  # 同上，直接沿用标准页脚
 
     return head + nav + """
 <main class="page">

@@ -264,6 +264,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 .nav-link{font-size:13px;letter-spacing:0.1em;color:var(--muted);text-decoration:none;
   transition:color 0.2s;}
 .nav-link:hover{color:var(--vermilion);}
+.nav-logo svg{width:28px;height:28px;display:block;}
 .nav-tools{display:flex;align-items:center;gap:4px;}
 .nav-btn{width:32px;height:32px;border:none;background:none;cursor:pointer;
   display:flex;align-items:center;justify-content:center;border-radius:6px;
@@ -374,11 +375,21 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 
 <nav class="top-nav" aria-label="主导航">
   <div class="nav-left">
-    <a class="nav-back" href="/">首页</a>
+    <a class="nav-link" href="/">首页</a>
+    <a class="nav-link" href="/divination.html">起卦</a>
     <a class="nav-link" href="/hexagrams.html">卦象索引</a>
     <a class="nav-link" href="/learn.html">知识</a>
-    <a class="nav-link" href="/divination.html">起卦</a>
+    <a class="nav-link" href="/glossary.html">术语表</a>
   </div>
+  <a class="nav-logo" href="/" aria-label="爻卦易首页">
+    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="84" stroke="#5c3a30" stroke-width="5" fill="none"/>
+      <line x1="100" y1="48" x2="100" y2="152" stroke="#2c2420" stroke-width="18" stroke-linecap="round"/>
+      <line x1="48" y1="48" x2="100" y2="100" stroke="#2c2420" stroke-width="18" stroke-linecap="round"/>
+      <line x1="152" y1="48" x2="152" y2="82" stroke="#c0392b" stroke-width="18" stroke-linecap="round"/>
+      <line x1="152" y1="118" x2="152" y2="152" stroke="#c0392b" stroke-width="18" stroke-linecap="round"/>
+    </svg>
+  </a>
   <div class="nav-tools">
     <button class="nav-btn" id="theme-toggle" title="切换深色 / 浅色" aria-label="切换深色 / 浅色" onclick="toggleTheme()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -535,10 +546,10 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 <footer class="site-footer">
   爻卦易 · yaoguayi.com ·
   <a href="/">首页</a> ·
+  <a href="/divination.html">起卦</a> ·
   <a href="/hexagrams.html">卦象索引</a> ·
   <a href="/learn.html">知识</a> ·
   <a href="/glossary.html">术语表</a> ·
-  <a href="/divination.html">起卦</a> ·
   <a href="/sitemap.xml">站点地图</a> ·
   <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank" rel="noopener">GitHub</a> ·
   开源 · 非盈利 ·
