@@ -14,6 +14,7 @@
 <meta property="og:url" content="https://yaoguayi.com/"/>
 <link rel="canonical" href="https://yaoguayi.com/"/>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<link rel="manifest" href="/manifest.json"/>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -300,10 +301,6 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 .guide-card-title::after{content:' ↗';font-size:13px;color:var(--ghost);letter-spacing:0;}
 .guide-card-desc{display:block;font-size:13px;line-height:1.9;color:var(--muted);letter-spacing:0.05em;
   font-family:'Noto Sans SC',system-ui,sans-serif;}
-.guide-steps li.has-sub .guide-card{padding-bottom:56px;}
-.guide-sub{position:absolute;left:24px;bottom:22px;z-index:2;font-size:12px;letter-spacing:0.12em;
-  color:var(--vermilion);text-decoration:none;font-family:'Noto Sans SC',system-ui,sans-serif;}
-.guide-sub:hover{text-decoration:underline;}
 
 /* ===== 功能导览 ===== */
 .feat-section{background:var(--bg);border-top:0.5px solid var(--border);
@@ -595,13 +592,12 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
           <span class="guide-card-desc">观本卦之卦辞，察动爻之爻辞，参综卦错卦互卦之关联。</span>
         </a>
       </li>
-      <li class="has-sub">
+      <li>
         <a class="guide-card" href="/learn.html">
           <span class="step-num" aria-hidden="true">三</span>
           <span class="guide-card-title">明理</span>
           <span class="guide-card-desc">读彖传象传以明义理，对照历代注疏，化卦理为行事之鉴。</span>
         </a>
-        <a class="guide-sub" href="#resources">研读资源 →</a>
       </li>
     </ol>
   </div>

@@ -39,3 +39,12 @@ function goBack(fallback) {
     window.location.href = fallback || '/';
   }
 }
+
+/* ===== PWA：注册 Service Worker（离线可用） ===== */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/sw.js').catch(function () {
+      /* 注册失败不影响正常使用 */
+    });
+  });
+}
