@@ -390,7 +390,6 @@ const AIChat = (() => {
     if (!container) return;
     panelEl = container;
 
-    const isAdmin = false; // 新版无账号体系，管理配置已移除
     const hasHexContext = location.pathname.includes('hexagram.html');
 
     container.innerHTML = `
@@ -398,11 +397,11 @@ const AIChat = (() => {
         <button class="tool-btn" onclick="AIChat.saveChatToFile()" title="保存对话">保存</button>
         <button class="tool-btn" onclick="AIChat.clearChat()" title="清除对话">清除</button>
       </div>
-      <div id="ai-config-admin" style="display:${isAdmin ? '' : 'none'};">
+      <div id="ai-config">
         <div class="ai-config-section">
           <div class="ai-config-header" onclick="AIChat.toggleExpand()">
             <span id="ai-config-toggle">▾</span>
-            <span class="ai-config-label">AI 接口配置（管理员）</span>
+            <span class="ai-config-label">AI 接口配置</span>
             <span class="ai-status" id="ai-status">未配置</span>
           </div>
           <div class="ai-config-body" id="ai-config-body">
@@ -441,7 +440,8 @@ const AIChat = (() => {
         </div>
       </div>`;
 
-    if (isAdmin) {
+    // 回填已保存的配置（Key 仅存于本机浏览器）
+    {
       const settings = loadSettings();
       const p = document.getElementById('ai-provider');
       const k = document.getElementById('ai-key');
@@ -767,7 +767,6 @@ const AIChat = (() => {
     }
 
     const settings = loadSettings();
-    const hasLocalKey = false; // 统一走 /api/chat 服务端代理
 
     const userMsg = { role: 'user', content: text };
     if (pendingImage) {
@@ -789,25 +788,18 @@ const AIChat = (() => {
     try {
       abortController = new AbortController();
       const systemPrompt = buildSystemPrompt();
-
-      if (hasLocalKey) {
-        if (settings.provider === 'anthropic') {
-          await streamAnthropic(settings, systemPrompt);
-        } else {
-          await streamOpenAI(settings, systemPrompt);
-        }
-      } else {
-        await streamViaProxy(systemPrompt);
-      }
+      // 统一走同源 /api/chat 代理；用户在「AI 接口配置」填了 Key/Base/模型则优先使用自己的
+      await streamViaProxy(systemPrompt, settings);
     } catch (err) {
       if (err.name === 'AbortError') {
         appendToLastMessage('\n[已停止]');
       } else {
+        const errText = aiErrorText(err.message);
         const lastMsg = messages[messages.length - 1];
         if (lastMsg && lastMsg.role === 'assistant' && !lastMsg.content) {
-          lastMsg.content = `错误: ${err.message}`;
+          lastMsg.content = errText;
         } else {
-          appendToLastMessage(`\n\n错误: ${err.message}`);
+          appendToLastMessage('\n\n' + errText);
         }
         renderMessages();
       }
@@ -817,7 +809,26 @@ const AIChat = (() => {
     }
   }
 
-  async function streamViaProxy(systemPrompt) {
+  // 把服务端错误翻译成普通人能看懂的提示
+  function aiErrorText(msg) {
+    if (/503|not configured/i.test(msg || '')) {
+      return 'AI 服务未配置：在上方「AI 接口配置」里填入你的 API Key 即可使用（Key 只保存在本机浏览器，不会上传）。';
+    }
+    return '错误: ' + msg;
+  }
+
+  // 供起卦页等外部调用：取出用户配置，用于 /api/chat 代理
+  function getProxyAuth() {
+    const s = loadSettings();
+    const auth = {};
+    if (s.key) auth.apiKey = s.key;
+    if (s.base) auth.apiBase = s.base;
+    if (s.model) auth.model = s.model;
+    if (s.provider) auth.provider = s.provider;
+    return auth;
+  }
+
+  async function streamViaProxy(systemPrompt, settings) {
     const apiMessages = [
       { role: 'system', content: systemPrompt },
       ...messages.filter(m => m.content).map(m => {
@@ -830,11 +841,20 @@ const AIChat = (() => {
         return { role: m.role, content: m.content };
       })
     ];
+
+    // 统一走同源 /api/chat 代理；用户在「AI 接口配置」填了 Key/Base/模型则优先使用自己的
+    const body = { messages: apiMessages, stream: true };
+    if (settings) {
+      if (settings.key) body.apiKey = settings.key;
+      if (settings.base) body.apiBase = settings.base;
+      if (settings.model) body.model = settings.model;
+      if (settings.provider) body.provider = settings.provider;
+    }
 
     const resp = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: apiMessages, stream: true }),
+      body: JSON.stringify(body),
       signal: abortController.signal
     });
 
@@ -846,82 +866,6 @@ const AIChat = (() => {
     await readSSEStream(resp);
   }
 
-  async function streamOpenAI(settings, systemPrompt) {
-    const baseUrl = (settings.base || DEFAULT_BASES.openai).replace(/\/+$/, '');
-    const model = settings.model || DEFAULT_MODELS[settings.provider] || DEFAULT_MODELS.openai;
-
-    const apiMessages = [
-      { role: 'system', content: systemPrompt },
-      ...messages.filter(m => m.content).map(m => {
-        if (m.image) {
-          return { role: m.role, content: [
-            { type: 'image_url', image_url: { url: `data:${m.image.mediaType};base64,${m.image.base64}` } },
-            { type: 'text', text: m.content }
-          ]};
-        }
-        return { role: m.role, content: m.content };
-      })
-    ];
-
-    const resp = await fetch(`${baseUrl}/chat/completions`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${settings.key}`
-      },
-      body: JSON.stringify({ model, messages: apiMessages, stream: true }),
-      signal: abortController.signal
-    });
-
-    if (!resp.ok) {
-      const errText = await resp.text().catch(() => resp.statusText);
-      throw new Error(`API ${resp.status}: ${errText}`);
-    }
-
-    await readSSEStream(resp);
-  }
-
-  async function streamAnthropic(settings, systemPrompt) {
-    const baseUrl = (settings.base || 'https://api.anthropic.com').replace(/\/+$/, '');
-    const model = settings.model || DEFAULT_MODELS.anthropic;
-
-    const apiMessages = messages
-      .filter(m => m.content)
-      .map(m => {
-        if (m.image) {
-          return { role: m.role, content: [
-            { type: 'image', source: { type: 'base64', media_type: m.image.mediaType, data: m.image.base64 } },
-            { type: 'text', text: m.content }
-          ]};
-        }
-        return { role: m.role, content: m.content };
-      });
-
-    const resp = await fetch(`${baseUrl}/v1/messages`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': settings.key,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model,
-        max_tokens: 4096,
-        system: systemPrompt,
-        messages: apiMessages,
-        stream: true
-      }),
-      signal: abortController.signal
-    });
-
-    if (!resp.ok) {
-      const errText = await resp.text().catch(() => resp.statusText);
-      throw new Error(`API ${resp.status}: ${errText}`);
-    }
-
-    await readAnthropicStream(resp);
-  }
 
   async function readSSEStream(resp) {
     const reader = resp.body.getReader();
@@ -946,33 +890,6 @@ const AIChat = (() => {
           const delta = json.choices?.[0]?.delta?.content;
           if (delta) appendToLastMessage(delta);
         } catch { /* skip malformed chunks */ }
-      }
-    }
-  }
-
-  async function readAnthropicStream(resp) {
-    const reader = resp.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = '';
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buffer += decoder.decode(value, { stream: true });
-
-      const lines = buffer.split('\n');
-      buffer = lines.pop() || '';
-
-      for (const line of lines) {
-        const trimmed = line.trim();
-        if (!trimmed || !trimmed.startsWith('data: ')) continue;
-        const data = trimmed.slice(6);
-        try {
-          const json = JSON.parse(data);
-          if (json.type === 'content_block_delta' && json.delta?.text) {
-            appendToLastMessage(json.delta.text);
-          }
-        } catch { /* skip */ }
       }
     }
   }
@@ -1089,7 +1006,7 @@ const AIChat = (() => {
   return {
     createPanel, saveSettings, clearSettings, toggleKey, toggleExpand,
     send, stopStreaming, clearChat, setHexData, onProviderChange,
-    removeImage, saveChatToFile
+    removeImage, saveChatToFile, getProxyAuth, loadSettings
   };
 })();
 

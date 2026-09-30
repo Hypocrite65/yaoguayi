@@ -1057,13 +1057,19 @@ function setAIStreaming(val) {
 }
 
 async function aiStreamProxy(messages, onChunk) {
+  // 带上用户在 AI 助手中配置的自定义 Key/Base/模型（若有）
+  const auth = (typeof AIChat !== 'undefined' && AIChat.getProxyAuth) ? AIChat.getProxyAuth() : {};
   const resp = await fetch('/api/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ messages, stream: true }),
+    body: JSON.stringify({ messages, stream: true, ...auth }),
     signal: aiAbort.signal
   });
-  if (!resp.ok) throw new Error(`API ${resp.status}: ${await resp.text().catch(() => resp.statusText)}`);
+  if (!resp.ok) {
+    const errText = await resp.text().catch(() => resp.statusText);
+    if (resp.status === 503) throw new Error('AI 服务未配置：请点右上角 AI 按钮，在「AI 接口配置」里填入你的 API Key 后再试（Key 只保存在本机浏览器）。');
+    throw new Error(`API ${resp.status}: ${errText}`);
+  }
   await readSSE(resp, onChunk);
 }
 
