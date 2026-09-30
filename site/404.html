@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<script>try{if(localStorage.getItem("yaoguayi_theme")==="dark"){document.documentElement.classList.add("dark-theme");var s=document.createElement("style");s.textContent='html.dark-theme{--bg:#1c1a16;--bg-alt:#252320;--ink:#e8e0d4;--ink-light:#ccc4b8;--muted:#a49c8c;--faint:#847c6c;--ghost:#5a5448;--whisper:#3e3830;--border:rgba(232,224,212,0.10);--border-strong:rgba(232,224,212,0.18);--vermilion:#e07060;--vermilion-faint:rgba(224,112,96,0.18);--nav-bg:#1c1a16;--card-bg:rgba(37,35,32,0.7);--hover-bg:rgba(232,224,212,0.08);--shadow:rgba(0,0,0,0.3);--svg-fill:#e8e0d4;--svg-circle:#a07860;}html.dark-theme body{--bg:#1c1a16;--bg-alt:#252320;--ink:#e8e0d4;--ink-light:#ccc4b8;--muted:#a49c8c;--faint:#847c6c;--ghost:#5a5448;--whisper:#3e3830;--border:rgba(232,224,212,0.10);--border-strong:rgba(232,224,212,0.18);--vermilion:#e07060;--vermilion-faint:rgba(224,112,96,0.18);--nav-bg:#1c1a16;--card-bg:rgba(37,35,32,0.7);--hover-bg:rgba(232,224,212,0.08);--shadow:rgba(0,0,0,0.3);--svg-fill:#e8e0d4;--svg-circle:#a07860;background:#1c1a16;color:#e8e0d4;}html{background:#faf8f1;}html.dark-theme{background:#1c1a16;}';document.head.appendChild(s);}}catch(e){}</script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>页面不存在 · 爻卦易</title>
+<meta name="description" content="爻卦易：你要找的页面不存在。"/>
+<meta name="keywords" content="爻卦易,404"/>
+<meta name="theme-color" content="#faf8f1"/>
+<meta name="robots" content="noindex"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="爻卦易"/>
+<meta property="og:title" content="页面不存在 · 爻卦易"/>
+<meta property="og:description" content="你要找的页面不存在。"/>
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<link rel="manifest" href="/manifest.json"/>
+<link rel="stylesheet" href="/css/tool-window.css"/>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+/* ===== 主题变量（与全站一致） ===== */
+body{
+  --bg:#faf8f1;--bg-alt:#f1ede2;--ink:#2c2420;--ink-light:#5a4e44;
+  --muted:#7a6e64;--faint:#a09080;--ghost:#d5c8b6;--whisper:#ded4c3;
+  --border:rgba(26,26,26,0.08);--border-strong:rgba(26,26,26,0.15);
+  --vermilion:#c0392b;--vermilion-faint:rgba(192,57,43,0.15);
+  --nav-bg:#faf8f1;--card-bg:rgba(241,237,226,0.5);
+  --hover-bg:rgba(26,26,26,0.06);--shadow:rgba(26,26,26,0.08);
+}
+body.dark-theme{
+  --bg:#1c1a16;--bg-alt:#252320;--ink:#e8e0d4;--ink-light:#ccc4b8;
+  --muted:#a49c8c;--faint:#847c6c;--ghost:#5a5448;--whisper:#3e3830;
+  --border:rgba(232,224,212,0.10);--border-strong:rgba(232,224,212,0.18);
+  --vermilion:#e07060;--vermilion-faint:rgba(224,112,96,0.18);
+  --nav-bg:#1c1a16;--card-bg:rgba(37,35,32,0.7);
+  --hover-bg:rgba(232,224,212,0.08);--shadow:rgba(0,0,0,0.3);
+}
+
+body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
+  color:var(--ink);background:var(--bg);min-height:100vh;
+  display:flex;flex-direction:column;transition:background 0.4s,color 0.4s;}
+
+/* ===== 顶部导航 ===== */
+.top-nav{position:sticky;top:0;z-index:100;
+  background:var(--nav-bg);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border-bottom:0.5px solid var(--border);padding:10px 24px;
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.nav-left{display:flex;align-items:center;gap:16px;justify-self:start;}
+.nav-back{font-size:13px;letter-spacing:0.1em;color:var(--muted);text-decoration:none;
+  display:flex;align-items:center;gap:6px;transition:color 0.2s;}
+.nav-back:hover{color:var(--vermilion);}
+.nav-back::before{content:'←';font-size:15px;}
+.nav-link{font-size:13px;letter-spacing:0.1em;color:var(--muted);text-decoration:none;
+  transition:color 0.2s;}
+.nav-link:hover{color:var(--vermilion);}
+.nav-logo svg{width:28px;height:28px;display:block;}
+.nav-tools{display:flex;align-items:center;gap:4px;justify-self:end;}
+.nav-btn{width:32px;height:32px;border:none;background:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;border-radius:6px;
+  color:var(--muted);transition:background 0.2s,color 0.2s;}
+.nav-btn:hover{background:var(--hover-bg);color:var(--ink);}
+.nav-btn svg{width:18px;height:18px;}
+
+/* ===== 主体 ===== */
+.page{max-width:860px;margin:0 auto;padding:40px 28px 64px;flex:1;width:100%;}
+
+/* 面包屑 */
+.crumb{font-size:11px;letter-spacing:0.14em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:28px;}
+.crumb a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+.crumb a:hover{color:var(--vermilion);}
+.crumb .sep{margin:0 8px;color:var(--whisper);}
+.crumb .here{color:var(--ink);}
+/* 返回按钮：回到上一次位置 */
+.back-btn{background:none;border:0.5px solid var(--border);border-radius:20px;
+  padding:3px 12px;font-size:11px;letter-spacing:0.1em;color:var(--muted);cursor:pointer;
+  margin-right:10px;font-family:'Noto Sans SC',system-ui,sans-serif;
+  transition:color 0.2s,border-color 0.2s;}
+.back-btn:hover{color:var(--vermilion);border-color:var(--vermilion-faint);}
+
+.page-title{font-size:30px;letter-spacing:0.24em;font-weight:400;margin-bottom:12px;}
+.page-intro{font-size:13px;line-height:2;color:var(--muted);letter-spacing:0.06em;
+  margin-bottom:40px;max-width:640px;}
+
+/* 分组标题 */
+.group{margin-bottom:48px;}
+.group-title{display:flex;align-items:baseline;gap:12px;margin-bottom:6px;}
+.group-title h2{font-size:16px;letter-spacing:0.3em;font-weight:400;color:var(--ink);}
+.group-title .count{font-size:11px;color:var(--faint);letter-spacing:0.1em;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.group-desc{font-size:12px;color:var(--faint);letter-spacing:0.08em;margin-bottom:16px;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+
+/* 索引列表：语义化 ul/li/a，便于爬虫跟随 */
+.hex-index{list-style:none;border-top:0.5px solid var(--border-strong);}
+.hex-index li{border-bottom:0.5px solid var(--border);}
+.hex-index a{display:flex;align-items:center;gap:14px;padding:13px 8px;
+  text-decoration:none;color:inherit;border-radius:4px;
+  transition:background 0.2s,padding-left 0.25s;}
+.hex-index a:hover{background:var(--hover-bg);padding-left:14px;}
+.hex-sym{font-size:24px;line-height:1;color:var(--ink);opacity:0.7;width:34px;
+  text-align:center;flex:none;transition:opacity 0.2s,transform 0.25s;}
+.hex-index a:hover .hex-sym{opacity:1;transform:scale(1.12);color:var(--vermilion);}
+.hex-num{font-size:11px;color:var(--ghost);width:26px;flex:none;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.hex-name{font-size:17px;letter-spacing:0.14em;color:var(--ink);width:74px;flex:none;}
+.hex-pinyin{font-size:12px;color:var(--faint);width:64px;flex:none;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.hex-guaci{font-size:13px;color:var(--muted);letter-spacing:0.06em;flex:1;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hex-arrow{font-size:14px;color:var(--ghost);flex:none;transition:transform 0.25s,color 0.25s;}
+.hex-index a:hover .hex-arrow{transform:translateX(5px);color:var(--vermilion);}
+
+/* ===== 页脚 ===== */
+.site-footer{border-top:0.5px solid var(--border);padding:20px 24px;text-align:center;
+  font-size:10px;letter-spacing:0.12em;color:var(--ghost);
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-top:auto;}
+.site-footer a{color:var(--faint);text-decoration:none;transition:color 0.2s;}
+.site-footer a:hover{color:var(--vermilion);}
+.site-footer{position:relative;}
+.ver{color:var(--faint);cursor:pointer;transition:color 0.2s;}
+.ver:hover{color:var(--vermilion);}
+.ver-panel{position:absolute;bottom:calc(100% + 10px);right:16px;width:min(440px,92vw);
+  max-height:320px;overflow-y:auto;background:var(--bg);
+  border:1px solid var(--border-strong);border-radius:10px;
+  box-shadow:0 12px 32px var(--shadow);padding:8px;z-index:60;text-align:left;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.ver-panel[hidden]{display:none;}
+.ver-row{display:flex;gap:10px;align-items:baseline;padding:7px 10px;font-size:11px;
+  letter-spacing:0;border-radius:6px;}
+.ver-row:hover{background:var(--hover-bg);}
+.ver-n{color:var(--vermilion);font-weight:600;min-width:34px;flex:none;}
+.ver-sha{font-family:ui-monospace,SFMono-Regular,monospace;color:var(--muted);flex:none;}
+.ver-date{color:var(--faint);white-space:nowrap;flex:none;}
+.ver-sub{color:var(--ink-light);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+.loading{text-align:center;padding:80px 24px;font-size:13px;letter-spacing:0.12em;color:var(--faint);}
+
+@media(max-width:640px){
+  .page{padding:28px 16px 48px;}
+  .page-title{font-size:24px;}
+  .hex-pinyin{display:none;}
+  .hex-guaci{font-size:12px;}
+  .hex-name{width:60px;font-size:15px;}
+}
+
+.term-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin:14px 0 8px;}
+.term-card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:14px 16px;}
+.term-card .t-head{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;}
+.term-card .t-name{font-size:21px;font-weight:700;color:var(--ink);letter-spacing:0.05em;}
+.term-card .t-py{font-size:13px;color:var(--faint);font-family:'Noto Sans SC',system-ui,sans-serif;}
+.term-card .t-def{font-size:14px;line-height:1.85;color:var(--ink-light);}
+@media(max-width:640px){.term-grid{grid-template-columns:1fr;}}
+
+/* 移动端导航改用下拉箭头菜单（见 .nav-menu-btn/.nav-dropdown） */
+
+/* 移动端菜单按钮与下拉面板（纯 CSS 开关，不依赖 JS） */
+.nav-menu-check{display:none;}
+.nav-menu-btn{display:none;cursor:pointer;}
+.nav-menu-btn svg{transition:transform 0.2s;}
+.nav-menu-backdrop{display:none;}
+.nav-dropdown{display:none;position:absolute;top:calc(100% + 6px);left:12px;z-index:300;
+  min-width:140px;padding:6px;border-radius:12px;
+  background:var(--bg-alt,#fff);border:1px solid var(--border,rgba(0,0,0,0.08));
+  box-shadow:var(--shadow,0 8px 24px rgba(0,0,0,0.12));}
+.nav-dropdown a{display:block;padding:10px 14px;font-size:15px;color:var(--ink,#2c2420);
+  text-decoration:none;border-radius:8px;white-space:nowrap;}
+.nav-dropdown a:hover{background:var(--hover-bg,rgba(0,0,0,0.05));}
+@media(max-width:640px){
+  /* 移动端：隐藏横排链接与居中 logo，改用下拉箭头菜单 */
+  .top-nav{grid-template-columns:auto 1fr;}
+  .top-nav .nav-left{display:none;}
+  .top-nav .nav-logo{display:none;}
+  .nav-menu-btn{display:flex;justify-self:start;}
+  .top-nav .nav-tools{justify-self:end;}
+  /* checkbox 选中时：箭头旋转 + 显示下拉面板 + 显示点击关闭层 */
+  .nav-menu-check:checked + .nav-menu-btn svg{transform:rotate(180deg);}
+  .nav-menu-check:checked ~ .nav-dropdown{display:block;}
+  .nav-menu-check:checked ~ .nav-menu-backdrop{display:block;position:fixed;inset:0;z-index:290;background:transparent;}
+}
+
+/* 404 页面 */
+.nf-wrap{text-align:center;padding:72px 16px 96px;}
+.nf-code{font-size:88px;font-weight:800;letter-spacing:0.08em;color:var(--ghost);
+  font-family:'Noto Serif SC',serif;line-height:1;margin-bottom:12px;}
+.nf-wrap .page-title{margin-bottom:12px;}
+.nf-links{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:28px;}
+.nf-links a{display:inline-block;padding:10px 20px;border:1px solid var(--border);
+  border-radius:10px;color:var(--ink);text-decoration:none;font-size:15px;
+  background:var(--card-bg);transition:background 0.2s;}
+.nf-links a:hover{background:var(--hover-bg);}
+.nf-links a:first-child{border-color:var(--vermilion);color:var(--vermilion);}
+</style>
+</head>
+<body>
+
+<nav class="top-nav" aria-label="主导航">
+  <div class="nav-left">
+    <a class="nav-link" href="/">首页</a>
+    <a class="nav-link" href="/divination.html">起卦</a>
+    <a class="nav-link" href="/hexagrams.html">卦象索引</a>
+    <a class="nav-link" href="/guanxiang.html">观象</a>
+    <a class="nav-link" href="/learn.html">知识</a>
+    <a class="nav-link" href="/glossary.html">术语表</a>
+  </div>
+  <input type="checkbox" id="nav-menu-toggle" class="nav-menu-check" aria-label="展开菜单">
+  <label for="nav-menu-toggle" class="nav-btn nav-menu-btn" aria-label="展开菜单">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+  </label>
+  <div class="nav-dropdown" id="nav-dropdown">
+    <a href="/">首页</a>
+    <a href="/divination.html">起卦</a>
+    <a href="/hexagrams.html">卦象索引</a>
+    <a href="/guanxiang.html">观象</a>
+    <a href="/learn.html">知识</a>
+    <a href="/glossary.html">术语表</a>
+  </div>
+  <label for="nav-menu-toggle" class="nav-menu-backdrop" aria-hidden="true"></label>
+  <a class="nav-logo" href="/" aria-label="爻卦易首页">
+    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="84" stroke="#5c3a30" stroke-width="5" fill="none"/>
+      <line x1="100" y1="48" x2="100" y2="152" stroke="#2c2420" stroke-width="18" stroke-linecap="round"/>
+      <line x1="48" y1="48" x2="100" y2="100" stroke="#2c2420" stroke-width="18" stroke-linecap="round"/>
+      <line x1="152" y1="48" x2="152" y2="82" stroke="#c0392b" stroke-width="18" stroke-linecap="round"/>
+      <line x1="152" y1="118" x2="152" y2="152" stroke="#c0392b" stroke-width="18" stroke-linecap="round"/>
+    </svg>
+  </a>
+  <div class="nav-tools">
+    <button class="nav-btn" id="search-btn" title="搜索 (Ctrl+K)" aria-label="搜索" onclick="typeof SiteSearch!=='undefined'&&SiteSearch.toggle()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="nav-btn" id="ai-chat-toggle" title="AI 助手 / 记事本" aria-label="AI 助手" onclick="typeof ToolWindow!=='undefined'&&ToolWindow.toggleWindow()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 10h.01"/><path d="M12 10h.01"/><path d="M16 10h.01"/></svg>
+    </button>
+    <button class="nav-btn" id="theme-toggle" title="切换深色 / 浅色" aria-label="切换深色 / 浅色" onclick="toggleTheme()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<main class="page">
+  <nav class="crumb" aria-label="面包屑">
+    <button type="button" class="back-btn" onclick="goBack('/')">‹ 返回</button><a href="/">首页</a>
+  </nav>
+
+  <div class="nf-wrap">
+    <div class="nf-code">404</div>
+    <h1 class="page-title">这个页面不存在</h1>
+    <p class="page-intro">地址可能输错了，或者页面已经搬走。<br>不如下面的去处看看：</p>
+    <div class="nf-links">
+      <a href="/">‹ 返回首页</a>
+      <a href="/hexagrams.html">卦象索引</a>
+      <a href="/divination.html">起卦</a>
+      <a href="/learn.html">易经知识</a>
+      <a href="/glossary.html">术语表</a>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  爻卦易 · yaoguayi.com ·
+  <a href="/">首页</a> ·
+  <a href="/divination.html">起卦</a> ·
+  <a href="/hexagrams.html">卦象索引</a> ·
+  <a href="/guanxiang.html">观象</a> ·
+  <a href="/learn.html">知识</a> ·
+  <a href="/glossary.html">术语表</a> ·
+  <a href="/sitemap.xml">站点地图</a> ·
+  <a href="https://github.com/Hypocrite65/yaoguayi" target="_blank" rel="noopener">GitHub</a> ·
+  开源 · 非盈利 ·
+  <span class="ver" id="site-ver" title="查看版本历史">版本 v–</span>
+  <div class="ver-panel" id="ver-panel" hidden></div>
+</footer>
+
+<script src="/js/theme.js"></script>
+<script src="/js/search.js"></script>
+<script src="/js/tool-window.js"></script>
+<script src="/js/version.js"></script>
+</body>
+</html>
