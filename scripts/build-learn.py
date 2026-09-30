@@ -28,7 +28,7 @@ BASE = "https://yaoguayi.com"
 
 # 打赏：填入爱发电创作者主页链接（如 https://afdian.com/a/你的ID）后，
 # 文章页底部会自动显示打赏区；留空则不显示。拿到链接后设值并重跑本脚本即可。
-DONATE_URL = ""
+DONATE_URL = "https://afdian.com/a/wei-yaoguayi"
 
 CATEGORIES = [
     ("基础", "先把基本概念搞清楚，再看卦就不晕了"),
