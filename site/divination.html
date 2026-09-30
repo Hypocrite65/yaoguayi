@@ -216,6 +216,14 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 /* 结果操作 */
 .result-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
 
+/* ===== 卦签分享图 ===== */
+.guajian{display:none;margin-top:24px;border:1px solid var(--border);border-radius:12px;background:var(--card-bg);padding:28px 20px;text-align:center;}
+.guajian.show{display:block;}
+.guajian-title{font-size:15px;font-weight:700;color:var(--ink);letter-spacing:.2em;margin-bottom:6px;}
+.guajian-desc{font-size:13px;color:var(--muted);margin:0 0 18px;line-height:1.8;}
+.guajian-img{max-width:100%;height:auto;border-radius:8px;border:1px solid var(--border);box-shadow:0 8px 30px rgba(0,0,0,.12);}
+.guajian-actions{display:flex;gap:12px;justify-content:center;margin-top:18px;flex-wrap:wrap;}
+
 /* ===== AI 解读（旧版功能恢复） ===== */
 .qg-ai{display:none;margin-top:24px;border:1px solid var(--border);border-radius:12px;background:var(--card-bg);overflow:hidden;}
 .qg-ai.active{display:block;}
@@ -419,6 +427,17 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   </section>
 
   <section class="result" id="result"></section>
+
+  <!-- 卦签分享图 -->
+  <section class="guajian" id="guajian">
+    <div class="guajian-title">卦 签</div>
+    <p class="guajian-desc">长按图片保存到相册，或点击下载——发给朋友、发朋友圈都可以</p>
+    <img class="guajian-img" id="guajian-img" alt="卦签分享图"/>
+    <div class="guajian-actions">
+      <a class="btn btn-primary" id="guajian-download" download>下载图片</a>
+      <button class="btn btn-ghost" onclick="document.getElementById('guajian').classList.remove('show')">收起</button>
+    </div>
+  </section>
 
   <!-- AI 解读（旧版功能恢复） -->
   <section class="qg-ai" id="qg-ai">
@@ -667,6 +686,17 @@ function finishDivination() {
   }, 400);
 }
 
+/* ===== 断法（朱熹《易学启蒙》体例的简化版），结果页与卦签共用 ===== */
+function divinationRule(n) {
+  if (n === 0) return '六爻安静，无动爻。观本卦卦辞，以卦象大势为断。';
+  if (n === 1) return '一爻动，以动爻爻辞为断。';
+  if (n === 2) return '二爻动，以上位动爻（位置较高者）爻辞为断。';
+  if (n === 3) return '三爻动，参看本卦与之卦卦辞。';
+  if (n === 4) return '四爻动，以之卦静爻中下位者为断。';
+  if (n === 5) return '五爻动，以之卦唯一静爻为断。';
+  return '六爻皆动：乾观用九、坤观用六；余卦观之卦卦辞。';
+}
+
 /* ===== 渲染结果 ===== */
 function renderResult(rec) {
   const box = document.getElementById('result');
@@ -682,22 +712,8 @@ function renderResult(rec) {
       <span class="card-guaci">${h.guaci}</span>
     </a>`;
 
-  let tipHtml = '';
-  if (changingIdx.length === 0) {
-    tipHtml = `<div class="reading-tip"><span class="tip-label">断 法</span>
-      <p>六爻安静，无动爻。观本卦卦辞，以卦象大势为断。</p></div>`;
-  } else {
-    // 传统断法（朱熹《易学启蒙》体例的简化版）
-    const n = changingIdx.length;
-    let rule = '';
-    if (n === 1) rule = '一爻动，以动爻爻辞为断。';
-    else if (n === 2) rule = '二爻动，以上位动爻（位置较高者）爻辞为断。';
-    else if (n === 3) rule = '三爻动，参看本卦与之卦卦辞。';
-    else if (n === 4) rule = '四爻动，以之卦静爻中下位者为断。';
-    else if (n === 5) rule = '五爻动，以之卦唯一静爻为断。';
-    else rule = '六爻皆动：乾观用九、坤观用六；余卦观之卦卦辞。';
-    tipHtml = `<div class="reading-tip"><span class="tip-label">断 法</span><p>${rule}</p></div>`;
-  }
+  const tipHtml = `<div class="reading-tip"><span class="tip-label">断 法</span>
+      <p>${divinationRule(changingIdx.length)}</p></div>`;
 
   let changingHtml = '';
   if (changingIdx.length > 0) {
@@ -723,6 +739,7 @@ function renderResult(rec) {
     ${changingHtml}
     <div class="result-actions">
       <button class="btn btn-primary" onclick="resetDivination()">再占一卦</button>
+      <button class="btn btn-ghost" onclick="generateGuajian()">生成卦签</button>
       <a class="btn btn-ghost" href="/hexagram.html?id=${hex.id}">查看本卦详解</a>
     </div>`;
   box.classList.add('show');
@@ -739,6 +756,179 @@ function renderResult(rec) {
     if (ld) ld.style.display = 'none';
     setAIStreaming(false);
   }
+}
+
+/* ===== 卦签分享图：Canvas 绘制竖版卡片，两遍绘制自适应高度 ===== */
+function generateGuajian() {
+  const rec = lastAIRec;
+  if (!rec || typeof HEXAGAMS === 'undefined') return;
+  const hex = HEXAGAMS[rec.hexId];
+  if (!hex) return;
+  const changed = rec.changedId ? HEXAGAMS[rec.changedId] : null;
+  const changingIdx = rec.lines.map((l, i) => l.changing ? i : -1).filter(i => i >= 0);
+
+  const W = 900;
+  const PAPER = '#faf8f1', INK = '#2c2420', MUTED = '#8a7f72',
+        FAINT = '#b3a897', VERM = '#c0392b', CIRCLE = '#5c3a30';
+  const SERIF = '"Songti SC","Noto Serif SC","Noto Serif CJK SC",serif';
+  const trunc = (t, n) => t.length > n ? t.slice(0, n) + '…' : t;
+  const wrapLines = (g, text, maxW) => {
+    const out = []; let cur = '';
+    for (const ch of text) {
+      if (cur && g.measureText(cur + ch).width > maxW) { out.push(cur); cur = ch; }
+      else cur += ch;
+    }
+    if (cur) out.push(cur);
+    return out;
+  };
+
+  function paint(g) {
+    let y = 104;
+    const cx = W / 2;
+    g.textBaseline = 'middle'; g.textAlign = 'center';
+
+    // 顶部小 logo
+    const lr = 36, lx = cx, ly = y;
+    g.strokeStyle = CIRCLE; g.lineWidth = 5;
+    g.beginPath(); g.arc(lx, ly, lr, 0, Math.PI * 2); g.stroke();
+    g.strokeStyle = INK; g.lineWidth = 9; g.lineCap = 'round';
+    g.beginPath(); g.moveTo(lx, ly - lr + 15); g.lineTo(lx, ly + lr - 15); g.stroke();
+    g.beginPath(); g.moveTo(lx - lr + 15, ly - lr + 15); g.lineTo(lx, ly); g.stroke();
+    g.strokeStyle = VERM;
+    const ix = lx + 26;
+    g.beginPath(); g.moveTo(ix, ly - lr + 15); g.lineTo(ix, ly - 8); g.stroke();
+    g.beginPath(); g.moveTo(ix, ly + 8); g.lineTo(ix, ly + lr - 15); g.stroke();
+    y += 80;
+    g.font = '44px ' + SERIF; g.fillStyle = MUTED;
+    g.fillText('爻 卦 易', cx, y); y += 54;
+    const d = new Date();
+    g.font = '28px ' + SERIF; g.fillStyle = FAINT;
+    g.fillText(d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日 · 金钱卦', cx, y); y += 44;
+    if (rec.q) {
+      g.fillStyle = MUTED;
+      g.fillText('所问：' + trunc(rec.q, 20), cx, y); y += 44;
+    }
+    y += 8;
+    g.strokeStyle = FAINT; g.lineWidth = 1;
+    g.beginPath(); g.moveTo(130, y); g.lineTo(W - 130, y); g.stroke();
+    y += 66;
+
+    // 卦名
+    g.font = '32px ' + SERIF; g.fillStyle = MUTED;
+    g.fillText('第 ' + hex.id + ' 卦', cx, y); y += 68;
+    g.font = '700 150px ' + SERIF; g.fillStyle = INK;
+    g.fillText(hex.name, cx, y); y += 112;
+    g.font = '30px ' + SERIF; g.fillStyle = MUTED;
+    g.fillText('上' + hex.upperTrigram + ' · 下' + hex.lowerTrigram, cx, y); y += 40;
+
+    // 卦辞
+    y += 38;
+    g.font = '34px ' + SERIF; g.fillStyle = INK;
+    wrapLines(g, '卦辞：' + trunc(hex.guaci, 80), W - 240).forEach(ln => {
+      g.fillText(ln, cx, y); y += 52;
+    });
+
+    // 六爻（从上爻画到初爻）
+    y += 40;
+    const yaoW = 440, yaoH = 26, stepY = 62, yaoX = cx - yaoW / 2;
+    const bar = (x, yy, w, h, r) => {
+      g.beginPath();
+      g.moveTo(x + r, yy);
+      g.arcTo(x + w, yy, x + w, yy + h, r);
+      g.arcTo(x + w, yy + h, x, yy + h, r);
+      g.arcTo(x, yy + h, x, yy, r);
+      g.arcTo(x, yy, x + w, yy, r);
+      g.closePath(); g.fill();
+    };
+    for (let i = 5; i >= 0; i--) {
+      const l = rec.lines[i];
+      const yy = y - 13;
+      g.fillStyle = INK;
+      if (l.value === 1) { bar(yaoX, yy, yaoW, yaoH, 13); }
+      else {
+        const w2 = (yaoW - 40) / 2;
+        bar(yaoX, yy, w2, yaoH, 13); bar(yaoX + w2 + 40, yy, w2, yaoH, 13);
+      }
+      const yn = (hex.yaoci[i] && hex.yaoci[i].name) || '';
+      g.font = '28px ' + SERIF; g.textAlign = 'right';
+      g.fillStyle = l.changing ? VERM : MUTED;
+      g.fillText(yn, yaoX - 28, y);
+      g.textAlign = 'center';
+      if (l.changing) {
+        g.strokeStyle = VERM; g.lineWidth = 4;
+        g.strokeRect(yaoX - 16, yy - 12, yaoW + 32, yaoH + 24);
+        g.textAlign = 'left'; g.fillStyle = VERM; g.font = '600 28px ' + SERIF;
+        g.fillText('动', yaoX + yaoW + 30, y);
+        g.textAlign = 'center';
+      }
+      y += stepY;
+    }
+
+    // 动爻爻辞
+    if (changingIdx.length) {
+      y += 26;
+      g.font = '30px ' + SERIF; g.fillStyle = MUTED;
+      g.fillText('— 动 爻 —', cx, y); y += 54;
+      g.font = '32px ' + SERIF;
+      changingIdx.forEach(i => {
+        const yc = hex.yaoci[i] || {};
+        const parts = String(yc.text || '').split('：');
+        const body = parts.length > 1 ? parts.slice(1).join('：') : String(yc.text || '');
+        g.fillStyle = VERM;
+        g.fillText('●', 120, y);
+        g.fillStyle = INK; g.textAlign = 'left';
+        wrapLines(g, (yc.name || '') + ' · ' + trunc(body, 30), W - 320).forEach(ln => {
+          g.fillText(ln, 160, y); y += 48;
+        });
+        g.textAlign = 'center';
+        y += 10;
+      });
+    }
+
+    // 之卦
+    if (changed) {
+      y += 22;
+      g.font = '32px ' + SERIF; g.fillStyle = MUTED;
+      g.fillText('之卦 · 第' + changed.id + '卦 ' + changed.name, cx, y); y += 50;
+    }
+
+    // 断法
+    y += 30;
+    g.font = '30px ' + SERIF; g.fillStyle = MUTED;
+    wrapLines(g, '断法：' + divinationRule(changingIdx.length), W - 240).forEach(ln => {
+      g.fillText(ln, cx, y); y += 46;
+    });
+
+    // 页脚
+    y += 62;
+    g.strokeStyle = FAINT; g.lineWidth = 1;
+    g.beginPath(); g.moveTo(130, y); g.lineTo(W - 130, y); g.stroke();
+    y += 54;
+    g.font = '28px ' + SERIF; g.fillStyle = FAINT;
+    g.fillText('爻卦易 · yaoguayi.com', cx, y); y += 42;
+    g.fillText('仅供学习交流', cx, y); y += 42;
+    return y + 62;
+  }
+
+  const meas = document.createElement('canvas').getContext('2d');
+  const H = Math.max(1500, Math.ceil(paint(meas)));
+  const cv = document.createElement('canvas');
+  cv.width = W; cv.height = H;
+  const g = cv.getContext('2d');
+  g.fillStyle = PAPER; g.fillRect(0, 0, W, H);
+  g.strokeStyle = INK; g.lineWidth = 3; g.strokeRect(28, 28, W - 56, H - 56);
+  g.strokeStyle = FAINT; g.lineWidth = 1; g.strokeRect(40, 40, W - 80, H - 80);
+  paint(g);
+
+  const url = cv.toDataURL('image/png');
+  document.getElementById('guajian-img').src = url;
+  const dl = document.getElementById('guajian-download');
+  dl.href = url;
+  dl.download = '爻卦易-' + hex.name + '卦.png';
+  document.getElementById('guajian').classList.add('show');
+  setTimeout(() => {
+    document.getElementById('guajian').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
 }
 
 function escapeHtml(s) {
@@ -909,6 +1099,9 @@ function resetDivination() {
   buildYaoStack();
   document.getElementById('result').classList.remove('show');
   document.getElementById('result').innerHTML = '';
+  // 隐藏卦签
+  const gj = document.getElementById('guajian');
+  if (gj) gj.classList.remove('show');
   // 隐藏 AI 解读区
   const aiSec = document.getElementById('qg-ai');
   if (aiSec) aiSec.classList.remove('active');
