@@ -1,5 +1,5 @@
 /* 爻卦易 PWA Service Worker：离线可用 */
-const CACHE_NAME = 'yaoguayi-v3';
+const CACHE_NAME = 'yaoguayi-v4';
 
 const PRECACHE = [
   '/',
@@ -22,6 +22,7 @@ const PRECACHE = [
   '/manifest.json',
   '/icons/icon-192.png',
   '/icons/icon-512.png',
+  '/img/og-cover.png',
 ];
 
 self.addEventListener('install', function (e) {

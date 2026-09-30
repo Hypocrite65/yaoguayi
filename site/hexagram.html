@@ -9,6 +9,12 @@
 <meta name="theme-color" content="#faf8f1"/>
 <meta property="og:type" content="website"/>
 <meta property="og:site_name" content="爻卦易"/>
+<meta property="og:title" content="卦象详情 · 爻卦易"/>
+<meta property="og:description" content="爻卦易《易经》卦象详情：卦辞、爻辞、彖传、象传原文，注音与词义解释。"/>
+<meta property="og:url" content="https://yaoguayi.com/hexagram.html"/>
+<meta property="og:image" content="https://yaoguayi.com/img/og-cover.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yaoguayi.com/img/og-cover.png"/>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
 <link rel="manifest" href="/manifest.json"/>
 <link rel="stylesheet" href="/css/tool-window.css"/>
@@ -867,6 +873,8 @@ function injectHexagramSEO(hex) {
   setMeta('property', 'og:title', hex.name + '卦 · 爻卦易');
   setMeta('property', 'og:description', (hex.guaci || '').replace(/\s+/g, '').slice(0, 80));
   setMeta('property', 'og:url', url);
+  setMeta('property', 'og:image', 'https://yaoguayi.com/img/og-cover.png');
+  setMeta('name', 'twitter:image', 'https://yaoguayi.com/img/og-cover.png');
   setMeta('name', 'description', `《周易》第${hex.id}卦${hex.name}卦：卦辞、爻辞、彖传、象传原文，注音与白话翻译。`);
 
   const ld = {

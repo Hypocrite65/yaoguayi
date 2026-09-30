@@ -243,6 +243,20 @@ ARTICLE_CSS = """
   transition:transform 0.15s,box-shadow 0.15s;}
 .donate-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,0.18);}
 .donate-note{font-size:12px;color:var(--faint);margin:14px 0 0;line-height:1.8;}
+
+/* 分享区 */
+.share{margin:24px 0 8px;}
+.share-card{border:1px solid var(--border);border-radius:12px;background:var(--card-bg);
+  padding:30px 24px;text-align:center;}
+.share-title{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:8px;letter-spacing:0.05em;}
+.share-desc{font-size:13.5px;color:var(--muted);line-height:1.9;margin:0 0 18px;}
+.share-row{display:flex;gap:10px;max-width:520px;margin:0 auto;}
+.share-link{flex:1;min-width:0;font-size:13px;color:var(--muted);background:var(--bg);
+  border:1px solid var(--border);border-radius:8px;padding:10px 12px;}
+.share-btn{flex:none;font-size:14px;font-weight:600;color:var(--ink);background:transparent;
+  border:1px solid var(--border-strong);border-radius:8px;padding:10px 18px;cursor:pointer;}
+.share-btn:hover{background:var(--hover-bg);}
+@media(max-width:640px){.share-row{flex-direction:column;}}
 """
 
 HEAD_TMPL = """<!DOCTYPE html>
@@ -259,6 +273,9 @@ HEAD_TMPL = """<!DOCTYPE html>
 <meta property="og:title" content="{title} · 爻卦易"/>
 <meta property="og:description" content="{desc}"/>
 <meta property="og:url" content="{canonical}"/>
+<meta property="og:image" content="https://yaoguayi.com/img/og-cover.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yaoguayi.com/img/og-cover.png"/>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
 <script type="application/ld+json">
 {jsonld}
@@ -317,6 +334,25 @@ def article_page(art, prev_art, next_art, css, nav, footer):
     else:
         donate_html = ""
 
+    share_html = '''    <section class="share" aria-label="分享">
+      <div class="share-card">
+        <div class="share-title">📤 觉得有用？分享给朋友</div>
+        <p class="share-desc">微信内点击右上角 ··· 即可分享给朋友或朋友圈</p>
+        <div class="share-row">
+          <input class="share-link" id="share-link" type="text" readonly value="{url_esc}" aria-label="本页链接" onclick="this.select()"/>
+          <button class="share-btn" id="share-copy" type="button">复制链接</button>
+        </div>
+      </div>
+    </section>
+    <script>
+(function(){var b=document.getElementById('share-copy');if(!b)return;
+b.addEventListener('click',function(){var i=document.getElementById('share-link');
+function ok(){b.textContent='已复制 ✓';setTimeout(function(){b.textContent='复制链接'},1600);}
+function fallback(){i.select();try{document.execCommand('copy');ok();}catch(e){}}
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(i.value).then(ok,fallback);}else{fallback();}});})();
+</script>'''
+    share_html = share_html.replace('{url_esc}', html.escape(url, quote=True))
+
     jsonld = json.dumps({
         "@context": "https://schema.org",
         "@type": "Article",
@@ -369,6 +405,7 @@ def article_page(art, prev_art, next_art, css, nav, footer):
       {html.escape(art.get("source", "本站整理"))}
     </aside>
 {donate_html}
+{share_html}
     <nav class="prev-next" aria-label="上下篇">
       {"".join(pn)}
     </nav>
