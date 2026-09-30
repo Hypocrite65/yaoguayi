@@ -26,6 +26,10 @@ GLOSSARY_HTML = SITE / "glossary.html"
 LEARN_DIR = SITE / "learn"
 BASE = "https://yaoguayi.com"
 
+# 打赏：填入爱发电创作者主页链接（如 https://afdian.com/a/你的ID）后，
+# 文章页底部会自动显示打赏区；留空则不显示。拿到链接后设值并重跑本脚本即可。
+DONATE_URL = ""
+
 CATEGORIES = [
     ("基础", "先把基本概念搞清楚，再看卦就不晕了"),
     ("起卦", "三种起卦方法的手把手教程"),
@@ -228,6 +232,17 @@ ARTICLE_CSS = """
   .top-nav .nav-left::-webkit-scrollbar{display:none;}
   .top-nav .nav-left a{flex:none;}
 }
+/* 打赏区 */
+.donate{margin:40px 0 8px;}
+.donate-card{border:1px solid var(--border);border-radius:12px;background:var(--card-bg);
+  padding:30px 24px;text-align:center;}
+.donate-title{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:8px;letter-spacing:0.05em;}
+.donate-desc{font-size:13.5px;color:var(--muted);line-height:1.9;margin:0 0 18px;}
+.donate-btn{display:inline-block;background:var(--vermilion);color:#fff;text-decoration:none;
+  font-size:15px;font-weight:600;padding:12px 40px;border-radius:999px;
+  transition:transform 0.15s,box-shadow 0.15s;}
+.donate-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,0.18);}
+.donate-note{font-size:12px;color:var(--faint);margin:14px 0 0;line-height:1.8;}
 """
 
 HEAD_TMPL = """<!DOCTYPE html>
@@ -288,6 +303,20 @@ def article_page(art, prev_art, next_art, css, nav, footer):
     else:
         pn.append('<span class="pn-empty" aria-hidden="true"></span>')
 
+    # 打赏区：DONATE_URL 为空时不渲染
+    if DONATE_URL:
+        donate_html = f"""
+    <section class="donate" aria-label="打赏支持">
+      <div class="donate-card">
+        <div class="donate-title">🍵 觉得有收获？</div>
+        <p class="donate-desc">请作者喝杯茶，支持爻卦易持续更新。<br>打赏完全自愿，金额随意。</p>
+        <a class="donate-btn" href="{html.escape(DONATE_URL, quote=True)}" target="_blank" rel="noopener">去爱发电打赏</a>
+        <p class="donate-note">通过爱发电平台安全支付</p>
+      </div>
+    </section>"""
+    else:
+        donate_html = ""
+
     jsonld = json.dumps({
         "@context": "https://schema.org",
         "@type": "Article",
@@ -339,7 +368,7 @@ def article_page(art, prev_art, next_art, css, nav, footer):
       <span class="src-label">参考资料</span>
       {html.escape(art.get("source", "本站整理"))}
     </aside>
-
+{donate_html}
     <nav class="prev-next" aria-label="上下篇">
       {"".join(pn)}
     </nav>
