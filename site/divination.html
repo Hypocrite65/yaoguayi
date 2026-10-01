@@ -272,16 +272,38 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   margin-bottom:16px;font-family:'Noto Sans SC',system-ui,sans-serif;}
 .history-empty{text-align:center;font-size:11px;color:var(--ghost);letter-spacing:0.1em;
   padding:20px 0;}
-.history-item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;
+.history-item{display:block;width:100%;text-align:left;
   border:0.5px solid var(--border);border-radius:6px;background:var(--card-bg);
-  padding:12px 16px;margin-bottom:8px;cursor:pointer;color:inherit;
-  font-family:'Noto Serif SC',serif;transition:border-color 0.25s,transform 0.2s;}
-.history-item:hover{border-color:var(--vermilion-faint);transform:translateX(4px);}
+  padding:12px 16px;margin-bottom:8px;color:inherit;
+  font-family:'Noto Serif SC',serif;transition:border-color 0.25s;}
+.history-item:hover{border-color:var(--vermilion-faint);}
+.h-row{display:flex;align-items:center;gap:12px;}
+.h-main{flex:1;min-width:0;cursor:pointer;display:flex;flex-direction:column;gap:2px;}
+.h-topline{display:flex;align-items:center;gap:12px;}
+.h-main:hover .h-q{color:var(--vermilion);}
 .history-item .h-time{font-size:10px;color:var(--ghost);white-space:nowrap;
   font-family:'Noto Sans SC',system-ui,sans-serif;}
 .history-item .h-q{flex:1;font-size:13px;letter-spacing:0.04em;color:var(--ink-light);
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color 0.2s;}
 .history-item .h-gua{font-size:12px;color:var(--vermilion);letter-spacing:0.08em;white-space:nowrap;}
+.h-note{font-size:11px;color:var(--faint);line-height:1.6;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.h-actions{display:flex;gap:6px;flex:none;}
+.h-btn{width:36px;height:36px;border:0.5px solid var(--border);background:none;border-radius:6px;
+  color:var(--muted);font-size:15px;cursor:pointer;flex:none;
+  display:flex;align-items:center;justify-content:center;padding:0;}
+.h-btn:hover{color:var(--vermilion);border-color:var(--vermilion-faint);}
+.h-del.confirm{width:auto;padding:0 10px;color:#fff;background:#b04030;border-color:#b04030;
+  font-size:12px;font-family:'Noto Sans SC',system-ui,sans-serif;}
+.h-editor{margin-top:10px;border-top:0.5px dashed var(--border);padding-top:10px;}
+.h-editor textarea{width:100%;box-sizing:border-box;background:var(--bg);color:var(--ink);
+  border:0.5px solid var(--border-strong);border-radius:6px;padding:8px 10px;
+  font-size:13px;line-height:1.7;font-family:'Noto Serif SC',serif;resize:vertical;}
+.h-editor-btns{display:flex;gap:8px;margin-top:8px;justify-content:flex-end;}
+.h-editor-btns button{padding:6px 18px;border-radius:6px;font-size:12px;cursor:pointer;
+  font-family:'Noto Sans SC',system-ui,sans-serif;}
+.h-save{background:var(--vermilion);color:#fff;border:none;}
+.h-cancel{background:none;border:0.5px solid var(--border);color:var(--muted);}
 
 /* 页脚 */
 .site-footer{border-top:0.5px solid var(--border);padding:20px 24px;text-align:center;
@@ -1130,10 +1152,30 @@ function loadHistory() {
   } catch (e) { return []; }
 }
 
+function persistHistory(h) {
+  try { localStorage.setItem(HISTORY_KEY, JSON.stringify(h)); } catch (e) {}
+}
+
 function saveHistory(rec) {
   const h = loadHistory();
   h.unshift(rec);
-  localStorage.setItem(HISTORY_KEY, JSON.stringify(h.slice(0, 12)));
+  persistHistory(h.slice(0, 50));
+}
+
+function deleteHistory(idx) {
+  const h = loadHistory();
+  h.splice(idx, 1);
+  persistHistory(h);
+  renderHistory();
+}
+
+function saveNote(idx, note) {
+  const h = loadHistory();
+  if (h[idx]) {
+    if (note) h[idx].note = note; else delete h[idx].note;
+    persistHistory(h);
+  }
+  renderHistory();
 }
 
 function renderHistory() {
@@ -1150,16 +1192,75 @@ function renderHistory() {
     if (!hex) return;
     const d = new Date(rec.t);
     const time = `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
-    const btn = document.createElement('button');
-    btn.className = 'history-item';
-    btn.innerHTML = `<span class="h-time">${time}</span>
-      <span class="h-q">${rec.q ? escapeHtml(rec.q) : '（未留问事）'}</span>
-      <span class="h-gua">${hex.name}${changed ? ' → ' + changed.name : ''}</span>`;
-    btn.addEventListener('click', () => {
+
+    const item = document.createElement('div');
+    item.className = 'history-item';
+
+    const row = document.createElement('div');
+    row.className = 'h-row';
+
+    const main = document.createElement('div');
+    main.className = 'h-main';
+    main.innerHTML = `<div class="h-topline"><span class="h-time">${time}</span>` +
+      `<span class="h-q">${rec.q ? escapeHtml(rec.q) : '（未留问事）'}</span>` +
+      `<span class="h-gua">${hex.name}${changed ? ' → ' + changed.name : ''}</span></div>` +
+      (rec.note ? `<div class="h-note">✎ ${escapeHtml(rec.note)}</div>` : '');
+    main.addEventListener('click', () => {
       renderResult(rec);
       document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
-    list.appendChild(btn);
+
+    const actions = document.createElement('div');
+    actions.className = 'h-actions';
+    const noteBtn = document.createElement('button');
+    noteBtn.className = 'h-btn';
+    noteBtn.textContent = '✎';
+    noteBtn.title = '备注';
+    noteBtn.setAttribute('aria-label', '添加备注');
+    const delBtn = document.createElement('button');
+    delBtn.className = 'h-btn h-del';
+    delBtn.textContent = '×';
+    delBtn.title = '删除';
+    delBtn.setAttribute('aria-label', '删除记录');
+
+    const editor = document.createElement('div');
+    editor.className = 'h-editor';
+    editor.hidden = true;
+    editor.innerHTML = '<textarea rows="2" maxlength="200" placeholder="后来应验了吗？记一笔…"></textarea>' +
+      '<div class="h-editor-btns"><button class="h-save">保存</button><button class="h-cancel">取消</button></div>';
+    const ta = editor.querySelector('textarea');
+    ta.value = rec.note || '';
+    noteBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      editor.hidden = !editor.hidden;
+      if (!editor.hidden) ta.focus();
+    });
+    editor.querySelector('.h-cancel').addEventListener('click', () => { editor.hidden = true; });
+    editor.querySelector('.h-save').addEventListener('click', () => { saveNote(idx, ta.value.trim()); });
+
+    let delTimer = null;
+    delBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (delBtn.classList.contains('confirm')) {
+        clearTimeout(delTimer);
+        deleteHistory(idx);
+      } else {
+        delBtn.classList.add('confirm');
+        delBtn.textContent = '确认？';
+        delTimer = setTimeout(() => {
+          delBtn.classList.remove('confirm');
+          delBtn.textContent = '×';
+        }, 3000);
+      }
+    });
+
+    actions.appendChild(noteBtn);
+    actions.appendChild(delBtn);
+    row.appendChild(main);
+    row.appendChild(actions);
+    item.appendChild(row);
+    item.appendChild(editor);
+    list.appendChild(item);
   });
 }
 </script>
