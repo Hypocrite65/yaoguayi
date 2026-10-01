@@ -154,7 +154,11 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 .yaoci-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
 .yaoci-item[id]{scroll-margin-top:68px;}
 .yaoci-name{font-size:14px;letter-spacing:0.18em;color:var(--vermilion);margin-bottom:8px;
-  font-weight:600;font-family:'Noto Sans SC',system-ui,sans-serif;}
+  font-weight:600;font-family:'Noto Sans SC',system-ui,sans-serif;
+  display:flex;align-items:center;gap:10px;}
+.yaoci-more{font-size:11px;font-weight:400;letter-spacing:0.1em;color:var(--faint);text-decoration:none;
+  border:0.5px solid var(--border);border-radius:12px;padding:2px 10px;transition:all 0.2s;}
+.yaoci-more:hover{color:var(--vermilion);border-color:var(--vermilion-faint);}
 .yaoci-text{font-size:17px;line-height:1.9;letter-spacing:0.06em;color:var(--ink);margin-bottom:8px;}
 .yaoci-trans{font-size:14px;line-height:1.8;letter-spacing:0.04em;color:var(--muted);
   margin-bottom:8px;padding-left:16px;border-left:2px solid var(--vermilion-faint);}
@@ -671,7 +675,7 @@ function renderHexagram(hex, all) {
   if (hex.yaoci && hex.yaoci.length > 0) {
     yaociHtml = hex.yaoci.map(y => `
       <li class="yaoci-item" id="yao-${y.position}" data-position="${y.position}">
-        <div class="yaoci-name">${y.name}</div>
+        <div class="yaoci-name">${y.name}<a class="yaoci-more" href="/yao/${hex.id}-${y.position}.html">详解 →</a></div>
         <div class="yaoci-text">${annotateText(y.text, true)}</div>
         ${y.text_trans ? `<div class="yaoci-trans">${y.text_trans}</div>` : ''}
         ${y.xiang ? `<div class="yaoci-xiang-label">小象传</div><div class="yaoci-xiang">${annotateText(y.xiang, false)}</div>` : ''}

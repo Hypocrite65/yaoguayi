@@ -32,10 +32,14 @@ const hexagrams = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
 const KNOWLEDGE_FILE = path.join(__dirname, '..', 'site', 'data', 'knowledge.json');
 const knowledge = JSON.parse(fs.readFileSync(KNOWLEDGE_FILE, 'utf-8'));
 
+// 生成爻辞长尾页（site/yao/），同时拿到 URL 列表
+const { yaoUrls } = require('./build-yao.js');
+
 const urls = [
   ...staticPages.map(([p, priority]) => ({ loc: SITE + p, priority })),
   ...hexagrams.map(h => ({ loc: `${SITE}/hexagram.html?id=${h.id}`, priority: '0.6' })),
   ...knowledge.map(a => ({ loc: `${SITE}/learn/${a.id}.html`, priority: '0.7' })),
+  ...yaoUrls.map(p => ({ loc: SITE + p, priority: '0.6' })),
 ];
 
 const xml = [
