@@ -1,7 +1,13 @@
 {
-  "updated": "2026-10-01T09:28:04Z",
+  "updated": "2026-10-01T09:33:20Z",
   "branch": "main",
   "versions": [
+    {
+      "v": 194,
+      "sha": "4b4b5336",
+      "date": "2026-10-01",
+      "subject": "v194：新增新手之路7步入门页（beginner.html）+首页入口+sitemap"
+    },
     {
       "v": 193,
       "sha": "39341c8c",
