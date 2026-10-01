@@ -19,6 +19,7 @@ const today = new Date().toISOString().slice(0, 10);
 // 固定页面：[路径, 优先级]
 const staticPages = [
   ['/', '1.0'],
+  ['/beginner.html', '0.9'],
   ['/hexagrams.html', '0.9'],
   ['/glossary.html', '0.8'],
   ['/divination.html', '0.8'],
