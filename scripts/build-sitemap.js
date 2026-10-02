@@ -35,9 +35,13 @@ const knowledge = JSON.parse(fs.readFileSync(KNOWLEDGE_FILE, 'utf-8'));
 // 生成爻辞长尾页（site/yao/），同时拿到 URL 列表
 const { yaoUrls } = require('./build-yao.js');
 
+// 生成 64 卦静态详情页（site/gua/），同时拿到 URL 列表
+const { guaUrls } = require('./build-gua.js');
+
 const urls = [
   ...staticPages.map(([p, priority]) => ({ loc: SITE + p, priority })),
-  ...hexagrams.map(h => ({ loc: `${SITE}/hexagram.html?id=${h.id}`, priority: '0.6' })),
+  // 卦详情以静态页为 canonical 落地页（替代 hexagram.html?id=N）
+  ...guaUrls.map(p => ({ loc: SITE + p, priority: '0.7' })),
   ...knowledge.map(a => ({ loc: `${SITE}/learn/${a.id}.html`, priority: '0.7' })),
   ...yaoUrls.map(p => ({ loc: SITE + p, priority: '0.6' })),
 ];
