@@ -1,7 +1,13 @@
 {
-  "updated": "2026-10-01T10:09:11Z",
+  "updated": "2026-10-02T02:36:06Z",
   "branch": "main",
   "versions": [
+    {
+      "v": 197,
+      "sha": "c399f2d5",
+      "date": "2026-10-02",
+      "subject": "v197：64个静态卦详情页（/gua/）为SEO canonical+卦页互链+sitemap"
+    },
     {
       "v": 196,
       "sha": "de0c0ca4",
