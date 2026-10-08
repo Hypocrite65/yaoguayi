@@ -1,7 +1,13 @@
 {
-  "updated": "2026-10-08T01:06:56Z",
+  "updated": "2026-10-08T03:52:38Z",
   "branch": "main",
   "versions": [
+    {
+      "v": 199,
+      "sha": "b0c9f0e1",
+      "date": "2026-10-08",
+      "subject": "修复无障碍树：移除覆盖链接原生 role 的 list/listitem；内链与 llms.txt 换干净 URL"
+    },
     {
       "v": 198,
       "sha": "d5af7e66",
