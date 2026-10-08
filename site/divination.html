@@ -732,7 +732,7 @@ function renderResult(rec) {
   const changingIdx = rec.lines.map((l, i) => l.changing ? i : -1).filter(i => i >= 0);
 
   const cardHtml = (h, label, solo) =>
-    `<a class="result-card${solo ? ' solo' : ''}" href="/hexagram.html?id=${h.id}">
+    `<a class="result-card${solo ? ' solo' : ''}" href="/gua/${h.id}">
       <span class="card-label">${label}</span>
       <span class="card-sym">${h.symbol}</span>
       <span class="card-name">第${h.id}卦 · ${h.name}</span>
@@ -746,7 +746,7 @@ function renderResult(rec) {
   if (changingIdx.length > 0) {
     const items = changingIdx.map(i => {
       const yao = hex.yaoci[i]; // yaoci 按 position 1-6 排列
-      return `<a class="changing-item" href="/hexagram.html?id=${hex.id}#yao-${yao.position}">
+      return `<a class="changing-item" href="/gua/${hex.id}#yao-${yao.position}">
         <span class="yao-name">${yao.name} · ${YAO_POS[i]}（动）</span>
         <span class="yao-text">${yao.text}</span>
         <span class="yao-go">查看详解 →</span>
@@ -767,7 +767,7 @@ function renderResult(rec) {
     <div class="result-actions">
       <button class="btn btn-primary" onclick="resetDivination()">再占一卦</button>
       <button class="btn btn-ghost" onclick="generateGuajian()">生成卦签</button>
-      <a class="btn btn-ghost" href="/hexagram.html?id=${hex.id}">查看本卦详解</a>
+      <a class="btn btn-ghost" href="/gua/${hex.id}">查看本卦详解</a>
     </div>`;
   box.classList.add('show');
   // 保存本次起卦结果，供 AI 解读使用；显示 AI 解读区
