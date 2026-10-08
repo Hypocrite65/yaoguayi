@@ -19,13 +19,17 @@ const today = new Date().toISOString().slice(0, 10);
 // 固定页面：[路径, 优先级]
 const staticPages = [
   ['/', '1.0'],
-  ['/beginner.html', '0.9'],
-  ['/hexagrams.html', '0.9'],
-  ['/glossary.html', '0.8'],
-  ['/divination.html', '0.8'],
-  ['/hexagram.html', '0.7'],
-  ['/learn.html', '0.8'],
+  ['/beginner', '0.9'],
+  ['/hexagrams', '0.9'],
+  ['/glossary', '0.8'],
+  ['/divination', '0.8'],
+  ['/hexagram', '0.7'],
+  ['/learn', '0.8'],
 ];
+
+// Cloudflare Pages 对 .html 做 308 跳转到干净 URL；
+// sitemap 必须写最终 200 的干净 URL，否则浪费抓取配额
+const clean = p => p.replace(/\.html$/, '');
 
 const hexagrams = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
 
@@ -41,9 +45,9 @@ const { guaUrls } = require('./build-gua.js');
 const urls = [
   ...staticPages.map(([p, priority]) => ({ loc: SITE + p, priority })),
   // 卦详情以静态页为 canonical 落地页（替代 hexagram.html?id=N）
-  ...guaUrls.map(p => ({ loc: SITE + p, priority: '0.7' })),
-  ...knowledge.map(a => ({ loc: `${SITE}/learn/${a.id}.html`, priority: '0.7' })),
-  ...yaoUrls.map(p => ({ loc: SITE + p, priority: '0.6' })),
+  ...guaUrls.map(p => ({ loc: SITE + clean(p), priority: '0.7' })),
+  ...knowledge.map(a => ({ loc: SITE + clean(`/learn/${a.id}.html`), priority: '0.7' })),
+  ...yaoUrls.map(p => ({ loc: SITE + clean(p), priority: '0.6' })),
 ];
 
 const xml = [

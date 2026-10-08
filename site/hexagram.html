@@ -876,7 +876,7 @@ function setMeta(attr, name, content) {
  */
 function injectHexagramSEO(hex) {
   // 静态卦详情页为 SEO canonical 落地页，交互页权重归并过去
-  const url = 'https://yaoguayi.com/gua/' + hex.id + '.html';
+  const url = 'https://yaoguayi.com/gua/' + hex.id;
   document.title = hex.name + '卦 · 爻卦易';
 
   let canon = document.querySelector('link[rel="canonical"]');

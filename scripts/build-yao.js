@@ -86,14 +86,14 @@ const styleFull = style.replace('</style>', yaoCss + '\n</style>');
 function yaoPage(g, y, prev, next) {
   const short = shortText(y.text);
   const posLabel = POS_INFO[y.position] || POS_INFO[7];
-  const url = `${SITE}/yao/${g.id}-${y.position}.html`;
+  const url = `${SITE}/yao/${g.id}-${y.position}`;
   const title = `${g.name}卦${y.name}是什么意思？「${short}」爻辞解释 · 爻卦易`;
   const desc = `${g.name}卦${y.name}爻辞「${y.text}」是什么意思？白话翻译：${y.text_trans}爻卦易提供每爻的原文、白话、小象传与爻位解读。`;
 
   const sibLinks = g.yaoci.map(s =>
     s.position === y.position
-      ? `<a class="cur" href="/yao/${g.id}-${s.position}.html">${s.name}</a>`
-      : `<a href="/yao/${g.id}-${s.position}.html">${s.name}</a>`
+      ? `<a class="cur" href="/yao/${g.id}-${s.position}">${s.name}</a>`
+      : `<a href="/yao/${g.id}-${s.position}">${s.name}</a>`
   ).join('');
 
   return `<!DOCTYPE html>
@@ -122,7 +122,7 @@ function yaoPage(g, y, prev, next) {
   "description": ${JSON.stringify(desc)},
   "inLanguage": "zh-Hans",
   "author": { "@type": "Organization", "name": "爻卦易", "url": "${SITE}" },
-  "isPartOf": { "@type": "WebPage", "name": "${g.name}卦", "url": "${SITE}/hexagram.html?id=${g.id}" }
+  "isPartOf": { "@type": "WebPage", "name": "${g.name}卦", "url": "${SITE}/gua/${g.id}" }
 }
 </script>
 ${styleFull}
@@ -131,7 +131,7 @@ ${styleFull}
 ${nav}
 <main class="page">
   <nav class="crumb" aria-label="面包屑">
-    <button type="button" class="back-btn" onclick="goBack('/')">‹ 返回</button><a href="/">首页</a><span class="sep">/</span><a href="/hexagrams.html">卦象索引</a><span class="sep">/</span><a href="/hexagram.html?id=${g.id}">${g.name}卦</a><span class="sep">/</span><span class="here">${y.name}</span>
+    <button type="button" class="back-btn" onclick="goBack('/')">‹ 返回</button><a href="/">首页</a><span class="sep">/</span><a href="/hexagrams">卦象索引</a><span class="sep">/</span><a href="/gua/${g.id}">${g.name}卦</a><span class="sep">/</span><span class="here">${y.name}</span>
   </nav>
 
   <div class="yao-gua">${g.name}卦 · ${g.pinyin || ''}</div>
@@ -161,9 +161,9 @@ ${nav}
   </section>
 
   <div class="yao-nav">
-    ${prev ? `<a href="/yao/${prev.g}-${prev.p}.html">← ${prev.n}</a>` : '<a href="/hexagram.html?id=' + g.id + '">← 本卦</a>'}
-    <a href="/hexagram.html?id=${g.id}">${g.name}卦详解</a>
-    ${next ? `<a href="/yao/${next.g}-${next.p}.html">${next.n} →</a>` : '<a href="/hexagrams.html">卦象索引 →</a>'}
+    ${prev ? `<a href="/yao/${prev.g}-${prev.p}">← ${prev.n}</a>` : '<a href="/gua/' + g.id + '">← 本卦</a>'}
+    <a href="/gua/${g.id}">${g.name}卦详解</a>
+    ${next ? `<a href="/yao/${next.g}-${next.p}">${next.n} →</a>` : '<a href="/hexagrams">卦象索引 →</a>'}
   </div>
 
   <div class="yao-siblings">
@@ -194,7 +194,7 @@ all.forEach((cur, i) => {
   const next = i < all.length - 1 ? all[i + 1] : null;
   const file = path.join(OUT_DIR, `${cur.g}-${cur.p}.html`);
   fs.writeFileSync(file, yaoPage(g, y, prev, next));
-  urls.push(`/yao/${cur.g}-${cur.p}.html`);
+  urls.push(`/yao/${cur.g}-${cur.p}`);
   count++;
 });
 

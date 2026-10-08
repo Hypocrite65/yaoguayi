@@ -86,12 +86,12 @@ function sec(title, orig, trans) {
 }
 
 function guaPage(g, prev, next) {
-  const url = `${SITE}/gua/${g.id}.html`;
+  const url = `${SITE}/gua/${g.id}`;
   const title = `${g.name}卦详解：卦辞白话、彖传大象与六爻 · 爻卦易`;
   const desc = `《周易》第${g.id}卦${g.name}卦详解：卦辞「${shortText(g.guaci)}」原文与白话、彖传、大象传，以及六爻爻辞逐条解读。`;
 
   const yaoList = g.yaoci.map(y =>
-    `<li><a href="/yao/${g.id}-${y.position}.html">` +
+    `<li><a href="/yao/${g.id}-${y.position}">` +
     `<div class="gua-yao-name">${y.name} <span class="gua-yao-more">详解 →</span></div>` +
     `<div class="gua-yao-text">${esc(shortText(y.text))}</div></a></li>`
   ).join('');
@@ -148,13 +148,13 @@ ${nav}
   </section>
 
   <div class="gua-cta">
-    <a href="/hexagram.html?id=${g.id}">查看交互版 · 在线起卦</a>
+    <a href="/hexagram?id=${g.id}">查看交互版 · 在线起卦</a>
   </div>
 
   <div class="gua-nav">
-    ${prev ? `<a href="/gua/${prev.id}.html">← 第${prev.id}卦·${prev.name}</a>` : '<a href="/hexagrams.html">← 卦象索引</a>'}
+    ${prev ? `<a href="/gua/${prev.id}">← 第${prev.id}卦·${prev.name}</a>` : '<a href="/hexagrams.html">← 卦象索引</a>'}
     <a href="/divination.html">在线起卦</a>
-    ${next ? `<a href="/gua/${next.id}.html">第${next.id}卦·${next.name} →</a>` : '<a href="/hexagrams.html">卦象索引 →</a>'}
+    ${next ? `<a href="/gua/${next.id}">第${next.id}卦·${next.name} →</a>` : '<a href="/hexagrams.html">卦象索引 →</a>'}
   </div>
 </main>
 ${footer}
@@ -172,7 +172,7 @@ hexagrams.forEach((g, i) => {
   const prev = i > 0 ? hexagrams[i - 1] : null;
   const next = i < hexagrams.length - 1 ? hexagrams[i + 1] : null;
   fs.writeFileSync(path.join(OUT_DIR, `${g.id}.html`), guaPage(g, prev, next));
-  urls.push(`/gua/${g.id}.html`);
+  urls.push(`/gua/${g.id}`);
 });
 
 console.log(`Generated ${urls.length} gua pages in ${OUT_DIR}`);
