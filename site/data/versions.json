@@ -1,7 +1,13 @@
 {
-  "updated": "2026-10-02T02:36:06Z",
+  "updated": "2026-10-08T01:06:56Z",
   "branch": "main",
   "versions": [
+    {
+      "v": 198,
+      "sha": "d5af7e66",
+      "date": "2026-10-08",
+      "subject": "v198：全站sitemap与canonical换干净URL（去.html 308），加速收录"
+    },
     {
       "v": 197,
       "sha": "c399f2d5",
