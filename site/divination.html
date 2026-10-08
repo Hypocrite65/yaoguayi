@@ -479,7 +479,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
         <button class="qg-ai-btn qg-ai-btn-stop" id="qg-ai-stop" onclick="aiStop()">停止</button>
       </div>
     </div>
-    <div class="qg-ai-output" id="qg-ai-output">
+    <div class="qg-ai-output" id="qg-ai-output" aria-live="polite">
       <div class="qg-ai-content" id="qg-ai-content"></div>
       <div class="qg-ai-disclaimer">
         以上解读仅供参考，不构成任何决策建议。<br>
@@ -779,6 +779,9 @@ function renderResult(rec) {
     document.getElementById('qg-ai-input-area').style.display = '';
     document.getElementById('qg-ai-output').classList.remove('active');
     document.getElementById('qg-ai-content').innerHTML = '';
+    // 起卦时填过问题，直接带入 AI 输入框，免得用户再敲一遍
+    const aiQ = document.getElementById('qg-ai-question');
+    if (aiQ && !aiQ.value && rec.q) aiQ.value = rec.q;
     const ld = document.getElementById('qg-ai-loading');
     if (ld) ld.style.display = 'none';
     setAIStreaming(false);
@@ -998,6 +1001,9 @@ function buildDivinationPrompt(userQuestion) {
     const names = ci.map(i => rec.lines[i].value === 1 ? YAO_NAMES_YANG[i] : YAO_NAMES_YIN[i]);
     prompt += `\n动爻：${names.join('、')}\n`;
   }
+  if (userQuestion) {
+    prompt += `\n【所问之事】${userQuestion}\n`;
+  }
   prompt += '\n【输出格式】严格按以下四节输出，每节标题独占一行，不要添加其他标题：\n';
   prompt += '【本卦】一句话点明此卦大势：先引用卦辞原文，再用白话解释。\n';
   if (ci.length > 0) {
@@ -1007,7 +1013,7 @@ function buildDivinationPrompt(userQuestion) {
     prompt += '【动爻】无动爻，以卦辞断：直说本卦的核心启示。\n';
   }
   if (userQuestion) {
-    prompt += '【建议】结合用户所问之事，给 2-3 条建设性参考。\n';
+    prompt += '【建议】必须紧扣【所问之事】作答：先点出问题的核心，再逐条把卦辞/爻辞的原话扣到这件事上——每条建议都要说明依据的是哪句话、为什么对应；最后给一句明确的倾向性判断（如宜争取、宜缓行、先整饬再动），不说模棱两可的空话。\n';
   } else {
     prompt += '【建议】给求问者 2-3 条通用的行动参考。\n';
   }
