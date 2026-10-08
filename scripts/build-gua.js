@@ -91,7 +91,7 @@ function guaPage(g, prev, next) {
   const desc = `《周易》第${g.id}卦${g.name}卦详解：卦辞「${shortText(g.guaci)}」原文与白话、彖传、大象传，以及六爻爻辞逐条解读。`;
 
   const yaoList = g.yaoci.map(y =>
-    `<li><a href="/yao/${g.id}-${y.position}">` +
+    `<li id="yao-${y.position}"><a href="/yao/${g.id}-${y.position}">` +
     `<div class="gua-yao-name">${y.name} <span class="gua-yao-more">详解 →</span></div>` +
     `<div class="gua-yao-text">${esc(shortText(y.text))}</div></a></li>`
   ).join('');
