@@ -1,7 +1,13 @@
 {
-  "updated": "2026-10-08T06:16:59Z",
+  "updated": "2026-10-08T06:27:24Z",
   "branch": "main",
   "versions": [
+    {
+      "v": 201,
+      "sha": "db8c8ea8",
+      "date": "2026-10-08",
+      "subject": "AI 解读体验：起卦问题自动带入解读框；prompt 强制建议节紧扣所问之事给明确判断；解读区加 aria-live"
+    },
     {
       "v": 200,
       "sha": "7805ad87",
