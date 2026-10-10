@@ -86,6 +86,19 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 /* ===== 页面主体 ===== */
 .page{max-width:720px;margin:0 auto;padding:48px 24px 80px;}
 
+/* 面包屑 + 返回按钮（与其他内容页一致） */
+.crumb{font-size:11px;letter-spacing:0.14em;color:var(--faint);
+  font-family:'Noto Sans SC',system-ui,sans-serif;margin-bottom:28px;}
+.crumb a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+.crumb a:hover{color:var(--vermilion);}
+.crumb .sep{margin:0 8px;color:var(--whisper);}
+.crumb .here{color:var(--ink);}
+.back-btn{background:none;border:0.5px solid var(--border);border-radius:20px;
+  padding:3px 12px;font-size:11px;letter-spacing:0.1em;color:var(--muted);cursor:pointer;
+  margin-right:10px;font-family:'Noto Sans SC',system-ui,sans-serif;
+  transition:color 0.2s,border-color 0.2s;}
+.back-btn:hover{color:var(--vermilion);border-color:var(--vermilion-faint);}
+
 /* 标题区 */
 .hero{text-align:center;margin-bottom:40px;}
 .hero-title{font-size:30px;letter-spacing:0.3em;font-weight:400;margin-bottom:12px;
@@ -424,6 +437,9 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 </nav>
 
 <main class="page">
+  <nav class="crumb" aria-label="面包屑">
+    <button type="button" class="back-btn" onclick="goBack('/')">‹ 返回</button><a href="/">首页</a><span class="sep">/</span><span class="here">起卦</span>
+  </nav>
   <header class="hero">
     <h1 class="hero-title">起 卦</h1>
     <p class="hero-sub">三枚铜钱 · 六次摇卦<br>静心<em>默念</em>所问之事，诚心摇卦</p>
