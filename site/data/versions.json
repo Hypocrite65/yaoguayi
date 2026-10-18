@@ -1,7 +1,13 @@
 {
-  "updated": "2026-10-10T01:26:37Z",
+  "updated": "2026-10-18T04:32:18Z",
   "branch": "main",
   "versions": [
+    {
+      "v": 203,
+      "sha": "d261e2a2",
+      "date": "2026-10-18",
+      "subject": "铜钱起卦页嵌入金钱起卦互动图解（iframe /figs/qigua.html）"
+    },
     {
       "v": 202,
       "sha": "dfc3f8fa",
