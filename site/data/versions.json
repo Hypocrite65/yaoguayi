@@ -1,7 +1,13 @@
 {
-  "updated": "2026-10-19T07:02:07Z",
+  "updated": "2026-10-19T07:08:59Z",
   "branch": "main",
   "versions": [
+    {
+      "v": 207,
+      "sha": "07c79827",
+      "date": "2026-10-19",
+      "subject": "fix: 瓜页按钮改模板源（build-gua.js）；like 接口允许 __total"
+    },
     {
       "v": 206,
       "sha": "3c032fcc",
