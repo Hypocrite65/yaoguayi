@@ -1,7 +1,13 @@
 {
-  "updated": "2026-10-19T06:06:34Z",
+  "updated": "2026-10-19T06:56:44Z",
   "branch": "main",
   "versions": [
+    {
+      "v": 205,
+      "sha": "ef02a279",
+      "date": "2026-10-19",
+      "subject": "chore: 触发重新部署以生效 LIKES_KV 绑定"
+    },
     {
       "v": 204,
       "sha": "2de266f7",
