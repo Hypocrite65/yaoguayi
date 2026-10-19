@@ -430,7 +430,11 @@ function ok(){b.textContent='已复制 ✓';setTimeout(function(){b.textContent=
 function fallback(){i.select();try{document.execCommand('copy');ok();}catch(e){}}
 if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(i.value).then(ok,fallback);}else{fallback();}});})();
 </script>
-    <nav class="prev-next" aria-label="上下篇">
+        <section class="endorse" data-like data-like-slug="learn/tongqian" aria-label="认可本文">
+      <button class="endorse-btn" type="button" aria-pressed="false"><span class="heart" aria-hidden="true">♥</span><span class="label">认可</span><span class="count">–</span></button>
+    </section>
+    <script src="/js/like.js"></script>
+<nav class="prev-next" aria-label="上下篇">
       <a href="/learn/liushisi-guaxu.html"><span class="pn-label">← 上一篇</span>六十四卦序与卦名</a><a class="pn-next" href="/learn/shicao.html"><span class="pn-label">下一篇 →</span>蓍草揲卦法</a>
     </nav>
   </article>
