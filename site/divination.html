@@ -531,6 +531,9 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 <script src="/js/tool-window.js"></script>
 <script src="/js/version.js"></script>
 <script>
+/* 跨文件容错：theme.js 旧缓存时回退 */
+var ygGuaHref = (typeof window.ygGuaHref === 'function') ? window.ygGuaHref : function (id) { return '/gua/' + id; };
+var ygCompatOn = (typeof window.ygCompatOn === 'function') ? window.ygCompatOn : function () { return false; };
 /**
  * divination.html — 金钱卦起卦逻辑
  *

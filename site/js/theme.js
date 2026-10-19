@@ -114,10 +114,5 @@ document.addEventListener('DOMContentLoaded', function () {
     cta.textContent = compat ? '返回交互版' : '查看交互版';
     if (compat) cta.setAttribute('href', cta.getAttribute('data-hex'));
   }
-  // 首页开关状态同步
-  var t = document.getElementById('compat-toggle');
-  if (t) {
-    t.checked = compat;
-    t.addEventListener('change', function () { ygSetCompat(t.checked); location.reload(); });
-  }
+  // 首页开关的接线在 index.html 内联完成（不依赖本文件版本），此处不再重复绑定
 });

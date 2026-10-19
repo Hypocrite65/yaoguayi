@@ -697,10 +697,24 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.cover .fade-in').forEach(el => el.classList.add('visible'));
 });
 
+/* 跨文件容错：若 theme.js 还是旧缓存（无 ygGuaHref），回退到静态链接，保证宫格永不空白 */
+var ygGuaHref = (typeof window.ygGuaHref === 'function') ? window.ygGuaHref : function (id) { return '/gua/' + id; };
 /* 计算今日卦 */
 const d = new Date();
 const todayId = ((d.getFullYear() * 366 + d.getMonth() * 31 + d.getDate()) % 64) + 1;
 
+
+/* 兼容版本开关：内联接线，不依赖 theme.js 版本 */
+(function initCompatToggle() {
+  var t = document.getElementById('compat-toggle');
+  if (!t || t.getAttribute('data-wired')) return;
+  t.setAttribute('data-wired', '1');
+  try { t.checked = localStorage.getItem('yg_compat') === '1'; } catch (e) {}
+  t.addEventListener('change', function () {
+    try { localStorage.setItem('yg_compat', t.checked ? '1' : '0'); } catch (e) {}
+    location.reload();
+  });
+})();
 /* 加载卦象数据并渲染页面 */
 fetch('/data/hexagrams.json')
   .then(r => r.json())
