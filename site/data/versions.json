@@ -1,7 +1,13 @@
 {
-  "updated": "2026-10-18T04:32:18Z",
+  "updated": "2026-10-19T05:38:33Z",
   "branch": "main",
   "versions": [
+    {
+      "v": 204,
+      "sha": "2de266f7",
+      "date": "2026-10-19",
+      "subject": "feat: 文章认可计数（like API + KV + 前端按钮，接 learn/ 15 篇）"
+    },
     {
       "v": 203,
       "sha": "d261e2a2",
