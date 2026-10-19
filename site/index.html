@@ -218,6 +218,12 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 .hex-title{font-size:11px;letter-spacing:0.22em;color:var(--faint);
   font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:500;}
 .hex-hint{font-size:10px;letter-spacing:0.12em;color:var(--ghost);}
+.compat-toggle{margin-left:auto;display:inline-flex;align-items:center;gap:6px;
+font-size:12px;color:var(--faint);cursor:pointer;letter-spacing:0.05em;}
+.compat-toggle input{accent-color:var(--vermilion,#c8401f);cursor:pointer;}
+.endorse-home{padding:56px 20px 8px;text-align:center;}
+.endorse-total{margin-top:10px;font-size:12px;color:var(--faint);letter-spacing:0.1em;}
+.endorse-total .total-count{font-variant-numeric:tabular-nums;}
 
 /* 无脚本兜底：64 卦静态链接（供无 JS 环境与爬虫） */
 .hex-grid-noscript{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;
@@ -489,6 +495,7 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
   <div class="hex-header fade-in">
     <span class="hex-title">六十四卦</span>
     <span class="hex-hint">点击查看卦辞</span>
+    <label class="compat-toggle" title="开启后站内卦象页使用静态版本（无脚本也可阅读，弱网更快）"><input type="checkbox" id="compat-toggle"> 兼容版本</label>
   </div>
   <div class="hex-grid" id="hex-grid"></div>
   <noscript>
@@ -637,6 +644,11 @@ body{font-family:'Noto Serif SC','STSong','SimSun','Georgia',serif;
 </section>
 
 <!-- ===== Footer ===== -->
+<section class="endorse-home fade-in" data-like data-like-slug="site" data-like-total aria-label="认可本站">
+  <button class="endorse-btn" type="button" aria-pressed="false"><span class="heart" aria-hidden="true">♥</span><span class="label">认可爻卦易</span><span class="count">–</span></button>
+  <div class="endorse-total">全站累计 <span class="total-count">–</span> 次认可</div>
+</section>
+<script src="/js/like.js"></script>
 <footer class="site-footer fade-in">
   <div class="footer-row">
     <div class="footer-left">
@@ -759,7 +771,7 @@ function renderRandomCard(hexagrams) {
     <span class="random-arrow">→</span>`;
   rCard.onclick = (e) => {
     e.preventDefault();
-    location.href = '/gua/' + randomId;
+    location.href = ygGuaHref(randomId);
   };
 }
 
@@ -786,7 +798,7 @@ function renderLuckyCard(hexagrams, luckyId) {
       return;
     }
     e.preventDefault();
-    location.href = '/gua/' + luckyId;
+    location.href = ygGuaHref(luckyId);
   };
 }
 
@@ -804,7 +816,7 @@ function renderGrid(hexagrams) {
     const sym = String.fromCodePoint(0x4DBF + id);
     const cell = document.createElement('a');
     cell.className = 'hex-cell' + (id === todayId ? ' today' : '');
-    cell.href = '/gua/' + id;
+    cell.href = ygGuaHref(id);
     cell.setAttribute('aria-label', '第' + id + '卦 ' + hex.name + '卦');
     cell.innerHTML = `<span class="hex-sym" aria-hidden="true">${sym}</span>
       <span class="hex-name">${hex.name}</span>
@@ -854,7 +866,7 @@ function renderFallbackGrid() {
     const sym = String.fromCodePoint(0x4DBF + id);
     const cell = document.createElement('a');
     cell.className = 'hex-cell' + (id === todayId ? ' today' : '');
-    cell.href = '/gua/' + id;
+    cell.href = ygGuaHref(id);
     cell.setAttribute('aria-label', '第' + id + '卦 ' + name + '卦');
     cell.innerHTML = `<span class="hex-sym" aria-hidden="true">${sym}</span>
       <span class="hex-name">${name}</span>

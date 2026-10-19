@@ -86,4 +86,13 @@
   ensureStyle();
   var boxes = document.querySelectorAll('[data-like]');
   for (var i = 0; i < boxes.length; i++) mount(boxes[i]);
+
+  // 全站累计：在 [data-like-total] 内渲染 __total
+  var totals = document.querySelectorAll('[data-like-total]');
+  for (var j = 0; j < totals.length; j++) (function (el) {
+    var target = el.querySelector('.total-count') || el;
+    api('__total', 'GET').then(function (d) {
+      target.textContent = d.count;
+    }).catch(function () { /* 保持占位，不打断页面 */ });
+  })(totals);
 })();

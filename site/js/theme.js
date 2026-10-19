@@ -80,3 +80,44 @@ if ('serviceWorker' in navigator) {
     });
   });
 }
+
+/* ============================================================
+ * 浏览模式：交互版（默认）/ 兼容版（静态）
+ * 首页"兼容版本"开关控制，localStorage 持久化（yg_compat）。
+ * 关闭（默认）：站内卦象链接统一走 /hexagram?id=NN（交互版）。
+ * 开启：走 /gua/NN（静态版，SEO 友好、无脚本也可读）。
+ * 原始 HTML 保留 /gua/NN 链接，爬虫看到的不变。
+ * ============================================================ */
+function ygCompatOn() {
+  try { return localStorage.getItem('yg_compat') === '1'; } catch (e) { return false; }
+}
+function ygSetCompat(on) {
+  try { localStorage.setItem('yg_compat', on ? '1' : '0'); } catch (e) {}
+}
+function ygGuaHref(id) {
+  return ygCompatOn() ? '/gua/' + id : '/hexagram?id=' + id;
+}
+document.addEventListener('DOMContentLoaded', function () {
+  var compat = ygCompatOn();
+  document.querySelectorAll('a[href]').forEach(function (a) {
+    if (a.hasAttribute('data-no-rewrite')) return;
+    var href = a.getAttribute('href'), m;
+    if (compat) {
+      if ((m = href.match(/^\/hexagram(?:\.html)?\?id=(\d+)$/))) a.setAttribute('href', '/gua/' + m[1]);
+    } else if ((m = href.match(/^\/gua\/(\d+)(?:\.html)?$/))) {
+      a.setAttribute('href', '/hexagram?id=' + m[1]);
+    }
+  });
+  // /gua 页红色 CTA：按模式给不同文案（兼容模式下提供返回交互版的出口）
+  var cta = document.querySelector('[data-gua-cta]');
+  if (cta) {
+    cta.textContent = compat ? '返回交互版' : '查看交互版';
+    if (compat) cta.setAttribute('href', cta.getAttribute('data-hex'));
+  }
+  // 首页开关状态同步
+  var t = document.getElementById('compat-toggle');
+  if (t) {
+    t.checked = compat;
+    t.addEventListener('change', function () { ygSetCompat(t.checked); location.reload(); });
+  }
+});

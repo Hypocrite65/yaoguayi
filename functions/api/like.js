@@ -62,6 +62,10 @@ export async function onRequest({ request, env }) {
     if (!already) {
       count += 1;
       await kv.put(countKey, String(count));
+      // 全站累计：任何 slug 的新增投票都 +1（非原子，点赞场景可接受）
+      const totalKey = 'count:__total';
+      const total = (parseInt((await kv.get(totalKey)) || '0', 10) || 0) + 1;
+      await kv.put(totalKey, String(total));
       await kv.put(votedKey, '1', { expirationTtl: 30 * 24 * 3600 });
     }
     return json({ slug, count, voted: true });
