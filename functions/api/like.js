@@ -69,3 +69,5 @@ export async function onRequest({ request, env }) {
 
   return json({ error: 'method not allowed' }, 405);
 }
+
+/* 触发重新部署：使 LIKES_KV 绑定生效 */
