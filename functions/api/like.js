@@ -26,7 +26,8 @@ async function sha256hex(text) {
 
 function cleanSlug(raw) {
   const s = String(raw || '').trim().toLowerCase();
-  return /^[a-z0-9][a-z0-9/_-]{0,119}$/.test(s) ? s : null;
+  // 允许 __total 这类内部 key（下划线开头）
+  return /^[a-z0-9_][a-z0-9/_-]{0,119}$/.test(s) ? s : null;
 }
 
 export async function onRequest({ request, env }) {

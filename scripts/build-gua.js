@@ -148,7 +148,7 @@ ${nav}
   </section>
 
   <div class="gua-cta">
-    <a href="/hexagram?id=${g.id}">查看交互版 · 在线起卦</a>
+    <a href="/hexagram?id=${g.id}" data-gua-cta data-hex="/hexagram?id=${g.id}" data-no-rewrite>查看交互版</a>
   </div>
 
   <div class="gua-nav">
